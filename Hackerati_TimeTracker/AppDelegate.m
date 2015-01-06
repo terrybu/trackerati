@@ -7,8 +7,12 @@
 //
 
 #import "AppDelegate.h"
+#import <GooglePlus/GooglePlus.h>
+#import "LogInManager.h"
 
 @interface AppDelegate ()
+
+@property (nonatomic, strong) Reachability* internetReachability;
 
 @end
 
@@ -17,7 +21,53 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    
+    self.window = [[UIWindow alloc]initWithFrame:[UIScreen mainScreen].bounds];
+    self.logInViewController = [[LogInViewController alloc]initWithNibName:nil bundle:nil];
+    
+    [self setupReachability];
+    [self startLoginProcess];
+    
+    self.naviController = [[UINavigationController alloc]initWithRootViewController:self.logInViewController];
+    self.window.rootViewController = self.naviController;
+    [self.window makeKeyAndVisible];
     return YES;
+}
+
+- (BOOL)application: (UIApplication *)application
+            openURL: (NSURL *)url
+  sourceApplication: (NSString *)sourceApplication
+         annotation: (id)annotation {
+    return [GPPURLHandler handleURL:url
+                  sourceApplication:sourceApplication
+                         annotation:annotation];
+}
+
+- (void)setupReachability{
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged:) name:kReachabilityChangedNotification object:nil];
+    self.internetReachability = [Reachability reachabilityForInternetConnection];
+    [self.internetReachability startNotifier];
+    
+}
+
+- (void)reachabilityChanged:(NSNotification *)note {
+    // called after network status changes
+    Reachability* curReach = [note object];
+    NetworkStatus internetStatus = [curReach currentReachabilityStatus];
+    
+    if (internetStatus != NotReachable) {
+        [self startLoginProcess];
+    }
+
+}
+
+
+- (void)startLoginProcess{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [[LogInManager sharedManager] mannuallySetDelegate:self.logInViewController];
+        [[LogInManager sharedManager] startLogInProcess];
+    });
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {

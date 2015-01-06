@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="6254" systemVersion="14A389" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="Client" representedClassName="Client" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="projects" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Project" inverseName="client" inverseEntity="Project" syncable="YES"/>
+        <relationship name="records" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Record" inverseName="client" inverseEntity="Record" syncable="YES"/>
+    </entity>
+    <entity name="Project" representedClassName="Project" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="client" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Client" inverseName="projects" inverseEntity="Client" syncable="YES"/>
+        <relationship name="records" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Record" inverseName="project" inverseEntity="Record" syncable="YES"/>
+    </entity>
+    <entity name="Record" representedClassName="Record" syncable="YES">
+        <attribute name="date" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="hour" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <relationship name="client" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Client" inverseName="records" inverseEntity="Client" syncable="YES"/>
+        <relationship name="project" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Project" inverseName="records" inverseEntity="Project" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="Record" positionX="-63" positionY="-18" width="128" height="103"/>
+        <element name="Client" positionX="-54" positionY="18" width="128" height="88"/>
+        <element name="Project" positionX="-36" positionY="27" width="128" height="88"/>
+    </elements>
+</model>
