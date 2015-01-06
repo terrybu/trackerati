@@ -14,5 +14,8 @@
 
 +(NSString*)kClientId;
 +(NSString*)kFireBaseURL;
-
++(NSString*)kMasterClientList;
++(NSString*)KCurrentUser;
++(NSString*)KCurrentUserRecords;
++(NSString*)KcurrentUserClientList;
 @end

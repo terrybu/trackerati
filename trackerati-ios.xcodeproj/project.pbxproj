@@ -25,8 +25,6 @@
 		CE07C0521A5B087C00A3B961 /* LogInViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE07C0501A5B087C00A3B961 /* LogInViewController.xib */; };
 		CE07C0551A5B132700A3B961 /* HConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = CE07C0541A5B132700A3B961 /* HConstants.m */; };
 		CE07C0571A5B6AEF00A3B961 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CE07C0561A5B6AEF00A3B961 /* Default-568h@2x.png */; };
-		CE07C05A1A5B742400A3B961 /* CoreDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = CE07C0581A5B742400A3B961 /* CoreDataModel.xcdatamodeld */; };
-		CE07C05D1A5B74BA00A3B961 /* HCKCoreDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CE07C05C1A5B74BA00A3B961 /* HCKCoreDataManager.m */; };
 		CE07C05F1A5B74F400A3B961 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE07C05E1A5B74F400A3B961 /* CoreData.framework */; };
 		CE07C0621A5B87D100A3B961 /* LogInManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CE07C0611A5B87D100A3B961 /* LogInManager.m */; };
 		CE07C0651A5B966100A3B961 /* FireBaseManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CE07C0641A5B966100A3B961 /* FireBaseManager.m */; };
@@ -35,9 +33,8 @@
 		CE07C06C1A5BAA9B00A3B961 /* NetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE07C06A1A5BAA9B00A3B961 /* NetworkExtension.framework */; };
 		CE07C06D1A5BAE9A00A3B961 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE07C04A1A5B05F600A3B961 /* SystemConfiguration.framework */; };
 		CE07C0701A5C29DF00A3B961 /* DataParser.m in Sources */ = {isa = PBXBuildFile; fileRef = CE07C06F1A5C29DF00A3B961 /* DataParser.m */; };
-		CE07C07C1A5C42EC00A3B961 /* Record.m in Sources */ = {isa = PBXBuildFile; fileRef = CE07C07B1A5C42EC00A3B961 /* Record.m */; };
-		CE07C07F1A5C42ED00A3B961 /* Client.m in Sources */ = {isa = PBXBuildFile; fileRef = CE07C07E1A5C42ED00A3B961 /* Client.m */; };
-		CE07C0821A5C42ED00A3B961 /* Project.m in Sources */ = {isa = PBXBuildFile; fileRef = CE07C0811A5C42ED00A3B961 /* Project.m */; };
+		CE07C08F1A5C6C4200A3B961 /* HistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE07C08D1A5C6C4100A3B961 /* HistoryViewController.m */; };
+		CE07C0901A5C6C4200A3B961 /* HistoryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE07C08E1A5C6C4100A3B961 /* HistoryViewController.xib */; };
 		CED58C1D1A5ADAB3001C343B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = CED58C1C1A5ADAB3001C343B /* main.m */; };
 		CED58C201A5ADAB3001C343B /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CED58C1F1A5ADAB3001C343B /* AppDelegate.m */; };
 		CED58C281A5ADAB3001C343B /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CED58C271A5ADAB3001C343B /* Images.xcassets */; };
@@ -77,9 +74,6 @@
 		CE07C0531A5B132700A3B961 /* HConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HConstants.h; sourceTree = "<group>"; };
 		CE07C0541A5B132700A3B961 /* HConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HConstants.m; sourceTree = "<group>"; };
 		CE07C0561A5B6AEF00A3B961 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-568h@2x.png"; path = "../Default-568h@2x.png"; sourceTree = "<group>"; };
-		CE07C0591A5B742400A3B961 /* CoreDataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CoreDataModel.xcdatamodel; sourceTree = "<group>"; };
-		CE07C05B1A5B74BA00A3B961 /* HCKCoreDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HCKCoreDataManager.h; sourceTree = "<group>"; };
-		CE07C05C1A5B74BA00A3B961 /* HCKCoreDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HCKCoreDataManager.m; sourceTree = "<group>"; };
 		CE07C05E1A5B74F400A3B961 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		CE07C0601A5B87D100A3B961 /* LogInManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LogInManager.h; sourceTree = "<group>"; };
 		CE07C0611A5B87D100A3B961 /* LogInManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LogInManager.m; sourceTree = "<group>"; };
@@ -91,12 +85,9 @@
 		CE07C06A1A5BAA9B00A3B961 /* NetworkExtension.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NetworkExtension.framework; path = System/Library/Frameworks/NetworkExtension.framework; sourceTree = SDKROOT; };
 		CE07C06E1A5C29DF00A3B961 /* DataParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataParser.h; sourceTree = "<group>"; };
 		CE07C06F1A5C29DF00A3B961 /* DataParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataParser.m; sourceTree = "<group>"; };
-		CE07C07A1A5C42EC00A3B961 /* Record.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Record.h; sourceTree = "<group>"; };
-		CE07C07B1A5C42EC00A3B961 /* Record.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Record.m; sourceTree = "<group>"; };
-		CE07C07D1A5C42ED00A3B961 /* Client.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Client.h; sourceTree = "<group>"; };
-		CE07C07E1A5C42ED00A3B961 /* Client.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Client.m; sourceTree = "<group>"; };
-		CE07C0801A5C42ED00A3B961 /* Project.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Project.h; sourceTree = "<group>"; };
-		CE07C0811A5C42ED00A3B961 /* Project.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Project.m; sourceTree = "<group>"; };
+		CE07C08C1A5C6C4100A3B961 /* HistoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HistoryViewController.h; sourceTree = "<group>"; };
+		CE07C08D1A5C6C4100A3B961 /* HistoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HistoryViewController.m; sourceTree = "<group>"; };
+		CE07C08E1A5C6C4100A3B961 /* HistoryViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HistoryViewController.xib; sourceTree = "<group>"; };
 		CED58C171A5ADAB3001C343B /* trackerati-ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "trackerati-ios.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CED58C1B1A5ADAB3001C343B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CED58C1C1A5ADAB3001C343B /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -174,6 +165,9 @@
 				CE07C04E1A5B087C00A3B961 /* LogInViewController.h */,
 				CE07C04F1A5B087C00A3B961 /* LogInViewController.m */,
 				CE07C0501A5B087C00A3B961 /* LogInViewController.xib */,
+				CE07C08C1A5C6C4100A3B961 /* HistoryViewController.h */,
+				CE07C08D1A5C6C4100A3B961 /* HistoryViewController.m */,
+				CE07C08E1A5C6C4100A3B961 /* HistoryViewController.xib */,
 				CE07C0601A5B87D100A3B961 /* LogInManager.h */,
 				CE07C0611A5B87D100A3B961 /* LogInManager.m */,
 				CE07C0531A5B132700A3B961 /* HConstants.h */,
@@ -183,15 +177,6 @@
 				CE07C06E1A5C29DF00A3B961 /* DataParser.h */,
 				CE07C06F1A5C29DF00A3B961 /* DataParser.m */,
 				CED58C271A5ADAB3001C343B /* Images.xcassets */,
-				CE07C0581A5B742400A3B961 /* CoreDataModel.xcdatamodeld */,
-				CE07C0801A5C42ED00A3B961 /* Project.h */,
-				CE07C0811A5C42ED00A3B961 /* Project.m */,
-				CE07C07D1A5C42ED00A3B961 /* Client.h */,
-				CE07C07E1A5C42ED00A3B961 /* Client.m */,
-				CE07C07A1A5C42EC00A3B961 /* Record.h */,
-				CE07C07B1A5C42EC00A3B961 /* Record.m */,
-				CE07C05B1A5B74BA00A3B961 /* HCKCoreDataManager.h */,
-				CE07C05C1A5B74BA00A3B961 /* HCKCoreDataManager.m */,
 				CED58C1A1A5ADAB3001C343B /* Supporting Files */,
 			);
 			path = Hackerati_TimeTracker;
@@ -343,6 +328,7 @@
 				CE07C0361A5B057900A3B961 /* GooglePlus.bundle in Resources */,
 				CE07C0571A5B6AEF00A3B961 /* Default-568h@2x.png in Resources */,
 				CED58C281A5ADAB3001C343B /* Images.xcassets in Resources */,
+				CE07C0901A5C6C4200A3B961 /* HistoryViewController.xib in Resources */,
 				CE07C0521A5B087C00A3B961 /* LogInViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -396,17 +382,13 @@
 			files = (
 				CE07C0651A5B966100A3B961 /* FireBaseManager.m in Sources */,
 				CE07C0551A5B132700A3B961 /* HConstants.m in Sources */,
-				CE07C07F1A5C42ED00A3B961 /* Client.m in Sources */,
 				CED58C201A5ADAB3001C343B /* AppDelegate.m in Sources */,
 				CE07C0621A5B87D100A3B961 /* LogInManager.m in Sources */,
 				CED58C1D1A5ADAB3001C343B /* main.m in Sources */,
 				CE07C0511A5B087C00A3B961 /* LogInViewController.m in Sources */,
-				CE07C07C1A5C42EC00A3B961 /* Record.m in Sources */,
-				CE07C05A1A5B742400A3B961 /* CoreDataModel.xcdatamodeld in Sources */,
 				CE07C0681A5B9D3E00A3B961 /* Reachability.m in Sources */,
-				CE07C0821A5C42ED00A3B961 /* Project.m in Sources */,
 				CE07C0701A5C29DF00A3B961 /* DataParser.m in Sources */,
-				CE07C05D1A5B74BA00A3B961 /* HCKCoreDataManager.m in Sources */,
+				CE07C08F1A5C6C4200A3B961 /* HistoryViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -612,19 +594,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCVersionGroup section */
-		CE07C0581A5B742400A3B961 /* CoreDataModel.xcdatamodeld */ = {
-			isa = XCVersionGroup;
-			children = (
-				CE07C0591A5B742400A3B961 /* CoreDataModel.xcdatamodel */,
-			);
-			currentVersion = CE07C0591A5B742400A3B961 /* CoreDataModel.xcdatamodel */;
-			path = CoreDataModel.xcdatamodeld;
-			sourceTree = "<group>";
-			versionGroupType = wrapper.xcdatamodel;
-		};
-/* End XCVersionGroup section */
 	};
 	rootObject = CED58C0F1A5ADAB3001C343B /* Project object */;
 }

@@ -9,8 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "LogInManager.h"
 #import "Reachability.h"
+#import "DataParser.h"
 
-@interface LogInViewController : UIViewController < UITableViewDataSource, UITableViewDelegate,LogInManagerProtocol>
+@interface LogInViewController : UIViewController < UITableViewDataSource, UITableViewDelegate,DataParserProtocol>
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 @end

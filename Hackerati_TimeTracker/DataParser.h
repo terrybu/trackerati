@@ -7,10 +7,21 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "LogInManager.h"
 
-@interface DataParser : NSObject
+@protocol DataParserProtocol <NSObject>
+
+-(void) loadData;
+-(void) loginUnsuccessful;
+
+@end
+
+@interface DataParser : NSObject <LogInManagerProtocol>
+
+@property (nonatomic, weak) id <DataParserProtocol> delegate;
 
 + (DataParser*) sharedManager;
-- (void) startParseAndSaveForUser;
+- (void) loginSuccessful;
+- (void)mannuallySetDelegate:(id<DataParserProtocol>)delegate;
 
 @end

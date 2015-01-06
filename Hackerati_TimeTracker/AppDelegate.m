@@ -9,6 +9,7 @@
 #import "AppDelegate.h"
 #import <GooglePlus/GooglePlus.h>
 #import "LogInManager.h"
+#import "DataParser.h"
 
 @interface AppDelegate ()
 
@@ -65,7 +66,8 @@
 
 - (void)startLoginProcess{
     dispatch_async(dispatch_get_main_queue(), ^{
-        [[LogInManager sharedManager] mannuallySetDelegate:self.logInViewController];
+        [[LogInManager sharedManager] mannuallySetDelegate:[DataParser sharedManager]];
+        [[DataParser sharedManager] mannuallySetDelegate:self.logInViewController];
         [[LogInManager sharedManager] startLogInProcess];
     });
 }

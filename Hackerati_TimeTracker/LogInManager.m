@@ -57,7 +57,7 @@
         // We successfully obtained an OAuth token, authenticate on Firebase with it
         NSString *userEmail = [GPPSignIn sharedInstance].userEmail;
         NSString *username = [[userEmail componentsSeparatedByCharactersInSet:[[NSCharacterSet letterCharacterSet] invertedSet]] componentsJoinedByString:@""];
-        [[NSUserDefaults standardUserDefaults] setObject:username forKey:@"currentUser"];
+        [[NSUserDefaults standardUserDefaults] setObject:username forKey:[HConstants KCurrentUser]];
         [[NSUserDefaults standardUserDefaults]synchronize];
         
         [[FireBaseManager sharedFireBase] authWithOAuthProvider:@"google" token:auth.accessToken
@@ -72,9 +72,7 @@
                    } else {
                        // User is now logged in!
                        if ([self.delegate respondsToSelector:@selector(loginSuccessful)]) {
-                           dispatch_async(dispatch_get_main_queue(), ^{
                                [self.delegate loginSuccessful];
-                           });
                        }
                    }
                }];
