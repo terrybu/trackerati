@@ -8,7 +8,6 @@
 
 #import "DataParser.h"
 #import "FireBaseManager.h"
-#import "HCKCoreDataManager.h"
 #import "HConstants.h"
 
 @interface DataParser ()

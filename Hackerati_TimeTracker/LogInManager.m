@@ -9,7 +9,6 @@
 #import "LogInManager.h"
 #import <GoogleOpenSource/GoogleOpenSource.h>
 #import "FireBaseManager.h"
-#import "HCKCoreDataManager.h"
 #import "HConstants.h"
 
 @implementation LogInManager

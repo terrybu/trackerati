@@ -35,6 +35,8 @@
 		CE07C0701A5C29DF00A3B961 /* DataParser.m in Sources */ = {isa = PBXBuildFile; fileRef = CE07C06F1A5C29DF00A3B961 /* DataParser.m */; };
 		CE07C08F1A5C6C4200A3B961 /* HistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE07C08D1A5C6C4100A3B961 /* HistoryViewController.m */; };
 		CE07C0901A5C6C4200A3B961 /* HistoryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE07C08E1A5C6C4100A3B961 /* HistoryViewController.xib */; };
+		CE07C0961A5C8B2900A3B961 /* RecordTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CE07C0941A5C8B2900A3B961 /* RecordTableViewCell.m */; };
+		CE07C0971A5C8B2900A3B961 /* RecordTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE07C0951A5C8B2900A3B961 /* RecordTableViewCell.xib */; };
 		CED58C1D1A5ADAB3001C343B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = CED58C1C1A5ADAB3001C343B /* main.m */; };
 		CED58C201A5ADAB3001C343B /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CED58C1F1A5ADAB3001C343B /* AppDelegate.m */; };
 		CED58C281A5ADAB3001C343B /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CED58C271A5ADAB3001C343B /* Images.xcassets */; };
@@ -88,6 +90,9 @@
 		CE07C08C1A5C6C4100A3B961 /* HistoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HistoryViewController.h; sourceTree = "<group>"; };
 		CE07C08D1A5C6C4100A3B961 /* HistoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HistoryViewController.m; sourceTree = "<group>"; };
 		CE07C08E1A5C6C4100A3B961 /* HistoryViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HistoryViewController.xib; sourceTree = "<group>"; };
+		CE07C0931A5C8B2900A3B961 /* RecordTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecordTableViewCell.h; sourceTree = "<group>"; };
+		CE07C0941A5C8B2900A3B961 /* RecordTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecordTableViewCell.m; sourceTree = "<group>"; };
+		CE07C0951A5C8B2900A3B961 /* RecordTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RecordTableViewCell.xib; sourceTree = "<group>"; };
 		CED58C171A5ADAB3001C343B /* trackerati-ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "trackerati-ios.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CED58C1B1A5ADAB3001C343B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CED58C1C1A5ADAB3001C343B /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -168,6 +173,9 @@
 				CE07C08C1A5C6C4100A3B961 /* HistoryViewController.h */,
 				CE07C08D1A5C6C4100A3B961 /* HistoryViewController.m */,
 				CE07C08E1A5C6C4100A3B961 /* HistoryViewController.xib */,
+				CE07C0931A5C8B2900A3B961 /* RecordTableViewCell.h */,
+				CE07C0941A5C8B2900A3B961 /* RecordTableViewCell.m */,
+				CE07C0951A5C8B2900A3B961 /* RecordTableViewCell.xib */,
 				CE07C0601A5B87D100A3B961 /* LogInManager.h */,
 				CE07C0611A5B87D100A3B961 /* LogInManager.m */,
 				CE07C0531A5B132700A3B961 /* HConstants.h */,
@@ -328,6 +336,7 @@
 				CE07C0361A5B057900A3B961 /* GooglePlus.bundle in Resources */,
 				CE07C0571A5B6AEF00A3B961 /* Default-568h@2x.png in Resources */,
 				CED58C281A5ADAB3001C343B /* Images.xcassets in Resources */,
+				CE07C0971A5C8B2900A3B961 /* RecordTableViewCell.xib in Resources */,
 				CE07C0901A5C6C4200A3B961 /* HistoryViewController.xib in Resources */,
 				CE07C0521A5B087C00A3B961 /* LogInViewController.xib in Resources */,
 			);
@@ -380,6 +389,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CE07C0961A5C8B2900A3B961 /* RecordTableViewCell.m in Sources */,
 				CE07C0651A5B966100A3B961 /* FireBaseManager.m in Sources */,
 				CE07C0551A5B132700A3B961 /* HConstants.m in Sources */,
 				CED58C201A5ADAB3001C343B /* AppDelegate.m in Sources */,
