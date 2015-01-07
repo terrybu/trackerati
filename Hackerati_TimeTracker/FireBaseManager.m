@@ -11,14 +11,43 @@
 
 @implementation FireBaseManager
 
-+ (Firebase*)sharedFireBase{
-    static Firebase *shareFireBase = nil;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        shareFireBase = [[Firebase alloc] initWithUrl:[HConstants kFireBaseURL]];
++ (Firebase*)baseURLsharedFireBase{
+    static Firebase *baseURLsharedFireBase = nil;
+    static dispatch_once_t onceToken1;
+    dispatch_once(&onceToken1, ^{
+        baseURLsharedFireBase = [[Firebase alloc] initWithUrl:[HConstants kFireBaseURL]];
     });
-    return shareFireBase;
+    return baseURLsharedFireBase;
 }
 
-    
++ (Firebase*)projectURLsharedFireBase{
+    static Firebase *projectURLsharedFireBase = nil;
+    static dispatch_once_t onceToken2;
+    dispatch_once(&onceToken2, ^{
+        projectURLsharedFireBase = [[Firebase alloc]initWithUrl:[NSString stringWithFormat:@"%@/Projects",[HConstants kFireBaseURL]]];
+    });
+    return projectURLsharedFireBase;
+}
+
++ (Firebase*)recordURLsharedFireBase{
+    static Firebase *recordURLsharedFireBase = nil;
+    static dispatch_once_t onceToken3;
+    dispatch_once(&onceToken3, ^{
+        NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants KCurrentUser]];
+        recordURLsharedFireBase = [[Firebase alloc]initWithUrl:[NSString stringWithFormat:@"%@/Users/%@/records",[HConstants kFireBaseURL],username]];
+    });
+    return recordURLsharedFireBase;
+}
+
++ (Firebase*)connectivityURLsharedFireBase{
+    static Firebase *connectivityURLsharedFireBase = nil;
+    static dispatch_once_t onceToken4;
+    dispatch_once(&onceToken4, ^{
+        connectivityURLsharedFireBase = [[Firebase alloc]initWithUrl:[NSString stringWithFormat:@"%@//.info/connected",[HConstants kFireBaseURL]]];
+    });
+    return connectivityURLsharedFireBase;
+}
+
+
+
 @end

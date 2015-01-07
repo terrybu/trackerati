@@ -23,11 +23,14 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appDelegatestartLogInProcess) name:kStartLogInProcessNotification object:nil];
+    
     self.window = [[UIWindow alloc]initWithFrame:[UIScreen mainScreen].bounds];
     self.logInViewController = [[LogInViewController alloc]initWithNibName:@"LogInViewController" bundle:nil];
     
     [self setupReachability];
-    [self startLoginProcess];
+    [[LogInManager sharedManager] mannuallySetDelegate:[DataParser sharedManager]];
+    [[DataParser sharedManager] mannuallySetDelegate:self.logInViewController];
     
     self.naviController = [[UINavigationController alloc]initWithRootViewController:self.logInViewController];
     self.window.rootViewController = self.naviController;
@@ -58,16 +61,14 @@
     NetworkStatus internetStatus = [curReach currentReachabilityStatus];
     
     if (internetStatus != NotReachable) {
-        [self startLoginProcess];
+        [self appDelegatestartLogInProcess];
     }
 
 }
 
 
-- (void)startLoginProcess{
+- (void)appDelegatestartLogInProcess{
     dispatch_async(dispatch_get_main_queue(), ^{
-        [[LogInManager sharedManager] mannuallySetDelegate:[DataParser sharedManager]];
-        [[DataParser sharedManager] mannuallySetDelegate:self.logInViewController];
         [[LogInManager sharedManager] startLogInProcess];
     });
 }

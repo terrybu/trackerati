@@ -14,7 +14,6 @@
 
 @property (nonatomic, strong) Firebase *projects;
 @property (nonatomic, strong) Firebase *records;
-@property (nonatomic, strong) NSString *username;
 
 @end
 
@@ -25,9 +24,8 @@
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         _sharedManager = [[DataParser alloc]init];
-        _sharedManager.projects = [[Firebase alloc]initWithUrl:[NSString stringWithFormat:@"%@/Projects",[HConstants kFireBaseURL]]];
-        _sharedManager.username = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants KCurrentUser]];
-        _sharedManager.records = [[Firebase alloc]initWithUrl:[NSString stringWithFormat:@"%@/Users/%@/records",[HConstants kFireBaseURL],_sharedManager.username]];
+        _sharedManager.projects = [FireBaseManager projectURLsharedFireBase];
+        //_sharedManager.records = [FireBaseManager recordURLsharedFireBase];
     });
     return _sharedManager;
 }
@@ -38,38 +36,84 @@
             [self.projects observeSingleEventOfType:FEventTypeValue withBlock:^(FDataSnapshot *snapshot) {
                 if (snapshot.value && [snapshot.value isKindOfClass:[NSDictionary class]]) {
                     NSDictionary *data = snapshot.value;
-                    [[NSUserDefaults standardUserDefaults]setObject:data forKey:[HConstants kMasterClientList]];
+                    __block NSMutableDictionary *newData = [[NSMutableDictionary alloc]init];
+                    
+                    [data enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop){
+                        NSDictionary *projectDictionary = (NSDictionary*) obj;
+                        NSArray *projectsArray = [projectDictionary allKeys];
+                        [newData setObject:projectsArray forKey:key];
+                    }];
+                    
+                    [[NSUserDefaults standardUserDefaults]setObject:newData forKey:[HConstants kMasterClientList]];
                     [[NSUserDefaults standardUserDefaults]synchronize];
-                }
-            }];
-            
-            [self.records observeSingleEventOfType:FEventTypeValue withBlock:^(FDataSnapshot *snapshot){
-                if (snapshot.value && [snapshot.value isKindOfClass:[NSDictionary class]]) {
-                    NSDictionary *records = snapshot.value;
-                    [[NSUserDefaults standardUserDefaults] setObject:records forKey:[HConstants KCurrentUserRecords]];
-                    [[NSUserDefaults standardUserDefaults]synchronize];
-                    __block NSMutableDictionary *currentUserClientList = [[NSMutableDictionary alloc]init];
-                    [records enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop){
-                        if (obj && [obj isKindOfClass:[NSDictionary class]]) {
-                            NSString *tClient = [(NSDictionary*)obj objectForKey:@"client"];
-                            NSString *tProject = [(NSDictionary*)obj objectForKey:@"project"];
-                            if (![currentUserClientList objectForKey:tClient]) {
-                                NSMutableArray * projects = [[NSMutableArray alloc]initWithObjects:tProject, nil];
-                                [currentUserClientList setObject:projects forKey:tClient];
-                            }else {
-                                NSMutableArray * projects = [currentUserClientList objectForKey:tClient];
-                                if (![projects containsObject:tProject]) {
-                                    [projects addObject:tProject];
+                    
+                    NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants KCurrentUser]];
+                    __block NSMutableDictionary *tempCurrentUserClientList = [[NSMutableDictionary alloc]init];
+                    __block NSMutableDictionary *tempCurrentUserClientList1 = [[NSMutableDictionary alloc]initWithDictionary:snapshot.value];
+                    
+                    [tempCurrentUserClientList1 enumerateKeysAndObjectsUsingBlock:^(id client, id obj, BOOL *stop){
+                        __block NSMutableDictionary *tempMut = [[NSMutableDictionary alloc]init];
+                        [obj enumerateKeysAndObjectsUsingBlock:^(id project, id obj, BOOL *stop){
+                            __block NSMutableArray *names = [[NSMutableArray alloc]init];
+                            [obj enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop){
+                                NSDictionary *personDictionary = (NSDictionary*)obj;
+                                NSString *personString =[personDictionary objectForKey:@"name"];
+                                [names addObject:personString];
+                            }];
+                            [tempMut setObject:names forKey:project];
+                        }];
+                        [tempCurrentUserClientList setObject:tempMut forKey:client];
+                    }];
+                    
+                    
+                    [tempCurrentUserClientList enumerateKeysAndObjectsUsingBlock:^(id client, id obj, BOOL *stop){
+                        [obj enumerateKeysAndObjectsUsingBlock:^(id project, id obj, BOOL *stop){
+                            NSArray *people = (NSArray*)obj;
+                            if (![people containsObject:username]) {
+                                [[tempCurrentUserClientList objectForKey:client] removeObjectForKey:project];
+                                if ( [((NSDictionary*)[tempCurrentUserClientList objectForKey:client]) count] == 0 ) {
+                                    [tempCurrentUserClientList removeObjectForKey:client];
                                 }
                             }
-                        }
+                        }];
                     }];
+                    
+                    __block NSMutableDictionary *currentUserClientList = [[NSMutableDictionary alloc]init];
+                    [tempCurrentUserClientList enumerateKeysAndObjectsUsingBlock:^(id client, id obj, BOOL *stop){
+                        NSDictionary *projects = (NSDictionary*)obj;
+                        NSArray *tempArray = [projects allKeys];
+                        [currentUserClientList setObject:[[NSMutableArray alloc]initWithArray:tempArray] forKey:client];
+                    }];
+                    
                     [[NSUserDefaults standardUserDefaults] setObject:currentUserClientList forKey:[HConstants KcurrentUserClientList]];
                     [[NSUserDefaults standardUserDefaults]synchronize];
                     
                     if ([self.delegate respondsToSelector:@selector(loadData)]) {
                         dispatch_async(dispatch_get_main_queue(), ^{
                             [self.delegate loadData];
+                        });
+                    }
+                    
+                }
+                else {
+                    if ([self.delegate respondsToSelector:@selector(loginUnsuccessful)]) {
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            [self.delegate loginUnsuccessful];
+                        });
+                    }
+                }
+            }];
+            self.records = [FireBaseManager recordURLsharedFireBase];
+            [self.records observeSingleEventOfType:FEventTypeValue withBlock:^(FDataSnapshot *snapshot){
+                if (snapshot.value && [snapshot.value isKindOfClass:[NSDictionary class]]) {
+                    NSDictionary *records = snapshot.value;
+                    [[NSUserDefaults standardUserDefaults] setObject:records forKey:[HConstants KCurrentUserRecords]];
+                    [[NSUserDefaults standardUserDefaults]synchronize];
+                }
+                else {
+                    if ([self.delegate respondsToSelector:@selector(loginUnsuccessful)]) {
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            [self.delegate loginUnsuccessful];
                         });
                     }
                 }
@@ -84,7 +128,7 @@
     }
 }
 
-- (void)mannuallySetDelegate:(id<DataParserProtocol>)delegate{
+- (void) mannuallySetDelegate:(id<DataParserProtocol>)delegate{
     self.delegate = delegate;
 }
 

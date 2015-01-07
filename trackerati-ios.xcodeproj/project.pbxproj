@@ -39,6 +39,15 @@
 		CE07C0971A5C8B2900A3B961 /* RecordTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE07C0951A5C8B2900A3B961 /* RecordTableViewCell.xib */; };
 		CE07C0991A5C9A5700A3B961 /* Erase@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CE07C0981A5C9A5700A3B961 /* Erase@2x.png */; };
 		CE07C09B1A5C9A6100A3B961 /* CheckMark@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CE07C09A1A5C9A6100A3B961 /* CheckMark@2x.png */; };
+		CE07C09F1A5CF22E00A3B961 /* FormViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE07C09D1A5CF22E00A3B961 /* FormViewController.m */; };
+		CE07C0A01A5CF22E00A3B961 /* FormViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE07C09E1A5CF22E00A3B961 /* FormViewController.xib */; };
+		CE07C0A91A5D771500A3B961 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CE07C0A21A5D771500A3B961 /* Images.xcassets */; };
+		CE07C0AA1A5D771500A3B961 /* THDateDay.m in Sources */ = {isa = PBXBuildFile; fileRef = CE07C0A41A5D771500A3B961 /* THDateDay.m */; };
+		CE07C0AB1A5D771500A3B961 /* THDateDay.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE07C0A51A5D771500A3B961 /* THDateDay.xib */; };
+		CE07C0AC1A5D771500A3B961 /* THDatePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE07C0A71A5D771500A3B961 /* THDatePickerViewController.m */; };
+		CE07C0AD1A5D771500A3B961 /* THDatePickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE07C0A81A5D771500A3B961 /* THDatePickerViewController.xib */; };
+		CE07C0B11A5DA83800A3B961 /* NewProjectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE07C0AF1A5DA83800A3B961 /* NewProjectViewController.m */; };
+		CE07C0B21A5DA83800A3B961 /* NewProjectViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE07C0B01A5DA83800A3B961 /* NewProjectViewController.xib */; };
 		CED58C1D1A5ADAB3001C343B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = CED58C1C1A5ADAB3001C343B /* main.m */; };
 		CED58C201A5ADAB3001C343B /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CED58C1F1A5ADAB3001C343B /* AppDelegate.m */; };
 		CED58C281A5ADAB3001C343B /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CED58C271A5ADAB3001C343B /* Images.xcassets */; };
@@ -97,6 +106,19 @@
 		CE07C0951A5C8B2900A3B961 /* RecordTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RecordTableViewCell.xib; sourceTree = "<group>"; };
 		CE07C0981A5C9A5700A3B961 /* Erase@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Erase@2x.png"; sourceTree = "<group>"; };
 		CE07C09A1A5C9A6100A3B961 /* CheckMark@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CheckMark@2x.png"; sourceTree = "<group>"; };
+		CE07C09C1A5CF22E00A3B961 /* FormViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FormViewController.h; sourceTree = "<group>"; };
+		CE07C09D1A5CF22E00A3B961 /* FormViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FormViewController.m; sourceTree = "<group>"; };
+		CE07C09E1A5CF22E00A3B961 /* FormViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FormViewController.xib; sourceTree = "<group>"; };
+		CE07C0A21A5D771500A3B961 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		CE07C0A31A5D771500A3B961 /* THDateDay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = THDateDay.h; sourceTree = "<group>"; };
+		CE07C0A41A5D771500A3B961 /* THDateDay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = THDateDay.m; sourceTree = "<group>"; };
+		CE07C0A51A5D771500A3B961 /* THDateDay.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = THDateDay.xib; sourceTree = "<group>"; };
+		CE07C0A61A5D771500A3B961 /* THDatePickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = THDatePickerViewController.h; sourceTree = "<group>"; };
+		CE07C0A71A5D771500A3B961 /* THDatePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = THDatePickerViewController.m; sourceTree = "<group>"; };
+		CE07C0A81A5D771500A3B961 /* THDatePickerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = THDatePickerViewController.xib; sourceTree = "<group>"; };
+		CE07C0AE1A5DA83800A3B961 /* NewProjectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewProjectViewController.h; sourceTree = "<group>"; };
+		CE07C0AF1A5DA83800A3B961 /* NewProjectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewProjectViewController.m; sourceTree = "<group>"; };
+		CE07C0B01A5DA83800A3B961 /* NewProjectViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NewProjectViewController.xib; sourceTree = "<group>"; };
 		CED58C171A5ADAB3001C343B /* trackerati-ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "trackerati-ios.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CED58C1B1A5ADAB3001C343B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CED58C1C1A5ADAB3001C343B /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -144,6 +166,20 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		CE07C0A11A5D771500A3B961 /* THCalendarDatePicker */ = {
+			isa = PBXGroup;
+			children = (
+				CE07C0A21A5D771500A3B961 /* Images.xcassets */,
+				CE07C0A31A5D771500A3B961 /* THDateDay.h */,
+				CE07C0A41A5D771500A3B961 /* THDateDay.m */,
+				CE07C0A51A5D771500A3B961 /* THDateDay.xib */,
+				CE07C0A61A5D771500A3B961 /* THDatePickerViewController.h */,
+				CE07C0A71A5D771500A3B961 /* THDatePickerViewController.m */,
+				CE07C0A81A5D771500A3B961 /* THDatePickerViewController.xib */,
+			);
+			path = THCalendarDatePicker;
+			sourceTree = "<group>";
+		};
 		CED58C0E1A5ADAB3001C343B = {
 			isa = PBXGroup;
 			children = (
@@ -174,12 +210,18 @@
 				CE07C04E1A5B087C00A3B961 /* LogInViewController.h */,
 				CE07C04F1A5B087C00A3B961 /* LogInViewController.m */,
 				CE07C0501A5B087C00A3B961 /* LogInViewController.xib */,
+				CE07C0AE1A5DA83800A3B961 /* NewProjectViewController.h */,
+				CE07C0AF1A5DA83800A3B961 /* NewProjectViewController.m */,
+				CE07C0B01A5DA83800A3B961 /* NewProjectViewController.xib */,
 				CE07C08C1A5C6C4100A3B961 /* HistoryViewController.h */,
 				CE07C08D1A5C6C4100A3B961 /* HistoryViewController.m */,
 				CE07C08E1A5C6C4100A3B961 /* HistoryViewController.xib */,
 				CE07C0931A5C8B2900A3B961 /* RecordTableViewCell.h */,
 				CE07C0941A5C8B2900A3B961 /* RecordTableViewCell.m */,
 				CE07C0951A5C8B2900A3B961 /* RecordTableViewCell.xib */,
+				CE07C09C1A5CF22E00A3B961 /* FormViewController.h */,
+				CE07C09D1A5CF22E00A3B961 /* FormViewController.m */,
+				CE07C09E1A5CF22E00A3B961 /* FormViewController.xib */,
 				CE07C0601A5B87D100A3B961 /* LogInManager.h */,
 				CE07C0611A5B87D100A3B961 /* LogInManager.m */,
 				CE07C0531A5B132700A3B961 /* HConstants.h */,
@@ -188,6 +230,7 @@
 				CE07C0641A5B966100A3B961 /* FireBaseManager.m */,
 				CE07C06E1A5C29DF00A3B961 /* DataParser.h */,
 				CE07C06F1A5C29DF00A3B961 /* DataParser.m */,
+				CE07C0A11A5D771500A3B961 /* THCalendarDatePicker */,
 				CED58C271A5ADAB3001C343B /* Images.xcassets */,
 				CE07C09A1A5C9A6100A3B961 /* CheckMark@2x.png */,
 				CE07C0981A5C9A5700A3B961 /* Erase@2x.png */,
@@ -340,12 +383,17 @@
 			buildActionMask = 2147483647;
 			files = (
 				CE07C0361A5B057900A3B961 /* GooglePlus.bundle in Resources */,
+				CE07C0AB1A5D771500A3B961 /* THDateDay.xib in Resources */,
+				CE07C0AD1A5D771500A3B961 /* THDatePickerViewController.xib in Resources */,
+				CE07C0A91A5D771500A3B961 /* Images.xcassets in Resources */,
 				CE07C0571A5B6AEF00A3B961 /* Default-568h@2x.png in Resources */,
 				CED58C281A5ADAB3001C343B /* Images.xcassets in Resources */,
 				CE07C0971A5C8B2900A3B961 /* RecordTableViewCell.xib in Resources */,
 				CE07C0901A5C6C4200A3B961 /* HistoryViewController.xib in Resources */,
 				CE07C0521A5B087C00A3B961 /* LogInViewController.xib in Resources */,
+				CE07C0B21A5DA83800A3B961 /* NewProjectViewController.xib in Resources */,
 				CE07C09B1A5C9A6100A3B961 /* CheckMark@2x.png in Resources */,
+				CE07C0A01A5CF22E00A3B961 /* FormViewController.xib in Resources */,
 				CE07C0991A5C9A5700A3B961 /* Erase@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -398,15 +446,19 @@
 			buildActionMask = 2147483647;
 			files = (
 				CE07C0961A5C8B2900A3B961 /* RecordTableViewCell.m in Sources */,
+				CE07C09F1A5CF22E00A3B961 /* FormViewController.m in Sources */,
 				CE07C0651A5B966100A3B961 /* FireBaseManager.m in Sources */,
 				CE07C0551A5B132700A3B961 /* HConstants.m in Sources */,
 				CED58C201A5ADAB3001C343B /* AppDelegate.m in Sources */,
 				CE07C0621A5B87D100A3B961 /* LogInManager.m in Sources */,
+				CE07C0AA1A5D771500A3B961 /* THDateDay.m in Sources */,
 				CED58C1D1A5ADAB3001C343B /* main.m in Sources */,
+				CE07C0AC1A5D771500A3B961 /* THDatePickerViewController.m in Sources */,
 				CE07C0511A5B087C00A3B961 /* LogInViewController.m in Sources */,
 				CE07C0681A5B9D3E00A3B961 /* Reachability.m in Sources */,
 				CE07C0701A5C29DF00A3B961 /* DataParser.m in Sources */,
 				CE07C08F1A5C6C4200A3B961 /* HistoryViewController.m in Sources */,
+				CE07C0B11A5DA83800A3B961 /* NewProjectViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -11,6 +11,8 @@
 
 @interface FireBaseManager : NSObject
 
-+ (Firebase*)sharedFireBase;
-
++ (Firebase*)baseURLsharedFireBase;
++ (Firebase*)projectURLsharedFireBase;
++ (Firebase*)recordURLsharedFireBase;
++ (Firebase*)connectivityURLsharedFireBase;
 @end

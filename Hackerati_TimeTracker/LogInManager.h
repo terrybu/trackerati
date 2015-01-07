@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import <GooglePlus/GooglePlus.h>
 
+static NSString *kStartLogInProcessNotification = @"kStartLogInProcessNotification";
+
 @protocol LogInManagerProtocol <NSObject>
 
 -(void) loginSuccessful;

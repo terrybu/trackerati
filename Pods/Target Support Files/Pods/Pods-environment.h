@@ -12,6 +12,12 @@
 #define COCOAPODS_VERSION_MINOR_Firebase 0
 #define COCOAPODS_VERSION_PATCH_Firebase 3
 
+// KNSemiModalViewController
+#define COCOAPODS_POD_AVAILABLE_KNSemiModalViewController
+#define COCOAPODS_VERSION_MAJOR_KNSemiModalViewController 0
+#define COCOAPODS_VERSION_MINOR_KNSemiModalViewController 3
+#define COCOAPODS_VERSION_PATCH_KNSemiModalViewController 0
+
 // MCSwipeTableViewCell
 #define COCOAPODS_POD_AVAILABLE_MCSwipeTableViewCell
 #define COCOAPODS_VERSION_MAJOR_MCSwipeTableViewCell 2

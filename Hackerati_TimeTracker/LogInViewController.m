@@ -11,7 +11,11 @@
 #import <QuartzCore/QuartzCore.h>
 #import "HConstants.h"
 #import <MCSwipeTableViewCell.h>
-#import <Firebase/Firebase.h>
+#import "FormViewController.h"
+#import "FireBaseManager.h"
+#import "DataParser.h"
+#import "LogInManager.h"
+#import "NewProjectViewController.h"
 
 @interface LogInViewController ()<MCSwipeTableViewCellDelegate>
 
@@ -35,6 +39,14 @@
 @property (strong, nonatomic) UIButton *sendButton;
 @property (nonatomic) BOOL firstTimeLoading;
 @property (strong, nonatomic) Firebase *fireBase;
+@property (strong, nonatomic) UIRefreshControl *refreshControl;
+
+@property (strong, nonatomic) NSString *clientNameString;
+@property (strong, nonatomic) NSString *dateString;
+@property (strong, nonatomic) NSString *hourString;
+@property (strong, nonatomic) NSString *projectNameString;
+
+@property (strong, nonatomic) NSDictionary* datas;
 
 @end
 
@@ -56,17 +68,19 @@ static NSString *CellIdentifier = @"Cell";
     [self.tableView registerClass:[MCSwipeTableViewCell class] forCellReuseIdentifier:CellIdentifier];
     
     self.formView = [[UIView alloc]initWithFrame:CGRectMake(-500, 0, 300, 400)];
-    self.clientName = [[UILabel alloc]initWithFrame:CGRectMake(95, 57, 194, 21)];
-    self.projectName = [[UILabel alloc]initWithFrame:CGRectMake(95, 113, 194, 21)];
-    self.dateOfService = [[UILabel alloc]initWithFrame:CGRectMake(95, 156, 194, 21)];
-    self.hourOfService = [[UILabel alloc]initWithFrame:CGRectMake(95, 199, 58, 21)];
-    self.clientNameLabel = [[UILabel alloc]initWithFrame:CGRectMake(13, 57, 58, 21)];
-    self.projectNameLabel = [[UILabel alloc]initWithFrame:CGRectMake(13, 113, 58, 21)];
-    self.dateOfServiceLabel = [[UILabel alloc]initWithFrame:CGRectMake(13, 156, 58, 21)];
-    self.hourOfServiceLabel = [[UILabel alloc]initWithFrame:CGRectMake(13, 200, 58, 21)];
-    self.sendButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    
+    self.clientName = [[UILabel alloc]initWithFrame:CGRectMake(95, 57+35, 194, 60)];
+    self.projectName = [[UILabel alloc]initWithFrame:CGRectMake(95, 113+25, 194, 60)];
+    self.dateOfService = [[UILabel alloc]initWithFrame:CGRectMake(95, 156+25, 194, 60)];
+    self.hourOfService = [[UILabel alloc]initWithFrame:CGRectMake(95, 199+25, 58, 60)];
+    self.clientNameLabel = [[UILabel alloc]initWithFrame:CGRectMake(13, 57+35, 58, 35)];
+    self.projectNameLabel = [[UILabel alloc]initWithFrame:CGRectMake(13, 113+25, 58, 35)];
+    self.dateOfServiceLabel = [[UILabel alloc]initWithFrame:CGRectMake(13, 156+25, 58, 35)];
+    self.hourOfServiceLabel = [[UILabel alloc]initWithFrame:CGRectMake(13, 200+25, 58, 35)];
+    self.sendButton = [UIButton buttonWithType:UIButtonTypeSystem];
     self.sendButton.frame = CGRectMake(33, 320, 226, 36);
     [self.sendButton setTitle:@"Send" forState:UIControlStateNormal];
+    [self.sendButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [self.sendButton addTarget:self action:@selector(sendForm) forControlEvents:UIControlEventTouchUpInside];
     [self.formView addSubview:self.clientName];
     [self.formView addSubview:self.projectName];
@@ -77,14 +91,29 @@ static NSString *CellIdentifier = @"Cell";
     [self.formView addSubview:self.dateOfServiceLabel];
     [self.formView addSubview:self.hourOfServiceLabel];
     [self.formView addSubview:self.sendButton];
-    self.formView.backgroundColor = [UIColor grayColor];
+    self.formView.backgroundColor = [UIColor lightGrayColor];
     [self.view addSubview:self.formView];
     
-    NSString* username = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants KCurrentUser]];
-    
-    self.fireBase = [[Firebase alloc]initWithUrl:[NSString stringWithFormat:@"%@/Users/%@/records",[HConstants kFireBaseURL],username]];
     self.firstTimeLoading = YES;
     
+    self.refreshControl = [[UIRefreshControl alloc] init];
+    self.refreshControl.backgroundColor = [UIColor whiteColor];
+    self.refreshControl.tintColor = [UIColor grayColor];
+    [self.refreshControl addTarget:self
+                            action:@selector(refreshControlAction)
+                  forControlEvents:UIControlEventValueChanged];
+    [self.tableView addSubview:self.refreshControl];
+    
+    UILabel *messageLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)];
+    messageLabel.text = @"Please Pull to Refresh";
+    messageLabel.textColor = [UIColor blackColor];
+    messageLabel.numberOfLines = 0;
+    messageLabel.textAlignment = NSTextAlignmentCenter;
+    messageLabel.font = [UIFont fontWithName:@"Palatino-Italic" size:20];
+    [messageLabel sizeToFit];
+    
+    self.tableView.backgroundView = messageLabel;
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 }
 
 -(void) viewWillAppear:(BOOL)animated{
@@ -92,22 +121,42 @@ static NSString *CellIdentifier = @"Cell";
     [self loadData];
 }
 
+-(void)refreshControlAction{
+    
+    [[FireBaseManager connectivityURLsharedFireBase] observeEventType:FEventTypeValue withBlock:^(FDataSnapshot *snapshot){
+        if([snapshot.value boolValue] && [[NSUserDefaults standardUserDefaults]objectForKey:[HConstants KCurrentUser]]) {
+            [[DataParser sharedManager] loginSuccessful];
+        } else {
+            [[NSNotificationCenter defaultCenter] postNotificationName:kStartLogInProcessNotification object:nil];
+        }
+    }];
+}
+
 -(void)sendForm{
-    [[self.fireBase childByAutoId] setValue:@{@"client":@"turn to tech",@"date":[NSNumber numberWithInt:1420416000],@"hour":[NSNumber numberWithInt:4],@"project":@"project g"}];
+    self.fireBase = [FireBaseManager recordURLsharedFireBase];
+    [[self.fireBase childByAutoId] setValue:@{@"client":self.clientNameString,@"date":self.dateString,@"hour":self.hourString,@"project":self.projectNameString}];
     [self slideOutForm];
 }
 
 -(void) loginUnsuccessful{
+    [self.refreshControl endRefreshing];
+    [self loadData];
     UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"Error" message:@"Could not login. Please try later" delegate:self cancelButtonTitle:@"cancel" otherButtonTitles: nil];
     [alertView show];
 }
 
 -(void) loadData{
-    NSDictionary* datas = (NSDictionary*)[[NSUserDefaults standardUserDefaults]objectForKey:[HConstants KcurrentUserClientList]];
+    [self.refreshControl endRefreshing];
+    self.datas = (NSDictionary*)[[NSUserDefaults standardUserDefaults]objectForKey:[HConstants KcurrentUserClientList]];
     __block int count = 0;
-    [datas enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop){
-        [self.sectionInformation setObject:obj forKey:[NSNumber numberWithInt:count]];
-        [self.rowInformation setObject:key forKey:[NSNumber numberWithInt:count]];
+    __weak typeof(self) weakSelf = self;
+    self.sectionInformation = nil;
+    self.rowInformation = nil;
+    self.sectionInformation = [[NSMutableDictionary alloc]init];
+    self.rowInformation = [[NSMutableDictionary alloc]init];
+    [self.datas enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop){
+        [weakSelf.sectionInformation setObject:obj forKey:[NSNumber numberWithInt:count]];
+        [weakSelf.rowInformation setObject:key forKey:[NSNumber numberWithInt:count]];
         count++;
     }];
     [self.tableView reloadData];
@@ -119,12 +168,10 @@ static NSString *CellIdentifier = @"Cell";
 }
 
 - (void)addNewProjects{
-    
+    NewProjectViewController *newProjectViewController = [[NewProjectViewController alloc]initWithNibName:@"NewProjectViewController" bundle:nil];
+    [self.navigationController pushViewController:newProjectViewController animated:YES];
 }
 
-- (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath{
-    return NO;
-}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -162,14 +209,56 @@ static NSString *CellIdentifier = @"Cell";
     UIImageView *eraseMark = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Erase.png"]];
     
     [cell setSwipeGestureWithView:checkMark color:whiteColor mode:MCSwipeTableViewCellModeSwitch state:MCSwipeTableViewCellState1 completionBlock:^(MCSwipeTableViewCell *cell, MCSwipeTableViewCellState state, MCSwipeTableViewCellMode mode) {
+        NSArray *rows = [weakSelf.sectionInformation objectForKey:[NSNumber numberWithInteger:indexPath.section]];
+        NSDate *date = [[NSDate alloc]init];
+        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+        [formatter setDateFormat:@"MM/DD/YYYY"];
+        weakSelf.projectName.text = [rows objectAtIndex:indexPath.row];
+        [weakSelf.projectName sizeToFit];
+        weakSelf.clientName.text = [weakSelf.rowInformation objectForKey:[NSNumber numberWithInteger:indexPath.section]];
+        [weakSelf.clientName sizeToFit];
+        weakSelf.dateOfService.text = [formatter stringFromDate:date];
+        [weakSelf.dateOfService sizeToFit];
+        weakSelf.hourOfService.text = @"8";
+        [weakSelf.hourOfService sizeToFit];
+        weakSelf.clientNameLabel.text = @"Client:";
+        [weakSelf.clientNameLabel sizeToFit];
+        weakSelf.projectNameLabel.text = @"Project:";
+        [weakSelf.projectNameLabel sizeToFit];
+        weakSelf.dateOfServiceLabel.text = @"Date";
+        [weakSelf.dateOfServiceLabel sizeToFit];
+        weakSelf.hourOfServiceLabel.text = @"Hour:";
+        [weakSelf.hourOfServiceLabel sizeToFit];
+        
+        weakSelf.clientNameString = weakSelf.clientName.text;
+        weakSelf.dateString = weakSelf.dateOfService.text;
+        weakSelf.hourString = weakSelf.hourOfService.text;
+        weakSelf.projectNameString = weakSelf.projectName.text;
+        
         [weakSelf slideForm];
     }];
 
-    [cell setSwipeGestureWithView:eraseMark color:whiteColor mode:MCSwipeTableViewCellModeSwitch state:MCSwipeTableViewCellState3 completionBlock:^(MCSwipeTableViewCell *cell, MCSwipeTableViewCellState state, MCSwipeTableViewCellMode mode) {
-        NSLog(@"second 1\n");
-    }];
+    [cell setSwipeGestureWithView:eraseMark color:whiteColor mode:MCSwipeTableViewCellModeSwitch state:MCSwipeTableViewCellState3 completionBlock:nil];
     [cell setSwipeGestureWithView:eraseMark color:whiteColor mode:MCSwipeTableViewCellModeExit state:MCSwipeTableViewCellState4 completionBlock:^(MCSwipeTableViewCell *cell, MCSwipeTableViewCellState state, MCSwipeTableViewCellMode mode) {
-        NSLog(@"second 2\n");
+        NSDictionary* data = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants KcurrentUserClientList]];
+        NSMutableDictionary *mutableData = [[NSMutableDictionary alloc]initWithDictionary:data];
+        NSString *client = [weakSelf.rowInformation objectForKey:[NSNumber numberWithInteger:indexPath.section]];
+        NSArray *rows = [self.sectionInformation objectForKey:[NSNumber numberWithInteger:indexPath.section]];
+        NSString *project = [rows objectAtIndex:indexPath.row];
+        NSMutableArray *tempArray = [[NSMutableArray alloc] initWithArray:[mutableData objectForKey:client]];
+        [tempArray removeObject:project];
+        if ([tempArray count]== 0) {
+            [mutableData removeObjectForKey:client];
+        }else{
+            [mutableData setObject:tempArray forKey:client];
+        }
+        
+        [[NSUserDefaults standardUserDefaults] setObject:mutableData forKey:[HConstants KcurrentUserClientList]];
+        [[NSUserDefaults standardUserDefaults]synchronize];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [weakSelf loadData];
+        });
     }];
     
     NSArray *rows = [self.sectionInformation objectForKey:[NSNumber numberWithInteger:indexPath.section]];
@@ -198,7 +287,13 @@ static NSString *CellIdentifier = @"Cell";
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    return [[self.rowInformation allKeys] count];
+    if ([[self.rowInformation allKeys] count] && [[self.rowInformation allKeys] count] > 0) {
+        self.tableView.backgroundView.hidden = YES;
+        return [[self.rowInformation allKeys] count];
+    } else{
+        self.tableView.backgroundView.hidden = NO;
+    }
+    return 0;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
@@ -210,6 +305,12 @@ static NSString *CellIdentifier = @"Cell";
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
     return 40.0f;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    FormViewController *formViewController = [[FormViewController alloc]initWithNibName:@"FormViewController" bundle:nil];
+    [self.navigationController pushViewController:formViewController animated:YES];
 }
 
 @end

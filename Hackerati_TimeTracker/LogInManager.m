@@ -59,7 +59,7 @@
         [[NSUserDefaults standardUserDefaults] setObject:username forKey:[HConstants KCurrentUser]];
         [[NSUserDefaults standardUserDefaults]synchronize];
         
-        [[FireBaseManager sharedFireBase] authWithOAuthProvider:@"google" token:auth.accessToken
+        [[FireBaseManager baseURLsharedFireBase] authWithOAuthProvider:@"google" token:auth.accessToken
                withCompletionBlock:^(NSError *error, FAuthData *authData) {
                    if (error) {
                        // Error authenticating with Firebase with OAuth token

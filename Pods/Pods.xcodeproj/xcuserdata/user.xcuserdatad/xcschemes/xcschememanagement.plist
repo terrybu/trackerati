@@ -9,6 +9,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>Pods-KNSemiModalViewController.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Pods-MCSwipeTableViewCell.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -22,17 +27,22 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>31098407D1F820C80F58C96F</key>
+		<key>03B2B2D760DC6E0D24077F32</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>88BA546462F0D2FA9DD5C8CD</key>
+		<key>77CA6F89711CDE403D750D1A</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>92B4841B2F334748E1B75921</key>
+		<key>A307AE881D2FBDD0A0557F2F</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>E443C0EAFD928AD5BC97F3E6</key>
 		<dict>
 			<key>primary</key>
 			<true/>
