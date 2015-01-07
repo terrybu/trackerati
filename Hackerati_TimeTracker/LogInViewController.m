@@ -11,6 +11,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "HConstants.h"
 #import <MCSwipeTableViewCell.h>
+#import <Firebase/Firebase.h>
 
 @interface LogInViewController ()<MCSwipeTableViewCellDelegate>
 
@@ -33,9 +34,13 @@
 @property (strong, nonatomic) UIView  *formView;
 @property (strong, nonatomic) UIButton *sendButton;
 
+@property (strong, nonatomic) Firebase *fireBase;
+
 @end
 
 @implementation LogInViewController
+
+static NSString *CellIdentifier = @"Cell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -45,6 +50,8 @@
     self.sectionInformation = [[NSMutableDictionary alloc]init];
     self.rowInformation = [[NSMutableDictionary alloc]init];
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+    
+    [self.tableView registerClass:[MCSwipeTableViewCell class] forCellReuseIdentifier:CellIdentifier];
     
     self.formView = [[UIView alloc]initWithFrame:CGRectMake(-500, 0, 300, 400)];
     self.clientName = [[UILabel alloc]initWithFrame:CGRectMake(95, 57, 194, 21)];
@@ -68,11 +75,17 @@
     [self.formView addSubview:self.dateOfServiceLabel];
     [self.formView addSubview:self.hourOfServiceLabel];
     [self.formView addSubview:self.sendButton];
-    self.formView.backgroundColor = [UIColor blackColor];
+    self.formView.backgroundColor = [UIColor grayColor];
     [self.view addSubview:self.formView];
+    
+    NSString* username = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants KCurrentUser]];
+    
+    self.fireBase = [[Firebase alloc]initWithUrl:[NSString stringWithFormat:@"%@/Users/%@/records",[HConstants kFireBaseURL],username]];
 }
 
 -(void)sendForm{
+    [[self.fireBase childByAutoId] setValue:@{@"client":@"turn to tech",@"date":[NSNumber numberWithInt:1420416000],@"hour":[NSNumber numberWithInt:4],@"project":@"project g"}];
+    
     [self slideOutForm];
 }
 
@@ -108,8 +121,6 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    
-    static NSString *CellIdentifier = @"Cell";
     
     MCSwipeTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     
@@ -166,7 +177,6 @@
 
 -(void)slideOutForm{
     [self.dynamicAnimator removeBehavior:self.gravityBehavior];
-    
     self.snapBehavior = [[UISnapBehavior alloc]initWithItem:self.formView snapToPoint:CGPointMake(-500, 0)];
     [self.dynamicAnimator addBehavior:self.snapBehavior];
 }
