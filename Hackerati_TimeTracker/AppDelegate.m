@@ -24,7 +24,7 @@
     // Override point for customization after application launch.
     
     self.window = [[UIWindow alloc]initWithFrame:[UIScreen mainScreen].bounds];
-    self.logInViewController = [[LogInViewController alloc]initWithNibName:nil bundle:nil];
+    self.logInViewController = [[LogInViewController alloc]initWithNibName:@"LogInViewController" bundle:nil];
     
     [self setupReachability];
     [self startLoginProcess];

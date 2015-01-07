@@ -37,6 +37,8 @@
 		CE07C0901A5C6C4200A3B961 /* HistoryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE07C08E1A5C6C4100A3B961 /* HistoryViewController.xib */; };
 		CE07C0961A5C8B2900A3B961 /* RecordTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CE07C0941A5C8B2900A3B961 /* RecordTableViewCell.m */; };
 		CE07C0971A5C8B2900A3B961 /* RecordTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE07C0951A5C8B2900A3B961 /* RecordTableViewCell.xib */; };
+		CE07C0991A5C9A5700A3B961 /* Erase@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CE07C0981A5C9A5700A3B961 /* Erase@2x.png */; };
+		CE07C09B1A5C9A6100A3B961 /* CheckMark@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CE07C09A1A5C9A6100A3B961 /* CheckMark@2x.png */; };
 		CED58C1D1A5ADAB3001C343B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = CED58C1C1A5ADAB3001C343B /* main.m */; };
 		CED58C201A5ADAB3001C343B /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CED58C1F1A5ADAB3001C343B /* AppDelegate.m */; };
 		CED58C281A5ADAB3001C343B /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CED58C271A5ADAB3001C343B /* Images.xcassets */; };
@@ -93,6 +95,8 @@
 		CE07C0931A5C8B2900A3B961 /* RecordTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecordTableViewCell.h; sourceTree = "<group>"; };
 		CE07C0941A5C8B2900A3B961 /* RecordTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecordTableViewCell.m; sourceTree = "<group>"; };
 		CE07C0951A5C8B2900A3B961 /* RecordTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RecordTableViewCell.xib; sourceTree = "<group>"; };
+		CE07C0981A5C9A5700A3B961 /* Erase@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Erase@2x.png"; sourceTree = "<group>"; };
+		CE07C09A1A5C9A6100A3B961 /* CheckMark@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CheckMark@2x.png"; sourceTree = "<group>"; };
 		CED58C171A5ADAB3001C343B /* trackerati-ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "trackerati-ios.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CED58C1B1A5ADAB3001C343B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CED58C1C1A5ADAB3001C343B /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -185,6 +189,8 @@
 				CE07C06E1A5C29DF00A3B961 /* DataParser.h */,
 				CE07C06F1A5C29DF00A3B961 /* DataParser.m */,
 				CED58C271A5ADAB3001C343B /* Images.xcassets */,
+				CE07C09A1A5C9A6100A3B961 /* CheckMark@2x.png */,
+				CE07C0981A5C9A5700A3B961 /* Erase@2x.png */,
 				CED58C1A1A5ADAB3001C343B /* Supporting Files */,
 			);
 			path = Hackerati_TimeTracker;
@@ -339,6 +345,8 @@
 				CE07C0971A5C8B2900A3B961 /* RecordTableViewCell.xib in Resources */,
 				CE07C0901A5C6C4200A3B961 /* HistoryViewController.xib in Resources */,
 				CE07C0521A5B087C00A3B961 /* LogInViewController.xib in Resources */,
+				CE07C09B1A5C9A6100A3B961 /* CheckMark@2x.png in Resources */,
+				CE07C0991A5C9A5700A3B961 /* Erase@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
