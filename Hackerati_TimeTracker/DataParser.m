@@ -44,12 +44,12 @@
             }];
             
             [self.records observeSingleEventOfType:FEventTypeValue withBlock:^(FDataSnapshot *snapshot){
-                if (snapshot.value && [snapshot.value isKindOfClass:[NSArray class]]) {
-                    NSArray *records = snapshot.value;
+                if (snapshot.value && [snapshot.value isKindOfClass:[NSDictionary class]]) {
+                    NSDictionary *records = snapshot.value;
                     [[NSUserDefaults standardUserDefaults] setObject:records forKey:[HConstants KCurrentUserRecords]];
                     [[NSUserDefaults standardUserDefaults]synchronize];
                     __block NSMutableDictionary *currentUserClientList = [[NSMutableDictionary alloc]init];
-                    [records enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop){
+                    [records enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop){
                         if (obj && [obj isKindOfClass:[NSDictionary class]]) {
                             NSString *tClient = [(NSDictionary*)obj objectForKey:@"client"];
                             NSString *tProject = [(NSDictionary*)obj objectForKey:@"project"];

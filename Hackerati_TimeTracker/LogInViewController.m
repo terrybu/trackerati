@@ -33,7 +33,7 @@
 @property (strong, nonatomic) UILabel *hourOfServiceLabel;
 @property (strong, nonatomic) UIView  *formView;
 @property (strong, nonatomic) UIButton *sendButton;
-
+@property (nonatomic) BOOL firstTimeLoading;
 @property (strong, nonatomic) Firebase *fireBase;
 
 @end
@@ -45,8 +45,10 @@ static NSString *CellIdentifier = @"Cell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    self.title = @"Clients";
+    self.title = @"Enter your hours";
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"History" style:UIBarButtonItemStyleBordered target:self action:@selector(historyAction:)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addNewProjects)];
+    
     self.sectionInformation = [[NSMutableDictionary alloc]init];
     self.rowInformation = [[NSMutableDictionary alloc]init];
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
@@ -81,11 +83,17 @@ static NSString *CellIdentifier = @"Cell";
     NSString* username = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants KCurrentUser]];
     
     self.fireBase = [[Firebase alloc]initWithUrl:[NSString stringWithFormat:@"%@/Users/%@/records",[HConstants kFireBaseURL],username]];
+    self.firstTimeLoading = YES;
+    
+}
+
+-(void) viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    [self loadData];
 }
 
 -(void)sendForm{
     [[self.fireBase childByAutoId] setValue:@{@"client":@"turn to tech",@"date":[NSNumber numberWithInt:1420416000],@"hour":[NSNumber numberWithInt:4],@"project":@"project g"}];
-    
     [self slideOutForm];
 }
 
@@ -108,6 +116,14 @@ static NSString *CellIdentifier = @"Cell";
 - (void) historyAction:(UIBarButtonItem*)barButton{
     self.historyViewController = [[HistoryViewController alloc]initWithNibName:nil bundle:nil];
     [self.navigationController pushViewController:self.historyViewController animated:YES];
+}
+
+- (void)addNewProjects{
+    
+}
+
+- (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath{
+    return NO;
 }
 
 - (void)didReceiveMemoryWarning {
