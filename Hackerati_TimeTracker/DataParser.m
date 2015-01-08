@@ -39,6 +39,10 @@
             [self.projects observeSingleEventOfType:FEventTypeValue withBlock:^(FDataSnapshot *snapshot) {
                 if (snapshot.value && [snapshot.value isKindOfClass:[NSDictionary class]]) {
                     NSDictionary *data = snapshot.value;
+                    
+                    [[NSUserDefaults standardUserDefaults] setObject:data forKey:[HConstants kRawMasterClientList]];
+                    [[NSUserDefaults standardUserDefaults]synchronize];
+                    
                     __block NSMutableDictionary *newData = [[NSMutableDictionary alloc]init];
                     
                     [data enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop){

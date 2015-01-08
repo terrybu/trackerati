@@ -18,6 +18,7 @@
 #import "NewProjectViewController.h"
 #import "LastSavedManager.h"
 
+
 @interface LogInViewController ()<MCSwipeTableViewCellDelegate>
 
 @property (strong, nonatomic) NSMutableDictionary *sectionInformation;
@@ -268,6 +269,27 @@ static NSString *CellIdentifier = @"Cell";
         
         [[NSUserDefaults standardUserDefaults] setObject:mutableData forKey:[HConstants KcurrentUserClientList]];
         [[NSUserDefaults standardUserDefaults]synchronize];
+        
+        
+        
+        NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants KCurrentUser]];
+        __block NSString *uniqueAddress = nil;
+        NSDictionary* rawMasterClientList = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants kRawMasterClientList]];
+        if ([[rawMasterClientList objectForKey:client]objectForKey:project]) {
+            NSDictionary* rawUserList = [[rawMasterClientList objectForKey:client]objectForKey:project];
+            [rawUserList enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop){
+                if ([obj objectForKey:@"name"] && ([[obj objectForKey:@"name"]isEqualToString:username ])) {
+                    uniqueAddress = key;
+                    *stop = YES;
+                    return;
+                }
+            }];
+            
+            self.fireBase = [[Firebase alloc]initWithUrl:[NSString stringWithFormat:@"%@/Projects/%@/%@/%@",[HConstants kFireBaseURL],client,project,uniqueAddress]];
+            [self.fireBase removeValue];
+        }
+        
+        
         
         dispatch_async(dispatch_get_main_queue(), ^{
             [weakSelf loadData];
