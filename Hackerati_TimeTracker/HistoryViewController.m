@@ -8,8 +8,11 @@
 
 #import "HistoryViewController.h"
 #import "RecordTableViewCell.h"
+#import "HConstants.h"
 
 @interface HistoryViewController ()
+
+@property (nonatomic, strong) NSMutableArray *history;
 
 @end
 
@@ -21,8 +24,21 @@ static NSString *cellIdentifier = @"RecordTableViewCell";
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     self.title = @"History";
-    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     [self.tableView registerNib:[UINib nibWithNibName:@"RecordTableViewCell" bundle:nil] forCellReuseIdentifier:cellIdentifier];
+    
+}
+
+- (void) viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    __block int count = 0;
+    self.history = [[NSMutableArray alloc]init];
+    NSDictionary *tempDict = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants KCurrentUserRecords]];
+    
+    [tempDict enumerateKeysAndObjectsUsingBlock:^(id client, id obj, BOOL *stop){
+        [self.history insertObject:[tempDict objectForKey:client] atIndex:count];
+        count ++;
+    }];
+   
 }
 
 - (void)didReceiveMemoryWarning {
@@ -41,7 +57,7 @@ static NSString *cellIdentifier = @"RecordTableViewCell";
 */
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return 3;
+    return [self.history count];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -57,6 +73,13 @@ static NSString *cellIdentifier = @"RecordTableViewCell";
     if (cell == nil) {
         cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     }
+    
+    NSDictionary *record = [self.history objectAtIndex:indexPath.row];
+    
+    [cell setclientNameLabelString:[record objectForKey:@"client"]];
+    [cell setprojectNameLabelString:[record objectForKey:@"project"]];
+    [cell setdateLabelString:[[record objectForKey:@"date"] isKindOfClass:[NSNumber class]]?[NSString stringWithFormat:@"%@",[record objectForKey:@"date"]]:[record objectForKey:@"date"]];
+    [cell sethourLabelString:[[record objectForKey:@"hour"] isKindOfClass:[NSNumber class]]?[NSString stringWithFormat:@"%@",[record objectForKey:@"hour"]]:[record objectForKey:@"hour"]];
     
     return cell;
 }

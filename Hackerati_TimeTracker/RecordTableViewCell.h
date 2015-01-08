@@ -10,4 +10,12 @@
 
 @interface RecordTableViewCell : UITableViewCell
 
+-(void)setclientNameLabelString:(NSString*)name;
+
+-(void)setprojectNameLabelString:(NSString*)name;
+
+-(void)setdateLabelString:(NSString*)name;
+
+-(void)sethourLabelString:(NSString*)name;
+
 @end

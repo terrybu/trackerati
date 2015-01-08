@@ -35,4 +35,21 @@
     self.hourLabel.text = nil;
 }
 
+-(void)setclientNameLabelString:(NSString*)name{
+    self.clientNameLabel.text = name;
+}
+
+-(void)setprojectNameLabelString:(NSString*)name{
+    self.projectNameLabel.text = name;
+}
+
+-(void)setdateLabelString:(NSString*)name{
+    self.dateLabel.text = name;
+}
+
+-(void)sethourLabelString:(NSString*)name{
+    self.hourLabel.text = name;
+}
+
+
 @end
