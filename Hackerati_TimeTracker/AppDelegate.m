@@ -10,6 +10,7 @@
 #import <GooglePlus/GooglePlus.h>
 #import "LogInManager.h"
 #import "DataParser.h"
+#import "WeeklyNotificationManager.h"
 
 @interface AppDelegate ()
 
@@ -22,6 +23,9 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    
+    [WeeklyNotificationManager sharedManager];
+    application.applicationIconBadgeNumber = 0;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appDelegatestartLogInProcess) name:kStartLogInProcessNotification object:nil];
     
@@ -85,15 +89,25 @@
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+    application.applicationIconBadgeNumber = 0;
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-    
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
+    if ([UIApplication instancesRespondToSelector:@selector(registerUserNotificationSettings:)])
+    {
+        [[UIApplication sharedApplication] registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeAlert | UIUserNotificationTypeBadge | UIUserNotificationTypeSound categories:nil]];
+    }
+#endif
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+}
+
+- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification{
+
 }
 
 @end

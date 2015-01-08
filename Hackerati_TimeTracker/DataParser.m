@@ -10,6 +10,10 @@
 #import "FireBaseManager.h"
 #import "HConstants.h"
 
+#define NILIFNULL(foo) ((foo == [NSNull null]) ? nil : foo)
+#define NULLIFNIL(foo) ((foo == nil) ? [NSNull null] : foo)
+#define EMPTYIFNIL(foo) ((foo == nil) ? @"" : foo)
+
 @interface DataParser ()
 
 @property (nonatomic, strong) Firebase *projects;
