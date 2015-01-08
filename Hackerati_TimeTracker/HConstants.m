@@ -14,6 +14,7 @@ static NSString * const kMasterClientList = @"MasterClientsList";
 static NSString * const KCurrentUser = @"currentUser";
 static NSString * const KCurrentUserRecords = @"currentUserRecords";
 static NSString * const KcurrentUserClientList = @"currentUserClientList";
+static NSString * const KlastSavedHour = @"lastSavedHour";
 
 @implementation HConstants
 
@@ -39,6 +40,10 @@ static NSString * const KcurrentUserClientList = @"currentUserClientList";
 
 +(NSString*)KcurrentUserClientList{
     return KcurrentUserClientList;
+}
+
++(NSString*)KlastSavedHour{
+    return KlastSavedHour;
 }
 
 @end

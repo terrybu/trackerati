@@ -32,11 +32,15 @@
 -(instancetype)init{
     self = [super init];
     if (self) {
-        NSCalendar *calendar = [NSCalendar currentCalendar];
+        NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
         
         NSDateComponents *dateComponentsMonday = [[NSDateComponents alloc] init];
-        dateComponentsMonday.weekday = 2; // sunday = 1 ... saturday = 7
-        dateComponentsMonday.hour = 17;
+        [dateComponentsMonday setYear:2015];
+        [dateComponentsMonday setMonth:1];
+        [dateComponentsMonday setDay:5];
+        [dateComponentsMonday setHour:17];
+        [dateComponentsMonday setMinute:0];
+        [dateComponentsMonday setSecond:0];
         self.localNotificationMonday = [[UILocalNotification alloc]init];
         self.localNotificationMonday.timeZone = [[NSCalendar currentCalendar] timeZone];
         self.localNotificationMonday.repeatInterval = NSWeekCalendarUnit;
@@ -49,8 +53,12 @@
         [[UIApplication sharedApplication] scheduleLocalNotification:self.localNotificationMonday];
         
         NSDateComponents *dateComponentsTuesday = [[NSDateComponents alloc] init];
-        dateComponentsTuesday.weekday = 3; // sunday = 1 ... saturday = 7
-        dateComponentsTuesday.hour =17;
+        [dateComponentsTuesday setYear:2015];
+        [dateComponentsTuesday setMonth:1];
+        [dateComponentsTuesday setDay:6];
+        [dateComponentsTuesday setHour:17];
+        [dateComponentsTuesday setMinute:0];
+        [dateComponentsTuesday setSecond:0];
         self.localNotificationTuesday = [[UILocalNotification alloc]init];
         self.localNotificationTuesday.timeZone = [[NSCalendar currentCalendar] timeZone];
         self.localNotificationTuesday.repeatInterval = NSWeekCalendarUnit;
@@ -63,8 +71,12 @@
         [[UIApplication sharedApplication] scheduleLocalNotification:self.localNotificationTuesday];
         
         NSDateComponents *dateComponentsWednesday = [[NSDateComponents alloc] init];
-        dateComponentsWednesday.weekday = 4; // sunday = 1 ... saturday = 7
-        dateComponentsWednesday.hour = 17;
+        [dateComponentsWednesday setYear:2015];
+        [dateComponentsWednesday setMonth:1];
+        [dateComponentsWednesday setDay:7];
+        [dateComponentsWednesday setHour:17];
+        [dateComponentsWednesday setMinute:0];
+        [dateComponentsWednesday setSecond:0];
         self.localNotificationWednesday = [[UILocalNotification alloc]init];
         self.localNotificationWednesday.timeZone = [[NSCalendar currentCalendar] timeZone];
         self.localNotificationWednesday.repeatInterval = NSWeekCalendarUnit;
@@ -77,8 +89,12 @@
         [[UIApplication sharedApplication] scheduleLocalNotification:self.localNotificationWednesday];
         
         NSDateComponents *dateComponentsThursday = [[NSDateComponents alloc] init];
-        dateComponentsThursday.weekday = 5; // sunday = 1 ... saturday = 7
-        dateComponentsThursday.hour =17;
+        [dateComponentsThursday setYear:2015];
+        [dateComponentsThursday setMonth:1];
+        [dateComponentsThursday setDay:8];
+        [dateComponentsThursday setHour:17];
+        [dateComponentsThursday setMinute:0];
+        [dateComponentsThursday setSecond:0];
         self.localNotificationThursday = [[UILocalNotification alloc]init];
         self.localNotificationThursday.timeZone = [[NSCalendar currentCalendar] timeZone];
         self.localNotificationThursday.repeatInterval = NSWeekCalendarUnit;
@@ -91,8 +107,12 @@
         [[UIApplication sharedApplication] scheduleLocalNotification:self.localNotificationThursday];
         
         NSDateComponents *dateComponentsFriday = [[NSDateComponents alloc] init];
-        dateComponentsFriday.weekday = 6; // sunday = 1 ... saturday = 7
-        dateComponentsFriday.hour =17;
+        [dateComponentsFriday setYear:2015];
+        [dateComponentsFriday setMonth:1];
+        [dateComponentsFriday setDay:9];
+        [dateComponentsFriday setHour:17];
+        [dateComponentsFriday setMinute:0];
+        [dateComponentsFriday setSecond:0];
         self.localNotificationFriday = [[UILocalNotification alloc]init];
         self.localNotificationFriday.timeZone = [[NSCalendar currentCalendar] timeZone];
         self.localNotificationFriday.repeatInterval = NSWeekCalendarUnit;

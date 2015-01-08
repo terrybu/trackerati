@@ -10,6 +10,7 @@
 #import "THDatePickerViewController.h"
 #import "FireBaseManager.h"
 #import "HConstants.h"
+#import "LastSavedManager.h"
 
 @interface FormViewController ()<THDatePickerDelegate>
 @property (strong, nonatomic) THDatePickerViewController *datePicker;
@@ -120,6 +121,7 @@
 - (IBAction)sendAction:(id)sender {
     self.fireBase = [FireBaseManager recordURLsharedFireBase];
     [[self.fireBase childByAutoId] setValue:@{@"client":self.clientName,@"date":self.dateString,@"hour":self.hourString,@"project":self.projectName}];
+    [[LastSavedManager sharedManager] saveClient:self.clientName withProject:self.projectName andHour:self.hourString];
     [self.navigationController popViewControllerAnimated:YES];
 }
 @end

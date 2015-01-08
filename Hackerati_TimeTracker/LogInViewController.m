@@ -16,6 +16,7 @@
 #import "DataParser.h"
 #import "LogInManager.h"
 #import "NewProjectViewController.h"
+#import "LastSavedManager.h"
 
 @interface LogInViewController ()<MCSwipeTableViewCellDelegate>
 
@@ -37,6 +38,7 @@
 @property (strong, nonatomic) UILabel *hourOfServiceLabel;
 @property (strong, nonatomic) UIView  *formView;
 @property (strong, nonatomic) UIButton *sendButton;
+@property (strong, nonatomic) UIButton *cancelButton;
 @property (strong, nonatomic) Firebase *fireBase;
 @property (strong, nonatomic) UIRefreshControl *refreshControl;
 
@@ -77,10 +79,15 @@ static NSString *CellIdentifier = @"Cell";
     self.dateOfServiceLabel = [[UILabel alloc]initWithFrame:CGRectMake(13, 156+25, 58, 35)];
     self.hourOfServiceLabel = [[UILabel alloc]initWithFrame:CGRectMake(13, 200+25, 58, 35)];
     self.sendButton = [UIButton buttonWithType:UIButtonTypeSystem];
-    self.sendButton.frame = CGRectMake(33, 320, 226, 36);
+    self.sendButton.frame = CGRectMake(33, 320, 50, 36);
     [self.sendButton setTitle:@"Send" forState:UIControlStateNormal];
     [self.sendButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [self.sendButton addTarget:self action:@selector(sendForm) forControlEvents:UIControlEventTouchUpInside];
+    self.cancelButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    self.cancelButton.frame = CGRectMake(125, 320, 50, 36);
+    [self.cancelButton setTitle:@"Cancel" forState:UIControlStateNormal];
+    [self.cancelButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [self.cancelButton addTarget:self action:@selector(cancelForm) forControlEvents:UIControlEventTouchUpInside];
     [self.formView addSubview:self.clientName];
     [self.formView addSubview:self.projectName];
     [self.formView addSubview:self.dateOfService];
@@ -90,6 +97,7 @@ static NSString *CellIdentifier = @"Cell";
     [self.formView addSubview:self.dateOfServiceLabel];
     [self.formView addSubview:self.hourOfServiceLabel];
     [self.formView addSubview:self.sendButton];
+    [self.formView addSubview:self.cancelButton];
     self.formView.backgroundColor = [UIColor lightGrayColor];
     [self.view addSubview:self.formView];
     
@@ -133,6 +141,11 @@ static NSString *CellIdentifier = @"Cell";
     self.fireBase = [FireBaseManager recordURLsharedFireBase];
     [[self.fireBase childByAutoId] setValue:@{@"client":self.clientNameString,@"date":self.dateString,@"hour":self.hourString,@"project":self.projectNameString}];
     [self slideOutForm];
+    [[LastSavedManager sharedManager] saveClient:self.clientNameString withProject:self.projectNameString andHour:self.hourString];
+}
+
+-(void)cancelForm{
+   [self slideOutForm];
 }
 
 -(void) loginUnsuccessful{
@@ -216,8 +229,6 @@ static NSString *CellIdentifier = @"Cell";
         [weakSelf.clientName sizeToFit];
         weakSelf.dateOfService.text = [formatter stringFromDate:date];
         [weakSelf.dateOfService sizeToFit];
-        weakSelf.hourOfService.text = @"8";
-        [weakSelf.hourOfService sizeToFit];
         weakSelf.clientNameLabel.text = @"Client:";
         [weakSelf.clientNameLabel sizeToFit];
         weakSelf.projectNameLabel.text = @"Project:";
@@ -229,8 +240,13 @@ static NSString *CellIdentifier = @"Cell";
         
         weakSelf.clientNameString = weakSelf.clientName.text;
         weakSelf.dateString = weakSelf.dateOfService.text;
-        weakSelf.hourString = weakSelf.hourOfService.text;
         weakSelf.projectNameString = weakSelf.projectName.text;
+        
+        weakSelf.hourOfService.text = [[LastSavedManager sharedManager] getLastSavedHourForClient:weakSelf.clientNameString withProject:weakSelf.projectNameString withCurrentHour:@"8"];
+        weakSelf.hourString = weakSelf.hourOfService.text;
+        [weakSelf.hourOfService sizeToFit];
+        
+        
         
         [weakSelf slideForm];
     }];

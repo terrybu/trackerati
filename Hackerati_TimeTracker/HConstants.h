@@ -18,4 +18,5 @@
 +(NSString*)KCurrentUser;
 +(NSString*)KCurrentUserRecords;
 +(NSString*)KcurrentUserClientList;
++(NSString*)KlastSavedHour;
 @end
