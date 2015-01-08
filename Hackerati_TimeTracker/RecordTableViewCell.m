@@ -9,10 +9,10 @@
 #import "RecordTableViewCell.h"
 
 @interface RecordTableViewCell ()
-@property (weak, nonatomic) IBOutlet UILabel *clientNameLabel;
-@property (weak, nonatomic) IBOutlet UILabel *projectNameLabel;
-@property (weak, nonatomic) IBOutlet UILabel *dateLabel;
-@property (weak, nonatomic) IBOutlet UILabel *hourLabel;
+@property (strong, nonatomic) IBOutlet UILabel *clientNameLabel;
+@property (strong, nonatomic) IBOutlet UILabel *projectNameLabel;
+@property (strong, nonatomic) IBOutlet UILabel *dateLabel;
+@property (strong, nonatomic) IBOutlet UILabel *hourLabel;
 
 @end
 
@@ -20,6 +20,7 @@
 
 - (void)awakeFromNib {
     // Initialization code
+    [self.contentView addSubview:self.clientNameLabel];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

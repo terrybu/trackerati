@@ -61,21 +61,21 @@
         [[NSUserDefaults standardUserDefaults]synchronize];
         
         [[FireBaseManager baseURLsharedFireBase] authWithOAuthProvider:@"google" token:auth.accessToken
-               withCompletionBlock:^(NSError *error, FAuthData *authData) {
-                   if (error) {
-                       // Error authenticating with Firebase with OAuth token
-                       if ([self.delegate respondsToSelector:@selector(loginUnsuccessful)]) {
-                           dispatch_async(dispatch_get_main_queue(), ^{
-                               [self.delegate loginUnsuccessful];
-                           });
-                       }
-                   } else {
-                       // User is now logged in!
-                       if ([self.delegate respondsToSelector:@selector(loginSuccessful)]) {
-                               [self.delegate loginSuccessful];
-                       }
-                   }
-               }];
+                                                   withCompletionBlock:^(NSError *error, FAuthData *authData) {
+                                                       if (error) {
+                                                           // Error authenticating with Firebase with OAuth token
+                                                           if ([self.delegate respondsToSelector:@selector(loginUnsuccessful)]) {
+                                                               dispatch_async(dispatch_get_main_queue(), ^{
+                                                                   [self.delegate loginUnsuccessful];
+                                                               });
+                                                           }
+                                                       } else {
+                                                           // User is now logged in!
+                                                           if ([self.delegate respondsToSelector:@selector(loginSuccessful)]) {
+                                                               [self.delegate loginSuccessful];
+                                                           }
+                                                       }
+                                                   }];
     }
 }
 
@@ -84,8 +84,8 @@
 }
 
 - (void)logOut{
-   [[GPPSignIn sharedInstance] signOut];
-   [[FireBaseManager baseURLsharedFireBase]unauth];
+    [[GPPSignIn sharedInstance] signOut];
+    [[FireBaseManager baseURLsharedFireBase]unauth];
     NSUserDefaults * defs = [NSUserDefaults standardUserDefaults];
     NSDictionary * dict = [defs dictionaryRepresentation];
     for (id key in dict) {

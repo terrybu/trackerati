@@ -11,6 +11,7 @@
 #import "LogInManager.h"
 #import "DataParser.h"
 #import "WeeklyNotificationManager.h"
+#import <HockeySDK/HockeySDK.h>
 
 @interface AppDelegate ()
 
@@ -23,7 +24,12 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
-
+    
+    [[BITHockeyManager sharedHockeyManager] configureWithIdentifier:@"3aa549db112abed50654d253ecec9aa7"];
+    [[BITHockeyManager sharedHockeyManager] startManager];
+    [[BITHockeyManager sharedHockeyManager].authenticator authenticateInstallation];
+    [[BITHockeyManager sharedHockeyManager] testIdentifier];
+    
     application.applicationIconBadgeNumber = 0;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appDelegatestartLogInProcess) name:kStartLogInProcessNotification object:nil];
@@ -66,7 +72,7 @@
     if (internetStatus != NotReachable) {
         [self appDelegatestartLogInProcess];
     }
-
+    
 }
 
 
@@ -108,7 +114,7 @@
 }
 
 - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification{
-
+    
 }
 
 @end

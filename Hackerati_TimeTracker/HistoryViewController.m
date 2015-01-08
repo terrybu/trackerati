@@ -89,4 +89,8 @@ static NSString *cellIdentifier = @"RecordTableViewCell";
     return cell;
 }
 
+- (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath{
+    return NO;
+}
+
 @end
