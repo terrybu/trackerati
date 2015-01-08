@@ -9,6 +9,7 @@
 #import "HistoryViewController.h"
 #import "RecordTableViewCell.h"
 #import "HConstants.h"
+#import "LogInManager.h"
 
 @interface HistoryViewController ()
 
@@ -25,7 +26,7 @@ static NSString *cellIdentifier = @"RecordTableViewCell";
     // Do any additional setup after loading the view from its nib.
     self.title = @"History";
     [self.tableView registerNib:[UINib nibWithNibName:@"RecordTableViewCell" bundle:nil] forCellReuseIdentifier:cellIdentifier];
-    
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Log Out" style:UIBarButtonItemStylePlain target:self action:@selector(logOutAction)];
 }
 
 - (void) viewWillAppear:(BOOL)animated{
@@ -55,6 +56,10 @@ static NSString *cellIdentifier = @"RecordTableViewCell";
     // Pass the selected object to the new view controller.
 }
 */
+
+- (void)logOutAction{
+    [[NSNotificationCenter defaultCenter] postNotificationName:kStartLogOutProcessNotification object:nil];
+}
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     return [self.history count];

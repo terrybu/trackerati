@@ -10,6 +10,7 @@
 #import <GooglePlus/GooglePlus.h>
 
 static NSString *kStartLogInProcessNotification = @"kStartLogInProcessNotification";
+static NSString *kStartLogOutProcessNotification = @"kStartLogOutProcessNotification";
 
 @protocol LogInManagerProtocol <NSObject>
 
