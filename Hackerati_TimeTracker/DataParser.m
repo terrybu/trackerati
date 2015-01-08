@@ -25,7 +25,6 @@
     dispatch_once(&onceToken, ^{
         _sharedManager = [[DataParser alloc]init];
         _sharedManager.projects = [FireBaseManager projectURLsharedFireBase];
-        //_sharedManager.records = [FireBaseManager recordURLsharedFireBase];
     });
     return _sharedManager;
 }

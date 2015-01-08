@@ -10,7 +10,7 @@
 
 @interface FormViewController : UIViewController
 
-@property (strong, nonatomic) NSString *clientName;
-@property (strong, nonatomic) NSString *projectName;
+@property (copy, nonatomic) NSString *clientName;
+@property (copy, nonatomic) NSString *projectName;
 
 @end

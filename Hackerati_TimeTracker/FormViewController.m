@@ -8,11 +8,21 @@
 
 #import "FormViewController.h"
 #import "THDatePickerViewController.h"
+#import "FireBaseManager.h"
+#import "HConstants.h"
 
 @interface FormViewController ()<THDatePickerDelegate>
 @property (strong, nonatomic) THDatePickerViewController *datePicker;
 @property (nonatomic, retain) NSDate * curDate;
 @property (nonatomic, retain) NSDateFormatter * formatter;
+@property (weak, nonatomic) IBOutlet UILabel *clientLabel;
+@property (weak, nonatomic) IBOutlet UILabel *projectLabel;
+@property (weak, nonatomic) IBOutlet UILabel *hourLabel;
+@property (nonatomic,copy) NSString *hourString;
+@property (nonatomic,copy) NSString *dateString;
+@property (strong, nonatomic) Firebase *fireBase;
+- (IBAction)hourStepperControl:(id)sender;
+- (IBAction)sendAction:(id)sender;
 
 @property (weak, nonatomic) IBOutlet UIButton *dateButton;
 - (IBAction)dateButtonAction:(id)sender;
@@ -24,6 +34,19 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+   
+}
+
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    
+    self.projectLabel.text = self.projectName;
+    self.clientLabel.text = self.clientName;
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"MM/DD/YYYY"];
+    [self.dateButton setTitle:[formatter stringFromDate:[NSDate date]] forState:UIControlStateNormal];
+    self.dateString = [formatter stringFromDate:[NSDate date]];
+    self.hourLabel.text = @"0";
 }
 
 - (void)didReceiveMemoryWarning {
@@ -72,15 +95,31 @@
 - (void)datePickerDonePressed:(THDatePickerViewController *)datePicker {
     self.curDate = datePicker.date;
     //[self.datePicker slideDownAndOut];
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"MM/DD/YYYY"];
+    self.dateString = [formatter stringFromDate:[NSDate date]];
     [self dismissSemiModalView];
 }
 
 - (void)datePickerCancelPressed:(THDatePickerViewController *)datePicker {
-    //[self.datePicker slideDownAndOut];
     [self dismissSemiModalView];
 }
 
 - (void)datePicker:(THDatePickerViewController *)datePicker selectedDate:(NSDate *)selectedDate {
-    NSLog(@"Date selected: %@",[_formatter stringFromDate:selectedDate]);
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"MM/DD/YYYY"];
+    self.dateString = [formatter stringFromDate:selectedDate];
+    [self.dateButton setTitle:[formatter stringFromDate:selectedDate] forState:UIControlStateNormal];
+}
+- (IBAction)hourStepperControl:(id)sender {
+    UIStepper *steperControl = (UIStepper*)sender;
+    self.hourLabel.text = [NSString stringWithFormat:@"%.1f",[steperControl value]];
+    self.hourString = [NSString stringWithFormat:@"%.1f",[steperControl value]];
+}
+
+- (IBAction)sendAction:(id)sender {
+    self.fireBase = [FireBaseManager recordURLsharedFireBase];
+    [[self.fireBase childByAutoId] setValue:@{@"client":self.clientName,@"date":self.dateString,@"hour":self.hourString,@"project":self.projectName}];
+    [self.navigationController popViewControllerAnimated:YES];
 }
 @end

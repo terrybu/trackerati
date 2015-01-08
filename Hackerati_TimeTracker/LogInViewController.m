@@ -37,7 +37,6 @@
 @property (strong, nonatomic) UILabel *hourOfServiceLabel;
 @property (strong, nonatomic) UIView  *formView;
 @property (strong, nonatomic) UIButton *sendButton;
-@property (nonatomic) BOOL firstTimeLoading;
 @property (strong, nonatomic) Firebase *fireBase;
 @property (strong, nonatomic) UIRefreshControl *refreshControl;
 
@@ -93,8 +92,6 @@ static NSString *CellIdentifier = @"Cell";
     [self.formView addSubview:self.sendButton];
     self.formView.backgroundColor = [UIColor lightGrayColor];
     [self.view addSubview:self.formView];
-    
-    self.firstTimeLoading = YES;
     
     self.refreshControl = [[UIRefreshControl alloc] init];
     self.refreshControl.backgroundColor = [UIColor whiteColor];
@@ -310,6 +307,14 @@ static NSString *CellIdentifier = @"Cell";
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     FormViewController *formViewController = [[FormViewController alloc]initWithNibName:@"FormViewController" bundle:nil];
+    
+    NSArray *rows = [self.sectionInformation objectForKey:[NSNumber numberWithInteger:indexPath.section]];
+    NSString *project = [rows objectAtIndex:indexPath.row];
+    NSString *client = [self.rowInformation objectForKey:[NSNumber numberWithInteger:indexPath.section]];
+    
+    formViewController.projectName = project;
+    formViewController.clientName = client;
+    
     [self.navigationController pushViewController:formViewController animated:YES];
 }
 
