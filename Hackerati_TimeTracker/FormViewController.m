@@ -152,8 +152,6 @@
     NSString *buttonTitle = [alertView buttonTitleAtIndex:buttonIndex];
     if ([buttonTitle isEqualToString:@"Send"]) {
         [self sendData];
-    }else{
-        [self.navigationController popViewControllerAnimated:YES];
     }
 }
 
