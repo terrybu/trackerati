@@ -123,10 +123,19 @@
                         if ([obj objectForKey:@"client"] && [obj objectForKey:@"project"] && [obj objectForKey:@"date"] && [obj objectForKey:@"hour"]) {
                             if ([newRecords objectForKey:[obj objectForKey:@"date"]] ) {
                                 NSMutableArray *records = [newRecords objectForKey:[obj objectForKey:@"date"]];
-                                [records addObject:@{@"client":[obj objectForKey:@"client"],@"project":[obj objectForKey:@"project"],@"hour":[obj objectForKey:@"hour"]}];
+                                if ([obj objectForKey:@"comment"]) {
+                                    [records addObject:@{@"client":[obj objectForKey:@"client"],@"project":[obj objectForKey:@"project"],@"hour":[obj objectForKey:@"hour"],@"comment":[obj objectForKey:@"comment"]}];
+                                } else{
+                                    [records addObject:@{@"client":[obj objectForKey:@"client"],@"project":[obj objectForKey:@"project"],@"hour":[obj objectForKey:@"hour"]}];
+                                }
                                 [newRecords setObject:records forKey:[obj objectForKey:@"date"]];
                             } else{
-                                NSMutableArray *records = [[NSMutableArray alloc]initWithObjects:@{@"client":[obj objectForKey:@"client"],@"project":[obj objectForKey:@"project"],@"hour":[obj objectForKey:@"hour"]}, nil];
+                                NSMutableArray *records = nil;
+                                if ([obj objectForKey:@"comment"]) {
+                                    records = [[NSMutableArray alloc]initWithObjects:@{@"client":[obj objectForKey:@"client"],@"project":[obj objectForKey:@"project"],@"hour":[obj objectForKey:@"hour"],@"comment":[obj objectForKey:@"comment"]}, nil];
+                                } else{
+                                    records = [[NSMutableArray alloc]initWithObjects:@{@"client":[obj objectForKey:@"client"],@"project":[obj objectForKey:@"project"],@"hour":[obj objectForKey:@"hour"]}, nil];
+                                }
                                 [newRecords setObject:records forKey:[obj objectForKey:@"date"]];
                             }
                         }

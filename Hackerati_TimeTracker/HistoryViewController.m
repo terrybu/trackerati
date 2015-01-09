@@ -10,6 +10,7 @@
 #import "RecordTableViewCell.h"
 #import "HConstants.h"
 #import "LogInManager.h"
+#import "RecordDetailViewController.h"
 
 @interface HistoryViewController ()
 
@@ -94,8 +95,12 @@ static NSString *cellIdentifier = @"RecordTableViewCell";
     return cell;
 }
 
-- (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath{
-    return NO;
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    RecordDetailViewController *recordViewController =[[RecordDetailViewController alloc]initWithNibName:@"RecordDetailViewController" bundle:nil];
+    recordViewController.record = [((NSArray*)[self.history objectForKey:[self.keys objectAtIndex:indexPath.section]])objectAtIndex:indexPath.row];
+    recordViewController.viewTitle = [self.keys objectAtIndex:indexPath.section];
+    [self.navigationController pushViewController:recordViewController animated:YES];
 }
 
 @end

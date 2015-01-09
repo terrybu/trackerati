@@ -17,6 +17,7 @@
 #import "LogInManager.h"
 #import "NewProjectViewController.h"
 #import "LastSavedManager.h"
+#import "CustonLabel.h"
 
 
 @interface LogInViewController ()<MCSwipeTableViewCellDelegate>
@@ -50,6 +51,9 @@
 
 @property (strong, nonatomic) NSDictionary* datas;
 
+@property (strong, nonatomic) CustonLabel* commentTextLabel;
+@property (strong, nonatomic) UILabel *commentLabel;
+
 @end
 
 @implementation LogInViewController
@@ -69,26 +73,52 @@ static NSString *CellIdentifier = @"Cell";
     
     [self.tableView registerClass:[MCSwipeTableViewCell class] forCellReuseIdentifier:CellIdentifier];
     
-    self.formView = [[UIView alloc]initWithFrame:CGRectMake(-500, 0, 300, 400)];
-    
-    self.clientName = [[UILabel alloc]initWithFrame:CGRectMake(95, 57+35, 194, 60)];
-    self.projectName = [[UILabel alloc]initWithFrame:CGRectMake(95, 113+25, 194, 60)];
-    self.dateOfService = [[UILabel alloc]initWithFrame:CGRectMake(95, 156+25, 194, 60)];
-    self.hourOfService = [[UILabel alloc]initWithFrame:CGRectMake(95, 199+25, 58, 60)];
-    self.clientNameLabel = [[UILabel alloc]initWithFrame:CGRectMake(13, 57+35, 58, 35)];
-    self.projectNameLabel = [[UILabel alloc]initWithFrame:CGRectMake(13, 113+25, 58, 35)];
-    self.dateOfServiceLabel = [[UILabel alloc]initWithFrame:CGRectMake(13, 156+25, 58, 35)];
-    self.hourOfServiceLabel = [[UILabel alloc]initWithFrame:CGRectMake(13, 200+25, 58, 35)];
+    self.formView = [[UIView alloc]initWithFrame:CGRectMake(-500, 0, 300, 500)];
+    self.clientName = [[UILabel alloc]initWithFrame:CGRectMake(95, 57+25, 194, 60)];
+    self.projectName = [[UILabel alloc]initWithFrame:CGRectMake(95, 113, 194, 60)];
+    self.dateOfService = [[UILabel alloc]initWithFrame:CGRectMake(95, 146, 194, 60)];
+    self.hourOfService = [[UILabel alloc]initWithFrame:CGRectMake(95, 180, 58, 60)];
+    self.clientNameLabel = [[UILabel alloc]initWithFrame:CGRectMake(13, 57+25, 58, 35)];
+    self.projectNameLabel = [[UILabel alloc]initWithFrame:CGRectMake(13, 113, 58, 35)];
+    self.dateOfServiceLabel = [[UILabel alloc]initWithFrame:CGRectMake(13, 146, 58, 35)];
+    self.hourOfServiceLabel = [[UILabel alloc]initWithFrame:CGRectMake(13, 180, 58, 35)];
+    self.commentLabel = [[UILabel alloc] initWithFrame:CGRectMake(13, 210, 58, 35)];
+    self.commentTextLabel = [[CustonLabel alloc] initWithFrame:CGRectMake(95, 210, 194, 140)];
     self.sendButton = [UIButton buttonWithType:UIButtonTypeSystem];
-    self.sendButton.frame = CGRectMake(33, 320, 50, 36);
+    self.sendButton.frame = CGRectMake(13, 360, 60, 30);
+    self.sendButton.layer.cornerRadius = 5.0f;
+    self.sendButton.clipsToBounds = YES;
+    [self.sendButton.layer setBorderWidth:0.5f];
+    [self.sendButton.layer setBorderColor:[UIColor grayColor].CGColor];
     [self.sendButton setTitle:@"Send" forState:UIControlStateNormal];
-    [self.sendButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [self.sendButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
     [self.sendButton addTarget:self action:@selector(sendForm) forControlEvents:UIControlEventTouchUpInside];
     self.cancelButton = [UIButton buttonWithType:UIButtonTypeSystem];
-    self.cancelButton.frame = CGRectMake(125, 320, 50, 36);
+    self.cancelButton.frame = CGRectMake(95, 360, 60, 30);
+    self.cancelButton.layer.cornerRadius = 5.0f;
+    self.cancelButton.clipsToBounds = YES;
+    [self.cancelButton.layer setBorderWidth:0.5f];
+    [self.cancelButton.layer setBorderColor:[UIColor grayColor].CGColor];
     [self.cancelButton setTitle:@"Cancel" forState:UIControlStateNormal];
-    [self.cancelButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [self.cancelButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
     [self.cancelButton addTarget:self action:@selector(cancelForm) forControlEvents:UIControlEventTouchUpInside];
+    [self.clientNameLabel setFont:[UIFont fontWithName:@"HelveticaNeue" size:15]];
+    [self.clientName setFont:[UIFont fontWithName:@"HelveticaNeue" size:15]];
+    [self.projectName setFont:[UIFont fontWithName:@"HelveticaNeue" size:15]];
+    [self.dateOfService setFont:[UIFont fontWithName:@"HelveticaNeue" size:15]];
+    [self.clientNameLabel setFont:[UIFont fontWithName:@"HelveticaNeue" size:15]];
+    [self.hourOfService setFont:[UIFont fontWithName:@"HelveticaNeue" size:15]];
+    [self.projectNameLabel setFont:[UIFont fontWithName:@"HelveticaNeue" size:15]];
+    [self.dateOfServiceLabel setFont:[UIFont fontWithName:@"HelveticaNeue" size:15]];
+    [self.hourOfServiceLabel setFont:[UIFont fontWithName:@"HelveticaNeue" size:15]];
+    [self.commentLabel setFont:[UIFont fontWithName:@"HelveticaNeue" size:15]];
+    [self.commentTextLabel setFont:[UIFont fontWithName:@"HelveticaNeue" size:15]];
+    self.commentTextLabel.layer.cornerRadius = 5.0f;
+    self.commentTextLabel.clipsToBounds = YES;
+    [self.commentTextLabel.layer setBorderWidth:0.5f];
+    [self.commentTextLabel.layer setBorderColor:[UIColor grayColor].CGColor];
+    [self.commentTextLabel setNumberOfLines:200];
+    [self.commentTextLabel setUserInteractionEnabled:YES];
     [self.formView addSubview:self.clientName];
     [self.formView addSubview:self.projectName];
     [self.formView addSubview:self.dateOfService];
@@ -99,7 +129,13 @@ static NSString *CellIdentifier = @"Cell";
     [self.formView addSubview:self.hourOfServiceLabel];
     [self.formView addSubview:self.sendButton];
     [self.formView addSubview:self.cancelButton];
-    self.formView.backgroundColor = [UIColor lightGrayColor];
+    [self.formView addSubview:self.commentLabel];
+    [self.formView addSubview:self.commentTextLabel];
+    self.formView.backgroundColor = [UIColor colorWithRed:239.0f/255.0f green:239.0f/255.0f blue:244.0f/255.0f alpha:1.0f/1.0f];
+    self.formView.layer.cornerRadius = 5.0f;
+    self.formView.clipsToBounds = YES;
+    [self.formView.layer setBorderWidth:0.5f];
+    [self.formView.layer setBorderColor:[UIColor grayColor].CGColor];
     [self.view addSubview:self.formView];
     
     self.refreshControl = [[UIRefreshControl alloc] init];
@@ -119,7 +155,7 @@ static NSString *CellIdentifier = @"Cell";
     [messageLabel sizeToFit];
     
     self.tableView.backgroundView = messageLabel;
-    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    
 }
 
 -(void) viewWillAppear:(BOOL)animated{
@@ -235,6 +271,7 @@ static NSString *CellIdentifier = @"Cell";
     }
     
     cell.delegate =self;
+    
     __weak typeof(self) weakSelf = self;
     
     UIColor *whiteColor = [UIColor whiteColor];
@@ -257,14 +294,22 @@ static NSString *CellIdentifier = @"Cell";
         [weakSelf.clientNameLabel sizeToFit];
         weakSelf.projectNameLabel.text = @"Project:";
         [weakSelf.projectNameLabel sizeToFit];
-        weakSelf.dateOfServiceLabel.text = @"Date";
+        weakSelf.dateOfServiceLabel.text = @"Date:";
         [weakSelf.dateOfServiceLabel sizeToFit];
         weakSelf.hourOfServiceLabel.text = @"Hour:";
         [weakSelf.hourOfServiceLabel sizeToFit];
+        weakSelf.commentLabel.text = @"Comment:";
+        [weakSelf.commentLabel sizeToFit];
         
         weakSelf.clientNameString = weakSelf.clientName.text;
         weakSelf.dateString = weakSelf.dateOfService.text;
         weakSelf.projectNameString = weakSelf.projectName.text;
+        
+        if ([[LastSavedManager sharedManager] getLastSavedCommentForClient:weakSelf.clientNameString withProject:weakSelf.projectNameString])  {
+            weakSelf.commentTextLabel.text = [[LastSavedManager sharedManager] getLastSavedCommentForClient:weakSelf.clientNameString withProject:weakSelf.projectNameString];
+        } else{
+            weakSelf.commentTextLabel.text =@"<NONE>";
+        }
         
         weakSelf.hourOfService.text = [[LastSavedManager sharedManager] getLastSavedHourForClient:weakSelf.clientNameString withProject:weakSelf.projectNameString withCurrentHour:@"8"];
         weakSelf.hourString = weakSelf.hourOfService.text;

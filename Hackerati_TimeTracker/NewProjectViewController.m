@@ -28,7 +28,7 @@ static NSString *CellIdentifier = @"Cell";
     self.sectionInformation = [[NSMutableDictionary alloc]init];
     self.rowInformation = [[NSMutableDictionary alloc]init];
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
-    self.title = @"Drag Right To Add New Project";
+    self.title = @"Drag right to add";
 }
 
 - (void) viewWillAppear:(BOOL)animated{
@@ -79,6 +79,7 @@ static NSString *CellIdentifier = @"Cell";
     }
     
     cell.delegate =self;
+    
     __weak typeof(self) weakSelf = self;
     
     UIColor *whiteColor = [UIColor whiteColor];

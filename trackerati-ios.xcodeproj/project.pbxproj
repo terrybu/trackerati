@@ -54,6 +54,9 @@
 		CE07C0BD1A5F29B700A3B961 /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE07C0BC1A5F29B700A3B961 /* QuickLook.framework */; };
 		CE07C0C31A5F29DF00A3B961 /* HockeySDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE07C0BF1A5F29DF00A3B961 /* HockeySDK.framework */; };
 		CE07C0C51A5F29DF00A3B961 /* HockeySDKResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = CE07C0C21A5F29DF00A3B961 /* HockeySDKResources.bundle */; };
+		CE3BC5621A60282D006340F7 /* RecordDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE3BC5601A60282D006340F7 /* RecordDetailViewController.m */; };
+		CE3BC5631A60282D006340F7 /* RecordDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE3BC5611A60282D006340F7 /* RecordDetailViewController.xib */; };
+		CE3BC5661A6031ED006340F7 /* CustonLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = CE3BC5651A6031ED006340F7 /* CustonLabel.m */; };
 		CED58C1D1A5ADAB3001C343B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = CED58C1C1A5ADAB3001C343B /* main.m */; };
 		CED58C201A5ADAB3001C343B /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CED58C1F1A5ADAB3001C343B /* AppDelegate.m */; };
 		CED58C281A5ADAB3001C343B /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CED58C271A5ADAB3001C343B /* Images.xcassets */; };
@@ -134,6 +137,11 @@
 		CE07C0BF1A5F29DF00A3B961 /* HockeySDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = HockeySDK.framework; sourceTree = "<group>"; };
 		CE07C0C11A5F29DF00A3B961 /* HockeySDK.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = HockeySDK.xcconfig; sourceTree = "<group>"; };
 		CE07C0C21A5F29DF00A3B961 /* HockeySDKResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = HockeySDKResources.bundle; sourceTree = "<group>"; };
+		CE3BC55F1A60282D006340F7 /* RecordDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecordDetailViewController.h; sourceTree = "<group>"; };
+		CE3BC5601A60282D006340F7 /* RecordDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecordDetailViewController.m; sourceTree = "<group>"; };
+		CE3BC5611A60282D006340F7 /* RecordDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RecordDetailViewController.xib; sourceTree = "<group>"; };
+		CE3BC5641A6031ED006340F7 /* CustonLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustonLabel.h; sourceTree = "<group>"; };
+		CE3BC5651A6031ED006340F7 /* CustonLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustonLabel.m; sourceTree = "<group>"; };
 		CED58C171A5ADAB3001C343B /* trackerati-ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "trackerati-ios.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CED58C1B1A5ADAB3001C343B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CED58C1C1A5ADAB3001C343B /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -256,6 +264,11 @@
 				CE07C0931A5C8B2900A3B961 /* RecordTableViewCell.h */,
 				CE07C0941A5C8B2900A3B961 /* RecordTableViewCell.m */,
 				CE07C0951A5C8B2900A3B961 /* RecordTableViewCell.xib */,
+				CE3BC55F1A60282D006340F7 /* RecordDetailViewController.h */,
+				CE3BC5601A60282D006340F7 /* RecordDetailViewController.m */,
+				CE3BC5611A60282D006340F7 /* RecordDetailViewController.xib */,
+				CE3BC5641A6031ED006340F7 /* CustonLabel.h */,
+				CE3BC5651A6031ED006340F7 /* CustonLabel.m */,
 				CE07C09C1A5CF22E00A3B961 /* FormViewController.h */,
 				CE07C09D1A5CF22E00A3B961 /* FormViewController.m */,
 				CE07C09E1A5CF22E00A3B961 /* FormViewController.xib */,
@@ -439,6 +452,7 @@
 				CE07C0971A5C8B2900A3B961 /* RecordTableViewCell.xib in Resources */,
 				CE07C0901A5C6C4200A3B961 /* HistoryViewController.xib in Resources */,
 				CE07C0521A5B087C00A3B961 /* LogInViewController.xib in Resources */,
+				CE3BC5631A60282D006340F7 /* RecordDetailViewController.xib in Resources */,
 				CE07C0B21A5DA83800A3B961 /* NewProjectViewController.xib in Resources */,
 				CE07C09B1A5C9A6100A3B961 /* CheckMark@2x.png in Resources */,
 				CE07C0A01A5CF22E00A3B961 /* FormViewController.xib in Resources */,
@@ -507,6 +521,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CE07C0961A5C8B2900A3B961 /* RecordTableViewCell.m in Sources */,
+				CE3BC5621A60282D006340F7 /* RecordDetailViewController.m in Sources */,
 				CE07C09F1A5CF22E00A3B961 /* FormViewController.m in Sources */,
 				CE07C0651A5B966100A3B961 /* FireBaseManager.m in Sources */,
 				CE07C0551A5B132700A3B961 /* HConstants.m in Sources */,
@@ -515,6 +530,7 @@
 				CE07C0621A5B87D100A3B961 /* LogInManager.m in Sources */,
 				CE07C0AA1A5D771500A3B961 /* THDateDay.m in Sources */,
 				CED58C1D1A5ADAB3001C343B /* main.m in Sources */,
+				CE3BC5661A6031ED006340F7 /* CustonLabel.m in Sources */,
 				CE07C0AC1A5D771500A3B961 /* THDatePickerViewController.m in Sources */,
 				CE07C0511A5B087C00A3B961 /* LogInViewController.m in Sources */,
 				CE07C0681A5B9D3E00A3B961 /* Reachability.m in Sources */,

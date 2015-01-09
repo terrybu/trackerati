@@ -13,4 +13,6 @@
 + (LastSavedManager*)sharedManager;
 - (NSString*)getLastSavedHourForClient:(NSString*)client withProject:(NSString*)project withCurrentHour:(NSString*)hour;
 - (void)saveClient:(NSString*)client withProject:(NSString*)project andHour:(NSString*)hour;
+- (void)saveClient:(NSString*)client withProject:(NSString*)project withHour:(NSString*)hour andComment:(NSString*)comment;
+-(NSString*)getLastSavedCommentForClient:(NSString*)client withProject:(NSString*)project;
 @end

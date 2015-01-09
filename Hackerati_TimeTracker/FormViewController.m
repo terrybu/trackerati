@@ -11,8 +11,9 @@
 #import "FireBaseManager.h"
 #import "HConstants.h"
 #import "LastSavedManager.h"
+#import <QuartzCore/QuartzCore.h>
 
-@interface FormViewController ()<THDatePickerDelegate>
+@interface FormViewController ()<THDatePickerDelegate,UITextViewDelegate>
 @property (strong, nonatomic) THDatePickerViewController *datePicker;
 @property (nonatomic, retain) NSDate * curDate;
 @property (nonatomic, retain) NSDateFormatter * formatter;
@@ -24,7 +25,11 @@
 @property (strong, nonatomic) Firebase *fireBase;
 - (IBAction)hourStepperControl:(id)sender;
 - (IBAction)sendAction:(id)sender;
-
+@property (weak, nonatomic) IBOutlet UIScrollView *mainScrollView;
+@property (weak, nonatomic) IBOutlet UIView *detailContainerView;
+@property (weak, nonatomic) IBOutlet UITextView *commentTextView;
+@property (weak, nonatomic) IBOutlet UILabel *commentLabel;
+@property (weak, nonatomic) IBOutlet UIButton *sendButton;
 @property (weak, nonatomic) IBOutlet UIButton *dateButton;
 - (IBAction)dateButtonAction:(id)sender;
 
@@ -35,7 +40,22 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-   
+    self.view.backgroundColor = [UIColor colorWithRed:239.0f/255.0f green:239.0f/255.0f blue:244.0f/255.0f alpha:1.0f/1.0f];
+    self.detailContainerView.backgroundColor = [UIColor colorWithRed:239.0f/255.0f green:239.0f/255.0f blue:244.0f/255.0f alpha:1.0f/1.0f];
+    self.commentTextView.layer.cornerRadius = 5.0f;
+    self.commentTextView.clipsToBounds = YES;
+    [self.commentTextView.layer setBorderWidth:0.5f];
+    [self.commentTextView.layer setBorderColor:[UIColor grayColor].CGColor];
+    
+    self.sendButton.layer.cornerRadius = 5.0f;
+    self.sendButton.clipsToBounds = YES;
+    [self.sendButton.layer setBorderWidth:0.5f];
+    [self.sendButton.layer setBorderColor:[UIColor grayColor].CGColor];
+    
+    UITapGestureRecognizer *tap =[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapAction)];
+    [self.detailContainerView addGestureRecognizer:tap];
+    
+    self.title = @"Edit";
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -47,7 +67,8 @@
     [formatter setDateFormat:@"MM/dd/yyyy"];
     [self.dateButton setTitle:[formatter stringFromDate:[NSDate date]] forState:UIControlStateNormal];
     self.dateString = [formatter stringFromDate:[NSDate date]];
-    self.hourLabel.text = @"0";
+    self.hourLabel.text = @"0.0";
+    self.hourString = @"0.0";
 }
 
 - (void)didReceiveMemoryWarning {
@@ -136,10 +157,43 @@
     }
 }
 
+- (BOOL)textViewShouldBeginEditing:(UITextView *)textView{
+
+    [self.mainScrollView setContentOffset:CGPointMake(0, 140) animated:YES];
+    return YES;
+}
+
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text{
+    
+    BOOL reachedLimit = true;
+    
+    if ([[textView text] length] - range.length + text.length > 500)
+        reachedLimit = false;
+    return reachedLimit;
+}
+
+-(void)tapAction{
+    [self.view endEditing:YES];
+    [self.mainScrollView setContentOffset:CGPointMake(0, -64) animated:YES];
+}
+
 -(void)sendData{
-    self.fireBase = [FireBaseManager recordURLsharedFireBase];
-    [[self.fireBase childByAutoId] setValue:@{@"client":self.clientName,@"date":self.dateString,@"hour":self.hourString,@"project":self.projectName}];
-    [[LastSavedManager sharedManager] saveClient:self.clientName withProject:self.projectName andHour:self.hourString];
-    [self.navigationController popViewControllerAnimated:YES];
+    
+    if ([self.hourString isEqualToString:@"0.0"]) {
+        [[[UIAlertView alloc]initWithTitle:@"Error" message:@"You can not submit 0 hour" delegate:nil cancelButtonTitle:@"Cancel" otherButtonTitles: nil] show];
+    }else{
+        self.fireBase = [FireBaseManager recordURLsharedFireBase];
+        if (self.commentTextView.text && ([self.commentTextView.text length] > 0)) {
+            [[self.fireBase childByAutoId] setValue:@{@"client":self.clientName,@"date":self.dateString,@"hour":self.hourString,@"project":self.projectName,@"comment":self.commentTextView.text}];
+            [[LastSavedManager sharedManager] saveClient:self.clientName withProject:self.projectName withHour:self.hourString andComment:self.commentTextView.text];
+        } else{
+            [[self.fireBase childByAutoId] setValue:@{@"client":self.clientName,@"date":self.dateString,@"hour":self.hourString,@"project":self.projectName}];
+            [[LastSavedManager sharedManager] saveClient:self.clientName withProject:self.projectName andHour:self.hourString];
+        }
+        
+        
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+    
 }
 @end
