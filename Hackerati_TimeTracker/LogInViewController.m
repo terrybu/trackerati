@@ -10,7 +10,7 @@
 #import "HistoryViewController.h"
 #import <QuartzCore/QuartzCore.h>
 #import "HConstants.h"
-#import <MCSwipeTableViewCell.h>
+#import "CustomMCSwipeTableViewCell.h"
 #import "FormViewController.h"
 #import "FireBaseManager.h"
 #import "DataParser.h"
@@ -29,7 +29,6 @@
 @property (strong, nonatomic) UIDynamicAnimator *dynamicAnimator;
 @property (strong, nonatomic) UIGravityBehavior *gravityBehavior;
 @property (strong, nonatomic) UISnapBehavior *snapBehavior;
-
 @property (strong, nonatomic) UILabel *clientName;
 @property (strong, nonatomic) UILabel *projectName;
 @property (strong, nonatomic) UILabel *dateOfService;
@@ -43,14 +42,11 @@
 @property (strong, nonatomic) UIButton *cancelButton;
 @property (strong, nonatomic) Firebase *fireBase;
 @property (strong, nonatomic) UIRefreshControl *refreshControl;
-
 @property (strong, nonatomic) NSString *clientNameString;
 @property (strong, nonatomic) NSString *dateString;
 @property (strong, nonatomic) NSString *hourString;
 @property (strong, nonatomic) NSString *projectNameString;
-
 @property (strong, nonatomic) NSDictionary* datas;
-
 @property (strong, nonatomic) CustonLabel* commentTextLabel;
 @property (strong, nonatomic) UILabel *commentLabel;
 
@@ -66,14 +62,11 @@ static NSString *CellIdentifier = @"Cell";
     self.title = @"Enter your hours";
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"History" style:UIBarButtonItemStyleBordered target:self action:@selector(historyAction:)];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addNewProjects)];
-    
     self.sectionInformation = [[NSMutableDictionary alloc]init];
     self.rowInformation = [[NSMutableDictionary alloc]init];
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
-    
-    [self.tableView registerClass:[MCSwipeTableViewCell class] forCellReuseIdentifier:CellIdentifier];
-    
-    self.formView = [[UIView alloc]initWithFrame:CGRectMake(-500, 0, 300, 500)];
+    [self.tableView registerClass:[CustomMCSwipeTableViewCell class] forCellReuseIdentifier:CellIdentifier];
+    self.formView = [[UIView alloc]initWithFrame:CGRectMake(-450, 0, 300, 500)];
     self.clientName = [[UILabel alloc]initWithFrame:CGRectMake(95, 57+25, 194, 60)];
     self.projectName = [[UILabel alloc]initWithFrame:CGRectMake(95, 113, 194, 60)];
     self.dateOfService = [[UILabel alloc]initWithFrame:CGRectMake(95, 146, 194, 60)];
@@ -138,6 +131,7 @@ static NSString *CellIdentifier = @"Cell";
     [self.formView.layer setBorderColor:[UIColor grayColor].CGColor];
     [self.view addSubview:self.formView];
     
+    
     self.refreshControl = [[UIRefreshControl alloc] init];
     self.refreshControl.backgroundColor = [UIColor whiteColor];
     self.refreshControl.tintColor = [UIColor grayColor];
@@ -146,6 +140,8 @@ static NSString *CellIdentifier = @"Cell";
                   forControlEvents:UIControlEventValueChanged];
     [self.tableView addSubview:self.refreshControl];
     
+    
+    
     UILabel *messageLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)];
     messageLabel.text = @"Please Pull to Refresh";
     messageLabel.textColor = [UIColor blackColor];
@@ -153,7 +149,6 @@ static NSString *CellIdentifier = @"Cell";
     messageLabel.textAlignment = NSTextAlignmentCenter;
     messageLabel.font = [UIFont fontWithName:@"Palatino-Italic" size:20];
     [messageLabel sizeToFit];
-    
     self.tableView.backgroundView = messageLabel;
     
 }
@@ -164,7 +159,6 @@ static NSString *CellIdentifier = @"Cell";
 }
 
 -(void)refreshControlAction{
-    
     [[FireBaseManager connectivityURLsharedFireBase] observeEventType:FEventTypeValue withBlock:^(FDataSnapshot *snapshot){
         if([snapshot.value boolValue] && [[NSUserDefaults standardUserDefaults]objectForKey:[HConstants KCurrentUser]]) {
             [[DataParser sharedManager] loginSuccessful];
@@ -254,10 +248,10 @@ static NSString *CellIdentifier = @"Cell";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
-    MCSwipeTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    CustomMCSwipeTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     
     if (!cell) {
-        cell = [[MCSwipeTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
+        cell = [[CustomMCSwipeTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
         
         // Remove inset of iOS 7 separators.
         if ([cell respondsToSelector:@selector(setSeparatorInset:)]) {
@@ -278,46 +272,7 @@ static NSString *CellIdentifier = @"Cell";
     UIImageView *checkMark = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"CheckMark.png"]];
     UIImageView *eraseMark = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Erase.png"]];
     
-    [cell setSwipeGestureWithView:checkMark color:whiteColor mode:MCSwipeTableViewCellModeSwitch state:MCSwipeTableViewCellState1 completionBlock:^(MCSwipeTableViewCell *cell, MCSwipeTableViewCellState state, MCSwipeTableViewCellMode mode) {
-        weakSelf.tableView.userInteractionEnabled = NO;
-        NSArray *rows = [weakSelf.sectionInformation objectForKey:[NSNumber numberWithInteger:indexPath.section]];
-        NSDate *date = [[NSDate alloc]init];
-        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-        [formatter setDateFormat:@"MM/dd/yyyy"];
-        weakSelf.projectName.text = [rows objectAtIndex:indexPath.row];
-        [weakSelf.projectName sizeToFit];
-        weakSelf.clientName.text = [weakSelf.rowInformation objectForKey:[NSNumber numberWithInteger:indexPath.section]];
-        [weakSelf.clientName sizeToFit];
-        weakSelf.dateOfService.text = [formatter stringFromDate:date];
-        [weakSelf.dateOfService sizeToFit];
-        weakSelf.clientNameLabel.text = @"Client:";
-        [weakSelf.clientNameLabel sizeToFit];
-        weakSelf.projectNameLabel.text = @"Project:";
-        [weakSelf.projectNameLabel sizeToFit];
-        weakSelf.dateOfServiceLabel.text = @"Date:";
-        [weakSelf.dateOfServiceLabel sizeToFit];
-        weakSelf.hourOfServiceLabel.text = @"Hour:";
-        [weakSelf.hourOfServiceLabel sizeToFit];
-        weakSelf.commentLabel.text = @"Comment:";
-        [weakSelf.commentLabel sizeToFit];
-        
-        weakSelf.clientNameString = weakSelf.clientName.text;
-        weakSelf.dateString = weakSelf.dateOfService.text;
-        weakSelf.projectNameString = weakSelf.projectName.text;
-        
-        if ([[LastSavedManager sharedManager] getLastSavedCommentForClient:weakSelf.clientNameString withProject:weakSelf.projectNameString])  {
-            weakSelf.commentTextLabel.text = [[LastSavedManager sharedManager] getLastSavedCommentForClient:weakSelf.clientNameString withProject:weakSelf.projectNameString];
-        } else{
-            weakSelf.commentTextLabel.text =@"<NONE>";
-        }
-        
-        weakSelf.hourOfService.text = [[LastSavedManager sharedManager] getLastSavedHourForClient:weakSelf.clientNameString withProject:weakSelf.projectNameString withCurrentHour:@"8"];
-        weakSelf.hourString = weakSelf.hourOfService.text;
-        [weakSelf.hourOfService sizeToFit];
-        
-        [weakSelf slideForm];
-    }];
-
+    [cell setSwipeGestureWithView:checkMark color:whiteColor mode:MCSwipeTableViewCellModeSwitch state:MCSwipeTableViewCellState1 completionBlock:nil];
     [cell setSwipeGestureWithView:eraseMark color:whiteColor mode:MCSwipeTableViewCellModeSwitch state:MCSwipeTableViewCellState3 completionBlock:nil];
     [cell setSwipeGestureWithView:eraseMark color:whiteColor mode:MCSwipeTableViewCellModeExit state:MCSwipeTableViewCellState4 completionBlock:^(MCSwipeTableViewCell *cell, MCSwipeTableViewCellState state, MCSwipeTableViewCellMode mode) {
         NSDictionary* data = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants KcurrentUserClientList]];
@@ -335,8 +290,6 @@ static NSString *CellIdentifier = @"Cell";
         
         [[NSUserDefaults standardUserDefaults] setObject:mutableData forKey:[HConstants KcurrentUserClientList]];
         [[NSUserDefaults standardUserDefaults]synchronize];
-        
-        
         
         NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants KCurrentUser]];
         __block NSString *uniqueAddress = nil;
@@ -364,12 +317,14 @@ static NSString *CellIdentifier = @"Cell";
     
     NSArray *rows = [self.sectionInformation objectForKey:[NSNumber numberWithInteger:indexPath.section]];
     cell.textLabel.text = [rows objectAtIndex:indexPath.row];
+    cell.project = [rows objectAtIndex:indexPath.row];
+    cell.client = (NSString*)[self.rowInformation objectForKey:[NSNumber numberWithInteger:indexPath.section]];
     return cell;
     
 }
 
 -(void)slideForm{
-    self.formView.frame = CGRectMake(-500, 0, 300, 400);
+    self.formView.frame = CGRectMake(-450, 0, 300, 400);
     CGRect frame = self.view.bounds;
     self.dynamicAnimator = [[UIDynamicAnimator alloc]initWithReferenceView:self.view];
     UICollisionBehavior *collisionBehavior = [[UICollisionBehavior alloc] initWithItems:@[self.formView]];
@@ -383,7 +338,7 @@ static NSString *CellIdentifier = @"Cell";
 
 -(void)slideOutForm{
     [self.dynamicAnimator removeBehavior:self.gravityBehavior];
-    self.snapBehavior = [[UISnapBehavior alloc]initWithItem:self.formView snapToPoint:CGPointMake(-500, 0)];
+    self.snapBehavior = [[UISnapBehavior alloc]initWithItem:self.formView snapToPoint:CGPointMake(-450, 0)];
     [self.dynamicAnimator addBehavior:self.snapBehavior];
 }
 
@@ -411,15 +366,54 @@ static NSString *CellIdentifier = @"Cell";
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     FormViewController *formViewController = [[FormViewController alloc]initWithNibName:@"FormViewController" bundle:nil];
-    
     NSArray *rows = [self.sectionInformation objectForKey:[NSNumber numberWithInteger:indexPath.section]];
     NSString *project = [rows objectAtIndex:indexPath.row];
     NSString *client = [self.rowInformation objectForKey:[NSNumber numberWithInteger:indexPath.section]];
-    
     formViewController.projectName = project;
     formViewController.clientName = client;
-    
     [self.navigationController pushViewController:formViewController animated:YES];
+}
+
+- (void)swipeTableViewCell:(CustomMCSwipeTableViewCell *)cell didSwipeWithPercentage:(CGFloat)percentage{
+    if (percentage > 0.0) {
+        
+        self.tableView.userInteractionEnabled = NO;
+        NSDate *date = [[NSDate alloc]init];
+        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+        [formatter setDateFormat:@"MM/dd/yyyy"];
+        self.projectName.text = cell.project;
+        [self.projectName sizeToFit];
+        self.clientName.text = cell.client;
+        [self.clientName sizeToFit];
+        self.dateOfService.text = [formatter stringFromDate:date];
+        [self.dateOfService sizeToFit];
+        self.clientNameLabel.text = @"Client:";
+        [self.clientNameLabel sizeToFit];
+        self.projectNameLabel.text = @"Project:";
+        [self.projectNameLabel sizeToFit];
+        self.dateOfServiceLabel.text = @"Date:";
+        [self.dateOfServiceLabel sizeToFit];
+        self.hourOfServiceLabel.text = @"Hour:";
+        [self.hourOfServiceLabel sizeToFit];
+        self.commentLabel.text = @"Comment:";
+        [self.commentLabel sizeToFit];
+        self.clientNameString = self.clientName.text;
+        self.dateString = self.dateOfService.text;
+        self.projectNameString = self.projectName.text;
+        
+        if ([[LastSavedManager sharedManager] getLastSavedCommentForClient:self.clientNameString withProject:self.projectNameString])  {
+            self.commentTextLabel.text = [[LastSavedManager sharedManager] getLastSavedCommentForClient:self.clientNameString withProject:self.projectNameString];
+        } else{
+            self.commentTextLabel.text =@"<NONE>";
+        }
+        
+        self.hourOfService.text = [[LastSavedManager sharedManager] getLastSavedHourForClient:self.clientNameString withProject:self.projectNameString withCurrentHour:@"8"];
+        self.hourString = self.hourOfService.text;
+        [self.hourOfService sizeToFit];
+        
+        [self slideForm];
+        
+    }
 }
 
 @end

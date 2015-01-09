@@ -18,7 +18,7 @@
 +(NSString*)KCurrentUser;
 +(NSString*)KCurrentUserRecords;
 +(NSString*)KcurrentUserClientList;
-+(NSString*)KlastSavedHour;
++(NSString*)KlastSavedRecord;
 +(NSString*)kRawMasterClientList;
 +(NSString*)KSanitizedCurrentUserRecords;
 +(NSString*)KSanitizedCurrentUserRecordsKeys;

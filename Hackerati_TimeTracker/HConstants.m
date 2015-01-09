@@ -15,7 +15,7 @@ static NSString * const kRawMasterClientList = @"RawMasterClientsList";
 static NSString * const KCurrentUser = @"currentUser";
 static NSString * const KCurrentUserRecords = @"currentUserRecords";
 static NSString * const KcurrentUserClientList = @"currentUserClientList";
-static NSString * const KlastSavedHour = @"lastSavedHour";
+static NSString * const KlastSavedRecord = @"lastSavedRecord";
 static NSString * const KSanitizedCurrentUserRecords = @"SanitizedCurrentUserRecords";
 static NSString * const KSanitizedCurrentUserRecordsKeys = @"SanitizedCurrentUserRecordsKeys";
 @implementation HConstants
@@ -44,8 +44,8 @@ static NSString * const KSanitizedCurrentUserRecordsKeys = @"SanitizedCurrentUse
     return KcurrentUserClientList;
 }
 
-+(NSString*)KlastSavedHour{
-    return KlastSavedHour;
++(NSString*)KlastSavedRecord{
+    return KlastSavedRecord;
 }
 
 +(NSString*)kRawMasterClientList{
