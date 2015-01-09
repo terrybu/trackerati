@@ -139,6 +139,25 @@ static NSString *CellIdentifier = @"Cell";
 }
 
 -(void)sendForm{
+    NSDictionary *history = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants KSanitizedCurrentUserRecords]];
+    if ([history objectForKey:self.dateString]) {
+        [[[UIAlertView alloc] initWithTitle:@"Warning" message:[NSString stringWithFormat: @"You already sent a record for %@. Do you still want to send this ?",self.dateString] delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Send", nil] show];
+    } else{
+        [self sendData];
+    }
+}
+- (void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    NSString *buttonTitle = [alertView buttonTitleAtIndex:buttonIndex];
+    if ([buttonTitle isEqualToString:@"Send"]) {
+        [self sendData];
+    }else{
+        self.tableView.userInteractionEnabled = YES;
+        [self slideOutForm];
+    }
+}
+
+-(void)sendData{
+    self.tableView.userInteractionEnabled = YES;
     self.fireBase = [FireBaseManager recordURLsharedFireBase];
     [[self.fireBase childByAutoId] setValue:@{@"client":self.clientNameString,@"date":self.dateString,@"hour":self.hourString,@"project":self.projectNameString}];
     [self slideOutForm];
@@ -146,6 +165,7 @@ static NSString *CellIdentifier = @"Cell";
 }
 
 -(void)cancelForm{
+    self.tableView.userInteractionEnabled = YES;
    [self slideOutForm];
 }
 
@@ -220,6 +240,7 @@ static NSString *CellIdentifier = @"Cell";
     UIImageView *eraseMark = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Erase.png"]];
     
     [cell setSwipeGestureWithView:checkMark color:whiteColor mode:MCSwipeTableViewCellModeSwitch state:MCSwipeTableViewCellState1 completionBlock:^(MCSwipeTableViewCell *cell, MCSwipeTableViewCellState state, MCSwipeTableViewCellMode mode) {
+        weakSelf.tableView.userInteractionEnabled = NO;
         NSArray *rows = [weakSelf.sectionInformation objectForKey:[NSNumber numberWithInteger:indexPath.section]];
         NSDate *date = [[NSDate alloc]init];
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
