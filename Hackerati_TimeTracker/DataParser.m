@@ -103,11 +103,13 @@
                     
                 }
                 else {
+                    /*
                     if ([self.delegate respondsToSelector:@selector(loginUnsuccessful)]) {
                         dispatch_async(dispatch_get_main_queue(), ^{
                             [self.delegate loginUnsuccessful];
                         });
                     }
+                    */
                 }
             });
         }];
@@ -163,11 +165,13 @@
                     
                 }
                 else {
+                    /*
                     if ([self.delegate respondsToSelector:@selector(loginUnsuccessful)]) {
                         dispatch_async(dispatch_get_main_queue(), ^{
                             [self.delegate loginUnsuccessful];
                         });
                     }
+                     */
                 }
             });
         }];
