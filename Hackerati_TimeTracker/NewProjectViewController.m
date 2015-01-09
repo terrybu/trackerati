@@ -33,15 +33,17 @@ static NSString *CellIdentifier = @"Cell";
 
 - (void) viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    self.datas = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants kMasterClientList]];
-    __block int count = 0;
-    __weak typeof(self) weakSelf = self;
-    [self.datas enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop){
-        [weakSelf.sectionInformation setObject:obj forKey:[NSNumber numberWithInt:count]];
-        [weakSelf.rowInformation setObject:key forKey:[NSNumber numberWithInt:count]];
-        count++;
-    }];
-    [self.tableView reloadData];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        self.datas = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants kMasterClientList]];
+        __block int count = 0;
+        __weak typeof(self) weakSelf = self;
+        [self.datas enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop){
+            [weakSelf.sectionInformation setObject:obj forKey:[NSNumber numberWithInt:count]];
+            [weakSelf.rowInformation setObject:key forKey:[NSNumber numberWithInt:count]];
+            count++;
+        }];
+        [self.tableView reloadData];
+    });
 }
 
 - (void)didReceiveMemoryWarning {

@@ -177,20 +177,22 @@ static NSString *CellIdentifier = @"Cell";
 }
 
 -(void) loadData{
-    [self.refreshControl endRefreshing];
-    self.datas = (NSDictionary*)[[NSUserDefaults standardUserDefaults]objectForKey:[HConstants KcurrentUserClientList]];
-    __block int count = 0;
-    __weak typeof(self) weakSelf = self;
-    self.sectionInformation = nil;
-    self.rowInformation = nil;
-    self.sectionInformation = [[NSMutableDictionary alloc]init];
-    self.rowInformation = [[NSMutableDictionary alloc]init];
-    [self.datas enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop){
-        [weakSelf.sectionInformation setObject:obj forKey:[NSNumber numberWithInt:count]];
-        [weakSelf.rowInformation setObject:key forKey:[NSNumber numberWithInt:count]];
-        count++;
-    }];
-    [self.tableView reloadData];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.refreshControl endRefreshing];
+        self.datas = (NSDictionary*)[[NSUserDefaults standardUserDefaults]objectForKey:[HConstants KcurrentUserClientList]];
+        __block int count = 0;
+        __weak typeof(self) weakSelf = self;
+        self.sectionInformation = nil;
+        self.rowInformation = nil;
+        self.sectionInformation = [[NSMutableDictionary alloc]init];
+        self.rowInformation = [[NSMutableDictionary alloc]init];
+        [self.datas enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop){
+            [weakSelf.sectionInformation setObject:obj forKey:[NSNumber numberWithInt:count]];
+            [weakSelf.rowInformation setObject:key forKey:[NSNumber numberWithInt:count]];
+            count++;
+        }];
+        [self.tableView reloadData];
+    });
 }
 
 - (void) historyAction:(UIBarButtonItem*)barButton{
