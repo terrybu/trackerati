@@ -119,6 +119,24 @@
 }
 
 - (IBAction)sendAction:(id)sender {
+    NSDictionary *history = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants KSanitizedCurrentUserRecords]];
+    if ([history objectForKey:self.dateString]) {
+        [[[UIAlertView alloc] initWithTitle:@"Warning" message:[NSString stringWithFormat: @"You already sent a record for %@. Do you still want to send this ?",self.dateString] delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Send", nil] show];
+    } else{
+        [self sendData];
+    }
+}
+
+- (void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    NSString *buttonTitle = [alertView buttonTitleAtIndex:buttonIndex];
+    if ([buttonTitle isEqualToString:@"Send"]) {
+        [self sendData];
+    }else{
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+}
+
+-(void)sendData{
     self.fireBase = [FireBaseManager recordURLsharedFireBase];
     [[self.fireBase childByAutoId] setValue:@{@"client":self.clientName,@"date":self.dateString,@"hour":self.hourString,@"project":self.projectName}];
     [[LastSavedManager sharedManager] saveClient:self.clientName withProject:self.projectName andHour:self.hourString];
