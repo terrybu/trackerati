@@ -400,6 +400,7 @@
 					};
 					CED58C2F1A5ADAB3001C343B = {
 						CreatedOnToolsVersion = 6.1.1;
+						DevelopmentTeam = 7R3P88JPU3;
 						TestTargetID = CED58C161A5ADAB3001C343B;
 					};
 				};
@@ -674,6 +675,8 @@
 		CED58C3E1A5ADAB3001C343B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -685,6 +688,7 @@
 				INFOPLIST_FILE = Hackerati_TimeTrackerTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "trackerati-iosTests";
+				PROVISIONING_PROFILE = "";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Hackerati_TimeTracker.app/Hackerati_TimeTracker";
 			};
 			name = Debug;
@@ -692,6 +696,8 @@
 		CED58C3F1A5ADAB3001C343B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -699,6 +705,7 @@
 				INFOPLIST_FILE = Hackerati_TimeTrackerTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "trackerati-iosTests";
+				PROVISIONING_PROFILE = "";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Hackerati_TimeTracker.app/Hackerati_TimeTracker";
 			};
 			name = Release;

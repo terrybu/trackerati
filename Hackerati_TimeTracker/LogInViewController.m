@@ -247,8 +247,6 @@ static NSString *CellIdentifier = @"Cell";
         weakSelf.hourString = weakSelf.hourOfService.text;
         [weakSelf.hourOfService sizeToFit];
         
-        
-        
         [weakSelf slideForm];
     }];
 

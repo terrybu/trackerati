@@ -13,7 +13,8 @@
 
 @interface HistoryViewController ()
 
-@property (nonatomic, strong) NSMutableArray *history;
+@property (nonatomic, strong) NSDictionary *history;
+@property (nonatomic, strong) NSArray* keys;
 
 @end
 
@@ -31,15 +32,10 @@ static NSString *cellIdentifier = @"RecordTableViewCell";
 
 - (void) viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    __block int count = 0;
-    self.history = [[NSMutableArray alloc]init];
-    NSDictionary *tempDict = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants KCurrentUserRecords]];
-    
-    [tempDict enumerateKeysAndObjectsUsingBlock:^(id client, id obj, BOOL *stop){
-        [self.history insertObject:[tempDict objectForKey:client] atIndex:count];
-        count ++;
-    }];
    
+    self.history = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants KSanitizedCurrentUserRecords]];
+    self.keys = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants KSanitizedCurrentUserRecordsKeys]];
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -62,11 +58,19 @@ static NSString *cellIdentifier = @"RecordTableViewCell";
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return [self.history count];
+    return [[self.history objectForKey:[self.keys objectAtIndex:section]]count];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return 143.0f;
+    return 95.0f;
+}
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
+    return [self.keys count];
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
+    return [self.keys objectAtIndex:section];
 }
 
 // Row display. Implementers should *always* try to reuse cells by setting each cell's reuseIdentifier and querying for available reusable cells with dequeueReusableCellWithIdentifier:
@@ -78,12 +82,12 @@ static NSString *cellIdentifier = @"RecordTableViewCell";
     if (cell == nil) {
         cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     }
+
     
-    NSDictionary *record = [self.history objectAtIndex:indexPath.row];
+    NSDictionary *record = [((NSArray*)[self.history objectForKey:[self.keys objectAtIndex:indexPath.section]])objectAtIndex:indexPath.row];
     
     [cell setclientNameLabelString:[record objectForKey:@"client"]];
     [cell setprojectNameLabelString:[record objectForKey:@"project"]];
-    [cell setdateLabelString:[[record objectForKey:@"date"] isKindOfClass:[NSNumber class]]?[NSString stringWithFormat:@"%@",[record objectForKey:@"date"]]:[record objectForKey:@"date"]];
     [cell sethourLabelString:[[record objectForKey:@"hour"] isKindOfClass:[NSNumber class]]?[NSString stringWithFormat:@"%@",[record objectForKey:@"hour"]]:[record objectForKey:@"hour"]];
     
     return cell;

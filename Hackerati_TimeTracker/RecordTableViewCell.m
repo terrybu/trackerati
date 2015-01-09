@@ -11,7 +11,6 @@
 @interface RecordTableViewCell ()
 @property (strong, nonatomic) IBOutlet UILabel *clientNameLabel;
 @property (strong, nonatomic) IBOutlet UILabel *projectNameLabel;
-@property (strong, nonatomic) IBOutlet UILabel *dateLabel;
 @property (strong, nonatomic) IBOutlet UILabel *hourLabel;
 
 @end
@@ -20,7 +19,7 @@
 
 - (void)awakeFromNib {
     // Initialization code
-    [self.contentView addSubview:self.clientNameLabel];
+
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
@@ -32,7 +31,7 @@
 - (void)prepareForReuse{
     self.clientNameLabel.text = nil;
     self.projectNameLabel.text = nil;
-    self.dateLabel.text = nil;
+
     self.hourLabel.text = nil;
 }
 
@@ -42,10 +41,6 @@
 
 -(void)setprojectNameLabelString:(NSString*)name{
     self.projectNameLabel.text = name;
-}
-
--(void)setdateLabelString:(NSString*)name{
-    self.dateLabel.text = name;
 }
 
 -(void)sethourLabelString:(NSString*)name{

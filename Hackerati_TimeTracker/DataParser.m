@@ -115,7 +115,43 @@
                 if (snapshot.value && [snapshot.value isKindOfClass:[NSDictionary class]]) {
                     NSDictionary *records = snapshot.value;
                     [[NSUserDefaults standardUserDefaults] setObject:records forKey:[HConstants KCurrentUserRecords]];
-                    [[NSUserDefaults standardUserDefaults]synchronize];
+                    [[NSUserDefaults standardUserDefaults] synchronize];
+                    
+                    
+                    __block NSMutableDictionary *newRecords = [[NSMutableDictionary alloc]init];
+                    [records enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop){
+                        if ([obj objectForKey:@"client"] && [obj objectForKey:@"project"] && [obj objectForKey:@"date"] && [obj objectForKey:@"hour"]) {
+                            if ([newRecords objectForKey:[obj objectForKey:@"date"]] ) {
+                                NSMutableArray *records = [newRecords objectForKey:[obj objectForKey:@"date"]];
+                                [records addObject:@{@"client":[obj objectForKey:@"client"],@"project":[obj objectForKey:@"project"],@"hour":[obj objectForKey:@"hour"]}];
+                                [newRecords setObject:records forKey:[obj objectForKey:@"date"]];
+                            } else{
+                                NSMutableArray *records = [[NSMutableArray alloc]initWithObjects:@{@"client":[obj objectForKey:@"client"],@"project":[obj objectForKey:@"project"],@"hour":[obj objectForKey:@"hour"]}, nil];
+                                [newRecords setObject:records forKey:[obj objectForKey:@"date"]];
+                            }
+                        }
+                    }];
+                    [[NSUserDefaults standardUserDefaults] setObject:newRecords forKey:[HConstants KSanitizedCurrentUserRecords]];
+                    [[NSUserDefaults standardUserDefaults] synchronize];
+                    
+                    
+                    NSArray *keys = [newRecords allKeys];
+                    NSArray *sortedKey = [keys sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2){
+                        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+                        [dateFormatter setDateFormat:@"MM/DD/YYYY"];
+                        NSDate *dateFromString1 = [dateFormatter dateFromString:(NSString*)obj1];
+                        NSDate *dateFromString2 = [dateFormatter dateFromString:(NSString*)obj2];
+                        
+                        if ([dateFromString1 compare:dateFromString2] == NSOrderedDescending) {
+                            return (NSComparisonResult)NSOrderedDescending;
+                        } else{
+                            return (NSComparisonResult)NSOrderedAscending;
+                        }
+                        return (NSComparisonResult)NSOrderedSame;
+                    }];
+                    [[NSUserDefaults standardUserDefaults] setObject:sortedKey forKey:[HConstants KSanitizedCurrentUserRecordsKeys]];
+                    [[NSUserDefaults standardUserDefaults] synchronize];
+                    
                 }
                 else {
                     if ([self.delegate respondsToSelector:@selector(loginUnsuccessful)]) {
