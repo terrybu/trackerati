@@ -92,6 +92,8 @@ static NSString *CellIdentifier = @"Cell";
         NSArray *rows = [self.sectionInformation objectForKey:[NSNumber numberWithInteger:indexPath.section]];
         NSString *project = [rows objectAtIndex:indexPath.row];
         
+        BOOL alreadyPartofTheProject = NO;
+        
         if (![mutableData objectForKey:client]) {
             [mutableData setObject:[[NSMutableArray alloc]initWithObjects:project,nil] forKey:client];
         } else {
@@ -100,18 +102,27 @@ static NSString *CellIdentifier = @"Cell";
                 NSMutableArray *mutableProjects = [[NSMutableArray alloc]initWithArray:projects];
                 [mutableProjects addObject:project];
                 [mutableData setObject:mutableProjects forKey:client];
+            } else{
+                alreadyPartofTheProject = YES;
             }
         }
         
         [[NSUserDefaults standardUserDefaults] setObject:mutableData forKey:[HConstants KcurrentUserClientList]];
         [[NSUserDefaults standardUserDefaults]synchronize];
         
-        Firebase *fbase = [[Firebase alloc]initWithUrl:[NSString stringWithFormat:@"%@/Projects/%@/%@",[HConstants kFireBaseURL],client,project]];
-        NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants KCurrentUser]];
-        [[fbase childByAutoId] setValue:@{@"name":username}];
+        if (alreadyPartofTheProject) {
+            UIAlertView *alerView = [[UIAlertView alloc]initWithTitle:@"New Project" message:[NSString stringWithFormat:@"You are already part of %@.",project] delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+            [alerView show];
+        } else{
+            Firebase *fbase = [[Firebase alloc]initWithUrl:[NSString stringWithFormat:@"%@/Projects/%@/%@",[HConstants kFireBaseURL],client,project]];
+            NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants KCurrentUser]];
+            [[fbase childByAutoId] setValue:@{@"name":username}];
+            
+            UIAlertView *alerView = [[UIAlertView alloc]initWithTitle:@"New Project" message:[NSString stringWithFormat:@"%@ Added",project] delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+            [alerView show];
+        }
         
-        UIAlertView *alerView = [[UIAlertView alloc]initWithTitle:@"New Project" message:[NSString stringWithFormat:@"%@ Added",project] delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
-        [alerView show];
+        
     }];
     
     NSArray *rows = [self.sectionInformation objectForKey:[NSNumber numberWithInteger:indexPath.section]];
