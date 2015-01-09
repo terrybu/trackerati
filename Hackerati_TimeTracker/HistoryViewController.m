@@ -55,6 +55,7 @@ static NSString *cellIdentifier = @"RecordTableViewCell";
 
 - (void)logOutAction{
     [[NSNotificationCenter defaultCenter] postNotificationName:kStartLogOutProcessNotification object:nil];
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{

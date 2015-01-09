@@ -33,7 +33,7 @@ static NSString *CellIdentifier = @"Cell";
 
 - (void) viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    dispatch_async(dispatch_get_main_queue(), ^{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         self.datas = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants kMasterClientList]];
         __block int count = 0;
         __weak typeof(self) weakSelf = self;
@@ -42,7 +42,9 @@ static NSString *CellIdentifier = @"Cell";
             [weakSelf.rowInformation setObject:key forKey:[NSNumber numberWithInt:count]];
             count++;
         }];
-        [self.tableView reloadData];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.tableView reloadData];
+        });
     });
 }
 

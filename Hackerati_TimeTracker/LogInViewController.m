@@ -177,7 +177,7 @@ static NSString *CellIdentifier = @"Cell";
 }
 
 -(void) loadData{
-    dispatch_async(dispatch_get_main_queue(), ^{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         [self.refreshControl endRefreshing];
         self.datas = (NSDictionary*)[[NSUserDefaults standardUserDefaults]objectForKey:[HConstants KcurrentUserClientList]];
         __block int count = 0;
@@ -191,7 +191,9 @@ static NSString *CellIdentifier = @"Cell";
             [weakSelf.rowInformation setObject:key forKey:[NSNumber numberWithInt:count]];
             count++;
         }];
-        [self.tableView reloadData];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.tableView reloadData];
+        });
     });
 }
 
@@ -246,7 +248,7 @@ static NSString *CellIdentifier = @"Cell";
         NSArray *rows = [weakSelf.sectionInformation objectForKey:[NSNumber numberWithInteger:indexPath.section]];
         NSDate *date = [[NSDate alloc]init];
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-        [formatter setDateFormat:@"MM/DD/YYYY"];
+        [formatter setDateFormat:@"MM/dd/yyyy"];
         weakSelf.projectName.text = [rows objectAtIndex:indexPath.row];
         [weakSelf.projectName sizeToFit];
         weakSelf.clientName.text = [weakSelf.rowInformation objectForKey:[NSNumber numberWithInteger:indexPath.section]];

@@ -44,7 +44,7 @@
     self.projectLabel.text = self.projectName;
     self.clientLabel.text = self.clientName;
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateFormat:@"MM/DD/YYYY"];
+    [formatter setDateFormat:@"MM/dd/yyyy"];
     [self.dateButton setTitle:[formatter stringFromDate:[NSDate date]] forState:UIControlStateNormal];
     self.dateString = [formatter stringFromDate:[NSDate date]];
     self.hourLabel.text = @"0";
@@ -97,8 +97,8 @@
     self.curDate = datePicker.date;
     //[self.datePicker slideDownAndOut];
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateFormat:@"MM/DD/YYYY"];
-    self.dateString = [formatter stringFromDate:[NSDate date]];
+    [formatter setDateFormat:@"MM/dd/yyyy"];
+    self.dateString = [formatter stringFromDate:self.curDate];
     [self dismissSemiModalView];
 }
 
@@ -108,7 +108,7 @@
 
 - (void)datePicker:(THDatePickerViewController *)datePicker selectedDate:(NSDate *)selectedDate {
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateFormat:@"MM/DD/YYYY"];
+    [formatter setDateFormat:@"MM/dd/yyyy"];
     self.dateString = [formatter stringFromDate:selectedDate];
     [self.dateButton setTitle:[formatter stringFromDate:selectedDate] forState:UIControlStateNormal];
 }
