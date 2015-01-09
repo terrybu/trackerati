@@ -177,7 +177,7 @@ static NSString *CellIdentifier = @"Cell";
 }
 
 -(void) loadData{
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+    dispatch_async(dispatch_get_main_queue(), ^{
         [self.refreshControl endRefreshing];
         self.datas = (NSDictionary*)[[NSUserDefaults standardUserDefaults]objectForKey:[HConstants KcurrentUserClientList]];
         __block int count = 0;
@@ -191,9 +191,7 @@ static NSString *CellIdentifier = @"Cell";
             [weakSelf.rowInformation setObject:key forKey:[NSNumber numberWithInt:count]];
             count++;
         }];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self.tableView reloadData];
-        });
+        [self.tableView reloadData];
     });
 }
 
