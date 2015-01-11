@@ -66,7 +66,7 @@ static NSString *CellIdentifier = @"Cell";
     self.rowInformation = [[NSMutableDictionary alloc]init];
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     [self.tableView registerClass:[CustomMCSwipeTableViewCell class] forCellReuseIdentifier:CellIdentifier];
-    self.formView = [[UIView alloc]initWithFrame:CGRectMake(-450, 0, 300, 500)];
+    self.formView = [[UIView alloc]initWithFrame:CGRectMake(-330, 0, 300, 500)];
     self.clientName = [[UILabel alloc]initWithFrame:CGRectMake(95, 57+25, 194, 60)];
     self.projectName = [[UILabel alloc]initWithFrame:CGRectMake(95, 113, 194, 60)];
     self.dateOfService = [[UILabel alloc]initWithFrame:CGRectMake(95, 146, 194, 60)];
@@ -324,7 +324,7 @@ static NSString *CellIdentifier = @"Cell";
 }
 
 -(void)slideForm{
-    self.formView.frame = CGRectMake(-450, 0, 300, 400);
+    self.formView.frame = CGRectMake(-330, 0, 300, 400);
     CGRect frame = self.view.bounds;
     self.dynamicAnimator = [[UIDynamicAnimator alloc]initWithReferenceView:self.view];
     UICollisionBehavior *collisionBehavior = [[UICollisionBehavior alloc] initWithItems:@[self.formView]];
@@ -338,7 +338,7 @@ static NSString *CellIdentifier = @"Cell";
 
 -(void)slideOutForm{
     [self.dynamicAnimator removeBehavior:self.gravityBehavior];
-    self.snapBehavior = [[UISnapBehavior alloc]initWithItem:self.formView snapToPoint:CGPointMake(-450, 0)];
+    self.snapBehavior = [[UISnapBehavior alloc]initWithItem:self.formView snapToPoint:CGPointMake(-330, 0)];
     [self.dynamicAnimator addBehavior:self.snapBehavior];
 }
 
