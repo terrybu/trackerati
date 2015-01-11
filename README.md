@@ -11,7 +11,7 @@ The structure of the data is as follows:
     "Client Name":{
       "Project Name":{
         "Unique Identifier":{
-          "name":"placeholder" // Must be in a string format
+          "name":"placeholder" //Must be in a string format
           }
         }
       }  
@@ -20,9 +20,9 @@ The structure of the data is as follows:
     "User unique name":{
       "records":{
         "Unique Identifier":{
-          "client"  :"placeholder", // Must be in a string format
-          "project" :"placeholder", // Must be in a string format
-          "date"    :"MM/dd/yyyy", // Must be in a string format
+          "client"  :"placeholder", //Must be in a string format
+          "project" :"placeholder", //Must be in a string format
+          "date"    :"MM/dd/yyyy", //Must be in a string format
           "hour"    :"hour" // Must be in a string format
           }
         }
