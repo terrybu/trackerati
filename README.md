@@ -23,14 +23,15 @@ The structure of the data is as follows:
           "client"  :"sample client", //Must be in a string format
           "project" :"sample project", //Must be in a string format
           "date"    :"MM/dd/yyyy", //Must be in a string format - "01/05/2015"
-          "hour"    :"8" // Must be in a string format
+          "hour"    :"8", //Must be in a string format
+          "comment" :"optinal" //Must be in a string format but is optional 
           }
         }
       }
   }
 }
 '''
-** A node must have at least one value otherwise it will be deleted. As such a placeholder is placed in every tree to prevent it from deleting. **
+** A node must have at least one value otherwise it will be deleted. As such a placeholder is placed in every node to prevent it from deleting. **
 
 Pod install
 source 'https://github.com/CocoaPods/Specs.git'
