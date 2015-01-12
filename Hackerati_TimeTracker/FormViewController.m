@@ -42,6 +42,7 @@
     // Do any additional setup after loading the view from its nib.
     self.view.backgroundColor = [UIColor colorWithRed:239.0f/255.0f green:239.0f/255.0f blue:244.0f/255.0f alpha:1.0f/1.0f];
     self.detailContainerView.backgroundColor = [UIColor colorWithRed:239.0f/255.0f green:239.0f/255.0f blue:244.0f/255.0f alpha:1.0f/1.0f];
+    
     self.commentTextView.layer.cornerRadius = 5.0f;
     self.commentTextView.clipsToBounds = YES;
     [self.commentTextView.layer setBorderWidth:0.5f];
@@ -96,7 +97,7 @@
     [self.datePicker setClearAsToday:YES];
     [self.datePicker setAutoCloseOnSelectDate:YES];
     [self.datePicker setAllowSelectionOfSelectedDate:YES];
-    [self.datePicker setDisableHistorySelection:YES];
+    [self.datePicker setDisableHistorySelection:NO];
     [self.datePicker setDisableFutureSelection:NO];
     [self.datePicker setSelectedBackgroundColor:[UIColor colorWithRed:125/255.0 green:208/255.0 blue:0/255.0 alpha:1.0]];
     [self.datePicker setCurrentDateColor:[UIColor colorWithRed:242/255.0 green:121/255.0 blue:53/255.0 alpha:1.0]];
@@ -106,7 +107,7 @@
         int tmp = (arc4random() % 30)+1;
         return (tmp % 5 == 0);
     }];
-    //[self.datePicker slideUpInView:self.view withModalColor:[UIColor lightGrayColor]];
+    
     [self presentSemiViewController:self.datePicker withOptions:@{
                                                                   KNSemiModalOptionKeys.pushParentBack    : @(NO),
                                                                   KNSemiModalOptionKeys.animationDuration : @(1.0),
@@ -116,7 +117,7 @@
 
 - (void)datePickerDonePressed:(THDatePickerViewController *)datePicker {
     self.curDate = datePicker.date;
-    //[self.datePicker slideDownAndOut];
+    
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:@"MM/dd/yyyy"];
     self.dateString = [formatter stringFromDate:self.curDate];

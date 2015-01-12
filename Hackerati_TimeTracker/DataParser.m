@@ -38,27 +38,26 @@
         [self.projects observeSingleEventOfType:FEventTypeValue withBlock:^(FDataSnapshot *snapshot) {
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
                 if (snapshot.value && [snapshot.value isKindOfClass:[NSDictionary class]]) {
-                    NSDictionary *data = snapshot.value;
+                    NSDictionary *rawMasterClientList = snapshot.value;
                     
-                    [[NSUserDefaults standardUserDefaults] setObject:data forKey:[HConstants kRawMasterClientList]];
+                    [[NSUserDefaults standardUserDefaults] setObject:rawMasterClientList forKey:[HConstants kRawMasterClientList]];
                     [[NSUserDefaults standardUserDefaults]synchronize];
                     
-                    __block NSMutableDictionary *newData = [[NSMutableDictionary alloc]init];
+                    __block NSMutableDictionary *masterClientList = [[NSMutableDictionary alloc]init];
                     
-                    [data enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop){
+                    [rawMasterClientList enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop){
                         NSDictionary *projectDictionary = (NSDictionary*) obj;
                         NSArray *projectsArray = [projectDictionary allKeys];
-                        [newData setObject:projectsArray forKey:key];
+                        [masterClientList setObject:projectsArray forKey:key];
                     }];
                     
-                    [[NSUserDefaults standardUserDefaults]setObject:newData forKey:[HConstants kMasterClientList]];
+                    [[NSUserDefaults standardUserDefaults]setObject:masterClientList forKey:[HConstants kMasterClientList]];
                     [[NSUserDefaults standardUserDefaults]synchronize];
                     
                     NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants KCurrentUser]];
                     __block NSMutableDictionary *tempCurrentUserClientList = [[NSMutableDictionary alloc]init];
-                    __block NSMutableDictionary *tempCurrentUserClientList1 = [[NSMutableDictionary alloc]initWithDictionary:snapshot.value];
                     
-                    [tempCurrentUserClientList1 enumerateKeysAndObjectsUsingBlock:^(id client, id obj, BOOL *stop){
+                    [rawMasterClientList enumerateKeysAndObjectsUsingBlock:^(id client, id obj, BOOL *stop){
                         __block NSMutableDictionary *tempMut = [[NSMutableDictionary alloc]init];
                         [obj enumerateKeysAndObjectsUsingBlock:^(id project, id obj, BOOL *stop){
                             __block NSMutableArray *names = [[NSMutableArray alloc]init];
@@ -71,7 +70,6 @@
                         }];
                         [tempCurrentUserClientList setObject:tempMut forKey:client];
                     }];
-                    
                     
                     [tempCurrentUserClientList enumerateKeysAndObjectsUsingBlock:^(id client, id obj, BOOL *stop){
                         [obj enumerateKeysAndObjectsUsingBlock:^(id project, id obj, BOOL *stop){
@@ -103,7 +101,17 @@
                     
                 }
                 else {
-                    // snapshot.value is nil or is not a NSDictionary
+                    
+                    [[NSUserDefaults standardUserDefaults] removeObjectForKey:[HConstants kRawMasterClientList]];
+                    [[NSUserDefaults standardUserDefaults] removeObjectForKey:[HConstants kMasterClientList]];
+                    [[NSUserDefaults standardUserDefaults] removeObjectForKey:[HConstants KcurrentUserClientList]];
+                    [[NSUserDefaults standardUserDefaults]synchronize];
+                    
+                    if ([self.delegate respondsToSelector:@selector(loadData)]) {
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            [self.delegate loadData];
+                        });
+                    }
                 }
             });
         }];
@@ -114,17 +122,17 @@
                 if (snapshot.value && [snapshot.value isKindOfClass:[NSDictionary class]]) {
                     NSDictionary *records = snapshot.value;
                     
-                    __block NSMutableDictionary *newRecords = [[NSMutableDictionary alloc]init];
+                    __block NSMutableDictionary *sanitizedCurrentUserRecords = [[NSMutableDictionary alloc]init];
                     [records enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop){
                         if ([obj objectForKey:@"client"] && [obj objectForKey:@"project"] && [obj objectForKey:@"date"] && [obj objectForKey:@"hour"]) {
-                            if ([newRecords objectForKey:[obj objectForKey:@"date"]] ) {
-                                NSMutableArray *records = [newRecords objectForKey:[obj objectForKey:@"date"]];
+                            if ([sanitizedCurrentUserRecords objectForKey:[obj objectForKey:@"date"]] ) {
+                                NSMutableArray *records = [sanitizedCurrentUserRecords objectForKey:[obj objectForKey:@"date"]];
                                 if ([obj objectForKey:@"comment"]) {
                                     [records addObject:@{@"client":[obj objectForKey:@"client"],@"project":[obj objectForKey:@"project"],@"hour":[obj objectForKey:@"hour"],@"comment":[obj objectForKey:@"comment"]}];
                                 } else{
                                     [records addObject:@{@"client":[obj objectForKey:@"client"],@"project":[obj objectForKey:@"project"],@"hour":[obj objectForKey:@"hour"]}];
                                 }
-                                [newRecords setObject:records forKey:[obj objectForKey:@"date"]];
+                                [sanitizedCurrentUserRecords setObject:records forKey:[obj objectForKey:@"date"]];
                             } else{
                                 NSMutableArray *records = nil;
                                 if ([obj objectForKey:@"comment"]) {
@@ -132,16 +140,15 @@
                                 } else{
                                     records = [[NSMutableArray alloc]initWithObjects:@{@"client":[obj objectForKey:@"client"],@"project":[obj objectForKey:@"project"],@"hour":[obj objectForKey:@"hour"]}, nil];
                                 }
-                                [newRecords setObject:records forKey:[obj objectForKey:@"date"]];
+                                [sanitizedCurrentUserRecords setObject:records forKey:[obj objectForKey:@"date"]];
                             }
                         }
                     }];
-                    [[NSUserDefaults standardUserDefaults] setObject:newRecords forKey:[HConstants KSanitizedCurrentUserRecords]];
+                    [[NSUserDefaults standardUserDefaults] setObject:sanitizedCurrentUserRecords forKey:[HConstants KSanitizedCurrentUserRecords]];
                     [[NSUserDefaults standardUserDefaults] synchronize];
                     
-                    
-                    NSArray *keys = [newRecords allKeys];
-                    NSArray *sortedKey = [keys sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2){
+                    NSArray *keys = [sanitizedCurrentUserRecords allKeys];
+                    NSArray *sanitizedCurrentUserRecordsKeys = [keys sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2){
                         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
                         [dateFormatter setDateFormat:@"MM/dd/yyyy"];
                         NSDate *dateFromString1 = [dateFormatter dateFromString:(NSString*)obj1];
@@ -154,12 +161,21 @@
                         }
                         return (NSComparisonResult)NSOrderedSame;
                     }];
-                    [[NSUserDefaults standardUserDefaults] setObject:sortedKey forKey:[HConstants KSanitizedCurrentUserRecordsKeys]];
+                    [[NSUserDefaults standardUserDefaults] setObject:sanitizedCurrentUserRecordsKeys forKey:[HConstants KSanitizedCurrentUserRecordsKeys]];
                     [[NSUserDefaults standardUserDefaults] synchronize];
                     
                 }
                 else {
-                    // snapshot.value is nil or is not a NSDictionary
+                    
+                    [[NSUserDefaults standardUserDefaults] removeObjectForKey:[HConstants KSanitizedCurrentUserRecords]];
+                    [[NSUserDefaults standardUserDefaults] removeObjectForKey:[HConstants KSanitizedCurrentUserRecordsKeys]];
+                    [[NSUserDefaults standardUserDefaults]synchronize];
+                    
+                    if ([self.delegate respondsToSelector:@selector(loadData)]) {
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            [self.delegate loadData];
+                        });
+                    }
                 }
             });
         }];

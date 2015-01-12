@@ -198,10 +198,23 @@ static NSString *CellIdentifier = @"Cell";
     [[LastSavedManager sharedManager] saveClient:self.clientNameString withProject:self.projectNameString andHour:self.hourString];
 }
 
--(void)cancelForm{
-    self.tableView.userInteractionEnabled = YES;
-   [self slideOutForm];
+- (void) historyAction:(UIBarButtonItem*)barButton{
+    self.historyViewController = [[HistoryViewController alloc]initWithNibName:nil bundle:nil];
+    [self.navigationController pushViewController:self.historyViewController animated:YES];
 }
+
+- (void)addNewProjects{
+    NewProjectViewController *newProjectViewController = [[NewProjectViewController alloc]initWithNibName:@"NewProjectViewController" bundle:nil];
+    [self.navigationController pushViewController:newProjectViewController animated:YES];
+}
+
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - Data Parser Delegate Methods
 
 -(void) loginUnsuccessful{
     [self.refreshControl endRefreshing];
@@ -229,21 +242,7 @@ static NSString *CellIdentifier = @"Cell";
     });
 }
 
-- (void) historyAction:(UIBarButtonItem*)barButton{
-    self.historyViewController = [[HistoryViewController alloc]initWithNibName:nil bundle:nil];
-    [self.navigationController pushViewController:self.historyViewController animated:YES];
-}
-
-- (void)addNewProjects{
-    NewProjectViewController *newProjectViewController = [[NewProjectViewController alloc]initWithNibName:@"NewProjectViewController" bundle:nil];
-    [self.navigationController pushViewController:newProjectViewController animated:YES];
-}
-
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
+#pragma mark - Form Methods
 
 
 -(void)slideForm{
@@ -263,6 +262,11 @@ static NSString *CellIdentifier = @"Cell";
     [self.dynamicAnimator removeBehavior:self.gravityBehavior];
     self.snapBehavior = [[UISnapBehavior alloc]initWithItem:self.formView snapToPoint:CGPointMake(-330, 0)];
     [self.dynamicAnimator addBehavior:self.snapBehavior];
+}
+
+-(void)cancelForm{
+    self.tableView.userInteractionEnabled = YES;
+    [self slideOutForm];
 }
 
 #pragma mark - Table View and Data Source Delegate
@@ -414,7 +418,7 @@ static NSString *CellIdentifier = @"Cell";
             self.commentTextLabel.text =@"<NONE>";
         }
         
-        self.hourOfService.text = [[LastSavedManager sharedManager] getLastSavedHourForClient:self.clientNameString withProject:self.projectNameString withCurrentHour:@"8"];
+        self.hourOfService.text = [[LastSavedManager sharedManager] getLastSavedHourForClient:self.clientNameString withProject:self.projectNameString withCurrentHour:@"8.0"];
         self.hourString = self.hourOfService.text;
         [self.hourOfService sizeToFit];
         

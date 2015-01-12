@@ -132,7 +132,7 @@
                 </scrollView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-            <point key="canvasLocation" x="1169" y="189"/>
+            <point key="canvasLocation" x="593" y="336"/>
         </view>
     </objects>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

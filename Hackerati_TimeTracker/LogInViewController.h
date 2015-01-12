@@ -11,7 +11,7 @@
 #import "Reachability.h"
 #import "DataParser.h"
 
-@interface LogInViewController : UIViewController < UITableViewDataSource, UITableViewDelegate,DataParserProtocol,UIGestureRecognizerDelegate>
+@interface LogInViewController : UIViewController <UITableViewDataSource, UITableViewDelegate,DataParserProtocol,UIGestureRecognizerDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 @end
