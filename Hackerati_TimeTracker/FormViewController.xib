@@ -13,6 +13,7 @@
                 <outlet property="dateButton" destination="LKY-Bl-ZTE" id="t9L-bl-qDN"/>
                 <outlet property="detailContainerView" destination="5gG-Kz-JGX" id="fS5-dV-qUp"/>
                 <outlet property="hourLabel" destination="c4w-Vi-yzH" id="h4t-SX-xIj"/>
+                <outlet property="hourStepper" destination="ySS-RY-EvW" id="mfF-yg-deO"/>
                 <outlet property="mainScrollView" destination="U1b-uL-bBI" id="Idw-nJ-03b"/>
                 <outlet property="projectLabel" destination="P2t-3y-qfh" id="yes-aM-cZQ"/>
                 <outlet property="sendButton" destination="eI3-XH-Xqg" id="gOc-ur-wdQ"/>

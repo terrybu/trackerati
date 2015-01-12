@@ -10,7 +10,6 @@
 
 @interface RecordDetailViewController : UIViewController
 
-@property (nonatomic, strong) NSDictionary *record;
-@property (nonatomic, strong) NSString *viewTitle;
+@property (nonatomic, strong) NSMutableDictionary *record;
 
 @end

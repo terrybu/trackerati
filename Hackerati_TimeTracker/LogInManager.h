@@ -11,6 +11,7 @@
 
 static NSString *kStartLogInProcessNotification = @"kStartLogInProcessNotification";
 static NSString *kStartLogOutProcessNotification = @"kStartLogOutProcessNotification";
+static NSString *kStartGetUserRecordsProcessNotification = @"kStartGetUserRecordsProcessNotification";
 
 @protocol LogInManagerProtocol <NSObject>
 

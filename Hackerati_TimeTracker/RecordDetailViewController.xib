@@ -9,6 +9,8 @@
             <connections>
                 <outlet property="clientLabel" destination="2Wb-lp-grE" id="du6-3C-k94"/>
                 <outlet property="commentLabel" destination="UWf-x9-TE7" id="OOP-Ad-cUs"/>
+                <outlet property="deletButton" destination="g0t-Z8-sIY" id="lWu-8t-pda"/>
+                <outlet property="editButton" destination="DDI-Qj-r7f" id="tCE-2z-tTW"/>
                 <outlet property="hourLabel" destination="WBn-Ab-7Ey" id="MWl-cK-b17"/>
                 <outlet property="projectLabel" destination="8Ku-x0-fKG" id="vVh-6r-SQn"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -48,36 +50,58 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="2Wb-lp-grE">
-                    <rect key="frame" x="116" y="90" width="188" height="21"/>
+                    <rect key="frame" x="100" y="90" width="188" height="21"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="8Ku-x0-fKG">
-                    <rect key="frame" x="116" y="131" width="188" height="21"/>
+                    <rect key="frame" x="100" y="131" width="188" height="21"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="WBn-Ab-7Ey">
-                    <rect key="frame" x="116" y="173" width="188" height="21"/>
+                    <rect key="frame" x="100" y="173" width="188" height="21"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="200" baselineAdjustment="alignBaselines" minimumFontSize="10" id="UWf-x9-TE7" customClass="CustonLabel">
-                    <rect key="frame" x="116" y="213.5" width="188" height="320.5"/>
+                    <rect key="frame" x="100" y="213.5" width="204" height="274.5"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                 </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="DDI-Qj-r7f">
+                    <rect key="frame" x="18" y="501" width="74" height="30"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
+                    <state key="normal" title="Edit">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="editButtonAction:" destination="-1" eventType="touchUpInside" id="9RS-jE-ZUi"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="g0t-Z8-sIY">
+                    <rect key="frame" x="116" y="501" width="74" height="30"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
+                    <state key="normal" title="Delete">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="deleteButtonAction:" destination="-1" eventType="touchUpInside" id="MKv-7n-bIw"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-            <point key="canvasLocation" x="867" y="213"/>
+            <point key="canvasLocation" x="575" y="173"/>
         </view>
     </objects>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

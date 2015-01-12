@@ -9,8 +9,8 @@
 #import <UIKit/UIKit.h>
 
 @interface FormViewController : UIViewController
-
 @property (copy, nonatomic) NSString *clientName;
 @property (copy, nonatomic) NSString *projectName;
-
+@property (nonatomic) BOOL isNewRecord;
+@property (nonatomic, strong) NSMutableDictionary *existingRecord;
 @end

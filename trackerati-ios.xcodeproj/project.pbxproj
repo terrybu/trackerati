@@ -228,6 +228,77 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
+		CE08157E1A645E25008ABECF /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				CE07C0661A5B9D3E00A3B961 /* Reachability.h */,
+				CE07C0671A5B9D3E00A3B961 /* Reachability.m */,
+				CE07C0601A5B87D100A3B961 /* LogInManager.h */,
+				CE07C0611A5B87D100A3B961 /* LogInManager.m */,
+				CE07C0631A5B966100A3B961 /* FireBaseManager.h */,
+				CE07C0641A5B966100A3B961 /* FireBaseManager.m */,
+				CE07C06E1A5C29DF00A3B961 /* DataParser.h */,
+				CE07C06F1A5C29DF00A3B961 /* DataParser.m */,
+				CE07C0B31A5EBFDD00A3B961 /* WeeklyNotificationManager.h */,
+				CE07C0B41A5EBFDD00A3B961 /* WeeklyNotificationManager.m */,
+				CE07C0B61A5ED6FA00A3B961 /* LastSavedManager.h */,
+				CE07C0B71A5ED6FB00A3B961 /* LastSavedManager.m */,
+			);
+			name = Managers;
+			sourceTree = "<group>";
+		};
+		CE08157F1A645E54008ABECF /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				CE07C04E1A5B087C00A3B961 /* LogInViewController.h */,
+				CE07C04F1A5B087C00A3B961 /* LogInViewController.m */,
+				CE07C0501A5B087C00A3B961 /* LogInViewController.xib */,
+				CE07C0AE1A5DA83800A3B961 /* NewProjectViewController.h */,
+				CE07C0AF1A5DA83800A3B961 /* NewProjectViewController.m */,
+				CE07C0B01A5DA83800A3B961 /* NewProjectViewController.xib */,
+				CE07C08C1A5C6C4100A3B961 /* HistoryViewController.h */,
+				CE07C08D1A5C6C4100A3B961 /* HistoryViewController.m */,
+				CE07C08E1A5C6C4100A3B961 /* HistoryViewController.xib */,
+				CE3BC55F1A60282D006340F7 /* RecordDetailViewController.h */,
+				CE3BC5601A60282D006340F7 /* RecordDetailViewController.m */,
+				CE3BC5611A60282D006340F7 /* RecordDetailViewController.xib */,
+				CE07C09C1A5CF22E00A3B961 /* FormViewController.h */,
+				CE07C09D1A5CF22E00A3B961 /* FormViewController.m */,
+				CE07C09E1A5CF22E00A3B961 /* FormViewController.xib */,
+			);
+			name = ViewControllers;
+			sourceTree = "<group>";
+		};
+		CE0815801A645E77008ABECF /* CustomTableCells */ = {
+			isa = PBXGroup;
+			children = (
+				CE3BC5671A6064C4006340F7 /* CustomMCSwipeTableViewCell.h */,
+				CE3BC5681A6064C4006340F7 /* CustomMCSwipeTableViewCell.m */,
+				CE07C0931A5C8B2900A3B961 /* RecordTableViewCell.h */,
+				CE07C0941A5C8B2900A3B961 /* RecordTableViewCell.m */,
+				CE07C0951A5C8B2900A3B961 /* RecordTableViewCell.xib */,
+			);
+			name = CustomTableCells;
+			sourceTree = "<group>";
+		};
+		CE0815811A645EA2008ABECF /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				CE3BC5641A6031ED006340F7 /* CustonLabel.h */,
+				CE3BC5651A6031ED006340F7 /* CustonLabel.m */,
+			);
+			name = Categories;
+			sourceTree = "<group>";
+		};
+		CE0815821A647B5F008ABECF /* Constants */ = {
+			isa = PBXGroup;
+			children = (
+				CE07C0531A5B132700A3B961 /* HConstants.h */,
+				CE07C0541A5B132700A3B961 /* HConstants.m */,
+			);
+			name = Constants;
+			sourceTree = "<group>";
+		};
 		CED58C0E1A5ADAB3001C343B = {
 			isa = PBXGroup;
 			children = (
@@ -251,44 +322,13 @@
 		CED58C191A5ADAB3001C343B /* Hackerati_TimeTracker */ = {
 			isa = PBXGroup;
 			children = (
-				CE07C0661A5B9D3E00A3B961 /* Reachability.h */,
-				CE07C0671A5B9D3E00A3B961 /* Reachability.m */,
 				CED58C1E1A5ADAB3001C343B /* AppDelegate.h */,
 				CED58C1F1A5ADAB3001C343B /* AppDelegate.m */,
-				CE07C04E1A5B087C00A3B961 /* LogInViewController.h */,
-				CE07C04F1A5B087C00A3B961 /* LogInViewController.m */,
-				CE07C0501A5B087C00A3B961 /* LogInViewController.xib */,
-				CE3BC5671A6064C4006340F7 /* CustomMCSwipeTableViewCell.h */,
-				CE3BC5681A6064C4006340F7 /* CustomMCSwipeTableViewCell.m */,
-				CE07C0AE1A5DA83800A3B961 /* NewProjectViewController.h */,
-				CE07C0AF1A5DA83800A3B961 /* NewProjectViewController.m */,
-				CE07C0B01A5DA83800A3B961 /* NewProjectViewController.xib */,
-				CE07C08C1A5C6C4100A3B961 /* HistoryViewController.h */,
-				CE07C08D1A5C6C4100A3B961 /* HistoryViewController.m */,
-				CE07C08E1A5C6C4100A3B961 /* HistoryViewController.xib */,
-				CE07C0931A5C8B2900A3B961 /* RecordTableViewCell.h */,
-				CE07C0941A5C8B2900A3B961 /* RecordTableViewCell.m */,
-				CE07C0951A5C8B2900A3B961 /* RecordTableViewCell.xib */,
-				CE3BC55F1A60282D006340F7 /* RecordDetailViewController.h */,
-				CE3BC5601A60282D006340F7 /* RecordDetailViewController.m */,
-				CE3BC5611A60282D006340F7 /* RecordDetailViewController.xib */,
-				CE3BC5641A6031ED006340F7 /* CustonLabel.h */,
-				CE3BC5651A6031ED006340F7 /* CustonLabel.m */,
-				CE07C09C1A5CF22E00A3B961 /* FormViewController.h */,
-				CE07C09D1A5CF22E00A3B961 /* FormViewController.m */,
-				CE07C09E1A5CF22E00A3B961 /* FormViewController.xib */,
-				CE07C0601A5B87D100A3B961 /* LogInManager.h */,
-				CE07C0611A5B87D100A3B961 /* LogInManager.m */,
-				CE07C0531A5B132700A3B961 /* HConstants.h */,
-				CE07C0541A5B132700A3B961 /* HConstants.m */,
-				CE07C0631A5B966100A3B961 /* FireBaseManager.h */,
-				CE07C0641A5B966100A3B961 /* FireBaseManager.m */,
-				CE07C06E1A5C29DF00A3B961 /* DataParser.h */,
-				CE07C06F1A5C29DF00A3B961 /* DataParser.m */,
-				CE07C0B31A5EBFDD00A3B961 /* WeeklyNotificationManager.h */,
-				CE07C0B41A5EBFDD00A3B961 /* WeeklyNotificationManager.m */,
-				CE07C0B61A5ED6FA00A3B961 /* LastSavedManager.h */,
-				CE07C0B71A5ED6FB00A3B961 /* LastSavedManager.m */,
+				CE0815821A647B5F008ABECF /* Constants */,
+				CE0815811A645EA2008ABECF /* Categories */,
+				CE0815801A645E77008ABECF /* CustomTableCells */,
+				CE08157F1A645E54008ABECF /* ViewControllers */,
+				CE08157E1A645E25008ABECF /* Managers */,
 				CE07C0A11A5D771500A3B961 /* THCalendarDatePicker */,
 				CED58C271A5ADAB3001C343B /* Images.xcassets */,
 				CE07C09A1A5C9A6100A3B961 /* CheckMark@2x.png */,

@@ -32,6 +32,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *sendButton;
 @property (weak, nonatomic) IBOutlet UIButton *dateButton;
 - (IBAction)dateButtonAction:(id)sender;
+@property (weak, nonatomic) IBOutlet UIStepper *hourStepper;
 
 @end
 
@@ -56,20 +57,36 @@
     UITapGestureRecognizer *tap =[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapAction)];
     [self.detailContainerView addGestureRecognizer:tap];
     
-    self.title = @"Edit";
+    if (self.isNewRecord) {
+        self.title = @"New Record";
+    } else {
+        self.title = @"Edit Record";
+    }
+    
 }
 
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     
-    self.projectLabel.text = self.projectName;
-    self.clientLabel.text = self.clientName;
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateFormat:@"MM/dd/yyyy"];
-    [self.dateButton setTitle:[formatter stringFromDate:[NSDate date]] forState:UIControlStateNormal];
-    self.dateString = [formatter stringFromDate:[NSDate date]];
-    self.hourLabel.text = @"0.0";
-    self.hourString = @"0.0";
+    if (self.isNewRecord) {
+        self.projectLabel.text = self.projectName;
+        self.clientLabel.text = self.clientName;
+        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+        [formatter setDateFormat:@"MM/dd/yyyy"];
+        [self.dateButton setTitle:[formatter stringFromDate:[NSDate date]] forState:UIControlStateNormal];
+        self.dateString = [formatter stringFromDate:[NSDate date]];
+        self.hourLabel.text = @"0.0";
+        self.hourString = @"0.0";
+        self.hourStepper.value = 0.0;
+    } else{
+        self.projectLabel.text = [self.existingRecord objectForKey:@"project"];
+        self.clientLabel.text = [self.existingRecord objectForKey:@"client"];
+        [self.dateButton setTitle:[self.existingRecord objectForKey:@"date"] forState:UIControlStateNormal];
+        self.dateString = [self.existingRecord objectForKey:@"date"];
+        self.hourLabel.text = [self.existingRecord objectForKey:@"hour"];
+        self.hourString = [self.existingRecord objectForKey:@"hour"];
+        self.hourStepper.value = [[NSString stringWithFormat:@"%.1f",[(NSString*)[self.existingRecord objectForKey:@"hour"] floatValue]] floatValue];
+    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -89,30 +106,32 @@
 
 
 - (IBAction)dateButtonAction:(id)sender {
-    if(!self.datePicker)
-        self.datePicker = [THDatePickerViewController datePicker];
-    self.datePicker.date = self.curDate;
-    self.datePicker.delegate = self;
-    [self.datePicker setAllowClearDate:NO];
-    [self.datePicker setClearAsToday:YES];
-    [self.datePicker setAutoCloseOnSelectDate:YES];
-    [self.datePicker setAllowSelectionOfSelectedDate:YES];
-    [self.datePicker setDisableHistorySelection:NO];
-    [self.datePicker setDisableFutureSelection:NO];
-    [self.datePicker setSelectedBackgroundColor:[UIColor colorWithRed:125/255.0 green:208/255.0 blue:0/255.0 alpha:1.0]];
-    [self.datePicker setCurrentDateColor:[UIColor colorWithRed:242/255.0 green:121/255.0 blue:53/255.0 alpha:1.0]];
-    [self.datePicker setCurrentDateColorSelected:[UIColor yellowColor]];
-    
-    [self.datePicker setDateHasItemsCallback:^BOOL(NSDate *date) {
-        int tmp = (arc4random() % 30)+1;
-        return (tmp % 5 == 0);
-    }];
-    
-    [self presentSemiViewController:self.datePicker withOptions:@{
-                                                                  KNSemiModalOptionKeys.pushParentBack    : @(NO),
-                                                                  KNSemiModalOptionKeys.animationDuration : @(1.0),
-                                                                  KNSemiModalOptionKeys.shadowOpacity     : @(0.3),
-                                                                  }];
+    if (self.isNewRecord) {
+        if(!self.datePicker)
+            self.datePicker = [THDatePickerViewController datePicker];
+        self.datePicker.date = self.curDate;
+        self.datePicker.delegate = self;
+        [self.datePicker setAllowClearDate:NO];
+        [self.datePicker setClearAsToday:YES];
+        [self.datePicker setAutoCloseOnSelectDate:YES];
+        [self.datePicker setAllowSelectionOfSelectedDate:YES];
+        [self.datePicker setDisableHistorySelection:NO];
+        [self.datePicker setDisableFutureSelection:NO];
+        [self.datePicker setSelectedBackgroundColor:[UIColor colorWithRed:125/255.0 green:208/255.0 blue:0/255.0 alpha:1.0]];
+        [self.datePicker setCurrentDateColor:[UIColor colorWithRed:242/255.0 green:121/255.0 blue:53/255.0 alpha:1.0]];
+        [self.datePicker setCurrentDateColorSelected:[UIColor yellowColor]];
+        
+        [self.datePicker setDateHasItemsCallback:^BOOL(NSDate *date) {
+            int tmp = (arc4random() % 30)+1;
+            return (tmp % 5 == 0);
+        }];
+        
+        [self presentSemiViewController:self.datePicker withOptions:@{
+                                                                      KNSemiModalOptionKeys.pushParentBack    : @(NO),
+                                                                      KNSemiModalOptionKeys.animationDuration : @(1.0),
+                                                                      KNSemiModalOptionKeys.shadowOpacity     : @(0.3),
+                                                                      }];
+    }
 }
 
 - (void)datePickerDonePressed:(THDatePickerViewController *)datePicker {
@@ -141,12 +160,17 @@
 }
 
 - (IBAction)sendAction:(id)sender {
-    NSDictionary *history = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants KSanitizedCurrentUserRecords]];
-    if ([history objectForKey:self.dateString]) {
-        [[[UIAlertView alloc] initWithTitle:@"Warning" message:[NSString stringWithFormat: @"You already sent a record for %@. Do you still want to send this ?",self.dateString] delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Send", nil] show];
-    } else{
+    if (self.isNewRecord) {
+        NSDictionary *history = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants KSanitizedCurrentUserRecords]];
+        if ([history objectForKey:self.dateString]) {
+            [[[UIAlertView alloc] initWithTitle:@"Warning" message:[NSString stringWithFormat: @"You already sent a record for %@. Do you still want to send this ?",self.dateString] delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Send", nil] show];
+        } else{
+            [self sendData];
+        }
+    } else {
         [self sendData];
     }
+    
 }
 
 - (void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
@@ -181,13 +205,27 @@
     if ([self.hourString isEqualToString:@"0.0"]) {
         [[[UIAlertView alloc]initWithTitle:@"Error" message:@"You can not submit 0 hour" delegate:nil cancelButtonTitle:@"Cancel" otherButtonTitles: nil] show];
     }else{
-        self.fireBase = [FireBaseManager recordURLsharedFireBase];
-        if (self.commentTextView.text && ([self.commentTextView.text length] > 0)) {
-            [[self.fireBase childByAutoId] setValue:@{@"client":self.clientName,@"date":self.dateString,@"hour":self.hourString,@"project":self.projectName,@"comment":self.commentTextView.text}];
-            [[LastSavedManager sharedManager] saveClient:self.clientName withProject:self.projectName withHour:self.hourString andComment:self.commentTextView.text];
+        if (self.isNewRecord) {
+            self.fireBase = [FireBaseManager recordURLsharedFireBase];
+            if (self.commentTextView.text && ([self.commentTextView.text length] > 0)) {
+                [[self.fireBase childByAutoId] setValue:@{@"client":self.clientName,@"date":self.dateString,@"hour":self.hourString,@"project":self.projectName,@"comment":self.commentTextView.text}];
+                [[LastSavedManager sharedManager] saveClient:self.clientName withProject:self.projectName withHour:self.hourString andComment:self.commentTextView.text];
+            } else{
+                [[self.fireBase childByAutoId] setValue:@{@"client":self.clientName,@"date":self.dateString,@"hour":self.hourString,@"project":self.projectName}];
+                [[LastSavedManager sharedManager] saveClient:self.clientName withProject:self.projectName andHour:self.hourString];
+            }
         } else{
-            [[self.fireBase childByAutoId] setValue:@{@"client":self.clientName,@"date":self.dateString,@"hour":self.hourString,@"project":self.projectName}];
-            [[LastSavedManager sharedManager] saveClient:self.clientName withProject:self.projectName andHour:self.hourString];
+            NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants KCurrentUser]];
+            NSString *uniqueAddress = (NSString*)[self.existingRecord objectForKey:@"key"];
+            self.fireBase = [[Firebase alloc]initWithUrl:[NSString stringWithFormat:@"%@/Users/%@/records/%@",[HConstants kFireBaseURL],username,uniqueAddress]];
+            if (self.commentTextView.text && ([self.commentTextView.text length] > 0)) {
+                [self.fireBase updateChildValues:@{@"client":self.clientName,@"date":self.dateString,@"hour":self.hourString,@"project":self.projectName,@"comment":self.commentTextView.text}];
+                [[LastSavedManager sharedManager] saveClient:self.clientName withProject:self.projectName withHour:self.hourString andComment:self.commentTextView.text];
+            } else{
+                [self.fireBase updateChildValues:@{@"client":self.clientName,@"date":self.dateString,@"hour":self.hourString,@"project":self.projectName}];
+                [[LastSavedManager sharedManager] saveClient:self.clientName withProject:self.projectName andHour:self.hourString];
+            }
+    
         }
         
         [self.navigationController popViewControllerAnimated:YES];

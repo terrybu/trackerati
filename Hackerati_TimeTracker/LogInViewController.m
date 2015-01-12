@@ -163,13 +163,15 @@ static NSString *CellIdentifier = @"Cell";
 }
 
 -(void)refreshControlAction{
-    [[FireBaseManager connectivityURLsharedFireBase] observeEventType:FEventTypeValue withBlock:^(FDataSnapshot *snapshot){
-        if([snapshot.value boolValue] && [[NSUserDefaults standardUserDefaults]objectForKey:[HConstants KCurrentUser]]) {
-            [[DataParser sharedManager] loginSuccessful];
-        } else {
-            [[NSNotificationCenter defaultCenter] postNotificationName:kStartLogInProcessNotification object:nil];
-        }
-    }];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [[FireBaseManager connectivityURLsharedFireBase] observeEventType:FEventTypeValue withBlock:^(FDataSnapshot *snapshot){
+            if([snapshot.value boolValue] && [[NSUserDefaults standardUserDefaults]objectForKey:[HConstants KCurrentUser]]) {
+                [[DataParser sharedManager] loginSuccessful];
+            } else {
+                [[NSNotificationCenter defaultCenter] postNotificationName:kStartLogInProcessNotification object:nil];
+            }
+        }];
+    });
 }
 
 -(void)sendForm{
@@ -256,12 +258,17 @@ static NSString *CellIdentifier = @"Cell";
     self.gravityBehavior = [[UIGravityBehavior alloc] initWithItems:@[self.formView]];
     self.gravityBehavior.gravityDirection = CGVectorMake(1.0f, 0.0f);
     [self.dynamicAnimator addBehavior:_gravityBehavior];
+    
+    self.navigationItem.leftBarButtonItem.enabled = NO;
+    self.navigationItem.rightBarButtonItem.enabled = NO;
 }
 
 -(void)slideOutForm{
     [self.dynamicAnimator removeBehavior:self.gravityBehavior];
     self.snapBehavior = [[UISnapBehavior alloc]initWithItem:self.formView snapToPoint:CGPointMake(-330, 0)];
     [self.dynamicAnimator addBehavior:self.snapBehavior];
+    self.navigationItem.leftBarButtonItem.enabled = YES;
+    self.navigationItem.rightBarButtonItem.enabled = YES;
 }
 
 -(void)cancelForm{
@@ -295,6 +302,7 @@ static NSString *CellIdentifier = @"Cell";
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     FormViewController *formViewController = [[FormViewController alloc]initWithNibName:@"FormViewController" bundle:nil];
+    formViewController.isNewRecord = YES;
     NSArray *rows = [self.sectionInformation objectForKey:[NSNumber numberWithInteger:indexPath.section]];
     NSString *project = [rows objectAtIndex:indexPath.row];
     NSString *client = [self.rowInformation objectForKey:[NSNumber numberWithInteger:indexPath.section]];

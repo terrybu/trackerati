@@ -23,5 +23,6 @@
 + (DataParser*) sharedManager;
 - (void) loginSuccessful;
 - (void) mannuallySetDelegate:(id<DataParserProtocol>)delegate;
+- (void) getUserRecords;
 
 @end

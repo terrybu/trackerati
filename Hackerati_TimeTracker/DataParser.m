@@ -9,10 +9,7 @@
 #import "DataParser.h"
 #import "FireBaseManager.h"
 #import "HConstants.h"
-
-#define NILIFNULL(foo) ((foo == [NSNull null]) ? nil : foo)
-#define NULLIFNIL(foo) ((foo == nil) ? [NSNull null] : foo)
-#define EMPTYIFNIL(foo) ((foo == nil) ? @"" : foo)
+#import "LogInManager.h"
 
 @interface DataParser ()
 
@@ -116,11 +113,15 @@
                 }
             });
         }];
-        
+        [self getUserRecords];
+    });
+}
+
+- (void) getUserRecords{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         // Get last 50 records by date
         self.records = [FireBaseManager recordURLsharedFireBase];
         [[[self.records queryOrderedByChild:@"date"] queryLimitedToLast:50] observeEventType:FEventTypeValue withBlock:^(FDataSnapshot *snapshot) {
-        
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
                 if (snapshot.value && [snapshot.value isKindOfClass:[NSDictionary class]]) {
                     NSDictionary *records = snapshot.value;
@@ -131,17 +132,17 @@
                             if ([sanitizedCurrentUserRecords objectForKey:[obj objectForKey:@"date"]] ) {
                                 NSMutableArray *records = [sanitizedCurrentUserRecords objectForKey:[obj objectForKey:@"date"]];
                                 if ([obj objectForKey:@"comment"]) {
-                                    [records addObject:@{@"client":[obj objectForKey:@"client"],@"project":[obj objectForKey:@"project"],@"hour":[obj objectForKey:@"hour"],@"comment":[obj objectForKey:@"comment"]}];
+                                    [records addObject:@{@"client":[obj objectForKey:@"client"],@"project":[obj objectForKey:@"project"],@"hour":[obj objectForKey:@"hour"],@"comment":[obj objectForKey:@"comment"],@"key":(NSString*)key,@"date":[obj objectForKey:@"date"]}];
                                 } else{
-                                    [records addObject:@{@"client":[obj objectForKey:@"client"],@"project":[obj objectForKey:@"project"],@"hour":[obj objectForKey:@"hour"]}];
+                                    [records addObject:@{@"client":[obj objectForKey:@"client"],@"project":[obj objectForKey:@"project"],@"hour":[obj objectForKey:@"hour"],@"key":(NSString*)key,@"date":[obj objectForKey:@"date"]}];
                                 }
                                 [sanitizedCurrentUserRecords setObject:records forKey:[obj objectForKey:@"date"]];
                             } else{
                                 NSMutableArray *records = nil;
                                 if ([obj objectForKey:@"comment"]) {
-                                    records = [[NSMutableArray alloc]initWithObjects:@{@"client":[obj objectForKey:@"client"],@"project":[obj objectForKey:@"project"],@"hour":[obj objectForKey:@"hour"],@"comment":[obj objectForKey:@"comment"]}, nil];
+                                    records = [[NSMutableArray alloc]initWithObjects:@{@"client":[obj objectForKey:@"client"],@"project":[obj objectForKey:@"project"],@"hour":[obj objectForKey:@"hour"],@"comment":[obj objectForKey:@"comment"],@"key":(NSString*)key,@"date":[obj objectForKey:@"date"]}, nil];
                                 } else{
-                                    records = [[NSMutableArray alloc]initWithObjects:@{@"client":[obj objectForKey:@"client"],@"project":[obj objectForKey:@"project"],@"hour":[obj objectForKey:@"hour"]}, nil];
+                                    records = [[NSMutableArray alloc]initWithObjects:@{@"client":[obj objectForKey:@"client"],@"project":[obj objectForKey:@"project"],@"hour":[obj objectForKey:@"hour"],@"key":(NSString*)key,@"date":[obj objectForKey:@"date"]}, nil];
                                 }
                                 [sanitizedCurrentUserRecords setObject:records forKey:[obj objectForKey:@"date"]];
                             }
@@ -164,26 +165,20 @@
                         }
                         return (NSComparisonResult)NSOrderedSame;
                     }];
-                    [[NSUserDefaults standardUserDefaults] setObject:sanitizedCurrentUserRecordsKeys forKey:[HConstants KSanitizedCurrentUserRecordsKeys]];
+                    NSArray *sanitizedCurrentUserRecordsKeysMutable = [[NSMutableArray alloc]initWithArray:sanitizedCurrentUserRecordsKeys];
+                    [[NSUserDefaults standardUserDefaults] setObject:sanitizedCurrentUserRecordsKeysMutable forKey:[HConstants KSanitizedCurrentUserRecordsKeys]];
                     [[NSUserDefaults standardUserDefaults] synchronize];
-                    
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kStartGetUserRecordsProcessNotification object:nil];
                 }
                 else {
-                    
                     [[NSUserDefaults standardUserDefaults] removeObjectForKey:[HConstants KSanitizedCurrentUserRecords]];
                     [[NSUserDefaults standardUserDefaults] removeObjectForKey:[HConstants KSanitizedCurrentUserRecordsKeys]];
                     [[NSUserDefaults standardUserDefaults]synchronize];
-                    
-                    if ([self.delegate respondsToSelector:@selector(loadData)]) {
-                        dispatch_async(dispatch_get_main_queue(), ^{
-                            [self.delegate loadData];
-                        });
-                    }
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kStartGetUserRecordsProcessNotification object:nil];
                 }
             });
-            
         }];
-    
+        
     });
 }
 

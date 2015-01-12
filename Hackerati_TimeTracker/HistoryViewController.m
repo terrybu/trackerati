@@ -29,6 +29,7 @@ static NSString *cellIdentifier = @"RecordTableViewCell";
     self.title = @"History";
     [self.tableView registerNib:[UINib nibWithNibName:@"RecordTableViewCell" bundle:nil] forCellReuseIdentifier:cellIdentifier];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Log Out" style:UIBarButtonItemStylePlain target:self action:@selector(logOutAction)];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateNewRecords) name:kStartGetUserRecordsProcessNotification object:nil];
 }
 
 - (void) viewWillAppear:(BOOL)animated{
@@ -53,6 +54,18 @@ static NSString *cellIdentifier = @"RecordTableViewCell";
     // Pass the selected object to the new view controller.
 }
 */
+
+-(void)updateNewRecords{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        self.history = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants KSanitizedCurrentUserRecords]];
+        self.keys = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants KSanitizedCurrentUserRecordsKeys]];
+        [self.tableView reloadData];
+    });
+}
+
+-(void)dealloc{
+    [[NSNotificationCenter defaultCenter]removeObserver:self];
+}
 
 - (void)logOutAction{
     [[NSNotificationCenter defaultCenter] postNotificationName:kStartLogOutProcessNotification object:nil];
@@ -100,7 +113,6 @@ static NSString *cellIdentifier = @"RecordTableViewCell";
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     RecordDetailViewController *recordViewController =[[RecordDetailViewController alloc]initWithNibName:@"RecordDetailViewController" bundle:nil];
     recordViewController.record = [((NSArray*)[self.history objectForKey:[self.keys objectAtIndex:indexPath.section]])objectAtIndex:indexPath.row];
-    recordViewController.viewTitle = [self.keys objectAtIndex:indexPath.section];
     [self.navigationController pushViewController:recordViewController animated:YES];
 }
 
