@@ -24,7 +24,7 @@ The structure of the data is as follows:
           "project" :"sample project", //Must be in a string format
           "date"    :"MM/dd/yyyy", //Must be in a string format - "01/05/2015"
           "hour"    :"8", //Must be in a string format
-          "comment" :"optinal" //Must be in a string format but is optional 
+          "comment" :"optional" //Must be in a string format but is optional 
           }
         }
       }
