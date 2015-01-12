@@ -62,10 +62,35 @@ static NSString *CellIdentifier = @"Cell";
     self.title = @"Enter your hours";
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"History" style:UIBarButtonItemStyleBordered target:self action:@selector(historyAction:)];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addNewProjects)];
+    
     self.sectionInformation = [[NSMutableDictionary alloc]init];
     self.rowInformation = [[NSMutableDictionary alloc]init];
+    
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     [self.tableView registerClass:[CustomMCSwipeTableViewCell class] forCellReuseIdentifier:CellIdentifier];
+    
+    [self setFormForQuickSubmisson];
+    
+    self.refreshControl = [[UIRefreshControl alloc] init];
+    self.refreshControl.backgroundColor = [UIColor whiteColor];
+    self.refreshControl.tintColor = [UIColor grayColor];
+    [self.refreshControl addTarget:self
+                            action:@selector(refreshControlAction)
+                  forControlEvents:UIControlEventValueChanged];
+    [self.tableView addSubview:self.refreshControl];
+    
+    UILabel *messageLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)];
+    messageLabel.text = @"Please Pull to Refresh";
+    messageLabel.textColor = [UIColor blackColor];
+    messageLabel.numberOfLines = 0;
+    messageLabel.textAlignment = NSTextAlignmentCenter;
+    messageLabel.font = [UIFont fontWithName:@"Palatino-Italic" size:20];
+    [messageLabel sizeToFit];
+    self.tableView.backgroundView = messageLabel;
+    
+}
+
+-(void)setFormForQuickSubmisson{
     self.formView = [[UIView alloc]initWithFrame:CGRectMake(-330, 0, 300, 500)];
     self.clientName = [[UILabel alloc]initWithFrame:CGRectMake(95, 57+25, 194, 60)];
     self.projectName = [[UILabel alloc]initWithFrame:CGRectMake(95, 113, 194, 60)];
@@ -130,27 +155,6 @@ static NSString *CellIdentifier = @"Cell";
     [self.formView.layer setBorderWidth:0.5f];
     [self.formView.layer setBorderColor:[UIColor grayColor].CGColor];
     [self.view addSubview:self.formView];
-    
-    
-    self.refreshControl = [[UIRefreshControl alloc] init];
-    self.refreshControl.backgroundColor = [UIColor whiteColor];
-    self.refreshControl.tintColor = [UIColor grayColor];
-    [self.refreshControl addTarget:self
-                            action:@selector(refreshControlAction)
-                  forControlEvents:UIControlEventValueChanged];
-    [self.tableView addSubview:self.refreshControl];
-    
-    
-    
-    UILabel *messageLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)];
-    messageLabel.text = @"Please Pull to Refresh";
-    messageLabel.textColor = [UIColor blackColor];
-    messageLabel.numberOfLines = 0;
-    messageLabel.textAlignment = NSTextAlignmentCenter;
-    messageLabel.font = [UIFont fontWithName:@"Palatino-Italic" size:20];
-    [messageLabel sizeToFit];
-    self.tableView.backgroundView = messageLabel;
-    
 }
 
 -(void) viewWillAppear:(BOOL)animated{
@@ -241,6 +245,60 @@ static NSString *CellIdentifier = @"Cell";
     // Dispose of any resources that can be recreated.
 }
 
+
+-(void)slideForm{
+    self.formView.frame = CGRectMake(-330, 0, 300, 400);
+    CGRect frame = self.view.bounds;
+    self.dynamicAnimator = [[UIDynamicAnimator alloc]initWithReferenceView:self.view];
+    UICollisionBehavior *collisionBehavior = [[UICollisionBehavior alloc] initWithItems:@[self.formView]];
+    [collisionBehavior setTranslatesReferenceBoundsIntoBoundaryWithInsets:UIEdgeInsetsMake(0, frame.size.width-10, 0, 0)];
+    [self.dynamicAnimator addBehavior:collisionBehavior];
+    
+    self.gravityBehavior = [[UIGravityBehavior alloc] initWithItems:@[self.formView]];
+    self.gravityBehavior.gravityDirection = CGVectorMake(1.0f, 0.0f);
+    [self.dynamicAnimator addBehavior:_gravityBehavior];
+}
+
+-(void)slideOutForm{
+    [self.dynamicAnimator removeBehavior:self.gravityBehavior];
+    self.snapBehavior = [[UISnapBehavior alloc]initWithItem:self.formView snapToPoint:CGPointMake(-330, 0)];
+    [self.dynamicAnimator addBehavior:self.snapBehavior];
+}
+
+#pragma mark - Table View and Data Source Delegate
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
+    if ([[self.rowInformation allKeys] count] && [[self.rowInformation allKeys] count] > 0) {
+        self.tableView.backgroundView.hidden = YES;
+        return [[self.rowInformation allKeys] count];
+    } else{
+        self.tableView.backgroundView.hidden = NO;
+    }
+    return 0;
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
+    return (NSString*)[self.rowInformation objectForKey:[NSNumber numberWithInteger:section]];
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return 50.0f;
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+    return 40.0f;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    FormViewController *formViewController = [[FormViewController alloc]initWithNibName:@"FormViewController" bundle:nil];
+    NSArray *rows = [self.sectionInformation objectForKey:[NSNumber numberWithInteger:indexPath.section]];
+    NSString *project = [rows objectAtIndex:indexPath.row];
+    NSString *client = [self.rowInformation objectForKey:[NSNumber numberWithInteger:indexPath.section]];
+    formViewController.projectName = project;
+    formViewController.clientName = client;
+    [self.navigationController pushViewController:formViewController animated:YES];
+}
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     NSArray *rows = [self.sectionInformation objectForKey:[NSNumber numberWithInteger:section]];
     return [rows count];
@@ -308,8 +366,6 @@ static NSString *CellIdentifier = @"Cell";
             [self.fireBase removeValue];
         }
         
-        
-        
         dispatch_async(dispatch_get_main_queue(), ^{
             [weakSelf loadData];
         });
@@ -323,56 +379,7 @@ static NSString *CellIdentifier = @"Cell";
     
 }
 
--(void)slideForm{
-    self.formView.frame = CGRectMake(-330, 0, 300, 400);
-    CGRect frame = self.view.bounds;
-    self.dynamicAnimator = [[UIDynamicAnimator alloc]initWithReferenceView:self.view];
-    UICollisionBehavior *collisionBehavior = [[UICollisionBehavior alloc] initWithItems:@[self.formView]];
-    [collisionBehavior setTranslatesReferenceBoundsIntoBoundaryWithInsets:UIEdgeInsetsMake(0, frame.size.width-10, 0, 0)];
-    [self.dynamicAnimator addBehavior:collisionBehavior];
-    
-    self.gravityBehavior = [[UIGravityBehavior alloc] initWithItems:@[self.formView]];
-    self.gravityBehavior.gravityDirection = CGVectorMake(1.0f, 0.0f);
-    [self.dynamicAnimator addBehavior:_gravityBehavior];
-}
-
--(void)slideOutForm{
-    [self.dynamicAnimator removeBehavior:self.gravityBehavior];
-    self.snapBehavior = [[UISnapBehavior alloc]initWithItem:self.formView snapToPoint:CGPointMake(-330, 0)];
-    [self.dynamicAnimator addBehavior:self.snapBehavior];
-}
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    if ([[self.rowInformation allKeys] count] && [[self.rowInformation allKeys] count] > 0) {
-        self.tableView.backgroundView.hidden = YES;
-        return [[self.rowInformation allKeys] count];
-    } else{
-        self.tableView.backgroundView.hidden = NO;
-    }
-    return 0;
-}
-
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
-    return (NSString*)[self.rowInformation objectForKey:[NSNumber numberWithInteger:section]];
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return 50.0f;
-}
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
-    return 40.0f;
-}
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    FormViewController *formViewController = [[FormViewController alloc]initWithNibName:@"FormViewController" bundle:nil];
-    NSArray *rows = [self.sectionInformation objectForKey:[NSNumber numberWithInteger:indexPath.section]];
-    NSString *project = [rows objectAtIndex:indexPath.row];
-    NSString *client = [self.rowInformation objectForKey:[NSNumber numberWithInteger:indexPath.section]];
-    formViewController.projectName = project;
-    formViewController.clientName = client;
-    [self.navigationController pushViewController:formViewController animated:YES];
-}
+#pragma mark - CustomMCSwipeTableCell Delegate
 
 - (void)swipeTableViewCell:(CustomMCSwipeTableViewCell *)cell didSwipeWithPercentage:(CGFloat)percentage{
     if (percentage > 0.0) {

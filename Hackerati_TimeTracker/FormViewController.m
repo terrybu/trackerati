@@ -189,7 +189,6 @@
             [[LastSavedManager sharedManager] saveClient:self.clientName withProject:self.projectName andHour:self.hourString];
         }
         
-        
         [self.navigationController popViewControllerAnimated:YES];
     }
     

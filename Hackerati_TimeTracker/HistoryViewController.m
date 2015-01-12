@@ -59,6 +59,8 @@ static NSString *cellIdentifier = @"RecordTableViewCell";
     [self.navigationController popViewControllerAnimated:YES];
 }
 
+#pragma mark - Table View and Data Source Delegate
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     return [[self.history objectForKey:[self.keys objectAtIndex:section]]count];
 }
@@ -85,7 +87,6 @@ static NSString *cellIdentifier = @"RecordTableViewCell";
         cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     }
 
-    
     NSDictionary *record = [((NSArray*)[self.history objectForKey:[self.keys objectAtIndex:indexPath.section]])objectAtIndex:indexPath.row];
     
     [cell setclientNameLabelString:[record objectForKey:@"client"]];

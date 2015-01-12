@@ -53,6 +53,8 @@ static NSString *CellIdentifier = @"Cell";
     // Dispose of any resources that can be recreated.
 }
 
+#pragma mark - Table View and Data Source Delegate
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     NSArray *rows = [self.sectionInformation objectForKey:[NSNumber numberWithInteger:section]];
     return [rows count];
