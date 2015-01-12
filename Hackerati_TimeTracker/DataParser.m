@@ -35,6 +35,7 @@
 
 - (void) loginSuccessful{
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+        // Get all existing clients and projects
         [self.projects observeSingleEventOfType:FEventTypeValue withBlock:^(FDataSnapshot *snapshot) {
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
                 if (snapshot.value && [snapshot.value isKindOfClass:[NSDictionary class]]) {
@@ -116,8 +117,10 @@
             });
         }];
         
+        // Get last 50 records by date
         self.records = [FireBaseManager recordURLsharedFireBase];
-        [self.records observeSingleEventOfType:FEventTypeValue withBlock:^(FDataSnapshot *snapshot){
+        [[[self.records queryOrderedByChild:@"date"] queryLimitedToLast:50] observeEventType:FEventTypeValue withBlock:^(FDataSnapshot *snapshot) {
+        
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
                 if (snapshot.value && [snapshot.value isKindOfClass:[NSDictionary class]]) {
                     NSDictionary *records = snapshot.value;
@@ -178,8 +181,9 @@
                     }
                 }
             });
+            
         }];
-        
+    
     });
 }
 
