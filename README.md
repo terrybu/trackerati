@@ -22,9 +22,11 @@ The structure of the data is as follows:
         "Unique Identifier":{
           "client"  :"sample client", //Must be in a string format
           "project" :"sample project", //Must be in a string format
-          "date"    :"MM/dd/yyyy", //Must be in a string format - "01/05/2015"
+          "date"    :"MM/dd/yyyy", //Must be in a string format - ex "01/05/2015"
           "hour"    :"8", //Must be in a string format
-          "comment" :"optional" //Must be in a string format but is optional 
+          "comment" :"optional", //Must be in a string format but is optional
+          "type"    :"1" // Must be in a string format - used to denote billable ("1") or unbillable ("0")
+          "status"  :"1" // Must be in a string format - used to denote full-time ("1") or part-time ("0")
           }
         }
       }
@@ -38,3 +40,4 @@ source 'https://github.com/CocoaPods/Specs.git'
 pod 'Firebase', '>= 2.0.3'
 pod 'MCSwipeTableViewCell'
 pod 'KNSemiModalViewController'
+pod 'KVOController'
