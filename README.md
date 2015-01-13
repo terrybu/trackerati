@@ -15,7 +15,7 @@ The structure of the data is as follows:
           }
         }
       }  
-  }
+  },
   "Users":{
     "User unique name":{
       "records":{
