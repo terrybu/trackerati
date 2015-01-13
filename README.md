@@ -11,7 +11,7 @@ The structure of the data is as follows:
     "Client Name":{
       "Project Name":{
         "Unique Identifier":{
-          "name":"User unique name" //Must be in a string format
+          "name":"User unique name" \//Must be in a string format
           }
         }
       }  
@@ -20,11 +20,11 @@ The structure of the data is as follows:
     "User unique name":{
       "records":{
         "Unique Identifier":{
-          "client"  :"sample client", //Must be in a string format
-          "project" :"sample project", //Must be in a string format
-          "date"    :"MM/dd/yyyy", //Must be in a string format - "01/05/2015"
-          "hour"    :"8", //Must be in a string format
-          "comment" :"optional" //Must be in a string format but is optional 
+          "client"  :"sample client", \//Must be in a string format
+          "project" :"sample project", \//Must be in a string format
+          "date"    :"MM/dd/yyyy", \//Must be in a string format - "01/05/2015"
+          "hour"    :"8", \//Must be in a string format
+          "comment" :"optional" \//Must be in a string format but is optional 
           }
         }
       }
@@ -38,3 +38,4 @@ source 'https://github.com/CocoaPods/Specs.git'
 pod 'Firebase', '>= 2.0.3'
 pod 'MCSwipeTableViewCell'
 pod 'KNSemiModalViewController'
+pod 'KVOController'
