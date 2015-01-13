@@ -22,33 +22,44 @@
 
 @interface LogInViewController ()<MCSwipeTableViewCellDelegate>
 
+// Data Source
 @property (strong, nonatomic) NSMutableDictionary *sectionInformation;
 @property (strong, nonatomic) NSMutableDictionary *rowInformation;
+@property (strong, nonatomic) NSDictionary* datas;
+
 @property (strong, nonatomic) GPPSignIn *googleSignIn;
+
 @property (strong, nonatomic) HistoryViewController *historyViewController;
-@property (strong, nonatomic) UIDynamicAnimator *dynamicAnimator;
-@property (strong, nonatomic) UIGravityBehavior *gravityBehavior;
-@property (strong, nonatomic) UISnapBehavior *snapBehavior;
-@property (strong, nonatomic) UILabel *clientName;
-@property (strong, nonatomic) UILabel *projectName;
-@property (strong, nonatomic) UILabel *dateOfService;
-@property (strong, nonatomic) UILabel *hourOfService;
+
+@property (strong, nonatomic) Firebase *fireBase;
+
+@property (strong, nonatomic) UIRefreshControl *refreshControl;
+
+@property (strong, nonatomic) NSDateFormatter *formatter;
+
+// Elements for the quick form
+@property (strong, nonatomic) UIView  *formView;
+@property (strong, nonatomic) UILabel *projectTextLabel;
+@property (strong, nonatomic) UILabel *dateOfServiceTextLabel;
+@property (strong, nonatomic) UILabel *hourOfServiceTextLabel;
 @property (strong, nonatomic) UILabel *clientNameLabel;
 @property (strong, nonatomic) UILabel *projectNameLabel;
 @property (strong, nonatomic) UILabel *dateOfServiceLabel;
 @property (strong, nonatomic) UILabel *hourOfServiceLabel;
-@property (strong, nonatomic) UIView  *formView;
 @property (strong, nonatomic) UIButton *sendButton;
 @property (strong, nonatomic) UIButton *cancelButton;
-@property (strong, nonatomic) Firebase *fireBase;
-@property (strong, nonatomic) UIRefreshControl *refreshControl;
-@property (strong, nonatomic) NSString *clientNameString;
-@property (strong, nonatomic) NSString *dateString;
-@property (strong, nonatomic) NSString *hourString;
-@property (strong, nonatomic) NSString *projectNameString;
-@property (strong, nonatomic) NSDictionary* datas;
 @property (strong, nonatomic) CustonLabel* commentTextLabel;
 @property (strong, nonatomic) UILabel *commentLabel;
+@property (strong, nonatomic) UILabel *clientNameTextLabel;
+@property (strong, nonatomic) UILabel *typeTextLabel;
+@property (strong, nonatomic) UILabel *statusTextLabel;
+@property (strong, nonatomic) UILabel *typeLabel;
+@property (strong, nonatomic) UILabel *statusLabel;
+
+// Animations for the quick form
+@property (strong, nonatomic) UIDynamicAnimator *dynamicAnimator;
+@property (strong, nonatomic) UIGravityBehavior *gravityBehavior;
+@property (strong, nonatomic) UISnapBehavior *snapBehavior;
 
 @end
 
@@ -70,6 +81,7 @@ static NSString *CellIdentifier = @"Cell";
     [self.tableView registerClass:[CustomMCSwipeTableViewCell class] forCellReuseIdentifier:CellIdentifier];
     
     [self setFormForQuickSubmisson];
+    [self.view addSubview:self.formView];
     
     self.refreshControl = [[UIRefreshControl alloc] init];
     self.refreshControl.backgroundColor = [UIColor whiteColor];
@@ -88,22 +100,31 @@ static NSString *CellIdentifier = @"Cell";
     [messageLabel sizeToFit];
     self.tableView.backgroundView = messageLabel;
     
+    self.formatter = [[NSDateFormatter alloc] init];
+    [self.formatter setDateFormat:@"MM/dd/yyyy"];
 }
 
 -(void)setFormForQuickSubmisson{
     self.formView = [[UIView alloc]initWithFrame:CGRectMake(-330, 0, 300, 500)];
-    self.clientName = [[UILabel alloc]initWithFrame:CGRectMake(95, 57+25, 194, 60)];
-    self.projectName = [[UILabel alloc]initWithFrame:CGRectMake(95, 113, 194, 60)];
-    self.dateOfService = [[UILabel alloc]initWithFrame:CGRectMake(95, 146, 194, 60)];
-    self.hourOfService = [[UILabel alloc]initWithFrame:CGRectMake(95, 180, 58, 60)];
-    self.clientNameLabel = [[UILabel alloc]initWithFrame:CGRectMake(13, 57+25, 58, 35)];
+    
+    self.clientNameLabel = [[UILabel alloc]initWithFrame:CGRectMake(13, 82, 58, 35)];
     self.projectNameLabel = [[UILabel alloc]initWithFrame:CGRectMake(13, 113, 58, 35)];
     self.dateOfServiceLabel = [[UILabel alloc]initWithFrame:CGRectMake(13, 146, 58, 35)];
-    self.hourOfServiceLabel = [[UILabel alloc]initWithFrame:CGRectMake(13, 180, 58, 35)];
-    self.commentLabel = [[UILabel alloc] initWithFrame:CGRectMake(13, 210, 58, 35)];
-    self.commentTextLabel = [[CustonLabel alloc] initWithFrame:CGRectMake(95, 210, 194, 140)];
+    self.hourOfServiceLabel = [[UILabel alloc]initWithFrame:CGRectMake(13, 175, 58, 35)];
+    self.commentLabel = [[UILabel alloc] initWithFrame:CGRectMake(13, 300, 58, 35)];
+    self.typeLabel = [[UILabel alloc] initWithFrame:CGRectMake(13, 215, 58, 35)];
+    self.statusLabel = [[UILabel alloc] initWithFrame:CGRectMake(13, 260, 58, 35)];
+    
+    self.clientNameTextLabel = [[UILabel alloc]initWithFrame:CGRectMake(95, 82, 194, 35)];
+    self.projectTextLabel = [[UILabel alloc]initWithFrame:CGRectMake(95, 113, 194, 35)];
+    self.dateOfServiceTextLabel = [[UILabel alloc]initWithFrame:CGRectMake(95, 146, 194, 35)];
+    self.hourOfServiceTextLabel = [[UILabel alloc]initWithFrame:CGRectMake(95, 167, 194, 35)];
+    self.commentTextLabel = [[CustonLabel alloc] initWithFrame:CGRectMake(95, 300, 194, 130)];
+    self.typeTextLabel = [[UILabel alloc] initWithFrame:CGRectMake(95, 215-8, 194, 35)];
+    self.statusTextLabel = [[UILabel alloc] initWithFrame:CGRectMake(95, 260-8, 194, 35)];
+    
     self.sendButton = [UIButton buttonWithType:UIButtonTypeSystem];
-    self.sendButton.frame = CGRectMake(13, 360, 60, 30);
+    self.sendButton.frame = CGRectMake(13, 450, 60, 30);
     self.sendButton.layer.cornerRadius = 5.0f;
     self.sendButton.clipsToBounds = YES;
     [self.sendButton.layer setBorderWidth:0.5f];
@@ -111,8 +132,9 @@ static NSString *CellIdentifier = @"Cell";
     [self.sendButton setTitle:@"Send" forState:UIControlStateNormal];
     [self.sendButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
     [self.sendButton addTarget:self action:@selector(sendForm) forControlEvents:UIControlEventTouchUpInside];
+    
     self.cancelButton = [UIButton buttonWithType:UIButtonTypeSystem];
-    self.cancelButton.frame = CGRectMake(95, 360, 60, 30);
+    self.cancelButton.frame = CGRectMake(95, 450, 60, 30);
     self.cancelButton.layer.cornerRadius = 5.0f;
     self.cancelButton.clipsToBounds = YES;
     [self.cancelButton.layer setBorderWidth:0.5f];
@@ -120,15 +142,21 @@ static NSString *CellIdentifier = @"Cell";
     [self.cancelButton setTitle:@"Cancel" forState:UIControlStateNormal];
     [self.cancelButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
     [self.cancelButton addTarget:self action:@selector(cancelForm) forControlEvents:UIControlEventTouchUpInside];
+    
     [self.clientNameLabel setFont:[UIFont fontWithName:@"HelveticaNeue" size:15]];
-    [self.clientName setFont:[UIFont fontWithName:@"HelveticaNeue" size:15]];
-    [self.projectName setFont:[UIFont fontWithName:@"HelveticaNeue" size:15]];
-    [self.dateOfService setFont:[UIFont fontWithName:@"HelveticaNeue" size:15]];
+    [self.clientNameTextLabel setFont:[UIFont fontWithName:@"HelveticaNeue" size:15]];
+    [self.projectTextLabel setFont:[UIFont fontWithName:@"HelveticaNeue" size:15]];
+    [self.dateOfServiceTextLabel setFont:[UIFont fontWithName:@"HelveticaNeue" size:15]];
     [self.clientNameLabel setFont:[UIFont fontWithName:@"HelveticaNeue" size:15]];
-    [self.hourOfService setFont:[UIFont fontWithName:@"HelveticaNeue" size:15]];
+    [self.hourOfServiceTextLabel setFont:[UIFont fontWithName:@"HelveticaNeue" size:15]];
     [self.projectNameLabel setFont:[UIFont fontWithName:@"HelveticaNeue" size:15]];
     [self.dateOfServiceLabel setFont:[UIFont fontWithName:@"HelveticaNeue" size:15]];
     [self.hourOfServiceLabel setFont:[UIFont fontWithName:@"HelveticaNeue" size:15]];
+    [self.typeLabel setFont:[UIFont fontWithName:@"HelveticaNeue" size:15]];
+    [self.statusLabel setFont:[UIFont fontWithName:@"HelveticaNeue" size:15]];
+    [self.typeTextLabel setFont:[UIFont fontWithName:@"HelveticaNeue" size:15]];
+    [self.statusTextLabel setFont:[UIFont fontWithName:@"HelveticaNeue" size:15]];
+    
     [self.commentLabel setFont:[UIFont fontWithName:@"HelveticaNeue" size:15]];
     [self.commentTextLabel setFont:[UIFont fontWithName:@"HelveticaNeue" size:15]];
     self.commentTextLabel.layer.cornerRadius = 5.0f;
@@ -137,10 +165,26 @@ static NSString *CellIdentifier = @"Cell";
     [self.commentTextLabel.layer setBorderColor:[UIColor grayColor].CGColor];
     [self.commentTextLabel setNumberOfLines:200];
     [self.commentTextLabel setUserInteractionEnabled:YES];
-    [self.formView addSubview:self.clientName];
-    [self.formView addSubview:self.projectName];
-    [self.formView addSubview:self.dateOfService];
-    [self.formView addSubview:self.hourOfService];
+    
+    self.clientNameLabel.text = @"Client:";
+    [self.clientNameLabel sizeToFit];
+    self.projectNameLabel.text = @"Project:";
+    [self.projectNameLabel sizeToFit];
+    self.dateOfServiceLabel.text = @"Date:";
+    [self.dateOfServiceLabel sizeToFit];
+    self.hourOfServiceLabel.text = @"Hour:";
+    [self.hourOfServiceLabel sizeToFit];
+    self.commentLabel.text = @"Comment:";
+    [self.commentLabel sizeToFit];
+    self.typeLabel.text = @"Type:";
+    [self.typeLabel sizeToFit];
+    self.statusLabel.text = @"Status:";
+    [self.statusLabel sizeToFit];
+    
+    [self.formView addSubview:self.clientNameTextLabel];
+    [self.formView addSubview:self.projectTextLabel];
+    [self.formView addSubview:self.dateOfServiceTextLabel];
+    [self.formView addSubview:self.hourOfServiceTextLabel];
     [self.formView addSubview:self.clientNameLabel];
     [self.formView addSubview:self.projectNameLabel];
     [self.formView addSubview:self.dateOfServiceLabel];
@@ -149,12 +193,17 @@ static NSString *CellIdentifier = @"Cell";
     [self.formView addSubview:self.cancelButton];
     [self.formView addSubview:self.commentLabel];
     [self.formView addSubview:self.commentTextLabel];
+    [self.formView addSubview:self.typeLabel];
+    [self.formView addSubview:self.statusLabel];
+    [self.formView addSubview:self.typeTextLabel];
+    [self.formView addSubview:self.statusTextLabel];
+    
     self.formView.backgroundColor = [UIColor colorWithRed:239.0f/255.0f green:239.0f/255.0f blue:244.0f/255.0f alpha:1.0f/1.0f];
     self.formView.layer.cornerRadius = 5.0f;
     self.formView.clipsToBounds = YES;
     [self.formView.layer setBorderWidth:0.5f];
     [self.formView.layer setBorderColor:[UIColor grayColor].CGColor];
-    [self.view addSubview:self.formView];
+    
 }
 
 -(void) viewWillAppear:(BOOL)animated{
@@ -176,8 +225,8 @@ static NSString *CellIdentifier = @"Cell";
 
 -(void)sendForm{
     NSDictionary *history = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants KSanitizedCurrentUserRecords]];
-    if ([history objectForKey:self.dateString]) {
-        [[[UIAlertView alloc] initWithTitle:@"Warning" message:[NSString stringWithFormat: @"You already sent a record for %@. Do you still want to send this ?",self.dateString] delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Send", nil] show];
+    if ([history objectForKey:self.dateOfServiceTextLabel.text]) {
+        [[[UIAlertView alloc] initWithTitle:@"Warning" message:[NSString stringWithFormat: @"You already sent a record for %@. Do you still want to send this ?",self.dateOfServiceTextLabel.text] delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Send", nil] show];
     } else{
         [self sendData];
     }
@@ -195,9 +244,19 @@ static NSString *CellIdentifier = @"Cell";
 -(void)sendData{
     self.tableView.userInteractionEnabled = YES;
     self.fireBase = [FireBaseManager recordURLsharedFireBase];
-    [[self.fireBase childByAutoId] setValue:@{@"client":self.clientNameString,@"date":self.dateString,@"hour":self.hourString,@"project":self.projectNameString}];
+    
+    if (self.commentTextLabel.text && [self.commentTextLabel.text length] > 0) {
+        [[self.fireBase childByAutoId] setValue:@{@"client":self.clientNameTextLabel.text,@"date":self.dateOfServiceTextLabel.text,@"hour":self.hourOfServiceTextLabel.text,@"project":self.projectTextLabel.text,@"status":(([self.statusTextLabel.text isEqualToString:@"Full-Time Employee"])?@"1":@"0"),@"type":(([self.typeTextLabel.text isEqualToString:@"Billable Hour"])?@"1":@"0"),@"comment":self.commentTextLabel.text}];
+        
+        [[LastSavedManager sharedManager] saveRecord:@{@"client":self.clientNameTextLabel.text,@"date":self.dateOfServiceTextLabel.text,@"hour":self.hourOfServiceTextLabel.text,@"project":self.projectTextLabel.text,@"status":(([self.statusTextLabel.text isEqualToString:@"Full-Time Employee"])?@"1":@"0"),@"type":(([self.typeTextLabel.text isEqualToString:@"Billable Hour"])?@"1":@"0"),@"comment":self.commentTextLabel.text}];
+    } else{
+        [[self.fireBase childByAutoId] setValue:@{@"client":self.clientNameTextLabel.text,@"date":self.dateOfServiceTextLabel.text,@"hour":self.hourOfServiceTextLabel.text,@"project":self.projectTextLabel.text,@"status":(([self.statusTextLabel.text isEqualToString:@"Full-Time Employee"])?@"1":@"0"),@"type":(([self.typeTextLabel.text isEqualToString:@"Billable Hour"])?@"1":@"0")}];
+        
+        [[LastSavedManager sharedManager] saveRecord:@{@"client":self.clientNameTextLabel.text,@"date":self.dateOfServiceTextLabel.text,@"hour":self.hourOfServiceTextLabel.text,@"project":self.projectTextLabel.text,@"status":(([self.statusTextLabel.text isEqualToString:@"Full-Time Employee"])?@"1":@"0"),@"type":(([self.typeTextLabel.text isEqualToString:@"Billable Hour"])?@"1":@"0")}];
+    }
+    
     [self slideOutForm];
-    [[LastSavedManager sharedManager] saveClient:self.clientNameString withProject:self.projectNameString andHour:self.hourString];
+    
 }
 
 - (void) historyAction:(UIBarButtonItem*)barButton{
@@ -248,7 +307,7 @@ static NSString *CellIdentifier = @"Cell";
 
 
 -(void)slideForm{
-    self.formView.frame = CGRectMake(-330, 0, 300, 400);
+    self.formView.frame = CGRectMake(-330, 0, 300, 500);
     CGRect frame = self.view.bounds;
     self.dynamicAnimator = [[UIDynamicAnimator alloc]initWithReferenceView:self.view];
     UICollisionBehavior *collisionBehavior = [[UICollisionBehavior alloc] initWithItems:@[self.formView]];
@@ -319,21 +378,6 @@ static NSString *CellIdentifier = @"Cell";
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     CustomMCSwipeTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    
-    if (!cell) {
-        cell = [[CustomMCSwipeTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
-        
-        // Remove inset of iOS 7 separators.
-        if ([cell respondsToSelector:@selector(setSeparatorInset:)]) {
-            cell.separatorInset = UIEdgeInsetsZero;
-        }
-        
-        [cell setSelectionStyle:UITableViewCellSelectionStyleGray];
-        
-        // Setting the background color of the cell.
-        cell.contentView.backgroundColor = [UIColor whiteColor];
-    }
-    
     cell.delegate =self;
     
     __weak typeof(self) weakSelf = self;
@@ -345,6 +389,8 @@ static NSString *CellIdentifier = @"Cell";
     [cell setSwipeGestureWithView:checkMark color:whiteColor mode:MCSwipeTableViewCellModeSwitch state:MCSwipeTableViewCellState1 completionBlock:nil];
     [cell setSwipeGestureWithView:eraseMark color:whiteColor mode:MCSwipeTableViewCellModeSwitch state:MCSwipeTableViewCellState3 completionBlock:nil];
     [cell setSwipeGestureWithView:eraseMark color:whiteColor mode:MCSwipeTableViewCellModeExit state:MCSwipeTableViewCellState4 completionBlock:^(MCSwipeTableViewCell *cell, MCSwipeTableViewCellState state, MCSwipeTableViewCellMode mode) {
+        
+        //Swipe Left To Remove User From Selected Project
         NSDictionary* data = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants KcurrentUserClientList]];
         NSMutableDictionary *mutableData = [[NSMutableDictionary alloc]initWithDictionary:data];
         NSString *client = [weakSelf.rowInformation objectForKey:[NSNumber numberWithInteger:indexPath.section]];
@@ -396,39 +442,47 @@ static NSString *CellIdentifier = @"Cell";
 - (void)swipeTableViewCell:(CustomMCSwipeTableViewCell *)cell didSwipeWithPercentage:(CGFloat)percentage{
     if (percentage > 0.0) {
         
+        // Swipe Right To Trigger The Quick Form Submission
+        
         self.tableView.userInteractionEnabled = NO;
-        NSDate *date = [[NSDate alloc]init];
-        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-        [formatter setDateFormat:@"MM/dd/yyyy"];
-        self.projectName.text = cell.project;
-        [self.projectName sizeToFit];
-        self.clientName.text = cell.client;
-        [self.clientName sizeToFit];
-        self.dateOfService.text = [formatter stringFromDate:date];
-        [self.dateOfService sizeToFit];
-        self.clientNameLabel.text = @"Client:";
-        [self.clientNameLabel sizeToFit];
-        self.projectNameLabel.text = @"Project:";
-        [self.projectNameLabel sizeToFit];
-        self.dateOfServiceLabel.text = @"Date:";
-        [self.dateOfServiceLabel sizeToFit];
-        self.hourOfServiceLabel.text = @"Hour:";
-        [self.hourOfServiceLabel sizeToFit];
-        self.commentLabel.text = @"Comment:";
-        [self.commentLabel sizeToFit];
-        self.clientNameString = self.clientName.text;
-        self.dateString = self.dateOfService.text;
-        self.projectNameString = self.projectName.text;
         
-        if ([[LastSavedManager sharedManager] getLastSavedCommentForClient:self.clientNameString withProject:self.projectNameString])  {
-            self.commentTextLabel.text = [[LastSavedManager sharedManager] getLastSavedCommentForClient:self.clientNameString withProject:self.projectNameString];
-        } else{
-            self.commentTextLabel.text =@"<NONE>";
+        self.projectTextLabel.text = cell.project;
+        [self.projectTextLabel sizeToFit];
+        self.clientNameTextLabel.text = cell.client;
+        [self.clientNameTextLabel sizeToFit];
+        
+        self.dateOfServiceTextLabel.text = [self.formatter stringFromDate:[NSDate date]];
+        [self.dateOfServiceTextLabel sizeToFit];
+        
+        NSDictionary *lastSavedRecord = [[LastSavedManager sharedManager]getRecordForClient:self.clientNameTextLabel.text withProject:self.projectTextLabel.text];
+        if (lastSavedRecord && [lastSavedRecord objectForKey:@"status"] && [lastSavedRecord objectForKey:@"type"] && [lastSavedRecord objectForKey:@"hour"]) {
+            if ([lastSavedRecord objectForKey:@"comment"]) {
+                self.commentTextLabel.text = [lastSavedRecord objectForKey:@"comment"];
+            } else{
+                self.commentTextLabel.text = nil;
+            }
+            if ([[lastSavedRecord objectForKey:@"status"] isEqualToString:@"1"]) {
+                self.statusTextLabel.text = [lastSavedRecord objectForKey:@"Billable Hour"];
+            }else {
+                self.statusTextLabel.text = [lastSavedRecord objectForKey:@"Unbillable Hour"];
+            }
+            if ([[lastSavedRecord objectForKey:@"type"] isEqualToString:@"1"]) {
+                self.typeTextLabel.text = [lastSavedRecord objectForKey:@"Full-Time Employee"];
+            }else {
+                self.typeTextLabel.text = [lastSavedRecord objectForKey:@"Part-Time Employee"];
+            }
+            self.hourOfServiceTextLabel.text = [lastSavedRecord objectForKey:@"hour"];
+            
+        }else{
+            self.statusTextLabel.text = @"Full-Time Employee";
+            self.typeTextLabel.text = @"Billable Hour";
+            self.hourOfServiceTextLabel.text = @"8.0";
+            if ([lastSavedRecord objectForKey:@"comment"]) {
+                self.commentTextLabel.text = [lastSavedRecord objectForKey:@"comment"];
+            } else{
+                self.commentTextLabel.text = nil;
+            }
         }
-        
-        self.hourOfService.text = [[LastSavedManager sharedManager] getLastSavedHourForClient:self.clientNameString withProject:self.projectNameString withCurrentHour:@"8.0"];
-        self.hourString = self.hourOfService.text;
-        [self.hourOfService sizeToFit];
         
         [self slideForm];
         

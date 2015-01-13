@@ -16,6 +16,8 @@
 
 @property (nonatomic, strong) NSDictionary *history;
 @property (nonatomic, strong) NSArray* keys;
+@property (nonatomic, strong) NSIndexPath* selectedIndexPath;
+@property (nonatomic, strong) RecordDetailViewController *recordViewController;
 
 @end
 
@@ -59,6 +61,11 @@ static NSString *cellIdentifier = @"RecordTableViewCell";
     dispatch_async(dispatch_get_main_queue(), ^{
         self.history = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants KSanitizedCurrentUserRecords]];
         self.keys = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants KSanitizedCurrentUserRecordsKeys]];
+        if (self.recordViewController && self.selectedIndexPath && self.selectedIndexPath.row >= 0 && self.selectedIndexPath.section >= 0) {
+            if ([self.keys objectAtIndex:self.selectedIndexPath.section] && [self.history objectForKey:[self.keys objectAtIndex:self.selectedIndexPath.section]] && [((NSArray*)[self.history objectForKey:[self.keys objectAtIndex:self.selectedIndexPath.section]])objectAtIndex:self.selectedIndexPath.row]) {
+                self.recordViewController.record = [((NSArray*)[self.history objectForKey:[self.keys objectAtIndex:self.selectedIndexPath.section]])objectAtIndex:self.selectedIndexPath.row];
+            }
+        }
         [self.tableView reloadData];
     });
 }
@@ -96,10 +103,7 @@ static NSString *cellIdentifier = @"RecordTableViewCell";
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     RecordTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-    if (cell == nil) {
-        cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-    }
-
+    
     NSDictionary *record = [((NSArray*)[self.history objectForKey:[self.keys objectAtIndex:indexPath.section]])objectAtIndex:indexPath.row];
     
     [cell setclientNameLabelString:[record objectForKey:@"client"]];
@@ -111,9 +115,10 @@ static NSString *cellIdentifier = @"RecordTableViewCell";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    RecordDetailViewController *recordViewController =[[RecordDetailViewController alloc]initWithNibName:@"RecordDetailViewController" bundle:nil];
-    recordViewController.record = [((NSArray*)[self.history objectForKey:[self.keys objectAtIndex:indexPath.section]])objectAtIndex:indexPath.row];
-    [self.navigationController pushViewController:recordViewController animated:YES];
+    self.selectedIndexPath = indexPath;
+    self.recordViewController =[[RecordDetailViewController alloc]initWithNibName:@"RecordDetailViewController" bundle:nil];
+    self.recordViewController.record = [((NSArray*)[self.history objectForKey:[self.keys objectAtIndex:indexPath.section]])objectAtIndex:indexPath.row];
+    [self.navigationController pushViewController:self.recordViewController animated:YES];
 }
 
 @end

@@ -13,4 +13,5 @@
 @property (copy, nonatomic) NSString *projectName;
 @property (nonatomic) BOOL isNewRecord;
 @property (nonatomic, strong) NSMutableDictionary *existingRecord;
+@property (nonatomic, weak) UIViewController *previousViewController;
 @end

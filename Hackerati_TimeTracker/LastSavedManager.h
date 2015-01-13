@@ -11,8 +11,11 @@
 @interface LastSavedManager : NSObject
 
 + (LastSavedManager*)sharedManager;
-- (NSString*)getLastSavedHourForClient:(NSString*)client withProject:(NSString*)project withCurrentHour:(NSString*)hour;
-- (void)saveClient:(NSString*)client withProject:(NSString*)project andHour:(NSString*)hour;
-- (void)saveClient:(NSString*)client withProject:(NSString*)project withHour:(NSString*)hour andComment:(NSString*)comment;
--(NSString*)getLastSavedCommentForClient:(NSString*)client withProject:(NSString*)project;
+//- (NSString*)getLastSavedHourForClient:(NSString*)client withProject:(NSString*)project withCurrentHour:(NSString*)hour;
+//- (void)saveClient:(NSString*)client withProject:(NSString*)project andHour:(NSString*)hour;
+//- (void)saveClient:(NSString*)client withProject:(NSString*)project withHour:(NSString*)hour andComment:(NSString*)comment;
+//-(NSString*)getLastSavedCommentForClient:(NSString*)client withProject:(NSString*)project;
+-(void)saveRecord:(NSDictionary*)record;
+-(NSDictionary*)getRecordForClient:(NSString*)client withProject:(NSString*)project;
+
 @end

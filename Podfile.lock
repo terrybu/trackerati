@@ -1,16 +1,19 @@
 PODS:
   - Firebase (2.0.3)
   - KNSemiModalViewController (0.3)
+  - KVOController (1.0.3)
   - MCSwipeTableViewCell (2.1.2)
 
 DEPENDENCIES:
   - Firebase (>= 2.0.3)
   - KNSemiModalViewController
+  - KVOController
   - MCSwipeTableViewCell
 
 SPEC CHECKSUMS:
   Firebase: bb958f1328ab902972d4419cbec232a989b5c613
   KNSemiModalViewController: 6fb1e2f6a4d84238b524cb705e91118b0fa6bbc9
+  KVOController: b1139ef1fc373b6757e4b69493fedd7b56eb1272
   MCSwipeTableViewCell: 8e78ff197ab06ba7bfd5c938a00149de8a33afa9
 
 COCOAPODS: 0.35.0

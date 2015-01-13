@@ -57,12 +57,8 @@
             [[FireBaseManager baseURLsharedFireBase] authWithOAuthProvider:@"google" token:auth.accessToken
                                                        withCompletionBlock:^(NSError *error, FAuthData *authData) {
                                                            if (error) {
-                                                               // Error authenticating with Firebase with OAuth token
-                                                               if ([self.delegate respondsToSelector:@selector(loginUnsuccessful)]) {
-                                                                   dispatch_async(dispatch_get_main_queue(), ^{
-                                                                       [self.delegate loginUnsuccessful];
-                                                                   });
-                                                               }
+                                                               // Error authenticating Firebase with Google OAuth token
+                                                               
                                                            } else {
                                                                // User is now logged in!
                                                                if ([self.delegate respondsToSelector:@selector(loginSuccessful)]) {

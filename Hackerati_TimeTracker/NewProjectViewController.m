@@ -16,6 +16,7 @@
 @property (strong, nonatomic) NSDictionary *datas;
 @property (strong, nonatomic) NSMutableDictionary *sectionInformation;
 @property (strong, nonatomic) NSMutableDictionary *rowInformation;
+@property (strong, nonatomic) Firebase *fireBase;
 @end
 
 @implementation NewProjectViewController
@@ -28,6 +29,7 @@ static NSString *CellIdentifier = @"Cell";
     self.sectionInformation = [[NSMutableDictionary alloc]init];
     self.rowInformation = [[NSMutableDictionary alloc]init];
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+    [self.tableView registerClass:[MCSwipeTableViewCell class] forCellReuseIdentifier:CellIdentifier];
     self.title = @"Drag right to add";
 }
 
@@ -66,20 +68,6 @@ static NSString *CellIdentifier = @"Cell";
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     MCSwipeTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     
-    if (!cell) {
-        cell = [[MCSwipeTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
-        
-        // Remove inset of iOS 7 separators.
-        if ([cell respondsToSelector:@selector(setSeparatorInset:)]) {
-            cell.separatorInset = UIEdgeInsetsZero;
-        }
-        
-        [cell setSelectionStyle:UITableViewCellSelectionStyleGray];
-        
-        // Setting the background color of the cell.
-        cell.contentView.backgroundColor = [UIColor whiteColor];
-    }
-    
     cell.delegate =self;
     
     __weak typeof(self) weakSelf = self;
@@ -117,9 +105,9 @@ static NSString *CellIdentifier = @"Cell";
             UIAlertView *alerView = [[UIAlertView alloc]initWithTitle:@"New Project" message:[NSString stringWithFormat:@"You are already part of %@.",project] delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
             [alerView show];
         } else{
-            Firebase *fbase = [[Firebase alloc]initWithUrl:[NSString stringWithFormat:@"%@/Projects/%@/%@",[HConstants kFireBaseURL],client,project]];
+            self.fireBase = [[Firebase alloc]initWithUrl:[NSString stringWithFormat:@"%@/Projects/%@/%@",[HConstants kFireBaseURL],client,project]];
             NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants KCurrentUser]];
-            [[fbase childByAutoId] setValue:@{@"name":username}];
+            [[self.fireBase childByAutoId] setValue:@{@"name":username}];
             
             UIAlertView *alerView = [[UIAlertView alloc]initWithTitle:@"New Project" message:[NSString stringWithFormat:@"%@ Added",project] delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
             [alerView show];

@@ -29,6 +29,7 @@
 }
 
 - (void)prepareForReuse{
+    [super prepareForReuse];
     self.clientNameLabel.text = nil;
     self.projectNameLabel.text = nil;
     self.hourLabel.text = nil;

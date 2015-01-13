@@ -27,7 +27,7 @@
                 </tableView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-            <point key="canvasLocation" x="-447" y="-257"/>
+            <point key="canvasLocation" x="-286" y="-276"/>
         </view>
     </objects>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

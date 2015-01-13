@@ -18,4 +18,11 @@
 }
 */
 
+- (void)prepareForReuse{
+    [super prepareForReuse];
+    self.client = nil;
+    self.project = nil;
+    self.textLabel.text = nil;
+}
+
 @end

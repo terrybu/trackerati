@@ -120,7 +120,6 @@
 - (void) getUserRecords{
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         // Get last 50 records by date
-        self.records = [FireBaseManager recordURLsharedFireBase];
         [[[self.records queryOrderedByChild:@"date"] queryLimitedToLast:50] observeEventType:FEventTypeValue withBlock:^(FDataSnapshot *snapshot) {
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
                 if (snapshot.value && [snapshot.value isKindOfClass:[NSDictionary class]]) {
@@ -128,21 +127,21 @@
                     
                     __block NSMutableDictionary *sanitizedCurrentUserRecords = [[NSMutableDictionary alloc]init];
                     [records enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop){
-                        if ([obj objectForKey:@"client"] && [obj objectForKey:@"project"] && [obj objectForKey:@"date"] && [obj objectForKey:@"hour"]) {
+                        if ([obj objectForKey:@"client"] && [obj objectForKey:@"project"] && [obj objectForKey:@"date"] && [obj objectForKey:@"hour"] && [obj objectForKey:@"status"] && [obj objectForKey:@"type"]) {
                             if ([sanitizedCurrentUserRecords objectForKey:[obj objectForKey:@"date"]] ) {
                                 NSMutableArray *records = [sanitizedCurrentUserRecords objectForKey:[obj objectForKey:@"date"]];
                                 if ([obj objectForKey:@"comment"]) {
-                                    [records addObject:@{@"client":[obj objectForKey:@"client"],@"project":[obj objectForKey:@"project"],@"hour":[obj objectForKey:@"hour"],@"comment":[obj objectForKey:@"comment"],@"key":(NSString*)key,@"date":[obj objectForKey:@"date"]}];
+                                    [records addObject:@{@"client":[obj objectForKey:@"client"],@"project":[obj objectForKey:@"project"],@"hour":[obj objectForKey:@"hour"],@"comment":[obj objectForKey:@"comment"],@"key":(NSString*)key,@"date":[obj objectForKey:@"date"],@"status":[obj objectForKey:@"status"],@"type":[obj objectForKey:@"type"]}];
                                 } else{
-                                    [records addObject:@{@"client":[obj objectForKey:@"client"],@"project":[obj objectForKey:@"project"],@"hour":[obj objectForKey:@"hour"],@"key":(NSString*)key,@"date":[obj objectForKey:@"date"]}];
+                                    [records addObject:@{@"client":[obj objectForKey:@"client"],@"project":[obj objectForKey:@"project"],@"hour":[obj objectForKey:@"hour"],@"key":(NSString*)key,@"date":[obj objectForKey:@"date"],@"status":[obj objectForKey:@"status"],@"type":[obj objectForKey:@"type"]}];
                                 }
                                 [sanitizedCurrentUserRecords setObject:records forKey:[obj objectForKey:@"date"]];
                             } else{
                                 NSMutableArray *records = nil;
                                 if ([obj objectForKey:@"comment"]) {
-                                    records = [[NSMutableArray alloc]initWithObjects:@{@"client":[obj objectForKey:@"client"],@"project":[obj objectForKey:@"project"],@"hour":[obj objectForKey:@"hour"],@"comment":[obj objectForKey:@"comment"],@"key":(NSString*)key,@"date":[obj objectForKey:@"date"]}, nil];
+                                    records = [[NSMutableArray alloc]initWithObjects:@{@"client":[obj objectForKey:@"client"],@"project":[obj objectForKey:@"project"],@"hour":[obj objectForKey:@"hour"],@"comment":[obj objectForKey:@"comment"],@"key":(NSString*)key,@"date":[obj objectForKey:@"date"],@"status":[obj objectForKey:@"status"],@"type":[obj objectForKey:@"type"]}, nil];
                                 } else{
-                                    records = [[NSMutableArray alloc]initWithObjects:@{@"client":[obj objectForKey:@"client"],@"project":[obj objectForKey:@"project"],@"hour":[obj objectForKey:@"hour"],@"key":(NSString*)key,@"date":[obj objectForKey:@"date"]}, nil];
+                                    records = [[NSMutableArray alloc]initWithObjects:@{@"client":[obj objectForKey:@"client"],@"project":[obj objectForKey:@"project"],@"hour":[obj objectForKey:@"hour"],@"key":(NSString*)key,@"date":[obj objectForKey:@"date"],@"status":[obj objectForKey:@"status"],@"type":[obj objectForKey:@"type"]}, nil];
                                 }
                                 [sanitizedCurrentUserRecords setObject:records forKey:[obj objectForKey:@"date"]];
                             }
@@ -190,6 +189,13 @@
 
 - (void) mannuallySetDelegate:(id<DataParserProtocol>)delegate{
     self.delegate = delegate;
+}
+
+-(Firebase*)records{
+    if (!_records) {
+        _records = [FireBaseManager recordURLsharedFireBase];
+    }
+    return _records;
 }
 
 @end

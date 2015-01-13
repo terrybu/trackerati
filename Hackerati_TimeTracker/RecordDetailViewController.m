@@ -12,6 +12,7 @@
 #import "HConstants.h"
 #import "DataParser.h"
 #import "FormViewController.h"
+#import <KVOController/FBKVOController.h>
 
 @interface RecordDetailViewController ()
 @property (weak, nonatomic) IBOutlet UILabel *clientLabel;
@@ -20,7 +21,12 @@
 @property (weak, nonatomic) IBOutlet UILabel *commentLabel;
 @property (weak, nonatomic) IBOutlet UIButton *editButton;
 @property (weak, nonatomic) IBOutlet UIButton *deletButton;
+@property (weak, nonatomic) IBOutlet UILabel *statusLabel;
+@property (weak, nonatomic) IBOutlet UILabel *typeLabel;
+
 @property (strong, nonatomic) Firebase *fireBase;
+@property (strong, nonatomic) FBKVOController *fbKVOController;
+
 - (IBAction)editButtonAction:(id)sender;
 - (IBAction)deleteButtonAction:(id)sender;
 
@@ -49,20 +55,16 @@
     [self.commentLabel.layer setBorderWidth:0.5f];
     [self.commentLabel.layer setBorderColor:[UIColor grayColor].CGColor];
     
-    
+    self.fbKVOController = [[FBKVOController alloc]initWithObserver:self];
+    __weak typeof(self) weakSelf = self;
+    [self.fbKVOController observe:self keyPath:@"record" options:NSKeyValueObservingOptionNew block:^(id observer, id object, NSDictionary *change){
+        [weakSelf setElements];
+    }];
 }
 
 -(void) viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    self.title = [self.record objectForKey:@"date"];
-    self.clientLabel.text = [self.record objectForKey:@"client"];
-    self.projectLabel.text = [self.record objectForKey:@"project"];
-    self.hourLabel.text = [[self.record objectForKey:@"hour"] isKindOfClass:[NSNumber class]]?[NSString stringWithFormat:@"%@",[self.record objectForKey:@"hour"]]:[self.record objectForKey:@"hour"];
-    if ([self.record objectForKey:@"comment"]) {
-        self.commentLabel.text = [self.record objectForKey:@"comment"];
-    } else{
-        self.commentLabel.text = @"<NONE>";
-    }
+    [self setElements];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -80,9 +82,32 @@
 }
 */
 
+-(void)setElements{
+    self.title = [self.record objectForKey:@"date"];
+    self.clientLabel.text = [self.record objectForKey:@"client"];
+    if ([self.record objectForKey:@"status"] && [[self.record objectForKey:@"status"]isEqualToString:@"1"] ) {
+        self.statusLabel.text = @"Full-Time Employee";
+    } else{
+        self.statusLabel.text = @"Part-Time Employee";
+    }
+    if ([self.record objectForKey:@"type"] && [[self.record objectForKey:@"type"]isEqualToString:@"1"] ) {
+        self.typeLabel.text = @"Billable Hour";
+    }else{
+        self.typeLabel.text = @"Unbillable Hour";
+    }
+    self.projectLabel.text = [self.record objectForKey:@"project"];
+    self.hourLabel.text = [[self.record objectForKey:@"hour"] isKindOfClass:[NSNumber class]]?[NSString stringWithFormat:@"%@",[self.record objectForKey:@"hour"]]:[self.record objectForKey:@"hour"];
+    if ([self.record objectForKey:@"comment"]) {
+        self.commentLabel.text = [self.record objectForKey:@"comment"];
+    } else{
+        self.commentLabel.text = nil;
+    }
+}
+
 - (IBAction)editButtonAction:(id)sender {
     FormViewController *formViewController = [[FormViewController alloc]initWithNibName:@"FormViewController" bundle:nil];
     formViewController.existingRecord = self.record;
+    formViewController.previousViewController = self;
     [self.navigationController pushViewController:formViewController animated:YES];
 }
 
