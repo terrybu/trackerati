@@ -647,7 +647,7 @@
 					"$(OTHER_LDFLAGS)",
 					"-ObjC",
 				);
-				PROVISIONING_PROFILE = "63c80a3f-6e29-4ba2-817a-20c49a4dde52";
+				PROVISIONING_PROFILE = "021460bb-bad1-48dc-8971-627dca2fc9e1";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -687,7 +687,7 @@
 					"$(OTHER_LDFLAGS)",
 					"-ObjC",
 				);
-				PROVISIONING_PROFILE = "63c80a3f-6e29-4ba2-817a-20c49a4dde52";
+				PROVISIONING_PROFILE = "021460bb-bad1-48dc-8971-627dca2fc9e1";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -711,6 +711,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "trackerati-ios";
 				PROVISIONING_PROFILE = "";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -731,6 +732,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "trackerati-ios";
 				PROVISIONING_PROFILE = "";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
