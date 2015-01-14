@@ -212,15 +212,24 @@ static NSString *CellIdentifier = @"Cell";
 }
 
 -(void)refreshControlAction{
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [[FireBaseManager connectivityURLsharedFireBase] observeEventType:FEventTypeValue withBlock:^(FDataSnapshot *snapshot){
-            if([snapshot.value boolValue] && [[NSUserDefaults standardUserDefaults]objectForKey:[HConstants KCurrentUser]]) {
-                [[DataParser sharedManager] loginSuccessful];
-            } else {
-                [[NSNotificationCenter defaultCenter] postNotificationName:kStartLogInProcessNotification object:nil];
-            }
-        }];
-    });
+    
+    Reachability* curReach = [Reachability reachabilityForInternetConnection];
+    NetworkStatus internetStatus = [curReach currentReachabilityStatus];
+    
+    if (internetStatus != NotReachable) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [[FireBaseManager connectivityURLsharedFireBase] observeEventType:FEventTypeValue withBlock:^(FDataSnapshot *snapshot){
+                if([snapshot.value boolValue] && [[NSUserDefaults standardUserDefaults]objectForKey:[HConstants KCurrentUser]]) {
+                    [[DataParser sharedManager] loginSuccessful];
+                } else {
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kStartLogInProcessNotification object:nil];
+                }
+            }];
+        });
+    } else {
+        [self loginUnsuccessful];
+    }
+    
 }
 
 -(void)sendForm{

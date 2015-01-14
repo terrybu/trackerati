@@ -45,12 +45,6 @@
             if (self.signIn &&  ![self.signIn trySilentAuthentication]) {
                 [self.signIn authenticate];
             }
-        }else {
-            if ([self.delegate respondsToSelector:@selector(loginUnsuccessful)]) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [self.delegate loginUnsuccessful];
-                });
-            }
         }
         
     });
@@ -71,6 +65,7 @@
                     });
                 }
             }
+            
         } else {
             // We successfully obtained an OAuth token, authenticate on Firebase with it
             NSString *userEmail = [GPPSignIn sharedInstance].userEmail;
