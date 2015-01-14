@@ -462,14 +462,14 @@ static NSString *CellIdentifier = @"Cell";
                 self.commentTextLabel.text = nil;
             }
             if ([[lastSavedRecord objectForKey:@"status"] isEqualToString:@"1"]) {
-                self.statusTextLabel.text = @"Billable Hour";
+                self.statusTextLabel.text = @"Full-Time Employee";
             }else {
-                self.statusTextLabel.text = @"Unbillable Hour";
+                self.statusTextLabel.text = @"Part-Time Employee";
             }
             if ([[lastSavedRecord objectForKey:@"type"] isEqualToString:@"1"]) {
-                self.typeTextLabel.text = @"Full-Time Employee";
+                self.typeTextLabel.text =  @"Billable Hour";
             }else {
-                self.typeTextLabel.text = @"Part-Time Employee";
+                self.typeTextLabel.text =  @"Unbillable Hour";
             }
             self.hourOfServiceTextLabel.text = [lastSavedRecord objectForKey:@"hour"];
             
