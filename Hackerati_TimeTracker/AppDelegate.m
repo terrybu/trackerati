@@ -19,9 +19,6 @@
 
 @interface AppDelegate ()
 
-@property (nonatomic, strong) Reachability* internetReachability;
-@property (nonatomic) BOOL firstTimeLoad;
-
 @end
 
 @implementation AppDelegate
@@ -29,8 +26,6 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
-    
-    self.firstTimeLoad = YES;
     
     [[UINavigationBar appearance] setTintColor:[UIColor blackColor]];
     
@@ -56,7 +51,6 @@
     self.window = [[UIWindow alloc]initWithFrame:[UIScreen mainScreen].bounds];
     self.logInViewController = [[LogInViewController alloc]initWithNibName:@"LogInViewController" bundle:nil];
     
-    [self setupReachability];
     [[LogInManager sharedManager] mannuallySetDelegate:[DataParser sharedManager]];
     [[DataParser sharedManager] mannuallySetDelegate:self.logInViewController];
     
@@ -74,31 +68,6 @@
                   sourceApplication:sourceApplication
                          annotation:annotation];
 }
-
-- (void)setupReachability{
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged:) name:kReachabilityChangedNotification object:nil];
-    self.internetReachability = [Reachability reachabilityForInternetConnection];
-    [self.internetReachability startNotifier];
-    
-}
-
-- (void)reachabilityChanged:(NSNotification *)note {
-    // called after network status changes
-    Reachability* curReach = [note object];
-    NetworkStatus internetStatus = [curReach currentReachabilityStatus];
-    
-    if (internetStatus != NotReachable) {
-        [[FireBaseManager connectivityURLsharedFireBase] observeEventType:FEventTypeValue withBlock:^(FDataSnapshot *snapshot){
-            if([snapshot.value boolValue] && [[NSUserDefaults standardUserDefaults]objectForKey:[HConstants KCurrentUser]]) {
-                [[DataParser sharedManager] loginSuccessful];
-            } else {
-                [self appDelegatestartLogInProcess];
-            }
-        }];
-    }
-    
-}
-
 
 - (void)appDelegatestartLogInProcess{
     dispatch_async(dispatch_get_main_queue(), ^{
