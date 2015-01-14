@@ -62,16 +62,15 @@
         if (error != nil) {
             // There was an error obtaining the Google+ OAuth token
             
-            [[FireBaseManager connectivityURLsharedFireBase] observeEventType:FEventTypeValue withBlock:^(FDataSnapshot *snapshot){
-                if(![snapshot.value boolValue]) {
-                    if ([self.delegate respondsToSelector:@selector(loginUnsuccessful)]) {
-                        dispatch_async(dispatch_get_main_queue(), ^{
-                            [self.delegate loginUnsuccessful];
-                        });
-                    }
+            Reachability* curReach = [Reachability reachabilityForInternetConnection];
+            NetworkStatus internetStatus = [curReach currentReachabilityStatus];
+            if (internetStatus != NotReachable) {
+                if ([self.delegate respondsToSelector:@selector(loginUnsuccessful)]) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [self.delegate loginUnsuccessful];
+                    });
                 }
-            }];
-            
+            }
         } else {
             // We successfully obtained an OAuth token, authenticate on Firebase with it
             NSString *userEmail = [GPPSignIn sharedInstance].userEmail;
