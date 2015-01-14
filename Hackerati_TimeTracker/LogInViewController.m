@@ -394,7 +394,7 @@ static NSString *CellIdentifier = @"Cell";
         NSDictionary* data = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants KcurrentUserClientList]];
         NSMutableDictionary *mutableData = [[NSMutableDictionary alloc]initWithDictionary:data];
         NSString *client = [weakSelf.rowInformation objectForKey:[NSNumber numberWithInteger:indexPath.section]];
-        NSArray *rows = [self.sectionInformation objectForKey:[NSNumber numberWithInteger:indexPath.section]];
+        NSArray *rows = [weakSelf.sectionInformation objectForKey:[NSNumber numberWithInteger:indexPath.section]];
         NSString *project = [rows objectAtIndex:indexPath.row];
         NSMutableArray *tempArray = [[NSMutableArray alloc] initWithArray:[mutableData objectForKey:client]];
         [tempArray removeObject:project];
@@ -420,8 +420,8 @@ static NSString *CellIdentifier = @"Cell";
                 }
             }];
             
-            self.fireBase = [[Firebase alloc]initWithUrl:[NSString stringWithFormat:@"%@/Projects/%@/%@/%@",[HConstants kFireBaseURL],client,project,uniqueAddress]];
-            [self.fireBase removeValue];
+            weakSelf.fireBase = [[Firebase alloc]initWithUrl:[NSString stringWithFormat:@"%@/Projects/%@/%@/%@",[HConstants kFireBaseURL],client,project,uniqueAddress]];
+            [weakSelf.fireBase removeValue];
         }
         
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -462,14 +462,14 @@ static NSString *CellIdentifier = @"Cell";
                 self.commentTextLabel.text = nil;
             }
             if ([[lastSavedRecord objectForKey:@"status"] isEqualToString:@"1"]) {
-                self.statusTextLabel.text = [lastSavedRecord objectForKey:@"Billable Hour"];
+                self.statusTextLabel.text = @"Billable Hour";
             }else {
-                self.statusTextLabel.text = [lastSavedRecord objectForKey:@"Unbillable Hour"];
+                self.statusTextLabel.text = @"Unbillable Hour";
             }
             if ([[lastSavedRecord objectForKey:@"type"] isEqualToString:@"1"]) {
-                self.typeTextLabel.text = [lastSavedRecord objectForKey:@"Full-Time Employee"];
+                self.typeTextLabel.text = @"Full-Time Employee";
             }else {
-                self.typeTextLabel.text = [lastSavedRecord objectForKey:@"Part-Time Employee"];
+                self.typeTextLabel.text = @"Part-Time Employee";
             }
             self.hourOfServiceTextLabel.text = [lastSavedRecord objectForKey:@"hour"];
             

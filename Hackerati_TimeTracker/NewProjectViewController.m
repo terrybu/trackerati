@@ -80,7 +80,7 @@ static NSString *CellIdentifier = @"Cell";
         NSDictionary* data = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants KcurrentUserClientList]];
         NSMutableDictionary *mutableData = [[NSMutableDictionary alloc]initWithDictionary:data];
         NSString *client = [weakSelf.rowInformation objectForKey:[NSNumber numberWithInteger:indexPath.section]];
-        NSArray *rows = [self.sectionInformation objectForKey:[NSNumber numberWithInteger:indexPath.section]];
+        NSArray *rows = [weakSelf.sectionInformation objectForKey:[NSNumber numberWithInteger:indexPath.section]];
         NSString *project = [rows objectAtIndex:indexPath.row];
         
         BOOL alreadyPartofTheProject = NO;
@@ -105,14 +105,13 @@ static NSString *CellIdentifier = @"Cell";
             UIAlertView *alerView = [[UIAlertView alloc]initWithTitle:@"New Project" message:[NSString stringWithFormat:@"You are already part of %@.",project] delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
             [alerView show];
         } else{
-            self.fireBase = [[Firebase alloc]initWithUrl:[NSString stringWithFormat:@"%@/Projects/%@/%@",[HConstants kFireBaseURL],client,project]];
+            weakSelf.fireBase = [[Firebase alloc]initWithUrl:[NSString stringWithFormat:@"%@/Projects/%@/%@",[HConstants kFireBaseURL],client,project]];
             NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants KCurrentUser]];
             [[self.fireBase childByAutoId] setValue:@{@"name":username}];
             
             UIAlertView *alerView = [[UIAlertView alloc]initWithTitle:@"New Project" message:[NSString stringWithFormat:@"%@ Added",project] delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
             [alerView show];
         }
-        
         
     }];
     

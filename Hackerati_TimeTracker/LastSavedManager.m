@@ -23,18 +23,20 @@
 -(void)saveRecord:(NSDictionary*)record{
     NSArray* lastSavedInfo =[[NSUserDefaults standardUserDefaults] objectForKey:[HConstants KlastSavedRecord]];
     NSMutableArray* mutableLastSavedInfo = [[NSMutableArray alloc]initWithArray:lastSavedInfo];
-    if (!mutableLastSavedInfo) {
+    if (!mutableLastSavedInfo || [mutableLastSavedInfo count] == 0) {
         mutableLastSavedInfo = [NSMutableArray new];
+        [mutableLastSavedInfo addObject:record];
+    } else {
+        
+        [mutableLastSavedInfo enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop){
+            NSDictionary *tempRecord = (NSDictionary*)obj;
+            if ([[tempRecord objectForKey:@"client"]isEqualToString:(NSString*)[record objectForKey:@"client"]] && [[tempRecord objectForKey:@"project"]isEqualToString:(NSString*)[record objectForKey:@"project"]]) {
+                [mutableLastSavedInfo removeObjectAtIndex:idx];
+                [mutableLastSavedInfo addObject:record];
+                *stop = YES;
+            }
+        }];
     }
-    
-    [mutableLastSavedInfo enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop){
-        NSDictionary *tempRecord = (NSDictionary*)obj;
-        if ([[tempRecord objectForKey:@"client"]isEqualToString:(NSString*)[record objectForKey:@"client"]] && [[tempRecord objectForKey:@"project"]isEqualToString:(NSString*)[record objectForKey:@"project"]]) {
-            [mutableLastSavedInfo removeObjectAtIndex:idx];
-            [mutableLastSavedInfo addObject:record];
-            *stop = YES;
-        }
-    }];
     [[NSUserDefaults standardUserDefaults] setObject:mutableLastSavedInfo forKey:[HConstants KlastSavedRecord]];
     [[NSUserDefaults standardUserDefaults]synchronize];
 }
