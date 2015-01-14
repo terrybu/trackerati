@@ -12,6 +12,12 @@
 #import "HConstants.h"
 #import "Reachability.h"
 
+@interface LogInManager ()
+
+@property (strong, nonatomic)GPPSignIn *signIn;
+
+@end
+
 @implementation LogInManager
 
 + (LogInManager*)sharedManager{
@@ -26,18 +32,18 @@
 
 - (void)startLogInProcess{
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-        GPPSignIn *signIn = [GPPSignIn sharedInstance];
-        signIn.shouldFetchGoogleUserEmail = YES;
-        signIn.clientID = [HConstants kClientId];
-        signIn.scopes = @[ @"profile" ];
-        signIn.delegate = self;
+        self.signIn = [GPPSignIn sharedInstance];
+        self.signIn.shouldFetchGoogleUserEmail = YES;
+        self.signIn.clientID = [HConstants kClientId];
+        self.signIn.scopes = @[ @"profile" ];
+        self.signIn.delegate = self;
         
         Reachability* curReach = [Reachability reachabilityForInternetConnection];
         NetworkStatus internetStatus = [curReach currentReachabilityStatus];
         
         if (internetStatus != NotReachable) {
-            if (![signIn trySilentAuthentication]) {
-                [signIn authenticate];
+            if (self.signIn &&  ![self.signIn trySilentAuthentication]) {
+                [self.signIn authenticate];
             }
         }else {
             if ([self.delegate respondsToSelector:@selector(loginUnsuccessful)]) {
@@ -55,11 +61,17 @@
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         if (error != nil) {
             // There was an error obtaining the Google+ OAuth token
-            if ([self.delegate respondsToSelector:@selector(loginUnsuccessful)]) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [self.delegate loginUnsuccessful];
-                });
-            }
+            
+            [[FireBaseManager connectivityURLsharedFireBase] observeEventType:FEventTypeValue withBlock:^(FDataSnapshot *snapshot){
+                if(![snapshot.value boolValue]) {
+                    if ([self.delegate respondsToSelector:@selector(loginUnsuccessful)]) {
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            [self.delegate loginUnsuccessful];
+                        });
+                    }
+                }
+            }];
+            
         } else {
             // We successfully obtained an OAuth token, authenticate on Firebase with it
             NSString *userEmail = [GPPSignIn sharedInstance].userEmail;
