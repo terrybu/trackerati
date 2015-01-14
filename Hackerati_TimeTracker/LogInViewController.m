@@ -92,7 +92,7 @@ static NSString *CellIdentifier = @"Cell";
     [self.tableView addSubview:self.refreshControl];
     
     UILabel *messageLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)];
-    messageLabel.text = @"Please Pull to Refresh";
+    messageLabel.text = @"Pull to refresh / Click + to add your projects";
     messageLabel.textColor = [UIColor blackColor];
     messageLabel.numberOfLines = 0;
     messageLabel.textAlignment = NSTextAlignmentCenter;
