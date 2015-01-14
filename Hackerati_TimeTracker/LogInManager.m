@@ -10,6 +10,7 @@
 #import <GoogleOpenSource/GoogleOpenSource.h>
 #import "FireBaseManager.h"
 #import "HConstants.h"
+#import "Reachability.h"
 
 @implementation LogInManager
 
@@ -29,11 +30,23 @@
         signIn.shouldFetchGoogleUserEmail = YES;
         signIn.clientID = [HConstants kClientId];
         signIn.scopes = @[ @"profile" ];
-        
         signIn.delegate = self;
-        if (![signIn trySilentAuthentication]) {
-            [signIn authenticate];
+        
+        Reachability* curReach = [Reachability reachabilityForInternetConnection];
+        NetworkStatus internetStatus = [curReach currentReachabilityStatus];
+        
+        if (internetStatus != NotReachable) {
+            if (![signIn trySilentAuthentication]) {
+                [signIn authenticate];
+            }
+        }else {
+            if ([self.delegate respondsToSelector:@selector(loginUnsuccessful)]) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self.delegate loginUnsuccessful];
+                });
+            }
         }
+        
     });
 }
 

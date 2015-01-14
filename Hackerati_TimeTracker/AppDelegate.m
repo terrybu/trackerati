@@ -12,6 +12,8 @@
 #import "DataParser.h"
 #import "WeeklyNotificationManager.h"
 #import <HockeySDK/HockeySDK.h>
+#import "FireBaseManager.h"
+#import "HConstants.h"
 
 #define SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(v) ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedAscending)
 
@@ -86,7 +88,13 @@
     NetworkStatus internetStatus = [curReach currentReachabilityStatus];
     
     if (internetStatus != NotReachable) {
-        [self appDelegatestartLogInProcess];
+        [[FireBaseManager connectivityURLsharedFireBase] observeEventType:FEventTypeValue withBlock:^(FDataSnapshot *snapshot){
+            if([snapshot.value boolValue] && [[NSUserDefaults standardUserDefaults]objectForKey:[HConstants KCurrentUser]]) {
+                [[DataParser sharedManager] loginSuccessful];
+            } else {
+                [self appDelegatestartLogInProcess];
+            }
+        }];
     }
     
 }
