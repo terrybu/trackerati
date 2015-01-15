@@ -49,6 +49,7 @@
             }
             @catch (NSException *exception) {
                 [self logOut];
+                [[NSNotificationCenter defaultCenter] postNotificationName:kStartLogInProcessNotification object:nil];
             }
             @finally {
                 
