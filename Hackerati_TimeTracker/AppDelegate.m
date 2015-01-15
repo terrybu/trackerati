@@ -53,6 +53,7 @@
     
     [[LogInManager sharedManager] mannuallySetDelegate:[DataParser sharedManager]];
     [[DataParser sharedManager] mannuallySetDelegate:self.logInViewController];
+    [self appDelegatestartLogInProcess];
     
     self.naviController = [[UINavigationController alloc]initWithRootViewController:self.logInViewController];
     self.window.rootViewController = self.naviController;
@@ -98,6 +99,7 @@
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     [[NSNotificationCenter defaultCenter]removeObserver:self];
+    [[LogInManager sharedManager] logOut];
 }
 
 - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification{

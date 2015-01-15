@@ -14,7 +14,7 @@
 
 @interface LogInManager ()
 
-@property (strong, nonatomic)GPPSignIn *signIn;
+@property (weak, nonatomic)GPPSignIn *signIn;
 
 @end
 
@@ -31,20 +31,22 @@
 }
 
 - (void)startLogInProcess{
+    __weak typeof(self) weakSelf = self;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-        self.signIn = [GPPSignIn sharedInstance];
-        self.signIn.shouldFetchGoogleUserEmail = YES;
-        self.signIn.clientID = [HConstants kClientId];
-        self.signIn.scopes = @[ @"profile" ];
-        self.signIn.delegate = self;
+        weakSelf.signIn = [GPPSignIn sharedInstance];
+        weakSelf.signIn.shouldFetchGoogleUserEmail = YES;
+        weakSelf.signIn.clientID = [HConstants kClientId];
+        weakSelf.signIn.scopes = @[ @"profile" ];
+        weakSelf.signIn.delegate = self;
         
         Reachability* curReach = [Reachability reachabilityForInternetConnection];
         NetworkStatus internetStatus = [curReach currentReachabilityStatus];
         
         if (internetStatus != NotReachable) {
+            
             @try {
-                if (self.signIn &&  ![self.signIn trySilentAuthentication]) {
-                    [self.signIn authenticate];
+                if (weakSelf.signIn && ![weakSelf.signIn trySilentAuthentication]) {
+                    [weakSelf.signIn authenticate];
                 }
             }
             @catch (NSException *exception) {
@@ -62,6 +64,7 @@
 
 - (void)finishedWithAuth:(GTMOAuth2Authentication *)auth
                    error:(NSError *)error{
+    __weak typeof(self) weakSelf = self;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         if (error != nil) {
             // There was an error obtaining the Google+ OAuth token
@@ -69,9 +72,9 @@
             Reachability* curReach = [Reachability reachabilityForInternetConnection];
             NetworkStatus internetStatus = [curReach currentReachabilityStatus];
             if (internetStatus != NotReachable) {
-                if ([self.delegate respondsToSelector:@selector(loginUnsuccessful)]) {
+                if ([weakSelf.delegate respondsToSelector:@selector(loginUnsuccessful)]) {
                     dispatch_async(dispatch_get_main_queue(), ^{
-                        [self.delegate loginUnsuccessful];
+                        [weakSelf.delegate loginUnsuccessful];
                     });
                 }
             }
@@ -90,8 +93,8 @@
                                                                
                                                            } else {
                                                                // User is now logged in!
-                                                               if ([self.delegate respondsToSelector:@selector(loginSuccessful)]) {
-                                                                   [self.delegate loginSuccessful];
+                                                               if ([weakSelf.delegate respondsToSelector:@selector(loginSuccessful)]) {
+                                                                   [weakSelf.delegate loginSuccessful];
                                                                }
                                                            }
                                                        }];
