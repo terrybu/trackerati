@@ -42,9 +42,18 @@
         NetworkStatus internetStatus = [curReach currentReachabilityStatus];
         
         if (internetStatus != NotReachable) {
-            if (self.signIn &&  ![self.signIn trySilentAuthentication]) {
-                [self.signIn authenticate];
+            @try {
+                if (self.signIn &&  ![self.signIn trySilentAuthentication]) {
+                    [self.signIn authenticate];
+                }
             }
+            @catch (NSException *exception) {
+                [self logOut];
+            }
+            @finally {
+                
+            }
+            
         }
         
     });
