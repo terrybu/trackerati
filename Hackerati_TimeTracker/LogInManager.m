@@ -14,8 +14,6 @@
 
 @interface LogInManager ()
 
-@property (weak, nonatomic)GPPSignIn *signIn;
-
 @end
 
 @implementation LogInManager
@@ -31,13 +29,12 @@
 }
 
 - (void)startLogInProcess{
-    __weak typeof(self) weakSelf = self;
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-        weakSelf.signIn = [GPPSignIn sharedInstance];
-        weakSelf.signIn.shouldFetchGoogleUserEmail = YES;
-        weakSelf.signIn.clientID = [HConstants kClientId];
-        weakSelf.signIn.scopes = @[ @"profile" ];
-        weakSelf.signIn.delegate = self;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        GPPSignIn *signIn = [GPPSignIn sharedInstance];
+        signIn.shouldFetchGoogleUserEmail = YES;
+        signIn.clientID = [HConstants kClientId];
+        signIn.scopes = @[ @"profile" ];
+        signIn.delegate = self;
         
         Reachability* curReach = [Reachability reachabilityForInternetConnection];
         NetworkStatus internetStatus = [curReach currentReachabilityStatus];
@@ -45,8 +42,8 @@
         if (internetStatus != NotReachable) {
             
             @try {
-                if (weakSelf.signIn && ![weakSelf.signIn trySilentAuthentication]) {
-                    [weakSelf.signIn authenticate];
+                if (![[GPPSignIn sharedInstance] trySilentAuthentication]) {
+                    [[GPPSignIn sharedInstance]  authenticate];
                 }
             }
             @catch (NSException *exception) {
@@ -65,7 +62,7 @@
 - (void)finishedWithAuth:(GTMOAuth2Authentication *)auth
                    error:(NSError *)error{
     __weak typeof(self) weakSelf = self;
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+    dispatch_async(dispatch_get_main_queue(), ^{
         if (error != nil) {
             // There was an error obtaining the Google+ OAuth token
             
