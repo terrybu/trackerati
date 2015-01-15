@@ -40,8 +40,8 @@ static NSString *CellIdentifier = @"Cell";
         __block int count = 0;
         __weak typeof(self) weakSelf = self;
         [self.datas enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop){
-            [weakSelf.sectionInformation setObject:obj forKey:[NSNumber numberWithInt:count]];
-            [weakSelf.rowInformation setObject:key forKey:[NSNumber numberWithInt:count]];
+            [weakSelf.sectionInformation setObject:key forKey:[NSNumber numberWithInt:count]];
+            [weakSelf.rowInformation setObject:obj forKey:[NSNumber numberWithInt:count]];
             count++;
         }];
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -58,7 +58,7 @@ static NSString *CellIdentifier = @"Cell";
 #pragma mark - Table View and Data Source Delegate
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    NSArray *rows = [self.sectionInformation objectForKey:[NSNumber numberWithInteger:section]];
+    NSArray *rows = [self.rowInformation objectForKey:[NSNumber numberWithInteger:section]];
     return [rows count];
 }
 
@@ -79,8 +79,8 @@ static NSString *CellIdentifier = @"Cell";
         
         NSDictionary* data = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants KcurrentUserClientList]];
         NSMutableDictionary *mutableData = [[NSMutableDictionary alloc]initWithDictionary:data];
-        NSString *client = [weakSelf.rowInformation objectForKey:[NSNumber numberWithInteger:indexPath.section]];
-        NSArray *rows = [weakSelf.sectionInformation objectForKey:[NSNumber numberWithInteger:indexPath.section]];
+        NSString *client = [weakSelf.sectionInformation objectForKey:[NSNumber numberWithInteger:indexPath.section]];
+        NSArray *rows = [weakSelf.rowInformation objectForKey:[NSNumber numberWithInteger:indexPath.section]];
         NSString *project = [rows objectAtIndex:indexPath.row];
         
         BOOL alreadyPartofTheProject = NO;
@@ -113,19 +113,27 @@ static NSString *CellIdentifier = @"Cell";
             [alerView show];
         }
         
+        cell.accessoryView =[[ UIImageView alloc ] initWithImage:[UIImage imageNamed:@"CheckMark.png"]];
     }];
     
-    NSArray *rows = [self.sectionInformation objectForKey:[NSNumber numberWithInteger:indexPath.section]];
+    NSDictionary* currentUserData = (NSDictionary*)[[NSUserDefaults standardUserDefaults]objectForKey:[HConstants KcurrentUserClientList]];
+    NSString*client = [self.sectionInformation objectForKey:[NSNumber numberWithInteger:indexPath.section]];
+    NSArray *rows = [self.rowInformation objectForKey:[NSNumber numberWithInteger:indexPath.section]];
     cell.textLabel.text = [rows objectAtIndex:indexPath.row];
+    if ([currentUserData objectForKey:client] && [((NSArray*)[currentUserData objectForKey:client]) containsObject:(NSString*) [rows objectAtIndex:indexPath.row]]) {
+        cell.accessoryView = [[ UIImageView alloc ] initWithImage:[UIImage imageNamed:@"CheckMark.png"]];
+    } else {
+        cell.accessoryView = nil;
+    }
     return cell;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    return [[self.rowInformation allKeys] count];
+    return [[self.sectionInformation allKeys] count];
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
-    return (NSString*)[self.rowInformation objectForKey:[NSNumber numberWithInteger:section]];
+    return (NSString*)[self.sectionInformation objectForKey:[NSNumber numberWithInteger:section]];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{

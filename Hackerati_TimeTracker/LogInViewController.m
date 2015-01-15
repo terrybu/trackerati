@@ -287,15 +287,17 @@ static NSString *CellIdentifier = @"Cell";
 #pragma mark - Data Parser Delegate Methods
 
 -(void) loginUnsuccessful{
-    [self.refreshControl endRefreshing];
-    [self loadData];
-    UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"Error" message:@"Could not login. Please try later" delegate:self cancelButtonTitle:@"cancel" otherButtonTitles: nil];
-    [alertView show];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self loadData];
+        [self.refreshControl endRefreshing];
+        UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"Error" message:@"Could not login. Please try later" delegate:self cancelButtonTitle:@"cancel" otherButtonTitles: nil];
+        [alertView show];
+    });
 }
 
 -(void) loadData{
     dispatch_async(dispatch_get_main_queue(), ^{
-        [self.refreshControl endRefreshing];
+        
         self.datas = (NSDictionary*)[[NSUserDefaults standardUserDefaults]objectForKey:[HConstants KcurrentUserClientList]];
         __block int count = 0;
         __weak typeof(self) weakSelf = self;
@@ -308,6 +310,7 @@ static NSString *CellIdentifier = @"Cell";
             [weakSelf.rowInformation setObject:key forKey:[NSNumber numberWithInt:count]];
             count++;
         }];
+        [self.refreshControl endRefreshing];
         [self.tableView reloadData];
     });
 }
