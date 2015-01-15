@@ -30,7 +30,7 @@ static NSString *CellIdentifier = @"Cell";
     self.rowInformation = [[NSMutableDictionary alloc]init];
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     [self.tableView registerClass:[MCSwipeTableViewCell class] forCellReuseIdentifier:CellIdentifier];
-    self.title = @"Drag right to add";
+    self.title = @"Tap to add";
 }
 
 - (void) viewWillAppear:(BOOL)animated{
@@ -77,41 +77,7 @@ static NSString *CellIdentifier = @"Cell";
     
     [cell setSwipeGestureWithView:checkMark color:whiteColor mode:MCSwipeTableViewCellModeSwitch state:MCSwipeTableViewCellState1 completionBlock:^(MCSwipeTableViewCell *cell, MCSwipeTableViewCellState state, MCSwipeTableViewCellMode mode) {
         
-        NSDictionary* data = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants KcurrentUserClientList]];
-        NSMutableDictionary *mutableData = [[NSMutableDictionary alloc]initWithDictionary:data];
-        NSString *client = [weakSelf.sectionInformation objectForKey:[NSNumber numberWithInteger:indexPath.section]];
-        NSArray *rows = [weakSelf.rowInformation objectForKey:[NSNumber numberWithInteger:indexPath.section]];
-        NSString *project = [rows objectAtIndex:indexPath.row];
-        
-        BOOL alreadyPartofTheProject = NO;
-        
-        if (![mutableData objectForKey:client]) {
-            [mutableData setObject:[[NSMutableArray alloc]initWithObjects:project,nil] forKey:client];
-        } else {
-            NSMutableArray *projects = [mutableData objectForKey:client];
-            if (![projects containsObject:project]) {
-                NSMutableArray *mutableProjects = [[NSMutableArray alloc]initWithArray:projects];
-                [mutableProjects addObject:project];
-                [mutableData setObject:mutableProjects forKey:client];
-            } else{
-                alreadyPartofTheProject = YES;
-            }
-        }
-        
-        [[NSUserDefaults standardUserDefaults] setObject:mutableData forKey:[HConstants KcurrentUserClientList]];
-        [[NSUserDefaults standardUserDefaults]synchronize];
-        
-        if (alreadyPartofTheProject) {
-            UIAlertView *alerView = [[UIAlertView alloc]initWithTitle:@"New Project" message:[NSString stringWithFormat:@"You are already part of %@.",project] delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
-            [alerView show];
-        } else{
-            weakSelf.fireBase = [[Firebase alloc]initWithUrl:[NSString stringWithFormat:@"%@/Projects/%@/%@",[HConstants kFireBaseURL],client,project]];
-            NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants KCurrentUser]];
-            [[self.fireBase childByAutoId] setValue:@{@"name":username}];
-            
-            UIAlertView *alerView = [[UIAlertView alloc]initWithTitle:@"New Project" message:[NSString stringWithFormat:@"%@ Added",project] delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
-            [alerView show];
-        }
+        [weakSelf setProjectToCurrentUserForIndexPath:indexPath];
         
         cell.accessoryView =[[ UIImageView alloc ] initWithImage:[UIImage imageNamed:@"CheckMark.png"]];
     }];
@@ -143,8 +109,53 @@ static NSString *CellIdentifier = @"Cell";
     return 40.0f;
 }
 
-- (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath{
-    return NO;
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+    [self setProjectToCurrentUserForIndexPath:indexPath];
+    
+    MCSwipeTableViewCell *cell = (MCSwipeTableViewCell*)[tableView cellForRowAtIndexPath:indexPath];
+    cell.accessoryView =[[ UIImageView alloc ] initWithImage:[UIImage imageNamed:@"CheckMark.png"]];
+}
+
+-(void)setProjectToCurrentUserForIndexPath:(NSIndexPath*)indexPath{
+    
+    NSDictionary* data = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants KcurrentUserClientList]];
+    NSMutableDictionary *mutableData = [[NSMutableDictionary alloc]initWithDictionary:data];
+    NSString *client = [self.sectionInformation objectForKey:[NSNumber numberWithInteger:indexPath.section]];
+    NSArray *rows = [self.rowInformation objectForKey:[NSNumber numberWithInteger:indexPath.section]];
+    NSString *project = [rows objectAtIndex:indexPath.row];
+    
+    BOOL alreadyPartofTheProject = NO;
+    
+    if (![mutableData objectForKey:client]) {
+        [mutableData setObject:[[NSMutableArray alloc]initWithObjects:project,nil] forKey:client];
+    } else {
+        NSMutableArray *projects = [mutableData objectForKey:client];
+        if (![projects containsObject:project]) {
+            NSMutableArray *mutableProjects = [[NSMutableArray alloc]initWithArray:projects];
+            [mutableProjects addObject:project];
+            [mutableData setObject:mutableProjects forKey:client];
+        } else{
+            alreadyPartofTheProject = YES;
+        }
+    }
+    
+    [[NSUserDefaults standardUserDefaults] setObject:mutableData forKey:[HConstants KcurrentUserClientList]];
+    [[NSUserDefaults standardUserDefaults]synchronize];
+    
+    if (alreadyPartofTheProject) {
+        UIAlertView *alerView = [[UIAlertView alloc]initWithTitle:@"New Project" message:[NSString stringWithFormat:@"You are already part of %@.",project] delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+        [alerView show];
+    } else{
+        self.fireBase = [[Firebase alloc]initWithUrl:[NSString stringWithFormat:@"%@/Projects/%@/%@",[HConstants kFireBaseURL],client,project]];
+        NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants KCurrentUser]];
+        [[self.fireBase childByAutoId] setValue:@{@"name":username}];
+        
+        UIAlertView *alerView = [[UIAlertView alloc]initWithTitle:@"New Project" message:[NSString stringWithFormat:@"%@ Added",project] delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+        [alerView show];
+    }
+    
 }
 
 /*
