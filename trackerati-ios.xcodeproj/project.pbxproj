@@ -30,7 +30,7 @@
 		CE07C0651A5B966100A3B961 /* FireBaseManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CE07C0641A5B966100A3B961 /* FireBaseManager.m */; };
 		CE07C0681A5B9D3E00A3B961 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = CE07C0671A5B9D3E00A3B961 /* Reachability.m */; };
 		CE07C06B1A5BAA9B00A3B961 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE07C0691A5BAA9B00A3B961 /* CFNetwork.framework */; };
-		CE07C06C1A5BAA9B00A3B961 /* NetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE07C06A1A5BAA9B00A3B961 /* NetworkExtension.framework */; };
+		CE07C06C1A5BAA9B00A3B961 /* NetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE07C06A1A5BAA9B00A3B961 /* NetworkExtension.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		CE07C06D1A5BAE9A00A3B961 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE07C04A1A5B05F600A3B961 /* SystemConfiguration.framework */; };
 		CE07C0701A5C29DF00A3B961 /* DataParser.m in Sources */ = {isa = PBXBuildFile; fileRef = CE07C06F1A5C29DF00A3B961 /* DataParser.m */; };
 		CE07C08F1A5C6C4200A3B961 /* HistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE07C08D1A5C6C4100A3B961 /* HistoryViewController.m */; };
