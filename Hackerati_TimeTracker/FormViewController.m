@@ -83,8 +83,8 @@
         self.projectLabel.text = self.projectName;
         self.clientLabel.text = self.clientName;
         [self.dateButton setTitle:[self.formatter stringFromDate:[NSDate date]] forState:UIControlStateNormal];
-        self.hourLabel.text = @"0.0";
-        self.hourStepper.value = 8.0;
+        self.hourLabel.text = @"8.0";
+        self.hourStepper.value = 8.0f;
         [self.statusButton setTitle:@"Full-Time Employee" forState:UIControlStateNormal];
         [self.typeButton setTitle:@"Billable Hour" forState:UIControlStateNormal];
     } else{
