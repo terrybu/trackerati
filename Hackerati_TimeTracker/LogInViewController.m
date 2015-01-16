@@ -80,9 +80,6 @@ static NSString *CellIdentifier = @"Cell";
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     [self.tableView registerClass:[CustomMCSwipeTableViewCell class] forCellReuseIdentifier:CellIdentifier];
     
-    [self setFormForQuickSubmisson];
-    [self.view addSubview:self.formView];
-    
     self.refreshControl = [[UIRefreshControl alloc] init];
     self.refreshControl.backgroundColor = [UIColor whiteColor];
     self.refreshControl.tintColor = [UIColor grayColor];
@@ -104,8 +101,11 @@ static NSString *CellIdentifier = @"Cell";
     [self.formatter setDateFormat:@"MM/dd/yyyy"];
 }
 
--(void)setFormForQuickSubmisson{
-    self.formView = [[UIView alloc]initWithFrame:CGRectMake(-330, 0, 300, 500)];
+- (void)viewWillLayoutSubviews{
+    
+    [super viewWillLayoutSubviews];
+    
+    self.formView = [[UIView alloc]initWithFrame:CGRectMake(-self.view.frame.size.width-30, 0, self.view.frame.size.width-20, 500)];
     
     self.clientNameLabel = [[UILabel alloc]initWithFrame:CGRectMake(13, 82, 58, 35)];
     self.projectNameLabel = [[UILabel alloc]initWithFrame:CGRectMake(13, 113, 58, 35)];
@@ -119,7 +119,8 @@ static NSString *CellIdentifier = @"Cell";
     self.projectTextLabel = [[UILabel alloc]initWithFrame:CGRectMake(95, 113, 194, 35)];
     self.dateOfServiceTextLabel = [[UILabel alloc]initWithFrame:CGRectMake(95, 146, 194, 35)];
     self.hourOfServiceTextLabel = [[UILabel alloc]initWithFrame:CGRectMake(95, 167, 194, 35)];
-    self.commentTextLabel = [[CustonLabel alloc] initWithFrame:CGRectMake(95, 300, 194, 130)];
+    self.commentTextLabel = [[CustonLabel alloc] initWithFrame:CGRectMake(95, 300, self.view.frame.size.width-126, 130)];
+    
     self.typeTextLabel = [[UILabel alloc] initWithFrame:CGRectMake(95, 215-8, 194, 35)];
     self.statusTextLabel = [[UILabel alloc] initWithFrame:CGRectMake(95, 260-8, 194, 35)];
     
@@ -203,6 +204,8 @@ static NSString *CellIdentifier = @"Cell";
     self.formView.clipsToBounds = YES;
     [self.formView.layer setBorderWidth:0.5f];
     [self.formView.layer setBorderColor:[UIColor grayColor].CGColor];
+    
+    [self.view addSubview:self.formView];
     
 }
 
@@ -319,7 +322,7 @@ static NSString *CellIdentifier = @"Cell";
 
 
 -(void)slideForm{
-    self.formView.frame = CGRectMake(-330, 0, 300, 500);
+    self.formView.frame = CGRectMake(-self.view.frame.size.width-30, 0, self.view.frame.size.width-20, 500);
     CGRect frame = self.view.bounds;
     self.dynamicAnimator = [[UIDynamicAnimator alloc]initWithReferenceView:self.view];
     UICollisionBehavior *collisionBehavior = [[UICollisionBehavior alloc] initWithItems:@[self.formView]];
@@ -336,7 +339,7 @@ static NSString *CellIdentifier = @"Cell";
 
 -(void)slideOutForm{
     [self.dynamicAnimator removeBehavior:self.gravityBehavior];
-    self.snapBehavior = [[UISnapBehavior alloc]initWithItem:self.formView snapToPoint:CGPointMake(-330, 0)];
+    self.snapBehavior = [[UISnapBehavior alloc]initWithItem:self.formView snapToPoint:CGPointMake(-self.view.frame.size.width-30, 0)];
     [self.dynamicAnimator addBehavior:self.snapBehavior];
     self.navigationItem.leftBarButtonItem.enabled = YES;
     self.navigationItem.rightBarButtonItem.enabled = YES;
