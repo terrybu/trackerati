@@ -7,8 +7,16 @@
 //
 
 #import <UIKit/UIKit.h>
+@protocol RecordTableViewCellProtocol <NSObject>
+
+-(void)didClickDetailButton:(NSIndexPath*)indexPath;
+
+@end
 
 @interface RecordTableViewCell : UITableViewCell
+
+@property (weak, nonatomic) id <RecordTableViewCellProtocol> delegate;
+@property (strong, nonatomic) NSIndexPath *indexPath;
 
 -(void)setclientNameLabelString:(NSString*)name;
 

@@ -12,7 +12,7 @@
 #import "LogInManager.h"
 #import "RecordDetailViewController.h"
 
-@interface HistoryViewController ()
+@interface HistoryViewController ()<RecordTableViewCellProtocol>
 
 @property (nonatomic, strong) NSDictionary *history;
 @property (nonatomic, strong) NSArray* keys;
@@ -79,6 +79,15 @@ static NSString *cellIdentifier = @"RecordTableViewCell";
     [self.navigationController popViewControllerAnimated:YES];
 }
 
+#pragma mark - Record TableView Cell Delegate
+
+-(void)didClickDetailButton:(NSIndexPath*)indexPath{
+    self.selectedIndexPath = indexPath;
+    self.recordViewController =[[RecordDetailViewController alloc]initWithNibName:@"RecordDetailViewController" bundle:nil];
+    self.recordViewController.record = [((NSArray*)[self.history objectForKey:[self.keys objectAtIndex:indexPath.section]])objectAtIndex:indexPath.row];
+    [self.navigationController pushViewController:self.recordViewController animated:YES];
+}
+
 #pragma mark - Table View and Data Source Delegate
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
@@ -109,16 +118,13 @@ static NSString *cellIdentifier = @"RecordTableViewCell";
     [cell setclientNameLabelString:[record objectForKey:@"client"]];
     [cell setprojectNameLabelString:[record objectForKey:@"project"]];
     [cell sethourLabelString:[[record objectForKey:@"hour"] isKindOfClass:[NSNumber class]]?[NSString stringWithFormat:@"%@",[record objectForKey:@"hour"]]:[record objectForKey:@"hour"]];
-    
+    cell.indexPath = indexPath;
+    cell.delegate = self;
     return cell;
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    self.selectedIndexPath = indexPath;
-    self.recordViewController =[[RecordDetailViewController alloc]initWithNibName:@"RecordDetailViewController" bundle:nil];
-    self.recordViewController.record = [((NSArray*)[self.history objectForKey:[self.keys objectAtIndex:indexPath.section]])objectAtIndex:indexPath.row];
-    [self.navigationController pushViewController:self.recordViewController animated:YES];
+- (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath{
+    return NO;
 }
 
 @end

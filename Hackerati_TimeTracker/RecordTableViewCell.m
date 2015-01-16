@@ -9,9 +9,11 @@
 #import "RecordTableViewCell.h"
 
 @interface RecordTableViewCell ()
-@property (strong, nonatomic) IBOutlet UILabel *clientNameLabel;
-@property (strong, nonatomic) IBOutlet UILabel *projectNameLabel;
-@property (strong, nonatomic) IBOutlet UILabel *hourLabel;
+@property (weak, nonatomic) IBOutlet UILabel *clientNameLabel;
+@property (weak, nonatomic) IBOutlet UILabel *projectNameLabel;
+@property (weak, nonatomic) IBOutlet UILabel *hourLabel;
+@property (weak, nonatomic) IBOutlet UIButton *detailButton;
+- (IBAction)clickedDetailButton:(id)sender;
 
 @end
 
@@ -33,6 +35,7 @@
     self.clientNameLabel.text = nil;
     self.projectNameLabel.text = nil;
     self.hourLabel.text = nil;
+    self.indexPath = nil;
 }
 
 -(void)setclientNameLabelString:(NSString*)name{
@@ -48,4 +51,9 @@
 }
 
 
+- (IBAction)clickedDetailButton:(id)sender {
+    if ([self.delegate respondsToSelector:@selector(didClickDetailButton:)]) {
+        [self.delegate didClickDetailButton:self.indexPath];
+    }
+}
 @end
