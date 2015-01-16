@@ -18,11 +18,29 @@
 }
 */
 
+- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
+    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+    if (self) {
+        self.customButton = [CustomButton buttonWithType:UIButtonTypeContactAdd];
+        [self.customButton addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
+        self.accessoryView = self.customButton;
+    }
+    return self;
+}
+
 - (void)prepareForReuse{
     [super prepareForReuse];
     self.client = nil;
     self.project = nil;
     self.textLabel.text = nil;
+    self.customButton.indexPath = nil;
+}
+
+- (void)buttonClick:(id)sender{
+    CustomButton *button = (CustomButton*) sender;
+    if ([self.delegate respondsToSelector:@selector(didPressCustomButton:)]) {
+        [self.delegate didPressCustomButton:button.indexPath];
+    }
 }
 
 @end

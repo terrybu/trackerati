@@ -20,7 +20,7 @@
 #import "CustonLabel.h"
 
 
-@interface LogInViewController ()<MCSwipeTableViewCellDelegate>
+@interface LogInViewController ()<CustomMCSwipeTableViewCellDelegate>
 
 // Data Source
 @property (strong, nonatomic) NSMutableDictionary *sectionInformation;
@@ -70,9 +70,9 @@ static NSString *CellIdentifier = @"Cell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    self.title = @"Enter your hours";
+    self.title = @"Hours";
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"History" style:UIBarButtonItemStyleBordered target:self action:@selector(historyAction:)];
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addNewProjects)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"Add Project" style:UIBarButtonItemStyleBordered target:self action:@selector(addNewProjects)];
     
     self.sectionInformation = [[NSMutableDictionary alloc]init];
     self.rowInformation = [[NSMutableDictionary alloc]init];
@@ -370,8 +370,7 @@ static NSString *CellIdentifier = @"Cell";
     return 40.0f;
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+- (void)didPressCustomButton:(NSIndexPath*)indexPath {
     FormViewController *formViewController = [[FormViewController alloc]initWithNibName:@"FormViewController" bundle:nil];
     formViewController.isNewRecord = YES;
     NSArray *rows = [self.sectionInformation objectForKey:[NSNumber numberWithInteger:indexPath.section]];
@@ -380,6 +379,10 @@ static NSString *CellIdentifier = @"Cell";
     formViewController.projectName = project;
     formViewController.clientName = client;
     [self.navigationController pushViewController:formViewController animated:YES];
+}
+
+- (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath{
+    return NO;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
@@ -445,6 +448,7 @@ static NSString *CellIdentifier = @"Cell";
     cell.textLabel.text = [rows objectAtIndex:indexPath.row];
     cell.project = [rows objectAtIndex:indexPath.row];
     cell.client = (NSString*)[self.rowInformation objectForKey:[NSNumber numberWithInteger:indexPath.section]];
+    cell.customButton.indexPath = indexPath;
     return cell;
     
 }

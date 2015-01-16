@@ -8,10 +8,19 @@
 //#import <Foundation/Foundation.h>
 
 #import "MCSwipeTableViewCell.h"
+#import "CustomButton.h"
+
+@protocol CustomMCSwipeTableViewCellDelegate <MCSwipeTableViewCellDelegate>
+
+- (void)didPressCustomButton:(NSIndexPath*)indexPath;
+
+@end
 
 @interface CustomMCSwipeTableViewCell : MCSwipeTableViewCell
 
 @property (strong, nonatomic) NSString *client;
 @property (strong, nonatomic) NSString *project;
+@property (strong, nonatomic) CustomButton *customButton;
+@property (weak, nonatomic) id <CustomMCSwipeTableViewCellDelegate> delegate;
 
 @end
