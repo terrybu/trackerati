@@ -87,6 +87,14 @@
         self.hourStepper.value = 8.0f;
         [self.statusButton setTitle:@"Full-Time Employee" forState:UIControlStateNormal];
         [self.typeButton setTitle:@"Billable Hour" forState:UIControlStateNormal];
+        
+        NSDictionary *lastSavedRecord = [[LastSavedManager sharedManager]getRecordForClient:self.clientLabel.text withProject:self.self.projectLabel.text];
+        if ([lastSavedRecord objectForKey:@"comment"]) {
+            self.commentTextView.text = [lastSavedRecord objectForKey:@"comment"];
+        } else{
+            self.commentTextView.text = nil;
+        }
+        
     } else{
         self.projectLabel.text = [self.existingRecord objectForKey:@"project"];
         self.projectName = [self.existingRecord objectForKey:@"project"];

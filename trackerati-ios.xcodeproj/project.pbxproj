@@ -60,6 +60,7 @@
 		CE3BC5691A6064C4006340F7 /* CustomMCSwipeTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CE3BC5681A6064C4006340F7 /* CustomMCSwipeTableViewCell.m */; };
 		CEA5FB0D1A688D4700280E39 /* CustomButton.m in Sources */ = {isa = PBXBuildFile; fileRef = CEA5FB0C1A688D4700280E39 /* CustomButton.m */; };
 		CEA5FB151A696A2D00280E39 /* Default-736h@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CEA5FB131A696A2D00280E39 /* Default-736h@3x.png */; };
+		CEA5FB211A6A421300280E39 /* IQDropDownTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = CEA5FB201A6A421300280E39 /* IQDropDownTextField.m */; };
 		CED58C1D1A5ADAB3001C343B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = CED58C1C1A5ADAB3001C343B /* main.m */; };
 		CED58C201A5ADAB3001C343B /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CED58C1F1A5ADAB3001C343B /* AppDelegate.m */; };
 		CED58C281A5ADAB3001C343B /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CED58C271A5ADAB3001C343B /* Images.xcassets */; };
@@ -150,6 +151,8 @@
 		CEA5FB0B1A688D4700280E39 /* CustomButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomButton.h; sourceTree = "<group>"; };
 		CEA5FB0C1A688D4700280E39 /* CustomButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomButton.m; sourceTree = "<group>"; };
 		CEA5FB131A696A2D00280E39 /* Default-736h@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-736h@3x.png"; sourceTree = "<group>"; };
+		CEA5FB1F1A6A421300280E39 /* IQDropDownTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IQDropDownTextField.h; sourceTree = "<group>"; };
+		CEA5FB201A6A421300280E39 /* IQDropDownTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IQDropDownTextField.m; sourceTree = "<group>"; };
 		CED58C171A5ADAB3001C343B /* trackerati-ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "trackerati-ios.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CED58C1B1A5ADAB3001C343B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CED58C1C1A5ADAB3001C343B /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -277,6 +280,8 @@
 		CE0815801A645E77008ABECF /* CustomViews */ = {
 			isa = PBXGroup;
 			children = (
+				CEA5FB1F1A6A421300280E39 /* IQDropDownTextField.h */,
+				CEA5FB201A6A421300280E39 /* IQDropDownTextField.m */,
 				CEA5FB0B1A688D4700280E39 /* CustomButton.h */,
 				CEA5FB0C1A688D4700280E39 /* CustomButton.m */,
 				CE3BC5671A6064C4006340F7 /* CustomMCSwipeTableViewCell.h */,
@@ -589,6 +594,7 @@
 				CE07C0511A5B087C00A3B961 /* LogInViewController.m in Sources */,
 				CE07C0681A5B9D3E00A3B961 /* Reachability.m in Sources */,
 				CE07C0701A5C29DF00A3B961 /* DataParser.m in Sources */,
+				CEA5FB211A6A421300280E39 /* IQDropDownTextField.m in Sources */,
 				CE07C08F1A5C6C4200A3B961 /* HistoryViewController.m in Sources */,
 				CEA5FB0D1A688D4700280E39 /* CustomButton.m in Sources */,
 				CE07C0B11A5DA83800A3B961 /* NewProjectViewController.m in Sources */,
