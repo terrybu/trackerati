@@ -98,6 +98,12 @@
     self.isDatePickerShowing = YES;
 }
 
+- (void)textFieldDidEndEditing:(UITextField *)textField{
+    [self.view endEditing:YES];
+    self.navigationItem.leftBarButtonItem.enabled = YES;
+    self.isDatePickerShowing = NO;
+}
+
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     
