@@ -243,7 +243,7 @@
 
 - (BOOL)textViewShouldBeginEditing:(UITextView *)textView{
 
-    [self.mainScrollView setContentOffset:CGPointMake(0, 180) animated:YES];
+    [self.mainScrollView setContentOffset:CGPointMake(0, 150) animated:YES];
     return YES;
 }
 
@@ -251,7 +251,7 @@
     
     BOOL reachedLimit = true;
     
-    if ([[textView text] length] - range.length + text.length > 500)
+    if ([[textView text] length] - range.length + text.length > 300)
         reachedLimit = false;
     return reachedLimit;
 }
