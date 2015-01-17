@@ -61,11 +61,14 @@ static NSString *cellIdentifier = @"RecordTableViewCell";
     dispatch_async(dispatch_get_main_queue(), ^{
         self.history = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants KSanitizedCurrentUserRecords]];
         self.keys = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants KSanitizedCurrentUserRecordsKeys]];
-        if (self.recordViewController && self.selectedIndexPath && self.selectedIndexPath.row >= 0 && self.selectedIndexPath.section >= 0) {
-            if ([self.keys objectAtIndex:self.selectedIndexPath.section] && [self.history objectForKey:[self.keys objectAtIndex:self.selectedIndexPath.section]] && [((NSArray*)[self.history objectForKey:[self.keys objectAtIndex:self.selectedIndexPath.section]])objectAtIndex:self.selectedIndexPath.row]) {
+
+        if (self.recordViewController && self.selectedIndexPath && self.selectedIndexPath.row >= 0 && self.selectedIndexPath.section >= 0){
+            if ([self.keys count] > self.selectedIndexPath.section && [self.history objectForKey:[self.keys objectAtIndex:self.selectedIndexPath.section]]
+                && [((NSArray*)[self.history objectForKey:[self.keys objectAtIndex:self.selectedIndexPath.section]]) count] > self.selectedIndexPath.row) {
                 self.recordViewController.record = [((NSArray*)[self.history objectForKey:[self.keys objectAtIndex:self.selectedIndexPath.section]])objectAtIndex:self.selectedIndexPath.row];
             }
         }
+        
         [self.tableView reloadData];
     });
 }
