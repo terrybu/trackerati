@@ -118,9 +118,9 @@ static NSString *cellIdentifier = @"RecordTableViewCell";
     
     NSDictionary *record = [((NSArray*)[self.history objectForKey:[self.keys objectAtIndex:indexPath.section]])objectAtIndex:indexPath.row];
     
-    [cell setclientNameLabelString:[record objectForKey:@"client"]];
-    [cell setprojectNameLabelString:[record objectForKey:@"project"]];
-    [cell sethourLabelString:[[record objectForKey:@"hour"] isKindOfClass:[NSNumber class]]?[NSString stringWithFormat:@"%@",[record objectForKey:@"hour"]]:[record objectForKey:@"hour"]];
+    [cell setclientNameLabelString:[record objectForKey:[HConstants kClient]]];
+    [cell setprojectNameLabelString:[record objectForKey:[HConstants kProject]]];
+    [cell sethourLabelString:[[record objectForKey:[HConstants kHour]] isKindOfClass:[NSNumber class]]?[NSString stringWithFormat:@"%@",[record objectForKey:[HConstants kHour]]]:[record objectForKey:[HConstants kHour]]];
     cell.indexPath = indexPath;
     cell.delegate = self;
     return cell;

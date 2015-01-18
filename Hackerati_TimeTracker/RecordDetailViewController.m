@@ -83,22 +83,22 @@
 */
 
 -(void)setElements{
-    self.title = [self.record objectForKey:@"date"];
-    self.clientLabel.text = [self.record objectForKey:@"client"];
-    if ([self.record objectForKey:@"status"] && [[self.record objectForKey:@"status"]isEqualToString:@"1"] ) {
-        self.statusLabel.text = @"Full-Time Employee";
+    self.title = [self.record objectForKey:[HConstants kDate]];
+    self.clientLabel.text = [self.record objectForKey:[HConstants kClient]];
+    if ([self.record objectForKey:[HConstants kStatus]] && [[self.record objectForKey:[HConstants kStatus]]isEqualToString:@"1"] ) {
+        self.statusLabel.text = [HConstants KfullTimeEmployee];
     } else{
-        self.statusLabel.text = @"Part-Time Employee";
+        self.statusLabel.text = [HConstants KpartTimeEmployee];
     }
-    if ([self.record objectForKey:@"type"] && [[self.record objectForKey:@"type"]isEqualToString:@"1"] ) {
-        self.typeLabel.text = @"Billable Hour";
+    if ([self.record objectForKey:[HConstants kType]] && [[self.record objectForKey:[HConstants kType]]isEqualToString:@"1"] ) {
+        self.typeLabel.text = [HConstants KbillableHour];
     }else{
-        self.typeLabel.text = @"Unbillable Hour";
+        self.typeLabel.text = [HConstants KunbillableHour];
     }
-    self.projectLabel.text = [self.record objectForKey:@"project"];
-    self.hourLabel.text = [[self.record objectForKey:@"hour"] isKindOfClass:[NSNumber class]]?[NSString stringWithFormat:@"%@",[self.record objectForKey:@"hour"]]:[self.record objectForKey:@"hour"];
-    if ([self.record objectForKey:@"comment"]) {
-        self.commentLabel.text = [self.record objectForKey:@"comment"];
+    self.projectLabel.text = [self.record objectForKey:[HConstants kProject]];
+    self.hourLabel.text = [[self.record objectForKey:[HConstants kHour]] isKindOfClass:[NSNumber class]]?[NSString stringWithFormat:@"%@",[self.record objectForKey:[HConstants kHour]]]:[self.record objectForKey:[HConstants kHour]];
+    if ([self.record objectForKey:[HConstants kComment]]) {
+        self.commentLabel.text = [self.record objectForKey:[HConstants kComment]];
     } else{
         self.commentLabel.text = nil;
     }

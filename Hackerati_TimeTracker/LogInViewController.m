@@ -144,22 +144,23 @@ static NSString *CellIdentifier = @"Cell";
     [self.cancelButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
     [self.cancelButton addTarget:self action:@selector(cancelForm) forControlEvents:UIControlEventTouchUpInside];
     
-    [self.clientNameLabel setFont:[UIFont fontWithName:@"HelveticaNeue" size:15]];
-    [self.clientNameTextLabel setFont:[UIFont fontWithName:@"HelveticaNeue" size:15]];
-    [self.projectTextLabel setFont:[UIFont fontWithName:@"HelveticaNeue" size:15]];
-    [self.dateOfServiceTextLabel setFont:[UIFont fontWithName:@"HelveticaNeue" size:15]];
-    [self.clientNameLabel setFont:[UIFont fontWithName:@"HelveticaNeue" size:15]];
-    [self.hourOfServiceTextLabel setFont:[UIFont fontWithName:@"HelveticaNeue" size:15]];
-    [self.projectNameLabel setFont:[UIFont fontWithName:@"HelveticaNeue" size:15]];
-    [self.dateOfServiceLabel setFont:[UIFont fontWithName:@"HelveticaNeue" size:15]];
-    [self.hourOfServiceLabel setFont:[UIFont fontWithName:@"HelveticaNeue" size:15]];
-    [self.typeLabel setFont:[UIFont fontWithName:@"HelveticaNeue" size:15]];
-    [self.statusLabel setFont:[UIFont fontWithName:@"HelveticaNeue" size:15]];
-    [self.typeTextLabel setFont:[UIFont fontWithName:@"HelveticaNeue" size:15]];
-    [self.statusTextLabel setFont:[UIFont fontWithName:@"HelveticaNeue" size:15]];
+    UIFont* helveticaFont = [UIFont fontWithName:@"HelveticaNeue" size:15];
+    [self.clientNameLabel setFont:helveticaFont];
+    [self.clientNameTextLabel setFont:helveticaFont];
+    [self.projectTextLabel setFont:helveticaFont];
+    [self.dateOfServiceTextLabel setFont:helveticaFont];
+    [self.clientNameLabel setFont:helveticaFont];
+    [self.hourOfServiceTextLabel setFont:helveticaFont];
+    [self.projectNameLabel setFont:helveticaFont];
+    [self.dateOfServiceLabel setFont:helveticaFont];
+    [self.hourOfServiceLabel setFont:helveticaFont];
+    [self.typeLabel setFont:helveticaFont];
+    [self.statusLabel setFont:helveticaFont];
+    [self.typeTextLabel setFont:helveticaFont];
+    [self.statusTextLabel setFont:helveticaFont];
     
-    [self.commentLabel setFont:[UIFont fontWithName:@"HelveticaNeue" size:15]];
-    [self.commentTextLabel setFont:[UIFont fontWithName:@"HelveticaNeue" size:15]];
+    [self.commentLabel setFont:helveticaFont];
+    [self.commentTextLabel setFont:helveticaFont];
     self.commentTextLabel.layer.cornerRadius = 5.0f;
     self.commentTextLabel.clipsToBounds = YES;
     [self.commentTextLabel.layer setBorderWidth:0.5f];
@@ -258,13 +259,13 @@ static NSString *CellIdentifier = @"Cell";
     self.fireBase = [FireBaseManager recordURLsharedFireBase];
     
     if (self.commentTextLabel.text && [self.commentTextLabel.text length] > 0) {
-        [[self.fireBase childByAutoId] setValue:@{@"client":self.clientNameTextLabel.text,@"date":self.dateOfServiceTextLabel.text,@"hour":self.hourOfServiceTextLabel.text,@"project":self.projectTextLabel.text,@"status":(([self.statusTextLabel.text isEqualToString:@"Full-Time Employee"])?@"1":@"0"),@"type":(([self.typeTextLabel.text isEqualToString:@"Billable Hour"])?@"1":@"0"),@"comment":self.commentTextLabel.text}];
+        [[self.fireBase childByAutoId] setValue:@{[HConstants kClient]:self.clientNameTextLabel.text,[HConstants kDate]:self.dateOfServiceTextLabel.text,[HConstants kHour]:self.hourOfServiceTextLabel.text,[HConstants kProject]:self.projectTextLabel.text,[HConstants kStatus]:(([self.statusTextLabel.text isEqualToString:[HConstants KfullTimeEmployee]])?@"1":@"0"),[HConstants kType]:(([self.typeTextLabel.text isEqualToString:[HConstants KbillableHour]])?@"1":@"0"),[HConstants kComment]:self.commentTextLabel.text}];
         
-        [[LastSavedManager sharedManager] saveRecord:@{@"client":self.clientNameTextLabel.text,@"date":self.dateOfServiceTextLabel.text,@"hour":self.hourOfServiceTextLabel.text,@"project":self.projectTextLabel.text,@"status":(([self.statusTextLabel.text isEqualToString:@"Full-Time Employee"])?@"1":@"0"),@"type":(([self.typeTextLabel.text isEqualToString:@"Billable Hour"])?@"1":@"0"),@"comment":self.commentTextLabel.text}];
+        [[LastSavedManager sharedManager] saveRecord:@{[HConstants kClient]:self.clientNameTextLabel.text,[HConstants kDate]:self.dateOfServiceTextLabel.text,[HConstants kHour]:self.hourOfServiceTextLabel.text,[HConstants kProject]:self.projectTextLabel.text,[HConstants kStatus]:(([self.statusTextLabel.text isEqualToString:[HConstants KfullTimeEmployee]])?@"1":@"0"),[HConstants kType]:(([self.typeTextLabel.text isEqualToString:[HConstants KbillableHour]])?@"1":@"0"),[HConstants kComment]:self.commentTextLabel.text}];
     } else{
-        [[self.fireBase childByAutoId] setValue:@{@"client":self.clientNameTextLabel.text,@"date":self.dateOfServiceTextLabel.text,@"hour":self.hourOfServiceTextLabel.text,@"project":self.projectTextLabel.text,@"status":(([self.statusTextLabel.text isEqualToString:@"Full-Time Employee"])?@"1":@"0"),@"type":(([self.typeTextLabel.text isEqualToString:@"Billable Hour"])?@"1":@"0")}];
+        [[self.fireBase childByAutoId] setValue:@{[HConstants kClient]:self.clientNameTextLabel.text,[HConstants kDate]:self.dateOfServiceTextLabel.text,[HConstants kHour]:self.hourOfServiceTextLabel.text,[HConstants kProject]:self.projectTextLabel.text,[HConstants kStatus]:(([self.statusTextLabel.text isEqualToString:[HConstants KfullTimeEmployee]])?@"1":@"0"),[HConstants kType]:(([self.typeTextLabel.text isEqualToString:[HConstants KbillableHour]])?@"1":@"0")}];
         
-        [[LastSavedManager sharedManager] saveRecord:@{@"client":self.clientNameTextLabel.text,@"date":self.dateOfServiceTextLabel.text,@"hour":self.hourOfServiceTextLabel.text,@"project":self.projectTextLabel.text,@"status":(([self.statusTextLabel.text isEqualToString:@"Full-Time Employee"])?@"1":@"0"),@"type":(([self.typeTextLabel.text isEqualToString:@"Billable Hour"])?@"1":@"0")}];
+        [[LastSavedManager sharedManager] saveRecord:@{[HConstants kClient]:self.clientNameTextLabel.text,[HConstants kDate]:self.dateOfServiceTextLabel.text,[HConstants kHour]:self.hourOfServiceTextLabel.text,[HConstants kProject]:self.projectTextLabel.text,[HConstants kStatus]:(([self.statusTextLabel.text isEqualToString:[HConstants KfullTimeEmployee]])?@"1":@"0"),[HConstants kType]:(([self.typeTextLabel.text isEqualToString:[HConstants KbillableHour]])?@"1":@"0")}];
     }
     
     [self slideOutForm];
@@ -474,30 +475,30 @@ static NSString *CellIdentifier = @"Cell";
         [self.dateOfServiceTextLabel sizeToFit];
         
         NSDictionary *lastSavedRecord = [[LastSavedManager sharedManager]getRecordForClient:self.clientNameTextLabel.text withProject:self.projectTextLabel.text];
-        if (lastSavedRecord && [lastSavedRecord objectForKey:@"status"] && [lastSavedRecord objectForKey:@"type"] && [lastSavedRecord objectForKey:@"hour"]) {
-            if ([lastSavedRecord objectForKey:@"comment"]) {
-                self.commentTextLabel.text = [lastSavedRecord objectForKey:@"comment"];
+        if (lastSavedRecord && [lastSavedRecord objectForKey:[HConstants kStatus]] && [lastSavedRecord objectForKey:[HConstants kType]] && [lastSavedRecord objectForKey:[HConstants kHour]]) {
+            if ([lastSavedRecord objectForKey:[HConstants kComment]]) {
+                self.commentTextLabel.text = [lastSavedRecord objectForKey:[HConstants kComment]];
             } else{
                 self.commentTextLabel.text = nil;
             }
-            if ([[lastSavedRecord objectForKey:@"status"] isEqualToString:@"1"]) {
-                self.statusTextLabel.text = @"Full-Time Employee";
+            if ([[lastSavedRecord objectForKey:[HConstants kStatus]] isEqualToString:@"1"]) {
+                self.statusTextLabel.text = [HConstants KfullTimeEmployee];
             }else {
-                self.statusTextLabel.text = @"Part-Time Employee";
+                self.statusTextLabel.text = [HConstants KpartTimeEmployee];
             }
-            if ([[lastSavedRecord objectForKey:@"type"] isEqualToString:@"1"]) {
-                self.typeTextLabel.text =  @"Billable Hour";
+            if ([[lastSavedRecord objectForKey:[HConstants kType]] isEqualToString:@"1"]) {
+                self.typeTextLabel.text =  [HConstants KbillableHour];
             }else {
-                self.typeTextLabel.text =  @"Unbillable Hour";
+                self.typeTextLabel.text =  [HConstants KunbillableHour];
             }
-            self.hourOfServiceTextLabel.text = [lastSavedRecord objectForKey:@"hour"];
+            self.hourOfServiceTextLabel.text = [lastSavedRecord objectForKey:[HConstants kHour]];
             
         }else{
-            self.statusTextLabel.text = @"Full-Time Employee";
-            self.typeTextLabel.text = @"Billable Hour";
+            self.statusTextLabel.text = [HConstants KfullTimeEmployee];
+            self.typeTextLabel.text = [HConstants KbillableHour];
             self.hourOfServiceTextLabel.text = @"8.0";
-            if ([lastSavedRecord objectForKey:@"comment"]) {
-                self.commentTextLabel.text = [lastSavedRecord objectForKey:@"comment"];
+            if ([lastSavedRecord objectForKey:[HConstants kComment]]) {
+                self.commentTextLabel.text = [lastSavedRecord objectForKey:[HConstants kComment]];
             } else{
                 self.commentTextLabel.text = nil;
             }

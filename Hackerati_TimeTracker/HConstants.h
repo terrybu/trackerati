@@ -22,5 +22,16 @@
 +(NSString*)kRawMasterClientList;
 +(NSString*)KSanitizedCurrentUserRecords;
 +(NSString*)KSanitizedCurrentUserRecordsKeys;
++(NSString*)KfullTimeEmployee;
++(NSString*)KpartTimeEmployee;
++(NSString*)KbillableHour;
++(NSString*)KunbillableHour;
++(NSString*)kClient;
++(NSString*)kProject;
++(NSString*)kDate;
++(NSString*)kHour;
++(NSString*)kComment;
++(NSString*)kStatus;
++(NSString*)kType;
 
 @end

@@ -30,7 +30,7 @@
         
         [mutableLastSavedInfo enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop){
             NSDictionary *tempRecord = (NSDictionary*)obj;
-            if ([[tempRecord objectForKey:@"client"]isEqualToString:(NSString*)[record objectForKey:@"client"]] && [[tempRecord objectForKey:@"project"]isEqualToString:(NSString*)[record objectForKey:@"project"]]) {
+            if ([[tempRecord objectForKey:[HConstants kClient]]isEqualToString:(NSString*)[record objectForKey:[HConstants kClient]]] && [[tempRecord objectForKey:[HConstants kProject]]isEqualToString:(NSString*)[record objectForKey:[HConstants kProject]]]) {
                 [mutableLastSavedInfo removeObjectAtIndex:idx];
                 [mutableLastSavedInfo addObject:record];
                 *stop = YES;
@@ -46,7 +46,7 @@
     __block NSDictionary*record = nil;
     [lastSavedInfo enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop){
         NSDictionary *tempRecord = (NSDictionary*)obj;
-        if ([[tempRecord objectForKey:@"client"]isEqualToString:client] && [[tempRecord objectForKey:@"project"]isEqualToString:project]) {
+        if ([[tempRecord objectForKey:[HConstants kClient]]isEqualToString:client] && [[tempRecord objectForKey:[HConstants kProject]]isEqualToString:project]) {
             record = tempRecord;
             *stop = YES;
         }

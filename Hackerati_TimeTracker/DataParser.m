@@ -120,30 +120,30 @@
 - (void) getUserRecords{
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         // Get last 50 records by date
-        [[[self.records queryOrderedByChild:@"date"] queryLimitedToLast:50] observeEventType:FEventTypeValue withBlock:^(FDataSnapshot *snapshot) {
+        [[[self.records queryOrderedByChild:[HConstants kDate]] queryLimitedToLast:50] observeEventType:FEventTypeValue withBlock:^(FDataSnapshot *snapshot) {
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
                 if (snapshot.value && [snapshot.value isKindOfClass:[NSDictionary class]]) {
                     NSDictionary *records = snapshot.value;
                     
                     __block NSMutableDictionary *sanitizedCurrentUserRecords = [[NSMutableDictionary alloc]init];
                     [records enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop){
-                        if ([obj objectForKey:@"client"] && [obj objectForKey:@"project"] && [obj objectForKey:@"date"] && [obj objectForKey:@"hour"] && [obj objectForKey:@"status"] && [obj objectForKey:@"type"]) {
-                            if ([sanitizedCurrentUserRecords objectForKey:[obj objectForKey:@"date"]] ) {
-                                NSMutableArray *records = [sanitizedCurrentUserRecords objectForKey:[obj objectForKey:@"date"]];
-                                if ([obj objectForKey:@"comment"]) {
-                                    [records addObject:@{@"client":[obj objectForKey:@"client"],@"project":[obj objectForKey:@"project"],@"hour":[obj objectForKey:@"hour"],@"comment":[obj objectForKey:@"comment"],@"key":(NSString*)key,@"date":[obj objectForKey:@"date"],@"status":[obj objectForKey:@"status"],@"type":[obj objectForKey:@"type"]}];
+                        if ([obj objectForKey:[HConstants kClient]] && [obj objectForKey:[HConstants kProject]] && [obj objectForKey:[HConstants kDate]] && [obj objectForKey:[HConstants kHour]] && [obj objectForKey:[HConstants kStatus]] && [obj objectForKey:[HConstants kType]]) {
+                            if ([sanitizedCurrentUserRecords objectForKey:[obj objectForKey:[HConstants kDate]]] ) {
+                                NSMutableArray *records = [sanitizedCurrentUserRecords objectForKey:[obj objectForKey:[HConstants kDate]]];
+                                if ([obj objectForKey:[HConstants kComment]]) {
+                                    [records addObject:@{[HConstants kClient]:[obj objectForKey:[HConstants kClient]],[HConstants kProject]:[obj objectForKey:[HConstants kProject]],[HConstants kHour]:[obj objectForKey:[HConstants kHour]],[HConstants kComment]:[obj objectForKey:[HConstants kComment]],@"key":(NSString*)key,[HConstants kDate]:[obj objectForKey:[HConstants kDate]],[HConstants kStatus]:[obj objectForKey:[HConstants kStatus]],[HConstants kType]:[obj objectForKey:[HConstants kType]]}];
                                 } else{
-                                    [records addObject:@{@"client":[obj objectForKey:@"client"],@"project":[obj objectForKey:@"project"],@"hour":[obj objectForKey:@"hour"],@"key":(NSString*)key,@"date":[obj objectForKey:@"date"],@"status":[obj objectForKey:@"status"],@"type":[obj objectForKey:@"type"]}];
+                                    [records addObject:@{[HConstants kClient]:[obj objectForKey:[HConstants kClient]],[HConstants kProject]:[obj objectForKey:[HConstants kProject]],[HConstants kHour]:[obj objectForKey:[HConstants kHour]],@"key":(NSString*)key,[HConstants kDate]:[obj objectForKey:[HConstants kDate]],[HConstants kStatus]:[obj objectForKey:[HConstants kStatus]],[HConstants kType]:[obj objectForKey:[HConstants kType]]}];
                                 }
-                                [sanitizedCurrentUserRecords setObject:records forKey:[obj objectForKey:@"date"]];
+                                [sanitizedCurrentUserRecords setObject:records forKey:[obj objectForKey:[HConstants kDate]]];
                             } else{
                                 NSMutableArray *records = nil;
-                                if ([obj objectForKey:@"comment"]) {
-                                    records = [[NSMutableArray alloc]initWithObjects:@{@"client":[obj objectForKey:@"client"],@"project":[obj objectForKey:@"project"],@"hour":[obj objectForKey:@"hour"],@"comment":[obj objectForKey:@"comment"],@"key":(NSString*)key,@"date":[obj objectForKey:@"date"],@"status":[obj objectForKey:@"status"],@"type":[obj objectForKey:@"type"]}, nil];
+                                if ([obj objectForKey:[HConstants kComment]]) {
+                                    records = [[NSMutableArray alloc]initWithObjects:@{[HConstants kClient]:[obj objectForKey:[HConstants kClient]],[HConstants kProject]:[obj objectForKey:[HConstants kProject]],[HConstants kHour]:[obj objectForKey:[HConstants kHour]],[HConstants kComment]:[obj objectForKey:[HConstants kComment]],@"key":(NSString*)key,[HConstants kDate]:[obj objectForKey:[HConstants kDate]],[HConstants kStatus]:[obj objectForKey:[HConstants kStatus]],[HConstants kType]:[obj objectForKey:[HConstants kType]]}, nil];
                                 } else{
-                                    records = [[NSMutableArray alloc]initWithObjects:@{@"client":[obj objectForKey:@"client"],@"project":[obj objectForKey:@"project"],@"hour":[obj objectForKey:@"hour"],@"key":(NSString*)key,@"date":[obj objectForKey:@"date"],@"status":[obj objectForKey:@"status"],@"type":[obj objectForKey:@"type"]}, nil];
+                                    records = [[NSMutableArray alloc]initWithObjects:@{[HConstants kClient]:[obj objectForKey:[HConstants kClient]],[HConstants kProject]:[obj objectForKey:[HConstants kProject]],[HConstants kHour]:[obj objectForKey:[HConstants kHour]],@"key":(NSString*)key,[HConstants kDate]:[obj objectForKey:[HConstants kDate]],[HConstants kStatus]:[obj objectForKey:[HConstants kStatus]],[HConstants kType]:[obj objectForKey:[HConstants kType]]}, nil];
                                 }
-                                [sanitizedCurrentUserRecords setObject:records forKey:[obj objectForKey:@"date"]];
+                                [sanitizedCurrentUserRecords setObject:records forKey:[obj objectForKey:[HConstants kDate]]];
                             }
                         }
                     }];
