@@ -728,7 +728,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "trackerati-ios";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "d1220448-3743-4bc2-b1f0-23b7833e85ff";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
@@ -751,7 +751,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "trackerati-ios";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "d1220448-3743-4bc2-b1f0-23b7833e85ff";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
