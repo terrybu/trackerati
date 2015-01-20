@@ -295,7 +295,7 @@
     
         }
         [[DataParser sharedManager] getUserRecords];
-        if (self.previousViewController) {
+        if (self.previousViewController && self.previousViewController.navigationController) {
             [self.previousViewController.navigationController popViewControllerAnimated:YES];
         }else {
             [self.navigationController popViewControllerAnimated:YES];
