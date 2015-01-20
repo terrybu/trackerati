@@ -232,10 +232,10 @@
         if ([history objectForKey:self.dateButton.titleLabel.text]) {
             [[[UIAlertView alloc] initWithTitle:@"Warning" message:[NSString stringWithFormat: @"You already sent a record for %@. Do you still want to send this ?",self.dateButton.titleLabel.text] delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Send", nil] show];
         } else{
-            [self sendData];
+            [self checkDate];
         }
     } else {
-        [self sendData];
+        [self checkDate];
     }
     
 }
@@ -243,6 +243,8 @@
 - (void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     NSString *buttonTitle = [alertView buttonTitleAtIndex:buttonIndex];
     if ([buttonTitle isEqualToString:@"Send"]) {
+        [self checkDate];
+    } else if ([buttonTitle isEqualToString:@"Send Anyway"]) {
         [self sendData];
     }
 }
@@ -265,6 +267,28 @@
 -(void)tapAction{
     [self.view endEditing:YES];
     [self.mainScrollView setContentOffset:CGPointMake(0, -64) animated:YES];
+}
+
+-(void)checkDate{
+    
+    NSDate *dateFromString = [self.formatter dateFromString:self.dateButton.titleLabel.text];
+    int addDaysCount = 8;
+    NSDateComponents *dateComponents = [[NSDateComponents alloc] init];
+    [dateComponents setDay:addDaysCount];
+    NSDate *cutOffDate = [[NSCalendar currentCalendar]
+                          dateByAddingComponents:dateComponents
+                          toDate:dateFromString options:0];
+    
+    if ([cutOffDate compare:[NSDate date]] == NSOrderedAscending) {
+        NSLog(@"date1 is earlier than date2");
+        [[[UIAlertView alloc]initWithTitle:@"Error" message:@"Can not send record older than 7 days" delegate:self cancelButtonTitle:@"cancel" otherButtonTitles: nil]show];
+    } else if ([dateFromString compare:[NSDate date]] == NSOrderedDescending){
+        NSLog(@"date1 is later than date2");
+        [[[UIAlertView alloc]initWithTitle:@"Warning" message:@"Entered future date. Do you still want to submit ?" delegate:self cancelButtonTitle:@"cancel" otherButtonTitles:@"Send Anyway" ,nil]show];
+    } else {
+        [self sendData];
+    }
+
 }
 
 -(void)sendData{

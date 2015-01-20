@@ -27,6 +27,8 @@
 @property (strong, nonatomic) Firebase *fireBase;
 @property (strong, nonatomic) FBKVOController *fbKVOController;
 
+@property (nonatomic, strong) NSDateFormatter * formatter;
+
 - (IBAction)editButtonAction:(id)sender;
 - (IBAction)deleteButtonAction:(id)sender;
 
@@ -55,6 +57,9 @@
     [self.commentLabel.layer setBorderWidth:0.5f];
     [self.commentLabel.layer setBorderColor:[UIColor grayColor].CGColor];
     
+    self.formatter = [[NSDateFormatter alloc] init];
+    [self.formatter setDateFormat:@"MM/dd/yyyy"];
+    
     self.fbKVOController = [[FBKVOController alloc]initWithObserver:self];
     __weak typeof(self) weakSelf = self;
     [self.fbKVOController observe:self keyPath:@"record" options:NSKeyValueObservingOptionNew block:^(id observer, id object, NSDictionary *change){
@@ -65,6 +70,26 @@
 -(void) viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     [self setElements];
+
+    if ([self.record objectForKey:@"date"]) {
+        NSString *dateString = [self.record objectForKey:@"date"];
+        NSDate *dateFromString = [self.formatter dateFromString:dateString];
+        int addDaysCount = 8;
+        NSDateComponents *dateComponents = [[NSDateComponents alloc] init];
+        [dateComponents setDay:addDaysCount];
+        NSDate *cutOffDate = [[NSCalendar currentCalendar]
+                           dateByAddingComponents:dateComponents
+                           toDate:dateFromString options:0];
+        if ([cutOffDate compare:[NSDate date]] == NSOrderedAscending) {
+             NSLog(@"date1 is earlier than date2");
+            self.deletButton.userInteractionEnabled = NO;
+            self.editButton.userInteractionEnabled = NO;
+        } else {
+            self.deletButton.userInteractionEnabled = YES;
+            self.editButton.userInteractionEnabled = YES;
+        }
+    }
+    
 }
 
 - (void)didReceiveMemoryWarning {
