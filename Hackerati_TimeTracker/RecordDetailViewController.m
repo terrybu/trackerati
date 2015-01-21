@@ -81,12 +81,11 @@
                            dateByAddingComponents:dateComponents
                            toDate:dateFromString options:0];
         if ([cutOffDate compare:[NSDate date]] == NSOrderedAscending) {
-             NSLog(@"date1 is earlier than date2");
-            self.deletButton.userInteractionEnabled = NO;
-            self.editButton.userInteractionEnabled = NO;
+            self.deletButton.enabled = NO;
+            self.editButton.enabled = NO;
         } else {
-            self.deletButton.userInteractionEnabled = YES;
-            self.editButton.userInteractionEnabled = YES;
+            self.deletButton.enabled = YES;
+            self.editButton.enabled = YES;
         }
     }
     
