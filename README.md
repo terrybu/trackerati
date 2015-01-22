@@ -32,7 +32,8 @@ The structure of the data is as follows:
       }
   }
 }
-'''
+```json
+
 ** A node must have at least one value otherwise it will be deleted. As such a placeholder is placed in every node to prevent it from deleting. **
 
 Pod install
