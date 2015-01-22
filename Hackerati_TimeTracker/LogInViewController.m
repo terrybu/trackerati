@@ -351,6 +351,19 @@ static NSString *CellIdentifier = @"Cell";
     [self slideOutForm];
 }
 
+#pragma mark - Record Table Cell Delegate
+
+- (void)didPressCustomButton:(NSIndexPath*)indexPath {
+    FormViewController *formViewController = [[FormViewController alloc]initWithNibName:@"FormViewController" bundle:nil];
+    formViewController.isNewRecord = YES;
+    NSArray *rows = [self.sectionInformation objectForKey:[NSNumber numberWithInteger:indexPath.section]];
+    NSString *project = [rows objectAtIndex:indexPath.row];
+    NSString *client = [self.rowInformation objectForKey:[NSNumber numberWithInteger:indexPath.section]];
+    formViewController.projectName = project;
+    formViewController.clientName = client;
+    [self.navigationController pushViewController:formViewController animated:YES];
+}
+
 #pragma mark - Table View and Data Source Delegate
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
@@ -372,17 +385,6 @@ static NSString *CellIdentifier = @"Cell";
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
     return 40.0f;
-}
-
-- (void)didPressCustomButton:(NSIndexPath*)indexPath {
-    FormViewController *formViewController = [[FormViewController alloc]initWithNibName:@"FormViewController" bundle:nil];
-    formViewController.isNewRecord = YES;
-    NSArray *rows = [self.sectionInformation objectForKey:[NSNumber numberWithInteger:indexPath.section]];
-    NSString *project = [rows objectAtIndex:indexPath.row];
-    NSString *client = [self.rowInformation objectForKey:[NSNumber numberWithInteger:indexPath.section]];
-    formViewController.projectName = project;
-    formViewController.clientName = client;
-    [self.navigationController pushViewController:formViewController animated:YES];
 }
 
 - (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath{
