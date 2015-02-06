@@ -663,7 +663,7 @@
 					"$(OTHER_LDFLAGS)",
 					"-ObjC",
 				);
-				PROVISIONING_PROFILE = "021460bb-bad1-48dc-8971-627dca2fc9e1";
+				PROVISIONING_PROFILE = "daeae739-c225-4d55-822f-e98f044b5cc7";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -704,7 +704,7 @@
 					"$(OTHER_LDFLAGS)",
 					"-ObjC",
 				);
-				PROVISIONING_PROFILE = "021460bb-bad1-48dc-8971-627dca2fc9e1";
+				PROVISIONING_PROFILE = "daeae739-c225-4d55-822f-e98f044b5cc7";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
