@@ -467,7 +467,6 @@
 				TargetAttributes = {
 					CED58C161A5ADAB3001C343B = {
 						CreatedOnToolsVersion = 6.1.1;
-						DevelopmentTeam = 7R3P88JPU3;
 					};
 					CED58C2F1A5ADAB3001C343B = {
 						CreatedOnToolsVersion = 6.1.1;
@@ -728,7 +727,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "trackerati-ios";
-				PROVISIONING_PROFILE = "a54019a4-0eff-4570-9339-c54168bc2ed5";
+				PROVISIONING_PROFILE = "daeae739-c225-4d55-822f-e98f044b5cc7";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
@@ -751,7 +750,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "trackerati-ios";
-				PROVISIONING_PROFILE = "a54019a4-0eff-4570-9339-c54168bc2ed5";
+				PROVISIONING_PROFILE = "daeae739-c225-4d55-822f-e98f044b5cc7";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
