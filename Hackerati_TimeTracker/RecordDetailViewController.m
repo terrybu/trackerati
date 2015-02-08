@@ -10,7 +10,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import <Firebase/Firebase.h>
 #import "HConstants.h"
-#import "DataParser.h"
+#import "DataParseManager.h"
 #import "FormViewController.h"
 #import <KVOController/FBKVOController.h>
 
@@ -143,7 +143,7 @@
     NSString *buttonTitle = [alertView buttonTitleAtIndex:buttonIndex];
     if ([buttonTitle isEqualToString:@"delete"]) {
         [self deleteRecord];
-        [[DataParser sharedManager] getUserRecords];
+        [[DataParseManager sharedManager] getUserRecords];
         [self.navigationController popViewControllerAnimated:YES];
     }
 }

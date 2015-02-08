@@ -12,7 +12,7 @@
 #import "HConstants.h"
 #import "LastSavedManager.h"
 #import <QuartzCore/QuartzCore.h>
-#import "DataParser.h"
+#import "DataParseManager.h"
 #import "IQDropDownTextField.h"
 
 
@@ -318,7 +318,7 @@
             }
     
         }
-        [[DataParser sharedManager] getUserRecords];
+        [[DataParseManager sharedManager] getUserRecords];
         if (self.previousViewController && self.previousViewController.navigationController) {
             [self.previousViewController.navigationController popViewControllerAnimated:YES];
         }else {

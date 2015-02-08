@@ -13,19 +13,21 @@
 #import "CustomMCSwipeTableViewCell.h"
 #import "FormViewController.h"
 #import "FireBaseManager.h"
-#import "DataParser.h"
+#import "DataParseManager.h"
 #import "LogInManager.h"
 #import "NewProjectViewController.h"
 #import "LastSavedManager.h"
 #import "CustonLabel.h"
+#import "Client.h"
+#import "Project.h"
+#import "User.h"
+#import "Record.h"
 
 
 @interface LogInViewController ()<CustomMCSwipeTableViewCellDelegate>
 
 // Data Source
-@property (strong, nonatomic) NSMutableDictionary *sectionInformation;
-@property (strong, nonatomic) NSMutableDictionary *rowInformation;
-@property (strong, nonatomic) NSDictionary* datas;
+@property (strong, nonatomic) NSMutableArray* datas;
 
 @property (strong, nonatomic) GPPSignIn *googleSignIn;
 
@@ -73,9 +75,6 @@ static NSString *CellIdentifier = @"Cell";
     self.title = @"Hours";
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"History" style:UIBarButtonItemStyleBordered target:self action:@selector(historyAction:)];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"Add Project" style:UIBarButtonItemStyleBordered target:self action:@selector(addNewProjects)];
-    
-    self.sectionInformation = [[NSMutableDictionary alloc]init];
-    self.rowInformation = [[NSMutableDictionary alloc]init];
     
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     [self.tableView registerClass:[CustomMCSwipeTableViewCell class] forCellReuseIdentifier:CellIdentifier];
@@ -224,7 +223,7 @@ static NSString *CellIdentifier = @"Cell";
         dispatch_async(dispatch_get_main_queue(), ^{
             [[FireBaseManager connectivityURLsharedFireBase] observeEventType:FEventTypeValue withBlock:^(FDataSnapshot *snapshot){
                 if([snapshot.value boolValue] && [[NSUserDefaults standardUserDefaults]objectForKey:[HConstants KCurrentUser]]) {
-                    [[DataParser sharedManager] loginSuccessful];
+                    [[DataParseManager sharedManager] loginSuccessful];
                 } else {
                     [[NSNotificationCenter defaultCenter] postNotificationName:kStartLogInProcessNotification object:nil];
                 }
@@ -302,18 +301,8 @@ static NSString *CellIdentifier = @"Cell";
 -(void) loadData{
     dispatch_async(dispatch_get_main_queue(), ^{
         
-        self.datas = (NSDictionary*)[[NSUserDefaults standardUserDefaults]objectForKey:[HConstants KcurrentUserClientList]];
-        __block int count = 0;
-        __weak typeof(self) weakSelf = self;
-        self.sectionInformation = nil;
-        self.rowInformation = nil;
-        self.sectionInformation = [[NSMutableDictionary alloc]init];
-        self.rowInformation = [[NSMutableDictionary alloc]init];
-        [self.datas enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop){
-            [weakSelf.sectionInformation setObject:obj forKey:[NSNumber numberWithInt:count]];
-            [weakSelf.rowInformation setObject:key forKey:[NSNumber numberWithInt:count]];
-            count++;
-        }];
+        NSData *data = (NSData*)[[NSUserDefaults standardUserDefaults]objectForKey:[HConstants KcurrentUserClientList]];
+        self.datas = (NSMutableArray*)[NSKeyedUnarchiver unarchiveObjectWithData:data];
         [self.refreshControl endRefreshing];
         [self.tableView reloadData];
     });
@@ -367,17 +356,12 @@ static NSString *CellIdentifier = @"Cell";
 #pragma mark - Table View and Data Source Delegate
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    if ([[self.rowInformation allKeys] count] && [[self.rowInformation allKeys] count] > 0) {
-        self.tableView.backgroundView.hidden = YES;
-        return [[self.rowInformation allKeys] count];
-    } else{
-        self.tableView.backgroundView.hidden = NO;
-    }
-    return 0;
+    return [self.datas count];
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
-    return (NSString*)[self.rowInformation objectForKey:[NSNumber numberWithInteger:section]];
+    Client *client = [self.datas objectAtIndex:section];
+    return client.clientName;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -392,8 +376,8 @@ static NSString *CellIdentifier = @"Cell";
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    NSArray *rows = [self.sectionInformation objectForKey:[NSNumber numberWithInteger:section]];
-    return [rows count];
+    Client *client = [self.datas objectAtIndex:section];
+    return [client numberOfProjects];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -412,36 +396,20 @@ static NSString *CellIdentifier = @"Cell";
     [cell setSwipeGestureWithView:eraseMark color:whiteColor mode:MCSwipeTableViewCellModeExit state:MCSwipeTableViewCellState4 completionBlock:^(MCSwipeTableViewCell *cell, MCSwipeTableViewCellState state, MCSwipeTableViewCellMode mode) {
         
         //Swipe Left To Remove User From Selected Project
-        NSDictionary* data = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants KcurrentUserClientList]];
-        NSMutableDictionary *mutableData = [[NSMutableDictionary alloc]initWithDictionary:data];
-        NSString *client = [weakSelf.rowInformation objectForKey:[NSNumber numberWithInteger:indexPath.section]];
-        NSArray *rows = [weakSelf.sectionInformation objectForKey:[NSNumber numberWithInteger:indexPath.section]];
-        NSString *project = [rows objectAtIndex:indexPath.row];
-        NSMutableArray *tempArray = [[NSMutableArray alloc] initWithArray:[mutableData objectForKey:client]];
-        [tempArray removeObject:project];
-        if ([tempArray count]== 0) {
-            [mutableData removeObjectForKey:client];
-        }else{
-            [mutableData setObject:tempArray forKey:client];
-        }
         
-        [[NSUserDefaults standardUserDefaults] setObject:mutableData forKey:[HConstants KcurrentUserClientList]];
+        Client *client = [weakSelf.datas objectAtIndex:indexPath.section];
+        __weak Project *project = [client projectAtIndex:indexPath.row];
+        [client deleteProject:project.projectName];
+        
+        NSData *data = [NSKeyedArchiver archivedDataWithRootObject:weakSelf.datas];
+        [[NSUserDefaults standardUserDefaults] setObject:data forKey:[HConstants KcurrentUserClientList]];
         [[NSUserDefaults standardUserDefaults]synchronize];
         
         NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants KCurrentUser]];
-        __block NSString *uniqueAddress = nil;
-        NSDictionary* rawMasterClientList = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants kRawMasterClientList]];
-        if ([[rawMasterClientList objectForKey:client]objectForKey:project]) {
-            NSDictionary* rawUserList = [[rawMasterClientList objectForKey:client]objectForKey:project];
-            [rawUserList enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop){
-                if ([obj objectForKey:@"name"] && ([[obj objectForKey:@"name"]isEqualToString:username ])) {
-                    uniqueAddress = key;
-                    *stop = YES;
-                    return;
-                }
-            }];
-            
-            weakSelf.fireBase = [[Firebase alloc]initWithUrl:[NSString stringWithFormat:@"%@/Projects/%@/%@/%@",[HConstants kFireBaseURL],client,project,uniqueAddress]];
+        User *user = [project findUser:username];
+        
+        if (user) {
+            weakSelf.fireBase = [[Firebase alloc]initWithUrl:[NSString stringWithFormat:@"%@/Projects/%@/%@/%@",[HConstants kFireBaseURL],client.clientName,project.projectName,user.uniqueFireBaseIdentifier]];
             [weakSelf.fireBase removeValue];
         }
         
@@ -449,11 +417,11 @@ static NSString *CellIdentifier = @"Cell";
             [weakSelf loadData];
         });
     }];
-    
-    NSArray *rows = [self.sectionInformation objectForKey:[NSNumber numberWithInteger:indexPath.section]];
-    cell.textLabel.text = [rows objectAtIndex:indexPath.row];
-    cell.project = [rows objectAtIndex:indexPath.row];
-    cell.client = (NSString*)[self.rowInformation objectForKey:[NSNumber numberWithInteger:indexPath.section]];
+    Client *client = [self.datas objectAtIndex:indexPath.section];
+    Project *project = [client projectAtIndex:indexPath.row];
+    cell.textLabel.text = project.projectName;
+    cell.project = project.projectName;
+    cell.client = client.clientName;
     cell.customButton.indexPath = indexPath;
     return cell;
     
