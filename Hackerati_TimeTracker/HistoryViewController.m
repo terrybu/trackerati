@@ -17,7 +17,7 @@
 @property (nonatomic, strong) NSDictionary *history;
 @property (nonatomic, strong) NSArray* keys;
 @property (nonatomic, strong) NSIndexPath* selectedIndexPath;
-@property (nonatomic, strong) RecordDetailViewController *recordViewController;
+@property (nonatomic, strong) RecordDetailViewController *recordDetailViewController;
 
 @end
 
@@ -39,7 +39,6 @@ static NSString *cellIdentifier = @"RecordTableViewCell";
    
     self.history = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants KSanitizedCurrentUserRecords]];
     self.keys = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants KSanitizedCurrentUserRecordsKeys]];
-    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -62,10 +61,10 @@ static NSString *cellIdentifier = @"RecordTableViewCell";
         self.history = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants KSanitizedCurrentUserRecords]];
         self.keys = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants KSanitizedCurrentUserRecordsKeys]];
 
-        if (self.recordViewController && self.selectedIndexPath && self.selectedIndexPath.row >= 0 && self.selectedIndexPath.section >= 0){
+        if (self.recordDetailViewController && self.selectedIndexPath && self.selectedIndexPath.row >= 0 && self.selectedIndexPath.section >= 0){
             if ([self.keys count] > self.selectedIndexPath.section && [self.history objectForKey:[self.keys objectAtIndex:self.selectedIndexPath.section]]
                 && [((NSArray*)[self.history objectForKey:[self.keys objectAtIndex:self.selectedIndexPath.section]]) count] > self.selectedIndexPath.row) {
-                self.recordViewController.record = [((NSArray*)[self.history objectForKey:[self.keys objectAtIndex:self.selectedIndexPath.section]])objectAtIndex:self.selectedIndexPath.row];
+                self.recordDetailViewController.record = [((NSArray*)[self.history objectForKey:[self.keys objectAtIndex:self.selectedIndexPath.section]])objectAtIndex:self.selectedIndexPath.row];
             }
         }
         
@@ -86,9 +85,9 @@ static NSString *cellIdentifier = @"RecordTableViewCell";
 
 -(void)didClickDetailButton:(NSIndexPath*)indexPath{
     self.selectedIndexPath = indexPath;
-    self.recordViewController =[[RecordDetailViewController alloc]initWithNibName:@"RecordDetailViewController" bundle:nil];
-    self.recordViewController.record = [((NSArray*)[self.history objectForKey:[self.keys objectAtIndex:indexPath.section]])objectAtIndex:indexPath.row];
-    [self.navigationController pushViewController:self.recordViewController animated:YES];
+    self.recordDetailViewController =[[RecordDetailViewController alloc]initWithNibName:@"RecordDetailViewController" bundle:nil];
+    self.recordDetailViewController.record = [((NSArray*)[self.history objectForKey:[self.keys objectAtIndex:indexPath.section]])objectAtIndex:indexPath.row];
+    [self.navigationController pushViewController:self.recordDetailViewController animated:YES];
 }
 
 #pragma mark - Table View and Data Source Delegate

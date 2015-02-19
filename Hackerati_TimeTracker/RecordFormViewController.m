@@ -247,7 +247,7 @@
     if ([buttonTitle isEqualToString:@"Send"]) {
         [self checkDate];
     } else if ([buttonTitle isEqualToString:@"Send Anyway"]) {
-        [self sendData];
+        [self submitRecord];
     }
 }
 
@@ -288,12 +288,12 @@
         NSLog(@"date1 is later than date2");
         [[[UIAlertView alloc]initWithTitle:@"Warning" message:@"Entered future date. Do you still want to submit ?" delegate:self cancelButtonTitle:@"cancel" otherButtonTitles:@"Send Anyway" ,nil]show];
     } else {
-        [self sendData];
+        [self submitRecord];
     }
 
 }
 
--(void)sendData{
+-(void)submitRecord{
     
     if ([self.hourTextField.text isEqualToString:@"0.0"]) {
         [[[UIAlertView alloc]initWithTitle:@"Error" message:@"You can not submit 0 hour" delegate:nil cancelButtonTitle:@"Cancel" otherButtonTitles: nil] show];
@@ -318,7 +318,6 @@
                 [self.fireBase updateChildValues:@{[HConstants kClient]:self.clientName,[HConstants kDate]:self.dateButton.titleLabel.text,[HConstants kHour]:self.hourTextField.text,[HConstants kProject]:self.projectName,[HConstants kStatus]:(([self.statusButton.titleLabel.text isEqualToString:[HConstants KfullTimeEmployee]])?@"1":@"0"),[HConstants kType]:(([self.typeButton.titleLabel.text isEqualToString:[HConstants KbillableHour]])?@"1":@"0"),[HConstants kComment]:@""}];
                 [[LastSavedManager sharedManager] saveRecord:@{[HConstants kClient]:self.clientName,[HConstants kDate]:self.dateButton.titleLabel.text,[HConstants kHour]:self.hourTextField.text,[HConstants kProject]:self.projectName,[HConstants kStatus]:(([self.statusButton.titleLabel.text isEqualToString:[HConstants KfullTimeEmployee]])?@"1":@"0"),[HConstants kType]:(([self.typeButton.titleLabel.text isEqualToString:[HConstants KbillableHour]])?@"1":@"0"),[HConstants kComment]:@""}];
             }
-    
         }
         [[DataParser sharedManager] getUserRecords];
         if (self.previousViewController && self.previousViewController.navigationController) {

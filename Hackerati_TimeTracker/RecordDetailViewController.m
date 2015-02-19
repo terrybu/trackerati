@@ -150,9 +150,10 @@
 
 -(void)deleteRecord{
     NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants KCurrentUser]];
-    NSString *uniqueAddress = (NSString*)[self.record objectForKey:@"key"];
+    NSString *uniqueAddress = (NSString*)[self.record objectForKey:@"key"];    
     self.fireBase = [[Firebase alloc]initWithUrl:[NSString stringWithFormat:@"%@/Users/%@/records/%@",[HConstants kFireBaseURL],username,uniqueAddress]];
     [self.fireBase removeValue];
-    
 }
+
+
 @end

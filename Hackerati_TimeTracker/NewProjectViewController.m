@@ -17,6 +17,7 @@
 @property (strong, nonatomic) NSMutableDictionary *sectionInformation;
 @property (strong, nonatomic) NSMutableDictionary *rowInformation;
 @property (strong, nonatomic) Firebase *fireBase;
+
 @end
 
 @implementation NewProjectViewController
@@ -67,20 +68,7 @@ static NSString *CellIdentifier = @"Cell";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     MCSwipeTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    
     cell.delegate =self;
-    
-    __weak typeof(self) weakSelf = self;
-    
-    UIColor *whiteColor = [UIColor whiteColor];
-    UIImageView *checkMark = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"CheckMark.png"]];
-    
-    [cell setSwipeGestureWithView:checkMark color:whiteColor mode:MCSwipeTableViewCellModeSwitch state:MCSwipeTableViewCellState1 completionBlock:^(MCSwipeTableViewCell *cell, MCSwipeTableViewCellState state, MCSwipeTableViewCellMode mode) {
-        
-        [weakSelf setProjectToCurrentUserForIndexPath:indexPath];
-        
-        cell.accessoryView =[[ UIImageView alloc ] initWithImage:[UIImage imageNamed:@"CheckMark.png"]];
-    }];
     
     NSDictionary* currentUserData = (NSDictionary*)[[NSUserDefaults standardUserDefaults]objectForKey:[HConstants KcurrentUserClientList]];
     NSString*client = [self.sectionInformation objectForKey:[NSNumber numberWithInteger:indexPath.section]];
@@ -110,67 +98,91 @@ static NSString *CellIdentifier = @"Cell";
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    
-    [self setProjectToCurrentUserForIndexPath:indexPath];
-    
+    [tableView deselectRowAtIndexPath:indexPath animated:YES]; //this is to never let the gray cell background stay
     MCSwipeTableViewCell *cell = (MCSwipeTableViewCell*)[tableView cellForRowAtIndexPath:indexPath];
-    cell.accessoryView =[[ UIImageView alloc ] initWithImage:[UIImage imageNamed:@"CheckMark.png"]];
-}
-
--(void)setProjectToCurrentUserForIndexPath:(NSIndexPath*)indexPath{
-    
     NSDictionary* data = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants KcurrentUserClientList]];
     NSMutableDictionary *mutableData = [[NSMutableDictionary alloc]initWithDictionary:data];
     NSString *client = [self.sectionInformation objectForKey:[NSNumber numberWithInteger:indexPath.section]];
     NSArray *rows = [self.rowInformation objectForKey:[NSNumber numberWithInteger:indexPath.section]];
     NSString *project = [rows objectAtIndex:indexPath.row];
     
-    BOOL alreadyPartofTheProject = NO;
-    
-    //if in our local cache, we never had the current user use this client name, then we set it
-    if (![mutableData objectForKey:client]) {
-        [mutableData setObject:[[NSMutableArray alloc]initWithObjects:project,nil] forKey:client];
-        [[NSUserDefaults standardUserDefaults] setObject:mutableData forKey:[HConstants KcurrentUserClientList]];
-        [[NSUserDefaults standardUserDefaults]synchronize];
+    if (cell.accessoryView != nil) {
+        //if it already had a checkmark, then we get rid of it and delete it from firebase
+        cell.accessoryView = nil;
+        [self deleteUserFromProject:mutableData client:client project:project];
+        return;
     }
-    //On the contrary, if in our local cache, we already had the current user use this client name for a project, check to see if particular project is in local cache
     else {
-        NSMutableArray *projects = [mutableData objectForKey:client];
-        if (![projects containsObject:project]) {
-            //if not, then we add it to local cache
-            NSMutableArray *mutableProjects = [[NSMutableArray alloc]initWithArray:projects];
-            [mutableProjects addObject:project];
-            [mutableData setObject:mutableProjects forKey:client];
+        //if it didn't have a checkmark, then we add one and send it to firebase
+        //if in our local cache, we never had the current user use this client name, then we set it
+        if (![mutableData objectForKey:client]) {
+            [mutableData setObject:[[NSMutableArray alloc]initWithObjects:project,nil] forKey:client];
             [[NSUserDefaults standardUserDefaults] setObject:mutableData forKey:[HConstants KcurrentUserClientList]];
             [[NSUserDefaults standardUserDefaults]synchronize];
-        } else{
-            //we found that this particular project under this particular client already exists in local cache.
-            alreadyPartofTheProject = YES;
+            [self sendUsernameToProjectOnFireBase: client project:project];
+            cell.accessoryView =[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"CheckMark.png"]];
         }
-    }
-    
-    if (alreadyPartofTheProject) {
-        UIAlertView *alerView = [[UIAlertView alloc]initWithTitle:@"New Project" message:[NSString stringWithFormat:@"You are already part of %@.",project] delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
-        [alerView show];
-    } else{
-        self.fireBase = [[Firebase alloc]initWithUrl:[NSString stringWithFormat:@"%@/Projects/%@/%@",[HConstants kFireBaseURL],client,project]];
-        NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants KCurrentUser]];
-        [[self.fireBase childByAutoId] setValue:@{@"name":username}];
-        
-        UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"New Project" message:[NSString stringWithFormat:@"%@ Added",project] delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
-        [alertView show];
+        //On the contrary, if in our local cache, we already had the current user use this client name for a project, check to see if particular project is in local cache
+        else {
+            NSMutableArray *projects = [mutableData objectForKey:client];
+            if (![projects containsObject:project]) {
+                //if not, then we add it to local cache AND send to Firebase
+                NSMutableArray *mutableProjects = [[NSMutableArray alloc]initWithArray:projects];
+                [mutableProjects addObject:project];
+                [mutableData setObject:mutableProjects forKey:client];
+                [[NSUserDefaults standardUserDefaults] setObject:mutableData forKey:[HConstants KcurrentUserClientList]];
+                [[NSUserDefaults standardUserDefaults]synchronize];
+                [self sendUsernameToProjectOnFireBase: client project:project];
+                cell.accessoryView =[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"CheckMark.png"]];
+            }
+        }
     }
 }
 
-/*
- #pragma mark - Navigation
- 
- // In a storyboard-based application, you will often want to do a little preparation before navigation
- - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
- // Get the new view controller using [segue destinationViewController].
- // Pass the selected object to the new view controller.
- }
- */
+- (void) sendUsernameToProjectOnFireBase: (NSString *) client project: (NSString *) project{
+    self.fireBase = [[Firebase alloc]initWithUrl:[NSString stringWithFormat:@"%@/Projects/%@/%@",[HConstants kFireBaseURL],client,project]];
+    NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants KCurrentUser]];
+    [[self.fireBase childByAutoId] setValue:@{@"name":username}];
+    UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"New Project" message:[NSString stringWithFormat:@"%@ Added",project] delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+    [alertView show];
+}
+
+
+
+-(void)deleteUserFromProject: (NSMutableDictionary*) mutableData client: (NSString *) client project: (NSString *) project {
+    __weak typeof(self) weakSelf = self;
+    NSMutableArray *tempArray = [[NSMutableArray alloc] initWithArray:[mutableData objectForKey:client]];
+    [tempArray removeObject:project];
+    if ([tempArray count]== 0) {
+        [mutableData removeObjectForKey:client];
+    }else{
+        [mutableData setObject:tempArray forKey:client];
+    }
+    [[NSUserDefaults standardUserDefaults] setObject:mutableData forKey:[HConstants KcurrentUserClientList]];
+    [[NSUserDefaults standardUserDefaults]synchronize];
+    
+    NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants KCurrentUser]];
+    __block NSString *uniqueAddress = nil;
+    NSDictionary* rawMasterClientList = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants kRawMasterClientList]];
+    if ([[rawMasterClientList objectForKey:client]objectForKey:project]) {
+        NSDictionary* rawUserList = [[rawMasterClientList objectForKey:client]objectForKey:project];
+        [rawUserList enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop){
+            if ([obj objectForKey:@"name"] && ([[obj objectForKey:@"name"]isEqualToString:username ])) {
+                uniqueAddress = key;
+                *stop = YES;
+                return;
+            }
+        }];
+        weakSelf.fireBase = [[Firebase alloc]initWithUrl:[NSString stringWithFormat:@"%@/Projects/%@/%@/%@",[HConstants kFireBaseURL],client,project,uniqueAddress]];
+        [weakSelf.fireBase removeValue];
+    }
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [weakSelf.tableView reloadData];
+    });
+
+}
+
+
 
 @end
