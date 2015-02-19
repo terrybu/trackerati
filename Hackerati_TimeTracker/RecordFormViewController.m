@@ -1,12 +1,12 @@
 //
-//  FormViewController.m
+//  RecordFormViewController.m
 //  trackerati-ios
 //
 //  Created by Ethan on 1/6/15.
 //  Copyright (c) 2015 Hackerati. All rights reserved.
 //
 
-#import "FormViewController.h"
+#import "RecordFormViewController.h"
 #import "THDatePickerViewController.h"
 #import "FireBaseManager.h"
 #import "HConstants.h"
@@ -16,7 +16,7 @@
 #import "IQDropDownTextField.h"
 
 
-@interface FormViewController ()<THDatePickerDelegate,UITextViewDelegate,IQDropDownTextFieldDelegate>
+@interface RecordFormViewController ()<THDatePickerDelegate,UITextViewDelegate,IQDropDownTextFieldDelegate>
 
 @property (strong, nonatomic) THDatePickerViewController *datePicker;
 @property (nonatomic, strong) NSDate * curDate;
@@ -24,26 +24,27 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *clientLabel;
 @property (weak, nonatomic) IBOutlet UILabel *projectLabel;
-- (IBAction)sendAction:(id)sender;
 @property (weak, nonatomic) IBOutlet UIScrollView *mainScrollView;
 @property (weak, nonatomic) IBOutlet UIView *detailContainerView;
 @property (weak, nonatomic) IBOutlet UITextView *commentTextView;
 @property (weak, nonatomic) IBOutlet UILabel *commentLabel;
-@property (weak, nonatomic) IBOutlet UIButton *sendButton;
+@property (weak, nonatomic) IBOutlet UIButton *submitRecordButton;
 @property (weak, nonatomic) IBOutlet UIButton *dateButton;
 @property (weak, nonatomic) IBOutlet UIButton *statusButton;
 @property (weak, nonatomic) IBOutlet UIButton *typeButton;
-- (IBAction)typeButtonAction:(id)sender;
-- (IBAction)statusButtonAction:(id)sender;
-- (IBAction)dateButtonAction:(id)sender;
-@property (weak, nonatomic) IBOutlet IQDropDownTextField *hourTextField;
 
+@property (weak, nonatomic) IBOutlet IQDropDownTextField *hourTextField;
 @property (strong, nonatomic) Firebase *fireBase;
 @property (nonatomic) BOOL isDatePickerShowing;
 
+- (IBAction)submitRecordAction:(id)sender;
+- (IBAction)typeButtonAction:(id)sender;
+- (IBAction)statusButtonAction:(id)sender;
+- (IBAction)dateButtonAction:(id)sender;
+
 @end
 
-@implementation FormViewController
+@implementation RecordFormViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -56,10 +57,10 @@
     [self.commentTextView.layer setBorderWidth:0.5f];
     [self.commentTextView.layer setBorderColor:[UIColor grayColor].CGColor];
     
-    self.sendButton.layer.cornerRadius = 5.0f;
-    self.sendButton.clipsToBounds = YES;
-    [self.sendButton.layer setBorderWidth:0.5f];
-    [self.sendButton.layer setBorderColor:[UIColor grayColor].CGColor];
+    self.submitRecordButton.layer.cornerRadius = 5.0f;
+    self.submitRecordButton.clipsToBounds = YES;
+    [self.submitRecordButton.layer setBorderWidth:0.5f];
+    [self.submitRecordButton.layer setBorderColor:[UIColor grayColor].CGColor];
     
     self.formatter = [[NSDateFormatter alloc] init];
     [self.formatter setDateFormat:@"MM/dd/yyyy"];
@@ -226,7 +227,7 @@
     [self.dateButton setTitle:[self.formatter stringFromDate:selectedDate] forState:UIControlStateNormal];
 }
 
-- (IBAction)sendAction:(id)sender {
+- (IBAction)submitRecordAction:(id)sender {
     if (self.isNewRecord) {
         NSDictionary *history = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants KSanitizedCurrentUserRecords]];
         if ([history objectForKey:self.dateButton.titleLabel.text]) {
@@ -234,7 +235,8 @@
         } else{
             [self checkDate];
         }
-    } else {
+    }
+    else {
         [self checkDate];
     }
     

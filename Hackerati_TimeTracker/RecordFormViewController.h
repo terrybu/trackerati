@@ -1,5 +1,5 @@
 //
-//  FormViewController.h
+//  RecordFormViewController.h
 //  trackerati-ios
 //
 //  Created by Ethan on 1/6/15.
@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface FormViewController : UIViewController
+@interface RecordFormViewController : UIViewController
 @property (copy, nonatomic) NSString *clientName;
 @property (copy, nonatomic) NSString *projectName;
 @property (nonatomic) BOOL isNewRecord;

@@ -11,7 +11,7 @@
 #import <Firebase/Firebase.h>
 #import "HConstants.h"
 #import "DataParser.h"
-#import "FormViewController.h"
+#import "RecordFormViewController.h"
 #import <KVOController/FBKVOController.h>
 
 @interface RecordDetailViewController ()
@@ -129,7 +129,7 @@
 }
 
 - (IBAction)editButtonAction:(id)sender {
-    FormViewController *formViewController = [[FormViewController alloc]initWithNibName:@"FormViewController" bundle:nil];
+    RecordFormViewController *formViewController = [[RecordFormViewController alloc]initWithNibName:@"RecordFormViewController" bundle:nil];
     formViewController.existingRecord = self.record;
     formViewController.previousViewController = self;
     [self.navigationController pushViewController:formViewController animated:YES];

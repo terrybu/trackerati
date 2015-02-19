@@ -187,7 +187,7 @@
     }
 }
 
-- (void) mannuallySetDelegate:(id<DataParserProtocol>)delegate{
+- (void) manuallySetDelegate:(id<DataParserProtocol>)delegate{
     self.delegate = delegate;
 }
 

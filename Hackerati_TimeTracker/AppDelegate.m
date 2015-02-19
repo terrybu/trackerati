@@ -52,7 +52,7 @@
     self.logInViewController = [[LogInViewController alloc]initWithNibName:@"LogInViewController" bundle:nil];
     
     [[LogInManager sharedManager] manuallySetDelegate:[DataParser sharedManager]];
-    [[DataParser sharedManager] mannuallySetDelegate:self.logInViewController];
+    [[DataParser sharedManager] manuallySetDelegate:self.logInViewController];
     [self appDelegatestartLogInProcess];
     
     self.naviController = [[UINavigationController alloc]initWithRootViewController:self.logInViewController];

@@ -15,7 +15,7 @@ typedef enum
     VerticalAlignmentBottom,
 } VerticalAlignment;
 
-@interface CustonLabel : UILabel
+@interface CustomLabel : UILabel
 
 @property (nonatomic, readwrite) VerticalAlignment verticalAlignment;
 

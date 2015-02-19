@@ -11,13 +11,13 @@
 #import <QuartzCore/QuartzCore.h>
 #import "HConstants.h"
 #import "CustomMCSwipeTableViewCell.h"
-#import "FormViewController.h"
+#import "RecordFormViewController.h"
 #import "FireBaseManager.h"
 #import "DataParser.h"
 #import "LogInManager.h"
 #import "NewProjectViewController.h"
 #import "LastSavedManager.h"
-#import "CustonLabel.h"
+#import "CustomLabel.h"
 
 
 @interface LogInViewController ()<CustomMCSwipeTableViewCellDelegate>
@@ -37,7 +37,8 @@
 
 @property (strong, nonatomic) NSDateFormatter *formatter;
 
-// Elements for the quick form
+
+// Elements for Record quick form
 @property (strong, nonatomic) UIView  *formView;
 @property (strong, nonatomic) UILabel *projectTextLabel;
 @property (strong, nonatomic) UILabel *dateOfServiceTextLabel;
@@ -46,9 +47,12 @@
 @property (strong, nonatomic) UILabel *projectNameLabel;
 @property (strong, nonatomic) UILabel *dateOfServiceLabel;
 @property (strong, nonatomic) UILabel *hourOfServiceLabel;
-@property (strong, nonatomic) UIButton *sendButton;
+
+//Buttons for submitting/canceling the Record quick form
+@property (strong, nonatomic) UIButton *submitButton;
 @property (strong, nonatomic) UIButton *cancelButton;
-@property (strong, nonatomic) CustonLabel* commentTextLabel;
+
+@property (strong, nonatomic) CustomLabel* commentTextLabel;
 @property (strong, nonatomic) UILabel *commentLabel;
 @property (strong, nonatomic) UILabel *clientNameTextLabel;
 @property (strong, nonatomic) UILabel *typeTextLabel;
@@ -56,7 +60,7 @@
 @property (strong, nonatomic) UILabel *typeLabel;
 @property (strong, nonatomic) UILabel *statusLabel;
 
-// Animations for the quick form
+// Animations for Record quick form
 @property (strong, nonatomic) UIDynamicAnimator *dynamicAnimator;
 @property (strong, nonatomic) UIGravityBehavior *gravityBehavior;
 @property (strong, nonatomic) UISnapBehavior *snapBehavior;
@@ -119,20 +123,20 @@ static NSString *CellIdentifier = @"Cell";
     self.projectTextLabel = [[UILabel alloc]initWithFrame:CGRectMake(95, 113, 194, 35)];
     self.dateOfServiceTextLabel = [[UILabel alloc]initWithFrame:CGRectMake(95, 146, 194, 35)];
     self.hourOfServiceTextLabel = [[UILabel alloc]initWithFrame:CGRectMake(95, 167, 194, 35)];
-    self.commentTextLabel = [[CustonLabel alloc] initWithFrame:CGRectMake(95, 300, self.view.frame.size.width-126, 130)];
+    self.commentTextLabel = [[CustomLabel alloc] initWithFrame:CGRectMake(95, 300, self.view.frame.size.width-126, 130)];
     
     self.typeTextLabel = [[UILabel alloc] initWithFrame:CGRectMake(95, 215-8, 194, 35)];
     self.statusTextLabel = [[UILabel alloc] initWithFrame:CGRectMake(95, 260-8, 194, 35)];
     
-    self.sendButton = [UIButton buttonWithType:UIButtonTypeSystem];
-    self.sendButton.frame = CGRectMake(13, 450, 60, 30);
-    self.sendButton.layer.cornerRadius = 5.0f;
-    self.sendButton.clipsToBounds = YES;
-    [self.sendButton.layer setBorderWidth:0.5f];
-    [self.sendButton.layer setBorderColor:[UIColor grayColor].CGColor];
-    [self.sendButton setTitle:@"Submit" forState:UIControlStateNormal];
-    [self.sendButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
-    [self.sendButton addTarget:self action:@selector(sendForm) forControlEvents:UIControlEventTouchUpInside];
+    self.submitButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    self.submitButton.frame = CGRectMake(13, 450, 60, 30);
+    self.submitButton.layer.cornerRadius = 5.0f;
+    self.submitButton.clipsToBounds = YES;
+    [self.submitButton.layer setBorderWidth:0.5f];
+    [self.submitButton.layer setBorderColor:[UIColor grayColor].CGColor];
+    [self.submitButton setTitle:@"Submit" forState:UIControlStateNormal];
+    [self.submitButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+    [self.submitButton addTarget:self action:@selector(sendForm) forControlEvents:UIControlEventTouchUpInside];
     
     self.cancelButton = [UIButton buttonWithType:UIButtonTypeSystem];
     self.cancelButton.frame = CGRectMake(95, 450, 60, 30);
@@ -191,7 +195,7 @@ static NSString *CellIdentifier = @"Cell";
     [self.formView addSubview:self.projectNameLabel];
     [self.formView addSubview:self.dateOfServiceLabel];
     [self.formView addSubview:self.hourOfServiceLabel];
-    [self.formView addSubview:self.sendButton];
+    [self.formView addSubview:self.submitButton];
     [self.formView addSubview:self.cancelButton];
     [self.formView addSubview:self.commentLabel];
     [self.formView addSubview:self.commentTextLabel];
@@ -207,7 +211,6 @@ static NSString *CellIdentifier = @"Cell";
     [self.formView.layer setBorderColor:[UIColor grayColor].CGColor];
     
     [self.view addSubview:self.formView];
-    
 }
 
 -(void) viewWillAppear:(BOOL)animated{
@@ -241,22 +244,24 @@ static NSString *CellIdentifier = @"Cell";
     if ([history objectForKey:self.dateOfServiceTextLabel.text]) {
         [[[UIAlertView alloc] initWithTitle:@"Warning" message:[NSString stringWithFormat: @"You already sent a record for %@. Do you still want to send this ?",self.dateOfServiceTextLabel.text] delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Send", nil] show];
     } else{
-        [self sendData];
+        [self submitRecord];
     }
 }
 - (void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     NSString *buttonTitle = [alertView buttonTitleAtIndex:buttonIndex];
     if ([buttonTitle isEqualToString:@"Send"]) {
-        [self sendData];
-    }else{
+        [self submitRecord];
+    }
+    else{
         self.tableView.userInteractionEnabled = YES;
         [self slideOutForm];
     }
 }
 
--(void)sendData{
-    //When you are sending data, it means to send "Record" object data to Firebase
-    //Recors table will get this "submitted data" information 
+-(void)submitRecord{
+    //Two tables --> Users and Projects
+    //When you are sending or submitting data here, it means to send a Record data to Records key under User key in Users table
+    //However, when you are just adding a project to a user in NewProjectViewController, you are not dealing with Records table at all. You are dealing with Projects table --> Company key --> Project name and adding a uniqueID key that contains the username ex) terrythehackerati.com --> basically just registering a name under a project
     
     self.tableView.userInteractionEnabled = YES;
     self.fireBase = [FireBaseManager recordURLsharedFireBase];
@@ -357,7 +362,7 @@ static NSString *CellIdentifier = @"Cell";
 #pragma mark - Record Table Cell Delegate
 
 - (void)didPressCustomButton:(NSIndexPath*)indexPath {
-    FormViewController *formViewController = [[FormViewController alloc]initWithNibName:@"FormViewController" bundle:nil];
+    RecordFormViewController *formViewController = [[RecordFormViewController alloc]initWithNibName:@"RecordFormViewController" bundle:nil];
     formViewController.isNewRecord = YES;
     NSArray *rows = [self.sectionInformation objectForKey:[NSNumber numberWithInteger:indexPath.section]];
     NSString *project = [rows objectAtIndex:indexPath.row];

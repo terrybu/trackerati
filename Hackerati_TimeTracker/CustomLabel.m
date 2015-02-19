@@ -6,9 +6,9 @@
 //  Copyright (c) 2015 Hackerati. All rights reserved.
 //
 
-#import "CustonLabel.h"
+#import "CustomLabel.h"
 
-@implementation CustonLabel
+@implementation CustomLabel
 
 @synthesize verticalAlignment = _verticalAlignment;
 
