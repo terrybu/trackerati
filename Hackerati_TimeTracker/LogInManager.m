@@ -99,7 +99,7 @@
     });
 }
 
-- (void)mannuallySetDelegate:(id<LogInManagerProtocol>)delegate{
+- (void)manuallySetDelegate:(id<LogInManagerProtocol>)delegate{
     self.delegate = delegate;
 }
 

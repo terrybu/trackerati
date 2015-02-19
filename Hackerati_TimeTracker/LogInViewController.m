@@ -130,7 +130,7 @@ static NSString *CellIdentifier = @"Cell";
     self.sendButton.clipsToBounds = YES;
     [self.sendButton.layer setBorderWidth:0.5f];
     [self.sendButton.layer setBorderColor:[UIColor grayColor].CGColor];
-    [self.sendButton setTitle:@"Send" forState:UIControlStateNormal];
+    [self.sendButton setTitle:@"Submit" forState:UIControlStateNormal];
     [self.sendButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
     [self.sendButton addTarget:self action:@selector(sendForm) forControlEvents:UIControlEventTouchUpInside];
     
@@ -255,6 +255,9 @@ static NSString *CellIdentifier = @"Cell";
 }
 
 -(void)sendData{
+    //When you are sending data, it means to send "Record" object data to Firebase
+    //Recors table will get this "submitted data" information 
+    
     self.tableView.userInteractionEnabled = YES;
     self.fireBase = [FireBaseManager recordURLsharedFireBase];
     

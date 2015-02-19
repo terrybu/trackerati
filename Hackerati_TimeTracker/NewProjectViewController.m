@@ -128,21 +128,27 @@ static NSString *CellIdentifier = @"Cell";
     
     BOOL alreadyPartofTheProject = NO;
     
+    //if in our local cache, we never had the current user use this client name, then we set it
     if (![mutableData objectForKey:client]) {
         [mutableData setObject:[[NSMutableArray alloc]initWithObjects:project,nil] forKey:client];
-    } else {
+        [[NSUserDefaults standardUserDefaults] setObject:mutableData forKey:[HConstants KcurrentUserClientList]];
+        [[NSUserDefaults standardUserDefaults]synchronize];
+    }
+    //On the contrary, if in our local cache, we already had the current user use this client name for a project, check to see if particular project is in local cache
+    else {
         NSMutableArray *projects = [mutableData objectForKey:client];
         if (![projects containsObject:project]) {
+            //if not, then we add it to local cache
             NSMutableArray *mutableProjects = [[NSMutableArray alloc]initWithArray:projects];
             [mutableProjects addObject:project];
             [mutableData setObject:mutableProjects forKey:client];
+            [[NSUserDefaults standardUserDefaults] setObject:mutableData forKey:[HConstants KcurrentUserClientList]];
+            [[NSUserDefaults standardUserDefaults]synchronize];
         } else{
+            //we found that this particular project under this particular client already exists in local cache.
             alreadyPartofTheProject = YES;
         }
     }
-    
-    [[NSUserDefaults standardUserDefaults] setObject:mutableData forKey:[HConstants KcurrentUserClientList]];
-    [[NSUserDefaults standardUserDefaults]synchronize];
     
     if (alreadyPartofTheProject) {
         UIAlertView *alerView = [[UIAlertView alloc]initWithTitle:@"New Project" message:[NSString stringWithFormat:@"You are already part of %@.",project] delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
@@ -152,10 +158,9 @@ static NSString *CellIdentifier = @"Cell";
         NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants KCurrentUser]];
         [[self.fireBase childByAutoId] setValue:@{@"name":username}];
         
-        UIAlertView *alerView = [[UIAlertView alloc]initWithTitle:@"New Project" message:[NSString stringWithFormat:@"%@ Added",project] delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
-        [alerView show];
+        UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"New Project" message:[NSString stringWithFormat:@"%@ Added",project] delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+        [alertView show];
     }
-    
 }
 
 /*

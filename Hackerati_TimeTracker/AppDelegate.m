@@ -51,7 +51,7 @@
     self.window = [[UIWindow alloc]initWithFrame:[UIScreen mainScreen].bounds];
     self.logInViewController = [[LogInViewController alloc]initWithNibName:@"LogInViewController" bundle:nil];
     
-    [[LogInManager sharedManager] mannuallySetDelegate:[DataParser sharedManager]];
+    [[LogInManager sharedManager] manuallySetDelegate:[DataParser sharedManager]];
     [[DataParser sharedManager] mannuallySetDelegate:self.logInViewController];
     [self appDelegatestartLogInProcess];
     
