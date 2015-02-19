@@ -28,15 +28,11 @@
 @property (strong, nonatomic) NSDictionary* datas;
 
 @property (strong, nonatomic) GPPSignIn *googleSignIn;
-
 @property (strong, nonatomic) HistoryViewController *historyViewController;
-
 @property (strong, nonatomic) Firebase *fireBase;
 
 @property (strong, nonatomic) UIRefreshControl *refreshControl;
-
 @property (strong, nonatomic) NSDateFormatter *formatter;
-
 
 // Elements for Record quick form
 @property (strong, nonatomic) UIView  *formView;
@@ -420,42 +416,8 @@ static NSString *CellIdentifier = @"Cell";
     [cell setSwipeGestureWithView:eraseMark color:whiteColor mode:MCSwipeTableViewCellModeExit state:MCSwipeTableViewCellState4 completionBlock:^(MCSwipeTableViewCell *cell, MCSwipeTableViewCellState state, MCSwipeTableViewCellMode mode) {
         
         //Swipe Left To Remove User From Selected Project
-        NSDictionary* data = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants KcurrentUserClientList]];
-        NSMutableDictionary *mutableData = [[NSMutableDictionary alloc]initWithDictionary:data];
-        NSString *client = [weakSelf.rowInformation objectForKey:[NSNumber numberWithInteger:indexPath.section]];
-        NSArray *rows = [weakSelf.sectionInformation objectForKey:[NSNumber numberWithInteger:indexPath.section]];
-        NSString *project = [rows objectAtIndex:indexPath.row];
-        NSMutableArray *tempArray = [[NSMutableArray alloc] initWithArray:[mutableData objectForKey:client]];
-        [tempArray removeObject:project];
-        if ([tempArray count]== 0) {
-            [mutableData removeObjectForKey:client];
-        }else{
-            [mutableData setObject:tempArray forKey:client];
-        }
+        [self removeUserFromSelectedProject: weakSelf indexPath:indexPath];
         
-        [[NSUserDefaults standardUserDefaults] setObject:mutableData forKey:[HConstants KcurrentUserClientList]];
-        [[NSUserDefaults standardUserDefaults]synchronize];
-        
-        NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants KCurrentUser]];
-        __block NSString *uniqueAddress = nil;
-        NSDictionary* rawMasterClientList = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants kRawMasterClientList]];
-        if ([[rawMasterClientList objectForKey:client]objectForKey:project]) {
-            NSDictionary* rawUserList = [[rawMasterClientList objectForKey:client]objectForKey:project];
-            [rawUserList enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop){
-                if ([obj objectForKey:@"name"] && ([[obj objectForKey:@"name"]isEqualToString:username ])) {
-                    uniqueAddress = key;
-                    *stop = YES;
-                    return;
-                }
-            }];
-            
-            weakSelf.fireBase = [[Firebase alloc]initWithUrl:[NSString stringWithFormat:@"%@/Projects/%@/%@/%@",[HConstants kFireBaseURL],client,project,uniqueAddress]];
-            [weakSelf.fireBase removeValue];
-        }
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [weakSelf loadData];
-        });
     }];
     
     NSArray *rows = [self.sectionInformation objectForKey:[NSNumber numberWithInteger:indexPath.section]];
@@ -464,8 +426,47 @@ static NSString *CellIdentifier = @"Cell";
     cell.client = (NSString*)[self.rowInformation objectForKey:[NSNumber numberWithInteger:indexPath.section]];
     cell.customButton.indexPath = indexPath;
     return cell;
-    
 }
+
+- (void) removeUserFromSelectedProject: (LogInViewController *)weakSelf indexPath: (NSIndexPath *) indexPath {
+    NSDictionary* data = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants KcurrentUserClientList]];
+    NSMutableDictionary *mutableData = [[NSMutableDictionary alloc]initWithDictionary:data];
+    NSString *client = [weakSelf.rowInformation objectForKey:[NSNumber numberWithInteger:indexPath.section]];
+    NSArray *rows = [weakSelf.sectionInformation objectForKey:[NSNumber numberWithInteger:indexPath.section]];
+    NSString *project = [rows objectAtIndex:indexPath.row];
+    NSMutableArray *tempArray = [[NSMutableArray alloc] initWithArray:[mutableData objectForKey:client]];
+    [tempArray removeObject:project];
+    if ([tempArray count]== 0) {
+        [mutableData removeObjectForKey:client];
+    }else{
+        [mutableData setObject:tempArray forKey:client];
+    }
+    
+    [[NSUserDefaults standardUserDefaults] setObject:mutableData forKey:[HConstants KcurrentUserClientList]];
+    [[NSUserDefaults standardUserDefaults]synchronize];
+    
+    NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants KCurrentUser]];
+    __block NSString *uniqueAddress = nil;
+    NSDictionary* rawMasterClientList = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants kRawMasterClientList]];
+    if ([[rawMasterClientList objectForKey:client]objectForKey:project]) {
+        NSDictionary* rawUserList = [[rawMasterClientList objectForKey:client]objectForKey:project];
+        [rawUserList enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop){
+            if ([obj objectForKey:@"name"] && ([[obj objectForKey:@"name"]isEqualToString:username ])) {
+                uniqueAddress = key;
+                *stop = YES;
+                return;
+            }
+        }];
+        
+        weakSelf.fireBase = [[Firebase alloc]initWithUrl:[NSString stringWithFormat:@"%@/Projects/%@/%@/%@",[HConstants kFireBaseURL],client,project,uniqueAddress]];
+        [weakSelf.fireBase removeValue];
+    }
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [weakSelf loadData];
+    });
+}
+
 
 #pragma mark - CustomMCSwipeTableCell Delegate
 

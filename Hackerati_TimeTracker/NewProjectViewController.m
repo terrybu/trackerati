@@ -10,6 +10,8 @@
 #import "HConstants.h"
 #import <MCSwipeTableViewCell.h>
 #import <Firebase/Firebase.h>
+#import "DataParser.h"
+
 
 @interface NewProjectViewController () <UITableViewDataSource, UITableViewDelegate, MCSwipeTableViewCellDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -109,12 +111,14 @@ static NSString *CellIdentifier = @"Cell";
     if (cell.accessoryView != nil) {
         //if it already had a checkmark, then we get rid of it and delete it from firebase
         cell.accessoryView = nil;
-        [self deleteUserFromProject:mutableData client:client project:project];
+        [self removeUserFromSelectedProject:mutableData client:client project:project];
+        UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"Removed Project" message:[NSString stringWithFormat:@"Project %@ was removed",project] delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+        [alertView show];
         return;
     }
+    
     else {
-        //if it didn't have a checkmark, then we add one and send it to firebase
-        //if in our local cache, we never had the current user use this client name, then we set it
+        //if, in our local cache, we never had the current user use this client name, then we set it
         if (![mutableData objectForKey:client]) {
             [mutableData setObject:[[NSMutableArray alloc]initWithObjects:project,nil] forKey:client];
             [[NSUserDefaults standardUserDefaults] setObject:mutableData forKey:[HConstants KcurrentUserClientList]];
@@ -122,7 +126,7 @@ static NSString *CellIdentifier = @"Cell";
             [self sendUsernameToProjectOnFireBase: client project:project];
             cell.accessoryView =[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"CheckMark.png"]];
         }
-        //On the contrary, if in our local cache, we already had the current user use this client name for a project, check to see if particular project is in local cache
+        //On the contrary, if, in our local cache, we already had the current user use this client name for a project, check to see if particular project is in local cache
         else {
             NSMutableArray *projects = [mutableData objectForKey:client];
             if (![projects containsObject:project]) {
@@ -136,6 +140,10 @@ static NSString *CellIdentifier = @"Cell";
                 cell.accessoryView =[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"CheckMark.png"]];
             }
         }
+        [[DataParser sharedManager] loginSuccessful];
+        //2.19.2015 without hitting the data structure refreshing from loginSuccessful, we have a bug that doesn't allow you to delete right after you add something
+        //By hitting loginSuccessful here, we can make sure data gets refreshed when we add, so delete works properly
+        [self.tableView reloadData];
     }
 }
 
@@ -149,7 +157,7 @@ static NSString *CellIdentifier = @"Cell";
 
 
 
--(void)deleteUserFromProject: (NSMutableDictionary*) mutableData client: (NSString *) client project: (NSString *) project {
+-(void)removeUserFromSelectedProject: (NSMutableDictionary*) mutableData client: (NSString *) client project: (NSString *) project {
     __weak typeof(self) weakSelf = self;
     NSMutableArray *tempArray = [[NSMutableArray alloc] initWithArray:[mutableData objectForKey:client]];
     [tempArray removeObject:project];
