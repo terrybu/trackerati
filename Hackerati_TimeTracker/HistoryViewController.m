@@ -38,7 +38,7 @@ static NSString *cellIdentifier = @"RecordTableViewCell";
     [super viewWillAppear:animated];
    
     self.history = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants KSanitizedCurrentUserRecords]];
-    self.keys = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants KSanitizedCurrentUserRecordsKeys]];
+//    self.keys = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants KSanitizedCurrentUserRecordsKeys]];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -59,7 +59,7 @@ static NSString *cellIdentifier = @"RecordTableViewCell";
 -(void)updateNewRecords{
     dispatch_async(dispatch_get_main_queue(), ^{
         self.history = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants KSanitizedCurrentUserRecords]];
-        self.keys = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants KSanitizedCurrentUserRecordsKeys]];
+//        self.keys = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants KSanitizedCurrentUserRecordsKeys]];
 
         if (self.recordDetailViewController && self.selectedIndexPath && self.selectedIndexPath.row >= 0 && self.selectedIndexPath.section >= 0){
             if ([self.keys count] > self.selectedIndexPath.section && [self.history objectForKey:[self.keys objectAtIndex:self.selectedIndexPath.section]]

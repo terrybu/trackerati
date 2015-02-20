@@ -10,8 +10,8 @@
 #import <QuartzCore/QuartzCore.h>
 #import <Firebase/Firebase.h>
 #import "HConstants.h"
-#import "DataParser.h"
 #import "RecordFormViewController.h"
+#import "DataParseManager.h"
 #import <KVOController/FBKVOController.h>
 
 @interface RecordDetailViewController ()
@@ -143,7 +143,7 @@
     NSString *buttonTitle = [alertView buttonTitleAtIndex:buttonIndex];
     if ([buttonTitle isEqualToString:@"delete"]) {
         [self deleteRecord];
-        [[DataParser sharedManager] getUserRecords];
+        [[DataParseManager sharedManager] getUserRecords];
         [self.navigationController popViewControllerAnimated:YES];
     }
 }

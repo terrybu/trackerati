@@ -10,15 +10,16 @@
 #import "HConstants.h"
 #import <MCSwipeTableViewCell.h>
 #import <Firebase/Firebase.h>
-#import "DataParser.h"
+#import "DataParseManager.h"
 #import "AddClientProjectViewController.h"
+#import "Client.h"
+#import "Project.h"
 
 
 @interface NewProjectViewController () <UITableViewDataSource, UITableViewDelegate, MCSwipeTableViewCellDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
-@property (strong, nonatomic) NSDictionary *datas;
-@property (strong, nonatomic) NSMutableDictionary *sectionInformation;
-@property (strong, nonatomic) NSMutableDictionary *rowInformation;
+@property (strong, nonatomic) NSMutableArray *masterClientsArray;
+@property (strong, nonatomic) NSMutableArray *currentUserClientsArray;
 @property (strong, nonatomic) Firebase *fireBase;
 
 @end
@@ -30,8 +31,6 @@ static NSString *CellIdentifier = @"Cell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"Tap on project";
-    self.sectionInformation = [[NSMutableDictionary alloc]init];
-    self.rowInformation = [[NSMutableDictionary alloc]init];
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     [self.tableView registerClass:[MCSwipeTableViewCell class] forCellReuseIdentifier:CellIdentifier];
     
@@ -42,15 +41,19 @@ static NSString *CellIdentifier = @"Cell";
 
 - (void) viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
+    [self refreshMasterClientsArrayAndCurrentUserClientsArray];
+}
+
+- (void) refreshMasterClientsArrayAndCurrentUserClientsArray {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-        self.datas = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants kMasterClientList]];
-        __block int count = 0;
-        __weak typeof(self) weakSelf = self;
-        [self.datas enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop){
-            [weakSelf.sectionInformation setObject:key forKey:[NSNumber numberWithInt:count]];
-            [weakSelf.rowInformation setObject:obj forKey:[NSNumber numberWithInt:count]];
-            count++;
-        }];
+        NSData *masterClientsData = [[NSUserDefaults standardUserDefaults]objectForKey:[HConstants kMasterClientList]];
+        self.masterClientsArray = [NSKeyedUnarchiver unarchiveObjectWithData:masterClientsData];
+        NSLog(@"%@", self.masterClientsArray.description);
+        
+        NSData *currentUserClientsData = [[NSUserDefaults standardUserDefaults]objectForKey:[HConstants KcurrentUserClientList]];
+        self.currentUserClientsArray = [NSKeyedUnarchiver unarchiveObjectWithData:currentUserClientsData];
+        NSLog(@"%@", [self.currentUserClientsArray description]);
+        
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.tableView reloadData];
         });
@@ -59,7 +62,6 @@ static NSString *CellIdentifier = @"Cell";
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 
@@ -74,38 +76,46 @@ static NSString *CellIdentifier = @"Cell";
 
 
 #pragma mark - Table View and Data Source Delegate
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    NSArray *rows = [self.rowInformation objectForKey:[NSNumber numberWithInteger:section]];
-    return [rows count];
-}
-
-// Row display. Implementers should *always* try to reuse cells by setting each cell's reuseIdentifier and querying for available reusable cells with dequeueReusableCellWithIdentifier:
-// Cell gets various attributes set automatically based on table (separators) and data source (accessory views, editing controls)
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    MCSwipeTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    cell.delegate =self;
-    
-    NSDictionary* currentUserData = (NSDictionary*)[[NSUserDefaults standardUserDefaults]objectForKey:[HConstants KcurrentUserClientList]];
-    NSString*client = [self.sectionInformation objectForKey:[NSNumber numberWithInteger:indexPath.section]];
-    NSArray *rows = [self.rowInformation objectForKey:[NSNumber numberWithInteger:indexPath.section]];
-    cell.textLabel.text = [rows objectAtIndex:indexPath.row];
-    if ([currentUserData objectForKey:client] && [((NSArray*)[currentUserData objectForKey:client]) containsObject:(NSString*) [rows objectAtIndex:indexPath.row]]) {
-        cell.accessoryView = [[ UIImageView alloc ] initWithImage:[UIImage imageNamed:@"CheckMark.png"]];
-    } else {
-        cell.accessoryView = nil;
-    }
-    return cell;
-}
-
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    return [[self.sectionInformation allKeys] count];
+    return self.masterClientsArray.count;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
-    return (NSString*)[self.sectionInformation objectForKey:[NSNumber numberWithInteger:section]];
+    Client *client = [self.masterClientsArray objectAtIndex:section];
+    return client.clientName;
 }
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    Client *client = [self.masterClientsArray objectAtIndex:section];
+    return [client numberOfProjects];
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    // Row display. Implementers should *always* try to reuse cells by setting each cell's reuseIdentifier and querying for available reusable cells with dequeueReusableCellWithIdentifier:
+    // Cell gets various attributes set automatically based on table (separators) and data source (accessory views, editing controls)
+    
+    MCSwipeTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    cell.delegate =self;
+    
+    //First of all, we are creating a cell for every client and project in existence
+    Client *masterClient = (Client *) [self.masterClientsArray objectAtIndex:indexPath.section];
+    Project *masterProject = [masterClient projectAtIndex:indexPath.row];
+    cell.textLabel.text = masterProject.projectName;
+    
+    //then we need to check if the current user had clients already selected. In that case, we put the checkmark
+    if (self.currentUserClientsArray.count > 0) {
+        Client *currentUserClient = [self.currentUserClientsArray objectAtIndex:indexPath.row];
+        Project *currentUserProject = [currentUserClient projectAtIndex:indexPath.row];
+        if ([masterProject.projectName isEqualToString:currentUserProject.projectName]) {
+            cell.accessoryView = [[ UIImageView alloc ] initWithImage:[UIImage imageNamed:@"CheckMark.png"]];
+        } else {
+            cell.accessoryView = nil;
+        }
+    }
+        
+    return cell;
+}
+
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     return 50.0f;
@@ -117,49 +127,57 @@ static NSString *CellIdentifier = @"Cell";
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES]; //this is to never let the gray cell background stay
     MCSwipeTableViewCell *cell = (MCSwipeTableViewCell*)[tableView cellForRowAtIndexPath:indexPath];
-    NSDictionary* data = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants KcurrentUserClientList]];
-    NSMutableDictionary *mutableData = [[NSMutableDictionary alloc]initWithDictionary:data];
-    NSString *client = [self.sectionInformation objectForKey:[NSNumber numberWithInteger:indexPath.section]];
-    NSArray *rows = [self.rowInformation objectForKey:[NSNumber numberWithInteger:indexPath.section]];
-    NSString *project = [rows objectAtIndex:indexPath.row];
+    
+    Client *masterClient = [self.masterClientsArray objectAtIndex:indexPath.section];
+    Project *masterSelectedProject = [masterClient projectAtIndex:indexPath.row];
     
     if (cell.accessoryView != nil) {
         //if it already had a checkmark, then we get rid of it and delete it from firebase
+        
+        NSLog(@"current user clients array: %@", self.currentUserClientsArray.description);
+        
         cell.accessoryView = nil;
-        [self removeUserFromSelectedProject:mutableData client:client project:project];
-        UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"Removed Project" message:[NSString stringWithFormat:@"Project %@ was removed",project] delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
-        [alertView show];
+        if (self.currentUserClientsArray.count > 0) {
+            Client *selectedCurrentUserClient = [self.currentUserClientsArray objectAtIndex:indexPath.section];
+            Project *selectedCurrentUserProject = [selectedCurrentUserClient projectAtIndex:indexPath.row];
+            [self removeUserFromSelectedProject:selectedCurrentUserClient project:selectedCurrentUserProject];
+            UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"Removed Project" message:[NSString stringWithFormat:@"Project %@ was removed",selectedCurrentUserProject.projectName] delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+            [alertView show];
+        }
         return;
     }
-    
     else {
-        //if, in our local cache, we never had the current user use this client name, then we set it
-        if (![mutableData objectForKey:client]) {
-            [mutableData setObject:[[NSMutableArray alloc]initWithObjects:project,nil] forKey:client];
-            [[NSUserDefaults standardUserDefaults] setObject:mutableData forKey:[HConstants KcurrentUserClientList]];
+        //if, in our local cache, we've never had the current user select this client name, then we save it on user defaults AND send to firebase
+        if (![self.currentUserClientsArray containsObject:masterSelectedProject]) {
+            Client *newClient = [[Client alloc]init];
+            newClient.clientName = masterClient.clientName;
+            [newClient.projects addObject: masterSelectedProject];
+            [self.currentUserClientsArray addObject:newClient];
+            NSData *currentUserClientListData = [NSKeyedArchiver archivedDataWithRootObject:self.currentUserClientsArray];
+            [[NSUserDefaults standardUserDefaults] setObject:currentUserClientListData forKey:[HConstants KcurrentUserClientList]];
             [[NSUserDefaults standardUserDefaults]synchronize];
-            [self sendUsernameToProjectOnFireBase: client project:project];
+            [self sendUsernameToProjectOnFireBase: masterClient.clientName project:masterSelectedProject.projectName];
             cell.accessoryView =[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"CheckMark.png"]];
         }
-        //On the contrary, if, in our local cache, we already had the current user use this client name for a project, check to see if particular project is in local cache
+        //On the contrary, if we already had the current user select this client name for a project before, check to see if particular PROJECT was selected before too and is in local cache
         else {
-            NSMutableArray *projects = [mutableData objectForKey:client];
-            if (![projects containsObject:project]) {
-                //if not, then we add it to local cache AND send to Firebase
-                NSMutableArray *mutableProjects = [[NSMutableArray alloc]initWithArray:projects];
-                [mutableProjects addObject:project];
-                [mutableData setObject:mutableProjects forKey:client];
-                [[NSUserDefaults standardUserDefaults] setObject:mutableData forKey:[HConstants KcurrentUserClientList]];
+            Client *selectedCurrentUserClient = [self.currentUserClientsArray objectAtIndex:indexPath.section];
+            if (![selectedCurrentUserClient.projects containsObject:masterSelectedProject]) {
+                //our client didn't have the particular project, then we add it to local cache AND send to Firebase
+                [selectedCurrentUserClient.projects addObject:masterSelectedProject];
+                NSData *currentUserClientListData = [NSKeyedArchiver archivedDataWithRootObject:self.currentUserClientsArray];
+                [[NSUserDefaults standardUserDefaults] setObject:currentUserClientListData forKey:[HConstants KcurrentUserClientList]];
                 [[NSUserDefaults standardUserDefaults]synchronize];
-                [self sendUsernameToProjectOnFireBase: client project:project];
+                [self sendUsernameToProjectOnFireBase: masterClient.clientName project:masterSelectedProject.projectName];
                 cell.accessoryView =[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"CheckMark.png"]];
             }
         }
-        [[DataParser sharedManager] loginSuccessful];
-        //2.19.2015 without hitting the data structure refreshing from loginSuccessful, we have a bug that doesn't allow you to delete right after you add something
-        //By hitting loginSuccessful here, we can make sure data gets refreshed when we add, so delete works properly
-        [self.tableView reloadData];
     }
+    //2.19.2015 without hitting the data structure refreshing from loginSuccessful, we have a bug that doesn't allow you to delete right after you add something
+    //By hitting loginSuccessful here, we can make sure data gets refreshed when we add, so delete works properly
+    
+    [[DataParseManager sharedManager] loginSuccessful];
+    [self refreshMasterClientsArrayAndCurrentUserClientsArray];
 }
 
 - (void) sendUsernameToProjectOnFireBase: (NSString *) client project: (NSString *) project{
@@ -170,25 +188,21 @@ static NSString *CellIdentifier = @"Cell";
     [alertView show];
 }
 
-
-
--(void)removeUserFromSelectedProject: (NSMutableDictionary*) mutableData client: (NSString *) client project: (NSString *) project {
+-(void)removeUserFromSelectedProject: (Client *) client project: (Project *) project {
     __weak typeof(self) weakSelf = self;
-    NSMutableArray *tempArray = [[NSMutableArray alloc] initWithArray:[mutableData objectForKey:client]];
-    [tempArray removeObject:project];
-    if ([tempArray count]== 0) {
-        [mutableData removeObjectForKey:client];
-    }else{
-        [mutableData setObject:tempArray forKey:client];
+    [client.projects removeObject:project];
+    if ([client.projects count]== 0) {
+        [self.currentUserClientsArray removeObject:client];
     }
-    [[NSUserDefaults standardUserDefaults] setObject:mutableData forKey:[HConstants KcurrentUserClientList]];
+     NSData *currentUserClientListData = [NSKeyedArchiver archivedDataWithRootObject:self.currentUserClientsArray];
+    [[NSUserDefaults standardUserDefaults] setObject:currentUserClientListData forKey:[HConstants KcurrentUserClientList]];
     [[NSUserDefaults standardUserDefaults]synchronize];
     
     NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants KCurrentUser]];
     __block NSString *uniqueAddress = nil;
     NSDictionary* rawMasterClientList = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants kRawMasterClientList]];
-    if ([[rawMasterClientList objectForKey:client]objectForKey:project]) {
-        NSDictionary* rawUserList = [[rawMasterClientList objectForKey:client]objectForKey:project];
+    if ([[rawMasterClientList objectForKey:client.clientName]objectForKey:project.projectName]) {
+        NSDictionary* rawUserList = [[rawMasterClientList objectForKey:client.clientName]objectForKey:project.projectName];
         [rawUserList enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop){
             if ([obj objectForKey:@"name"] && ([[obj objectForKey:@"name"]isEqualToString:username ])) {
                 uniqueAddress = key;
@@ -196,7 +210,7 @@ static NSString *CellIdentifier = @"Cell";
                 return;
             }
         }];
-        weakSelf.fireBase = [[Firebase alloc]initWithUrl:[NSString stringWithFormat:@"%@/Projects/%@/%@/%@",[HConstants kFireBaseURL],client,project,uniqueAddress]];
+        weakSelf.fireBase = [[Firebase alloc]initWithUrl:[NSString stringWithFormat:@"%@/Projects/%@/%@/%@",[HConstants kFireBaseURL],client.clientName, project.projectName, uniqueAddress]];
         [weakSelf.fireBase removeValue];
     }
     

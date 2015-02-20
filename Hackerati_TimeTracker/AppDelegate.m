@@ -9,7 +9,7 @@
 #import "AppDelegate.h"
 #import <GooglePlus/GooglePlus.h>
 #import "LogInManager.h"
-#import "DataParser.h"
+#import "DataParseManager.h"
 #import "WeeklyNotificationManager.h"
 #import <HockeySDK/HockeySDK.h>
 #import "FireBaseManager.h"
@@ -51,8 +51,8 @@
     self.window = [[UIWindow alloc]initWithFrame:[UIScreen mainScreen].bounds];
     self.logInViewController = [[LogInViewController alloc]initWithNibName:@"LogInViewController" bundle:nil];
     
-    [[LogInManager sharedManager] manuallySetDelegate:[DataParser sharedManager]];
-    [[DataParser sharedManager] manuallySetDelegate:self.logInViewController];
+    [[LogInManager sharedManager] manuallySetDelegate:[DataParseManager sharedManager]];
+    [[DataParseManager sharedManager] manuallySetDelegate:self.logInViewController];
     [self appDelegatestartLogInProcess];
     
     self.naviController = [[UINavigationController alloc]initWithRootViewController:self.logInViewController];

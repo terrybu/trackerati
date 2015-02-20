@@ -9,9 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "LogInManager.h"
 #import "Reachability.h"
-#import "DataParser.h"
+#import "DataParseManager.h"
 
-@interface LogInViewController : UIViewController <UITableViewDataSource, UITableViewDelegate,DataParserProtocol,UIGestureRecognizerDelegate>
+@interface LogInViewController : UIViewController <UITableViewDataSource, UITableViewDelegate,DataParseManagerProtocol,UIGestureRecognizerDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 @end

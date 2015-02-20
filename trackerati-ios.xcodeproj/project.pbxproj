@@ -32,7 +32,6 @@
 		CE07C06B1A5BAA9B00A3B961 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE07C0691A5BAA9B00A3B961 /* CFNetwork.framework */; };
 		CE07C06C1A5BAA9B00A3B961 /* NetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE07C06A1A5BAA9B00A3B961 /* NetworkExtension.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		CE07C06D1A5BAE9A00A3B961 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE07C04A1A5B05F600A3B961 /* SystemConfiguration.framework */; };
-		CE07C0701A5C29DF00A3B961 /* DataParser.m in Sources */ = {isa = PBXBuildFile; fileRef = CE07C06F1A5C29DF00A3B961 /* DataParser.m */; };
 		CE07C08F1A5C6C4200A3B961 /* HistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE07C08D1A5C6C4100A3B961 /* HistoryViewController.m */; };
 		CE07C0901A5C6C4200A3B961 /* HistoryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE07C08E1A5C6C4100A3B961 /* HistoryViewController.xib */; };
 		CE07C0961A5C8B2900A3B961 /* RecordTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CE07C0941A5C8B2900A3B961 /* RecordTableViewCell.m */; };
@@ -58,6 +57,11 @@
 		CE3BC5631A60282D006340F7 /* RecordDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE3BC5611A60282D006340F7 /* RecordDetailViewController.xib */; };
 		CE3BC5661A6031ED006340F7 /* CustomLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = CE3BC5651A6031ED006340F7 /* CustomLabel.m */; };
 		CE3BC5691A6064C4006340F7 /* CustomMCSwipeTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CE3BC5681A6064C4006340F7 /* CustomMCSwipeTableViewCell.m */; };
+		CE872C751A74BD93002C9930 /* Client.m in Sources */ = {isa = PBXBuildFile; fileRef = CE872C741A74BD93002C9930 /* Client.m */; };
+		CE872C781A74BDCF002C9930 /* Project.m in Sources */ = {isa = PBXBuildFile; fileRef = CE872C771A74BDCF002C9930 /* Project.m */; };
+		CE872C7B1A74BDDC002C9930 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = CE872C7A1A74BDDC002C9930 /* User.m */; };
+		CE872C7E1A74C525002C9930 /* DataParseManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CE872C7D1A74C525002C9930 /* DataParseManager.m */; };
+		CE872C821A74C5BF002C9930 /* Record.m in Sources */ = {isa = PBXBuildFile; fileRef = CE872C811A74C5BF002C9930 /* Record.m */; };
 		CEA5FB0D1A688D4700280E39 /* CustomButton.m in Sources */ = {isa = PBXBuildFile; fileRef = CEA5FB0C1A688D4700280E39 /* CustomButton.m */; };
 		CEA5FB151A696A2D00280E39 /* Default-736h@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = CEA5FB131A696A2D00280E39 /* Default-736h@3x.png */; };
 		CEA5FB211A6A421300280E39 /* IQDropDownTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = CEA5FB201A6A421300280E39 /* IQDropDownTextField.m */; };
@@ -111,8 +115,6 @@
 		CE07C0671A5B9D3E00A3B961 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		CE07C0691A5BAA9B00A3B961 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		CE07C06A1A5BAA9B00A3B961 /* NetworkExtension.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NetworkExtension.framework; path = System/Library/Frameworks/NetworkExtension.framework; sourceTree = SDKROOT; };
-		CE07C06E1A5C29DF00A3B961 /* DataParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataParser.h; sourceTree = "<group>"; };
-		CE07C06F1A5C29DF00A3B961 /* DataParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataParser.m; sourceTree = "<group>"; };
 		CE07C08C1A5C6C4100A3B961 /* HistoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HistoryViewController.h; sourceTree = "<group>"; };
 		CE07C08D1A5C6C4100A3B961 /* HistoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HistoryViewController.m; sourceTree = "<group>"; };
 		CE07C08E1A5C6C4100A3B961 /* HistoryViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HistoryViewController.xib; sourceTree = "<group>"; };
@@ -150,6 +152,16 @@
 		CE3BC5651A6031ED006340F7 /* CustomLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomLabel.m; sourceTree = "<group>"; };
 		CE3BC5671A6064C4006340F7 /* CustomMCSwipeTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomMCSwipeTableViewCell.h; sourceTree = "<group>"; };
 		CE3BC5681A6064C4006340F7 /* CustomMCSwipeTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomMCSwipeTableViewCell.m; sourceTree = "<group>"; };
+		CE872C731A74BD93002C9930 /* Client.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Client.h; sourceTree = "<group>"; };
+		CE872C741A74BD93002C9930 /* Client.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Client.m; sourceTree = "<group>"; };
+		CE872C761A74BDCF002C9930 /* Project.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Project.h; sourceTree = "<group>"; };
+		CE872C771A74BDCF002C9930 /* Project.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Project.m; sourceTree = "<group>"; };
+		CE872C791A74BDDC002C9930 /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
+		CE872C7A1A74BDDC002C9930 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
+		CE872C7C1A74C525002C9930 /* DataParseManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataParseManager.h; sourceTree = "<group>"; };
+		CE872C7D1A74C525002C9930 /* DataParseManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataParseManager.m; sourceTree = "<group>"; };
+		CE872C801A74C5BF002C9930 /* Record.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Record.h; sourceTree = "<group>"; };
+		CE872C811A74C5BF002C9930 /* Record.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Record.m; sourceTree = "<group>"; };
 		CEA5FB0B1A688D4700280E39 /* CustomButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomButton.h; sourceTree = "<group>"; };
 		CEA5FB0C1A688D4700280E39 /* CustomButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomButton.m; sourceTree = "<group>"; };
 		CEA5FB131A696A2D00280E39 /* Default-736h@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-736h@3x.png"; sourceTree = "<group>"; };
@@ -250,8 +262,8 @@
 				CE07C0611A5B87D100A3B961 /* LogInManager.m */,
 				CE07C0631A5B966100A3B961 /* FireBaseManager.h */,
 				CE07C0641A5B966100A3B961 /* FireBaseManager.m */,
-				CE07C06E1A5C29DF00A3B961 /* DataParser.h */,
-				CE07C06F1A5C29DF00A3B961 /* DataParser.m */,
+				CE872C7C1A74C525002C9930 /* DataParseManager.h */,
+				CE872C7D1A74C525002C9930 /* DataParseManager.m */,
 				CE07C0B31A5EBFDD00A3B961 /* WeeklyNotificationManager.h */,
 				CE07C0B41A5EBFDD00A3B961 /* WeeklyNotificationManager.m */,
 				CE07C0B61A5ED6FA00A3B961 /* LastSavedManager.h */,
@@ -312,6 +324,21 @@
 			name = Constants;
 			sourceTree = "<group>";
 		};
+		CE872C7F1A74C59F002C9930 /* DataModel */ = {
+			isa = PBXGroup;
+			children = (
+				CE872C731A74BD93002C9930 /* Client.h */,
+				CE872C741A74BD93002C9930 /* Client.m */,
+				CE872C761A74BDCF002C9930 /* Project.h */,
+				CE872C771A74BDCF002C9930 /* Project.m */,
+				CE872C791A74BDDC002C9930 /* User.h */,
+				CE872C7A1A74BDDC002C9930 /* User.m */,
+				CE872C801A74C5BF002C9930 /* Record.h */,
+				CE872C811A74C5BF002C9930 /* Record.m */,
+			);
+			name = DataModel;
+			sourceTree = "<group>";
+		};
 		CED58C0E1A5ADAB3001C343B = {
 			isa = PBXGroup;
 			children = (
@@ -337,10 +364,11 @@
 			children = (
 				CED58C1E1A5ADAB3001C343B /* AppDelegate.h */,
 				CED58C1F1A5ADAB3001C343B /* AppDelegate.m */,
+				CE872C7F1A74C59F002C9930 /* DataModel */,
+				CE08157E1A645E25008ABECF /* Managers */,
 				CE0815821A647B5F008ABECF /* Constants */,
 				CE0815801A645E77008ABECF /* CustomViews */,
 				CE08157F1A645E54008ABECF /* ViewControllers */,
-				CE08157E1A645E25008ABECF /* Managers */,
 				CE07C0A11A5D771500A3B961 /* THCalendarDatePicker */,
 				CED58C271A5ADAB3001C343B /* Images.xcassets */,
 				CE07C09A1A5C9A6100A3B961 /* CheckMark@2x.png */,
@@ -583,24 +611,28 @@
 				CE07C0961A5C8B2900A3B961 /* RecordTableViewCell.m in Sources */,
 				CE3BC5621A60282D006340F7 /* RecordDetailViewController.m in Sources */,
 				CE07C09F1A5CF22E00A3B961 /* RecordFormViewController.m in Sources */,
+				CE872C821A74C5BF002C9930 /* Record.m in Sources */,
 				CE07C0651A5B966100A3B961 /* FireBaseManager.m in Sources */,
 				CE07C0551A5B132700A3B961 /* HConstants.m in Sources */,
 				CED58C201A5ADAB3001C343B /* AppDelegate.m in Sources */,
 				CE07C0B51A5EBFDD00A3B961 /* WeeklyNotificationManager.m in Sources */,
 				CE07C0621A5B87D100A3B961 /* LogInManager.m in Sources */,
+				CE872C7B1A74BDDC002C9930 /* User.m in Sources */,
 				CE07C0AA1A5D771500A3B961 /* THDateDay.m in Sources */,
+				CE872C7E1A74C525002C9930 /* DataParseManager.m in Sources */,
 				CED58C1D1A5ADAB3001C343B /* main.m in Sources */,
 				CE3BC5661A6031ED006340F7 /* CustomLabel.m in Sources */,
 				CE07C0AC1A5D771500A3B961 /* THDatePickerViewController.m in Sources */,
 				CE07C0511A5B087C00A3B961 /* LogInViewController.m in Sources */,
 				CE07C0681A5B9D3E00A3B961 /* Reachability.m in Sources */,
 				D944F2BE1A96A9CC0046A91B /* AddClientProjectViewController.m in Sources */,
-				CE07C0701A5C29DF00A3B961 /* DataParser.m in Sources */,
 				CEA5FB211A6A421300280E39 /* IQDropDownTextField.m in Sources */,
 				CE07C08F1A5C6C4200A3B961 /* HistoryViewController.m in Sources */,
 				CEA5FB0D1A688D4700280E39 /* CustomButton.m in Sources */,
 				CE07C0B11A5DA83800A3B961 /* NewProjectViewController.m in Sources */,
+				CE872C781A74BDCF002C9930 /* Project.m in Sources */,
 				CE07C0B81A5ED6FB00A3B961 /* LastSavedManager.m in Sources */,
+				CE872C751A74BD93002C9930 /* Client.m in Sources */,
 				CE3BC5691A6064C4006340F7 /* CustomMCSwipeTableViewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

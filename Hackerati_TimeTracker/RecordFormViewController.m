@@ -12,7 +12,7 @@
 #import "HConstants.h"
 #import "LastSavedManager.h"
 #import <QuartzCore/QuartzCore.h>
-#import "DataParser.h"
+#import "DataParseManager.h"
 #import "IQDropDownTextField.h"
 
 
@@ -319,7 +319,7 @@
                 [[LastSavedManager sharedManager] saveRecord:@{[HConstants kClient]:self.clientName,[HConstants kDate]:self.dateButton.titleLabel.text,[HConstants kHour]:self.hourTextField.text,[HConstants kProject]:self.projectName,[HConstants kStatus]:(([self.statusButton.titleLabel.text isEqualToString:[HConstants KfullTimeEmployee]])?@"1":@"0"),[HConstants kType]:(([self.typeButton.titleLabel.text isEqualToString:[HConstants KbillableHour]])?@"1":@"0"),[HConstants kComment]:@""}];
             }
         }
-        [[DataParser sharedManager] getUserRecords];
+        [[DataParseManager sharedManager] getUserRecords];
         if (self.previousViewController && self.previousViewController.navigationController) {
             [self.previousViewController.navigationController popViewControllerAnimated:YES];
         }else {
