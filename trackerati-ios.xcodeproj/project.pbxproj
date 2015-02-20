@@ -65,6 +65,8 @@
 		CED58C201A5ADAB3001C343B /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CED58C1F1A5ADAB3001C343B /* AppDelegate.m */; };
 		CED58C281A5ADAB3001C343B /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CED58C271A5ADAB3001C343B /* Images.xcassets */; };
 		CED58C371A5ADAB3001C343B /* Hackerati_TimeTrackerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CED58C361A5ADAB3001C343B /* Hackerati_TimeTrackerTests.m */; };
+		D944F2BE1A96A9CC0046A91B /* AddClientProjectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D944F2BC1A96A9CC0046A91B /* AddClientProjectViewController.m */; };
+		D944F2BF1A96A9CC0046A91B /* AddClientProjectViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D944F2BD1A96A9CC0046A91B /* AddClientProjectViewController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -163,6 +165,9 @@
 		CED58C351A5ADAB3001C343B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CED58C361A5ADAB3001C343B /* Hackerati_TimeTrackerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Hackerati_TimeTrackerTests.m; sourceTree = "<group>"; };
 		D7FA9458296C53CD81653168 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		D944F2BB1A96A9CC0046A91B /* AddClientProjectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddClientProjectViewController.h; sourceTree = "<group>"; };
+		D944F2BC1A96A9CC0046A91B /* AddClientProjectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddClientProjectViewController.m; sourceTree = "<group>"; };
+		D944F2BD1A96A9CC0046A91B /* AddClientProjectViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddClientProjectViewController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -264,6 +269,9 @@
 				CE07C0AE1A5DA83800A3B961 /* NewProjectViewController.h */,
 				CE07C0AF1A5DA83800A3B961 /* NewProjectViewController.m */,
 				CE07C0B01A5DA83800A3B961 /* NewProjectViewController.xib */,
+				D944F2BB1A96A9CC0046A91B /* AddClientProjectViewController.h */,
+				D944F2BC1A96A9CC0046A91B /* AddClientProjectViewController.m */,
+				D944F2BD1A96A9CC0046A91B /* AddClientProjectViewController.xib */,
 				CE07C08C1A5C6C4100A3B961 /* HistoryViewController.h */,
 				CE07C08D1A5C6C4100A3B961 /* HistoryViewController.m */,
 				CE07C08E1A5C6C4100A3B961 /* HistoryViewController.xib */,
@@ -493,6 +501,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CE07C0361A5B057900A3B961 /* GooglePlus.bundle in Resources */,
+				D944F2BF1A96A9CC0046A91B /* AddClientProjectViewController.xib in Resources */,
 				CE07C0AB1A5D771500A3B961 /* THDateDay.xib in Resources */,
 				CE07C0C51A5F29DF00A3B961 /* HockeySDKResources.bundle in Resources */,
 				CE07C0AD1A5D771500A3B961 /* THDatePickerViewController.xib in Resources */,
@@ -585,6 +594,7 @@
 				CE07C0AC1A5D771500A3B961 /* THDatePickerViewController.m in Sources */,
 				CE07C0511A5B087C00A3B961 /* LogInViewController.m in Sources */,
 				CE07C0681A5B9D3E00A3B961 /* Reachability.m in Sources */,
+				D944F2BE1A96A9CC0046A91B /* AddClientProjectViewController.m in Sources */,
 				CE07C0701A5C29DF00A3B961 /* DataParser.m in Sources */,
 				CEA5FB211A6A421300280E39 /* IQDropDownTextField.m in Sources */,
 				CE07C08F1A5C6C4200A3B961 /* HistoryViewController.m in Sources */,

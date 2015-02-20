@@ -11,6 +11,7 @@
 #import <MCSwipeTableViewCell.h>
 #import <Firebase/Firebase.h>
 #import "DataParser.h"
+#import "AddClientProjectViewController.h"
 
 
 @interface NewProjectViewController () <UITableViewDataSource, UITableViewDelegate, MCSwipeTableViewCellDelegate>
@@ -28,12 +29,15 @@ static NSString *CellIdentifier = @"Cell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
+    self.title = @"Tap on project";
     self.sectionInformation = [[NSMutableDictionary alloc]init];
     self.rowInformation = [[NSMutableDictionary alloc]init];
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     [self.tableView registerClass:[MCSwipeTableViewCell class] forCellReuseIdentifier:CellIdentifier];
-    self.title = @"Tap to add";
+    
+    UIBarButtonItem *addClientProjectButton = [[UIBarButtonItem alloc]initWithTitle:@"Add client" style:UIBarButtonItemStylePlain target:self action:@selector(pushAddClientProjectViewController)];
+    self.navigationItem.rightBarButtonItem = addClientProjectButton;
+    
 }
 
 - (void) viewWillAppear:(BOOL)animated{
@@ -57,6 +61,17 @@ static NSString *CellIdentifier = @"Cell";
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+
+- (void) pushAddClientProjectViewController{
+    AddClientProjectViewController *addClientProjectVC = [[AddClientProjectViewController alloc]initWithNibName:@"AddClientProjectViewController" bundle:nil];
+    [self.navigationItem setBackBarButtonItem:[[UIBarButtonItem alloc]
+                                               initWithTitle:@"Back" style:UIBarButtonItemStyleBordered target:nil action:nil]];
+    [self.navigationController pushViewController:addClientProjectVC animated:YES];
+}
+
+
+
 
 #pragma mark - Table View and Data Source Delegate
 
