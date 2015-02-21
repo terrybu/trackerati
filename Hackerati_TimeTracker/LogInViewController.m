@@ -350,7 +350,7 @@ static NSString *CellIdentifier = @"Cell";
     RecordFormViewController *recordFormViewController = [[RecordFormViewController alloc]initWithNibName:@"RecordFormViewController" bundle:nil];
     recordFormViewController.isNewRecord = YES;
     
-    Client *client = [self.currentUserClientsArray objectAtIndex:indexPath.row];
+    Client *client = [self.currentUserClientsArray objectAtIndex:indexPath.section];
     recordFormViewController.clientName = [client clientName];
     recordFormViewController.projectName = [client projectAtIndex:indexPath.row].projectName;
     [self.navigationController pushViewController:recordFormViewController animated:YES];

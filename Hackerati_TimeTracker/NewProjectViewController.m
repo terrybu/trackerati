@@ -181,8 +181,6 @@ static NSString *CellIdentifier = @"Cell";
 - (Client *) findCorrespondingClientInCurrentUserClientList: (Client *) masterClient {
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"clientName contains[c] %@", masterClient.clientName];
     NSArray *filtered = [self.currentUserClientsArray filteredArrayUsingPredicate:predicate];
-    NSLog(@"the one found from doing predicate filter of currentuserarray: %@", filtered[0]);
-    NSLog(@"all the current user clients array: %@", self.currentUserClientsArray.description);
     return filtered[0];
 }
 
@@ -202,11 +200,9 @@ static NSString *CellIdentifier = @"Cell";
 -(void)removeUserFromSelectedProject: (Client *) masterClient project: (Project *) masterProject {
     __weak typeof(self) weakSelf = self;
     Client *client = [self findCorrespondingClientInCurrentUserClientList:masterClient];
-    NSLog(@"client from remove method %@", client);
     Project *project = [self findCorrespondingProjectFromCorrespondingClient:client masterProject:masterProject];
-    [client.projects removeObject:project];
     
-    //we also remove from set of names
+    [client.projects removeObject:project];
     [self.setOfCurrentUserProjectNames removeObject:project.projectName];
     
     if ([client.projects count]== 0) {
