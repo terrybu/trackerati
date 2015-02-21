@@ -389,6 +389,10 @@ static NSString *CellIdentifier = @"Cell";
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+//    
+//    for (Client *client in self.currentUserClientsArray)
+//        NSLog(client.clientName);
+    
     
     CustomMCSwipeTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     cell.delegate =self;

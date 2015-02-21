@@ -76,7 +76,7 @@
 - (void) saveMasterClientListInUserDefaults: (NSDictionary *) rawMasterClientList {
     
     //debug
-    NSLog(rawMasterClientList.description);
+//    NSLog(rawMasterClientList.description);
     
     __block NSMutableArray *masterClientList = [[NSMutableArray alloc]init];
     [rawMasterClientList enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop){
@@ -109,9 +109,7 @@
     }];
     
     //Alphabetical sorting logic for clients within master client list
-    NSArray *sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"clientName" ascending:YES]];
-    NSArray *sortedMasterClientList = [masterClientList sortedArrayUsingDescriptors:sortDescriptors];
-    NSData *masterClientListData = [NSKeyedArchiver archivedDataWithRootObject:sortedMasterClientList];
+    NSData *masterClientListData = [self returnArchivedDataOfSortedArrayByDescriptor:masterClientList sortDescriptor:@"clientName"];
     [[NSUserDefaults standardUserDefaults]setObject:masterClientListData forKey:[HConstants kMasterClientList]];
     [[NSUserDefaults standardUserDefaults]synchronize];
 }
@@ -147,15 +145,26 @@
                     [newClient addProject:newProject];
                 }
             }];
+            //Alphabetical sorting logic for projects within a client
+            NSArray *sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"projectName" ascending:YES]];
+            NSArray *sortedProjectsArray = [newClient.projects sortedArrayUsingDescriptors:sortDescriptors];
+            newClient.projects = [sortedProjectsArray mutableCopy];
         }
         if (![newClient isProjectsEmpty]) {
             [currentUserClientList addObject:newClient];
         }
     }];
-    
-    NSData *currentUserClientListData = [NSKeyedArchiver archivedDataWithRootObject:currentUserClientList];
+    //Alphabetical sorting logic for clients within currentUserClient
+    NSData *currentUserClientListData = [self returnArchivedDataOfSortedArrayByDescriptor:currentUserClientList sortDescriptor:@"clientName"];
     [[NSUserDefaults standardUserDefaults]setObject:currentUserClientListData forKey:[HConstants KcurrentUserClientList]];
     [[NSUserDefaults standardUserDefaults]synchronize];
+}
+
+- (NSData *) returnArchivedDataOfSortedArrayByDescriptor: (NSArray *) arrayToSort sortDescriptor: (NSString *) descriptor {
+    NSArray *sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:descriptor ascending:YES]];
+    NSArray *sortedArray = [arrayToSort sortedArrayUsingDescriptors:sortDescriptors];
+    NSData *archivedArray = [NSKeyedArchiver archivedDataWithRootObject:sortedArray];
+    return archivedArray;
 }
 
 - (void) getUserRecords{

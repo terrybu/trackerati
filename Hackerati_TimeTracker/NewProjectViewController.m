@@ -21,6 +21,8 @@
 @property (strong, nonatomic) NSMutableArray *masterClientsArray;
 @property (strong, nonatomic) NSMutableArray *currentUserClientsArray;
 @property (strong, nonatomic) Firebase *fireBase;
+@property (strong, nonatomic) NSSet *setOfCurrentUserClientNames;;
+@property (strong, nonatomic) NSMutableSet *setOfCurrentUserProjectNames;
 
 @end
 
@@ -48,17 +50,18 @@ static NSString *CellIdentifier = @"Cell";
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         NSData *masterClientsData = [[NSUserDefaults standardUserDefaults]objectForKey:[HConstants kMasterClientList]];
         self.masterClientsArray = [NSKeyedUnarchiver unarchiveObjectWithData:masterClientsData];
-        
-        for (Client* client in self.masterClientsArray)
-            NSLog(@"%@", client.clientName);
-        
         NSData *currentUserClientsData = [[NSUserDefaults standardUserDefaults]objectForKey:[HConstants KcurrentUserClientList]];
         self.currentUserClientsArray = [NSKeyedUnarchiver unarchiveObjectWithData:currentUserClientsData];
-        NSLog(@"%@", [self.currentUserClientsArray description]);
-        
+        self.setOfCurrentUserClientNames = [NSSet setWithArray:[self.currentUserClientsArray valueForKey:@"clientName"]];
+        self.setOfCurrentUserProjectNames = [[NSMutableSet alloc]init];
+        for (Client *client in self.currentUserClientsArray) {
+            NSArray *arrayOfProjectNamesOfClient = [client.projects valueForKey:@"projectName"];
+            [self.setOfCurrentUserProjectNames addObjectsFromArray:arrayOfProjectNamesOfClient];
+        }
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.tableView reloadData];
         });
+        NSLog(self.setOfCurrentUserProjectNames.description);
     });
 }
 
@@ -99,24 +102,19 @@ static NSString *CellIdentifier = @"Cell";
     MCSwipeTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     cell.delegate =self;
     
-    //First of all, we are creating a cell for every client and project in existence
+    //Create a cell for every project in existence, sectioned by client name
     Client *masterClient = (Client *) [self.masterClientsArray objectAtIndex:indexPath.section];
     Project *masterProject = [masterClient projectAtIndex:indexPath.row];
     cell.textLabel.text = masterProject.projectName;
     
-    //then we need to check if the current user had clients already selected. In that case, we put the checkmarks into those cells
-    if (self.currentUserClientsArray.count > 0) {
-        for (Client *client in self.currentUserClientsArray) {
-            if ([masterClient.clientName isEqualToString:client.clientName]) {
-                for (Project *project in client.projects) {
-                    if ([masterProject.projectName isEqualToString:project.projectName]) {
-                        cell.accessoryView =[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"CheckMark.png"]];
-                    }
-                }
-            }
+    if ((self.setOfCurrentUserClientNames != nil) && ([self.setOfCurrentUserClientNames containsObject:masterClient.clientName])) {
+        if ((self.setOfCurrentUserProjectNames != nil) && ([self.setOfCurrentUserProjectNames containsObject:masterProject.projectName])) {
+            cell.accessoryView =[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"CheckMark.png"]];
         }
     }
-        
+    else
+        cell.accessoryView = nil;
+    
     return cell;
 }
 

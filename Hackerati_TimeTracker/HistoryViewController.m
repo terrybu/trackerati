@@ -114,6 +114,9 @@ static NSString *cellIdentifier = @"RecordTableViewCell";
     
     RecordTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     
+    NSLog(@"historyOfRecords: %@", self.historyOfRecords);
+    NSLog(@"date keys: %@", self.dateKeys);
+    
     //Crashes here 
     Record *record = [[self.historyOfRecords objectForKey:[self.dateKeys objectAtIndex:indexPath.section]]objectAtIndex:indexPath.row];
     //
