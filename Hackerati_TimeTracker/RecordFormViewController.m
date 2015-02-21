@@ -229,8 +229,9 @@
 
 - (IBAction)submitRecordAction:(id)sender {
     if (self.isNewRecord) {
-        NSDictionary *history = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants KSanitizedCurrentUserRecords]];
-        if ([history objectForKey:self.dateButton.titleLabel.text]) {
+        NSData *currentUserRecordsData = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants KSanitizedCurrentUserRecords]];
+        NSDictionary* currentUserRecordsDictionary = [NSKeyedUnarchiver unarchiveObjectWithData:currentUserRecordsData];
+        if ([currentUserRecordsDictionary objectForKey:self.dateButton.titleLabel.text]) {
             [[[UIAlertView alloc] initWithTitle:@"Warning" message:[NSString stringWithFormat: @"You already sent a record for %@. Do you still want to send this ?",self.dateButton.titleLabel.text] delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Send", nil] show];
         } else{
             [self checkDate];

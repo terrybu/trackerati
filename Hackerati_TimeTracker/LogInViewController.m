@@ -359,7 +359,12 @@ static NSString *CellIdentifier = @"Cell";
 #pragma mark - Table View and Data Source Delegate
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    return [self.currentUserClientsArray count];
+    if (self.currentUserClientsArray.count > 0) {
+        self.tableView.backgroundView.hidden = YES;
+        return [self.currentUserClientsArray count];
+    }
+    self.tableView.backgroundView.hidden = NO;
+    return 0;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{

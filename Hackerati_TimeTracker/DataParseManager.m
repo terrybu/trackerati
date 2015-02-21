@@ -43,87 +43,16 @@
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
                 if (snapshot.value && [snapshot.value isKindOfClass:[NSDictionary class]]) {
                     NSDictionary *rawMasterClientList = snapshot.value;
-                    
                     [[NSUserDefaults standardUserDefaults] setObject:rawMasterClientList forKey:[HConstants kRawMasterClientList]];
                     [[NSUserDefaults standardUserDefaults]synchronize];
-                    
-                    __block NSMutableArray *masterClientList = [[NSMutableArray alloc]init];
-                    [rawMasterClientList enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop){
-                        __block Client *newClient = [[Client alloc]init];
-                        [newClient setClientName:(NSString*)key];
-                        if ([obj isKindOfClass:[NSDictionary class]]) {
-                            NSDictionary *objProject = (NSDictionary*)obj;
-                            [objProject enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop){
-                                __block Project *newProject = [[Project alloc]init];
-                                [newProject setProjectName:(NSString*)key];
-                                if ([obj isKindOfClass:[NSDictionary class]]) {
-                                    NSDictionary *objFireBaseKey = (NSDictionary*)obj;
-                                    [objFireBaseKey enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop){
-                                        __block User *newUser = [[User alloc]init];
-                                        if ([obj isKindOfClass:[NSDictionary class]] && [obj objectForKey:@"name"]) {
-                                            [newUser setUniqueFireBaseIdentifier:(NSString*)key];
-                                            [newUser setUserName:(NSString*)[obj objectForKey:@"name"]];
-                                            [newProject addUser:newUser];
-                                        }
-                                    }];
-                                }
-                                [newClient addProject:newProject];
-                            }];
-                        }
-                        [masterClientList addObject:newClient];
-                    }];
-                    
-                    NSData *masterClientListData = [NSKeyedArchiver archivedDataWithRootObject:masterClientList];
-                    [[NSUserDefaults standardUserDefaults]setObject:masterClientListData forKey:[HConstants kMasterClientList]];
-                    [[NSUserDefaults standardUserDefaults]synchronize];
-                    
-                    NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants KCurrentUser]];
-                    __block NSMutableArray *currentUserClientList = [[NSMutableArray alloc]init];
-                    [rawMasterClientList enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop){
-                        __block Client *newClient = [[Client alloc]init];
-                        [newClient setClientName:(NSString*)key];
-                        if ([obj isKindOfClass:[NSDictionary class]]) {
-                            NSDictionary *objProject = (NSDictionary*)obj;
-                            [objProject enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop){
-                                __block Project *newProject = [[Project alloc]init];
-                                [newProject setProjectName:(NSString*)key];
-                                if ([obj isKindOfClass:[NSDictionary class]]) {
-                                    NSDictionary *objFireBaseKey = (NSDictionary*)obj;
-                                    [objFireBaseKey enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop){
-                                        __block User *newUser = [[User alloc]init];
-                                        if ([obj isKindOfClass:[NSDictionary class]] && [obj objectForKey:@"name"] && [[obj objectForKey:@"name"]isEqualToString:username] ) {
-                                            [newUser setUserName:(NSString*)[obj objectForKey:@"name"]];
-                                            [newUser setUniqueFireBaseIdentifier:(NSString*)key];
-                                        } else {
-                                            newUser = nil;
-                                        }
-                                        if (newUser) {
-                                            [newProject addUser:newUser];
-                                        }
-                                    }];
-                                    
-                                }
-                                if (![newProject isUsersEmpty]) {
-                                    [newClient addProject:newProject];
-                                }
-                            }];
-                        }
-                        if (![newClient isProjectsEmpty]) {
-                            [currentUserClientList addObject:newClient];
-                        }
-                    }];
-                    
-                    NSData *currentUserClientListData = [NSKeyedArchiver archivedDataWithRootObject:currentUserClientList];
-                    [[NSUserDefaults standardUserDefaults]setObject:currentUserClientListData forKey:[HConstants KcurrentUserClientList]];
-                    [[NSUserDefaults standardUserDefaults]synchronize];
-                    
-                    
+                    [self saveMasterClientListInUserDefaults:rawMasterClientList];
+                    [self saveCurrentUserClientListInUserDefaults:rawMasterClientList];
+                
                     if ([self.delegate respondsToSelector:@selector(loadData)]) {
                         dispatch_async(dispatch_get_main_queue(), ^{
                             [self.delegate loadData];
                         });
                     }
-                    
                 }
                 else {
                     
@@ -142,6 +71,80 @@
         }];
         [self getUserRecords];
     });
+}
+
+- (void) saveMasterClientListInUserDefaults: (NSDictionary *) rawMasterClientList {
+    __block NSMutableArray *masterClientList = [[NSMutableArray alloc]init];
+    [rawMasterClientList enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop){
+        __block Client *newClient = [[Client alloc]init];
+        [newClient setClientName:(NSString*)key];
+        if ([obj isKindOfClass:[NSDictionary class]]) {
+            NSDictionary *objProject = (NSDictionary*)obj;
+            [objProject enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop){
+                __block Project *newProject = [[Project alloc]init];
+                [newProject setProjectName:(NSString*)key];
+                if ([obj isKindOfClass:[NSDictionary class]]) {
+                    NSDictionary *objFireBaseKey = (NSDictionary*)obj;
+                    [objFireBaseKey enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop){
+                        __block User *newUser = [[User alloc]init];
+                        if ([obj isKindOfClass:[NSDictionary class]] && [obj objectForKey:@"name"]) {
+                            [newUser setUniqueFireBaseIdentifier:(NSString*)key];
+                            [newUser setUserName:(NSString*)[obj objectForKey:@"name"]];
+                            [newProject addUser:newUser];
+                        }
+                    }];
+                }
+                [newClient addProject:newProject];
+            }];
+        }
+        [masterClientList addObject:newClient];
+    }];
+    
+    NSData *masterClientListData = [NSKeyedArchiver archivedDataWithRootObject:masterClientList];
+    [[NSUserDefaults standardUserDefaults]setObject:masterClientListData forKey:[HConstants kMasterClientList]];
+    [[NSUserDefaults standardUserDefaults]synchronize];
+}
+
+- (void) saveCurrentUserClientListInUserDefaults: (NSDictionary *) rawMasterClientList {
+    NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants KCurrentUser]];
+    __block NSMutableArray *currentUserClientList = [[NSMutableArray alloc]init];
+    [rawMasterClientList enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop){
+        __block Client *newClient = [[Client alloc]init];
+        [newClient setClientName:(NSString*)key];
+        if ([obj isKindOfClass:[NSDictionary class]]) {
+            NSDictionary *objProject = (NSDictionary*)obj;
+            [objProject enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop){
+                __block Project *newProject = [[Project alloc]init];
+                [newProject setProjectName:(NSString*)key];
+                if ([obj isKindOfClass:[NSDictionary class]]) {
+                    NSDictionary *objFireBaseKey = (NSDictionary*)obj;
+                    [objFireBaseKey enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop){
+                        __block User *newUser = [[User alloc]init];
+                        if ([obj isKindOfClass:[NSDictionary class]] && [obj objectForKey:@"name"] && [[obj objectForKey:@"name"]isEqualToString:username] ) {
+                            [newUser setUserName:(NSString*)[obj objectForKey:@"name"]];
+                            [newUser setUniqueFireBaseIdentifier:(NSString*)key];
+                        } else {
+                            newUser = nil;
+                        }
+                        if (newUser) {
+                            [newProject addUser:newUser];
+                        }
+                    }];
+                    
+                }
+                if (![newProject isUsersEmpty]) {
+                    [newClient addProject:newProject];
+                }
+            }];
+        }
+        if (![newClient isProjectsEmpty]) {
+            [currentUserClientList addObject:newClient];
+        }
+    }];
+    
+    NSData *currentUserClientListData = [NSKeyedArchiver archivedDataWithRootObject:currentUserClientList];
+    [[NSUserDefaults standardUserDefaults]setObject:currentUserClientListData forKey:[HConstants KcurrentUserClientList]];
+    [[NSUserDefaults standardUserDefaults]synchronize];
 }
 
 - (void) getUserRecords{

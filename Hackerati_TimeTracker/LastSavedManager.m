@@ -26,7 +26,8 @@
     if (!mutableLastSavedInfo || [mutableLastSavedInfo count] == 0) {
         mutableLastSavedInfo = [NSMutableArray new];
         [mutableLastSavedInfo addObject:record];
-    } else {
+    }
+    else {
         [mutableLastSavedInfo enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop){
             NSDictionary *tempRecord = (NSDictionary*)obj;
             if ([[tempRecord objectForKey:[HConstants kClient]]isEqualToString:(NSString*)[record objectForKey:[HConstants kClient]]] && [[tempRecord objectForKey:[HConstants kProject]]isEqualToString:(NSString*)[record objectForKey:[HConstants kProject]]]) {

@@ -104,13 +104,11 @@ static NSString *CellIdentifier = @"Cell";
     
     //then we need to check if the current user had clients already selected. In that case, we put the checkmark
     if (self.currentUserClientsArray.count > 0) {
-        Client *currentUserClient = [self.currentUserClientsArray objectAtIndex:indexPath.row];
-        Project *currentUserProject = [currentUserClient projectAtIndex:indexPath.row];
-        if ([masterProject.projectName isEqualToString:currentUserProject.projectName]) {
-            cell.accessoryView = [[ UIImageView alloc ] initWithImage:[UIImage imageNamed:@"CheckMark.png"]];
-        } else {
-            cell.accessoryView = nil;
-        }
+//        if ([masterProject.projectName isEqualToString:currentUserProject.projectName]) {
+//            cell.accessoryView = [[ UIImageView alloc ] initWithImage:[UIImage imageNamed:@"CheckMark.png"]];
+//        } else {
+//            cell.accessoryView = nil;
+//        }
     }
         
     return cell;
@@ -131,13 +129,16 @@ static NSString *CellIdentifier = @"Cell";
     Client *masterClient = [self.masterClientsArray objectAtIndex:indexPath.section];
     Project *masterSelectedProject = [masterClient projectAtIndex:indexPath.row];
     
+    NSLog(@"%@", masterClient);
+    NSLog(@"%@", self.currentUserClientsArray[0]);
+    
     if (cell.accessoryView != nil) {
         //if it already had a checkmark, then we get rid of it and delete it from firebase
-        
         NSLog(@"current user clients array: %@", self.currentUserClientsArray.description);
         
         cell.accessoryView = nil;
         if (self.currentUserClientsArray.count > 0) {
+            //this needs fix below - indexPath.section doesn't make sense here
             Client *selectedCurrentUserClient = [self.currentUserClientsArray objectAtIndex:indexPath.section];
             Project *selectedCurrentUserProject = [selectedCurrentUserClient projectAtIndex:indexPath.row];
             [self removeUserFromSelectedProject:selectedCurrentUserClient project:selectedCurrentUserProject];
@@ -177,7 +178,7 @@ static NSString *CellIdentifier = @"Cell";
     //By hitting loginSuccessful here, we can make sure data gets refreshed when we add, so delete works properly
     
     [[DataParseManager sharedManager] loginSuccessful];
-    [self refreshMasterClientsArrayAndCurrentUserClientsArray];
+//    [self refreshMasterClientsArrayAndCurrentUserClientsArray];
 }
 
 - (void) sendUsernameToProjectOnFireBase: (NSString *) client project: (NSString *) project{

@@ -11,11 +11,12 @@
 #import "HConstants.h"
 #import "LogInManager.h"
 #import "RecordDetailViewController.h"
+#import "Record.h"
 
 @interface HistoryViewController ()<RecordTableViewCellProtocol>
 
-@property (nonatomic, strong) NSDictionary *history;
-@property (nonatomic, strong) NSArray* keys;
+@property (nonatomic, strong) NSDictionary *historyOfRecords;
+@property (nonatomic, strong) NSArray* dateKeys;
 @property (nonatomic, strong) NSIndexPath* selectedIndexPath;
 @property (nonatomic, strong) RecordDetailViewController *recordDetailViewController;
 
@@ -36,9 +37,9 @@ static NSString *cellIdentifier = @"RecordTableViewCell";
 
 - (void) viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-   
-    self.history = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants KSanitizedCurrentUserRecords]];
-//    self.keys = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants KSanitizedCurrentUserRecordsKeys]];
+    NSData *currentUserRecordsData = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants KSanitizedCurrentUserRecords]];
+    self.historyOfRecords = [NSKeyedUnarchiver unarchiveObjectWithData:currentUserRecordsData];
+    self.dateKeys = [self.historyOfRecords allKeys];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -58,13 +59,14 @@ static NSString *cellIdentifier = @"RecordTableViewCell";
 
 -(void)updateNewRecords{
     dispatch_async(dispatch_get_main_queue(), ^{
-        self.history = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants KSanitizedCurrentUserRecords]];
-//        self.keys = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants KSanitizedCurrentUserRecordsKeys]];
-
+        NSData *currentUserRecordsData = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants KSanitizedCurrentUserRecords]];
+        self.historyOfRecords = [NSKeyedUnarchiver unarchiveObjectWithData:currentUserRecordsData];
+        self.dateKeys = [self.historyOfRecords allKeys];
+        
         if (self.recordDetailViewController && self.selectedIndexPath && self.selectedIndexPath.row >= 0 && self.selectedIndexPath.section >= 0){
-            if ([self.keys count] > self.selectedIndexPath.section && [self.history objectForKey:[self.keys objectAtIndex:self.selectedIndexPath.section]]
-                && [((NSArray*)[self.history objectForKey:[self.keys objectAtIndex:self.selectedIndexPath.section]]) count] > self.selectedIndexPath.row) {
-                self.recordDetailViewController.record = [((NSArray*)[self.history objectForKey:[self.keys objectAtIndex:self.selectedIndexPath.section]])objectAtIndex:self.selectedIndexPath.row];
+            if ([self.dateKeys count] > self.selectedIndexPath.section && [self.historyOfRecords objectForKey:[self.dateKeys objectAtIndex:self.selectedIndexPath.section]]
+                && [((NSArray*)[self.historyOfRecords objectForKey:[self.dateKeys objectAtIndex:self.selectedIndexPath.section]]) count] > self.selectedIndexPath.row) {
+                self.recordDetailViewController.record = [((NSArray*)[self.historyOfRecords objectForKey:[self.dateKeys objectAtIndex:self.selectedIndexPath.section]])objectAtIndex:self.selectedIndexPath.row];
             }
         }
         
@@ -82,46 +84,44 @@ static NSString *cellIdentifier = @"RecordTableViewCell";
 }
 
 #pragma mark - Record TableView Cell Delegate
-
 -(void)didClickDetailButton:(NSIndexPath*)indexPath{
     self.selectedIndexPath = indexPath;
     self.recordDetailViewController =[[RecordDetailViewController alloc]initWithNibName:@"RecordDetailViewController" bundle:nil];
-    self.recordDetailViewController.record = [((NSArray*)[self.history objectForKey:[self.keys objectAtIndex:indexPath.section]])objectAtIndex:indexPath.row];
+    self.recordDetailViewController.record = [((NSArray*)[self.historyOfRecords objectForKey:[self.dateKeys objectAtIndex:indexPath.section]])objectAtIndex:indexPath.row];
     [self.navigationController pushViewController:self.recordDetailViewController animated:YES];
 }
 
+
 #pragma mark - Table View and Data Source Delegate
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
+    return [self.dateKeys count];
+}
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return [[self.history objectForKey:[self.keys objectAtIndex:section]]count];
+    return [self.historyOfRecords count];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     return 95.0f;
 }
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    return [self.keys count];
-}
-
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
-    return [self.keys objectAtIndex:section];
+    return [self.dateKeys objectAtIndex:section];
 }
 
-// Row display. Implementers should *always* try to reuse cells by setting each cell's reuseIdentifier and querying for available reusable cells with dequeueReusableCellWithIdentifier:
-// Cell gets various attributes set automatically based on table (separators) and data source (accessory views, editing controls)
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     RecordTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+    Record *record = [[self.historyOfRecords objectForKey:[self.dateKeys objectAtIndex:indexPath.section]]objectAtIndex:indexPath.row];
     
-    NSDictionary *record = [((NSArray*)[self.history objectForKey:[self.keys objectAtIndex:indexPath.section]])objectAtIndex:indexPath.row];
     
-    [cell setclientNameLabelString:[record objectForKey:[HConstants kClient]]];
-    [cell setprojectNameLabelString:[record objectForKey:[HConstants kProject]]];
-    [cell sethourLabelString:[[record objectForKey:[HConstants kHour]] isKindOfClass:[NSNumber class]]?[NSString stringWithFormat:@"%@",[record objectForKey:[HConstants kHour]]]:[record objectForKey:[HConstants kHour]]];
+    [cell setclientNameLabelString:record.clientName];
+    [cell setprojectNameLabelString:record.projectName];
+    [cell sethourLabelString:record.hourOfTheService];
     cell.indexPath = indexPath;
     cell.delegate = self;
+    
     return cell;
 }
 
