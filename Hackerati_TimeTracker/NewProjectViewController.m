@@ -21,7 +21,7 @@
 @property (strong, nonatomic) NSMutableArray *masterClientsArray;
 @property (strong, nonatomic) NSMutableArray *currentUserClientsArray;
 @property (strong, nonatomic) Firebase *fireBase;
-@property (strong, nonatomic) NSSet *setOfCurrentUserClientNames;;
+@property (strong, nonatomic) NSMutableSet *setOfCurrentUserClientNames;;
 @property (strong, nonatomic) NSMutableSet *setOfCurrentUserProjectNames;
 
 @end
@@ -52,7 +52,7 @@ static NSString *CellIdentifier = @"Cell";
         self.masterClientsArray = [NSKeyedUnarchiver unarchiveObjectWithData:masterClientsData];
         NSData *currentUserClientsData = [[NSUserDefaults standardUserDefaults]objectForKey:[HConstants KcurrentUserClientList]];
         self.currentUserClientsArray = [NSKeyedUnarchiver unarchiveObjectWithData:currentUserClientsData];
-        self.setOfCurrentUserClientNames = [NSSet setWithArray:[self.currentUserClientsArray valueForKey:@"clientName"]];
+        self.setOfCurrentUserClientNames = [NSMutableSet setWithArray:[self.currentUserClientsArray valueForKey:@"clientName"]];
         self.setOfCurrentUserProjectNames = [[NSMutableSet alloc]init];
         for (Client *client in self.currentUserClientsArray) {
             NSArray *arrayOfProjectNamesOfClient = [client.projects valueForKey:@"projectName"];
@@ -61,7 +61,6 @@ static NSString *CellIdentifier = @"Cell";
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.tableView reloadData];
         });
-        NSLog(self.setOfCurrentUserProjectNames.description);
     });
 }
 
@@ -137,13 +136,7 @@ static NSString *CellIdentifier = @"Cell";
         //this is project/checkmark REMOVING logic
         //if project already had a checkmark, then we get rid of project and delete it from firebase
         cell.accessoryView = nil;
-        
-        //
-        //need logic here
-        //
-        
-        
-        
+        [self removeUserFromSelectedProject:masterSelectedClient project:masterSelectedProject];
         UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"Removed Project" message:[NSString stringWithFormat:@"Project %@ was removed", masterSelectedProject.projectName] delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
         [alertView show];
         
@@ -185,6 +178,19 @@ static NSString *CellIdentifier = @"Cell";
     [[DataParseManager sharedManager] getAllDataFromFireBaseAfterLoginSuccess];
 }
 
+- (Client *) findCorrespondingClientInCurrentUserClientList: (Client *) masterClient {
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"clientName contains[c] %@", masterClient.clientName];
+    NSArray *filtered = [self.currentUserClientsArray filteredArrayUsingPredicate:predicate];
+    NSLog(@"the one found from doing predicate filter of currentuserarray: %@", filtered[0]);
+    NSLog(@"all the current user clients array: %@", self.currentUserClientsArray.description);
+    return filtered[0];
+}
+
+- (Project *) findCorrespondingProjectFromCorrespondingClient: (Client *) correspondingClient masterProject: (Project *) masterProject{
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"projectName contains[c] %@", masterProject.projectName];
+    return [correspondingClient.projects filteredArrayUsingPredicate:predicate][0];
+}
+
 - (void) sendUsernameToProjectOnFireBase: (NSString *) client project: (NSString *) project{
     self.fireBase = [[Firebase alloc]initWithUrl:[NSString stringWithFormat:@"%@/Projects/%@/%@",[HConstants kFireBaseURL],client,project]];
     NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants KCurrentUser]];
@@ -193,11 +199,19 @@ static NSString *CellIdentifier = @"Cell";
     [alertView show];
 }
 
--(void)removeUserFromSelectedProject: (Client *) client project: (Project *) project {
+-(void)removeUserFromSelectedProject: (Client *) masterClient project: (Project *) masterProject {
     __weak typeof(self) weakSelf = self;
+    Client *client = [self findCorrespondingClientInCurrentUserClientList:masterClient];
+    NSLog(@"client from remove method %@", client);
+    Project *project = [self findCorrespondingProjectFromCorrespondingClient:client masterProject:masterProject];
     [client.projects removeObject:project];
+    
+    //we also remove from set of names
+    [self.setOfCurrentUserProjectNames removeObject:project.projectName];
+    
     if ([client.projects count]== 0) {
         [self.currentUserClientsArray removeObject:client];
+        [self.setOfCurrentUserClientNames removeObject:client.clientName];
     }
      NSData *currentUserClientListData = [NSKeyedArchiver archivedDataWithRootObject:self.currentUserClientsArray];
     [[NSUserDefaults standardUserDefaults] setObject:currentUserClientListData forKey:[HConstants KcurrentUserClientList]];

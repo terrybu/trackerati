@@ -104,7 +104,7 @@
         //Alphabetical sorting logic for projects within a client
         NSArray *sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"projectName" ascending:YES]];
         NSArray *sortedProjectsArray = [newClient.projects sortedArrayUsingDescriptors:sortDescriptors];
-        newClient.projects = [sortedProjectsArray mutableCopy];
+        newClient.projects = (NSMutableArray *) [sortedProjectsArray mutableCopy];
         [masterClientList addObject:newClient];
     }];
     
@@ -148,7 +148,7 @@
             //Alphabetical sorting logic for projects within a client
             NSArray *sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"projectName" ascending:YES]];
             NSArray *sortedProjectsArray = [newClient.projects sortedArrayUsingDescriptors:sortDescriptors];
-            newClient.projects = [sortedProjectsArray mutableCopy];
+            newClient.projects = (NSMutableArray *)[sortedProjectsArray mutableCopy];
         }
         if (![newClient isProjectsEmpty]) {
             [currentUserClientList addObject:newClient];
@@ -162,7 +162,7 @@
 
 - (NSData *) returnArchivedDataOfSortedArrayByDescriptor: (NSArray *) arrayToSort sortDescriptor: (NSString *) descriptor {
     NSArray *sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:descriptor ascending:YES]];
-    NSArray *sortedArray = [arrayToSort sortedArrayUsingDescriptors:sortDescriptors];
+    NSMutableArray *sortedArray = (NSMutableArray *) [[arrayToSort sortedArrayUsingDescriptors:sortDescriptors] mutableCopy];
     NSData *archivedArray = [NSKeyedArchiver archivedDataWithRootObject:sortedArray];
     return archivedArray;
 }
