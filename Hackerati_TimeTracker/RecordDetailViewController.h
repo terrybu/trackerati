@@ -7,9 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Record.h"
 
 @interface RecordDetailViewController : UIViewController
 
-@property (nonatomic, strong) NSMutableDictionary *record;
+@property (nonatomic, strong) Record *record;
 
 @end

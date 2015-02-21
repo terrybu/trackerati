@@ -179,7 +179,7 @@
                     [records enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop){
                         if ([obj isKindOfClass:[NSDictionary class]]) {
                             Record *newRecord = [[Record alloc]init];
-                            newRecord.firebaseUniqueKey = (NSString*)key;
+                            newRecord.uniqueFireBaseIdentifier = (NSString*)key;
                             
                             if ([obj objectForKey:[HConstants kClient]]) {
                                 newRecord.clientName = (NSString*)[obj objectForKey:[HConstants kClient]];

@@ -17,7 +17,7 @@
 @property (nonatomic, strong) NSString *commentOnService;
 @property (nonatomic, strong) NSString *statusOfUser;
 @property (nonatomic, strong) NSString *typeOfService;
-@property (nonatomic, strong) NSString *firebaseUniqueKey;
+@property (nonatomic, strong) NSString *uniqueFireBaseIdentifier;
 
 -(id)init;
 

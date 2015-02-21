@@ -126,24 +126,24 @@
         }
         
     } else{
-        self.projectLabel.text = [self.existingRecord objectForKey:[HConstants kProject]];
-        self.projectName = [self.existingRecord objectForKey:[HConstants kProject]];
-        self.clientLabel.text = [self.existingRecord objectForKey:[HConstants kClient]];
-        self.clientName = [self.existingRecord objectForKey:[HConstants kClient]];
-        [self.dateButton setTitle:[self.existingRecord objectForKey:[HConstants kDate]] forState:UIControlStateNormal];
-        self.hourTextField.text = [self.existingRecord objectForKey:[HConstants kHour]];
-        if ([self.existingRecord objectForKey:[HConstants kStatus]] && [[self.existingRecord objectForKey:[HConstants kStatus]]isEqualToString:@"1"] ) {
+        self.projectLabel.text = self.projectName = self.existingRecord.projectName;
+        self.clientLabel.text = self.clientName = self.existingRecord.clientName;
+        [self.dateButton setTitle:self.existingRecord.dateOfTheService forState:UIControlStateNormal];
+        self.hourTextField.text = self.existingRecord.hourOfTheService;
+        if (self.existingRecord.statusOfUser && [self.existingRecord.statusOfUser isEqualToString:@"1"] ) {
             [self.statusButton setTitle:[HConstants KfullTimeEmployee] forState:UIControlStateNormal];
         } else{
             [self.statusButton setTitle:[HConstants KpartTimeEmployee] forState:UIControlStateNormal];
         }
-        if ([self.existingRecord objectForKey:[HConstants kType]] && [[self.existingRecord objectForKey:[HConstants kType]]isEqualToString:@"1"] ) {
+        
+        if (self.existingRecord.typeOfService && [self.existingRecord.typeOfService isEqualToString:@"1"] ) {
             [self.typeButton setTitle:[HConstants KbillableHour] forState:UIControlStateNormal];
         }else{
             [self.typeButton setTitle:[HConstants KunbillableHour] forState:UIControlStateNormal];
         }
-        if ([self.existingRecord objectForKey:[HConstants kComment]]) {
-            self.commentTextView.text = [self.existingRecord objectForKey:[HConstants kComment]];
+        
+        if (self.existingRecord.commentOnService) {
+            self.commentTextView.text = self.existingRecord.commentOnService;
         }
     }
 }
@@ -310,7 +310,7 @@
             }
         } else{
             NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants KCurrentUser]];
-            NSString *uniqueAddress = (NSString*)[self.existingRecord objectForKey:@"key"];
+            NSString *uniqueAddress = self.existingRecord.uniqueFireBaseIdentifier;
             self.fireBase = [[Firebase alloc]initWithUrl:[NSString stringWithFormat:@"%@/Users/%@/records/%@",[HConstants kFireBaseURL],username,uniqueAddress]];
             if (self.commentTextView.text && ([self.commentTextView.text length] > 0)) {
                 [self.fireBase updateChildValues:@{[HConstants kClient]:self.clientName,[HConstants kDate]:self.dateButton.titleLabel.text,[HConstants kHour]:self.hourTextField.text,[HConstants kProject]:self.projectName,[HConstants kComment]:self.commentTextView.text,[HConstants kStatus]:(([self.statusButton.titleLabel.text isEqualToString:[HConstants KfullTimeEmployee]])?@"1":@"0"),[HConstants kType]:(([self.typeButton.titleLabel.text isEqualToString:[HConstants KbillableHour]])?@"1":@"0")}];

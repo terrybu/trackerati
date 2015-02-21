@@ -20,7 +20,7 @@
         self.commentOnService = nil;
         self.statusOfUser = nil;
         self.typeOfService = nil;
-        self.firebaseUniqueKey = nil;
+        self.uniqueFireBaseIdentifier = nil;
     }
     return self;
 }
@@ -52,7 +52,7 @@
     self.commentOnService = commentOnService;
     self.statusOfUser = statusOfUser;
     self.typeOfService = typeOfService;
-    self.firebaseUniqueKey = firebaseUniqueKey;
+    self.uniqueFireBaseIdentifier = firebaseUniqueKey;
     return self;
 }
 

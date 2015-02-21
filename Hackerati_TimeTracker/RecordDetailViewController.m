@@ -71,8 +71,8 @@
     [super viewWillAppear:animated];
     [self setElements];
 
-    if ([self.record objectForKey:@"date"]) {
-        NSString *dateString = [self.record objectForKey:@"date"];
+    if (self.record.dateOfTheService) {
+        NSString *dateString = self.record.dateOfTheService;
         NSDate *dateFromString = [self.formatter dateFromString:dateString];
         int addDaysCount = 8;
         NSDateComponents *dateComponents = [[NSDateComponents alloc] init];
@@ -107,22 +107,26 @@
 */
 
 -(void)setElements{
-    self.title = [self.record objectForKey:[HConstants kDate]];
-    self.clientLabel.text = [self.record objectForKey:[HConstants kClient]];
-    if ([self.record objectForKey:[HConstants kStatus]] && [[self.record objectForKey:[HConstants kStatus]]isEqualToString:@"1"] ) {
+    self.title = self.record.dateOfTheService;
+    self.clientLabel.text = self.record.clientName;
+    if (self.record.statusOfUser && [self.record.statusOfUser isEqualToString:@"1"] ) {
         self.statusLabel.text = [HConstants KfullTimeEmployee];
-    } else{
+    }
+    else{
         self.statusLabel.text = [HConstants KpartTimeEmployee];
     }
-    if ([self.record objectForKey:[HConstants kType]] && [[self.record objectForKey:[HConstants kType]]isEqualToString:@"1"] ) {
+    
+    if (self.record.typeOfService && [self.record.typeOfService isEqualToString:@"1"] ) {
         self.typeLabel.text = [HConstants KbillableHour];
-    }else{
+    }
+    else{
         self.typeLabel.text = [HConstants KunbillableHour];
     }
-    self.projectLabel.text = [self.record objectForKey:[HConstants kProject]];
-    self.hourLabel.text = [[self.record objectForKey:[HConstants kHour]] isKindOfClass:[NSNumber class]]?[NSString stringWithFormat:@"%@",[self.record objectForKey:[HConstants kHour]]]:[self.record objectForKey:[HConstants kHour]];
-    if ([self.record objectForKey:[HConstants kComment]]) {
-        self.commentLabel.text = [self.record objectForKey:[HConstants kComment]];
+    
+    self.projectLabel.text = self.record.projectName;
+    self.hourLabel.text = [self.record.hourOfTheService isKindOfClass:[NSNumber class]]?[NSString stringWithFormat:@"%@",self.record.hourOfTheService]:self.record.hourOfTheService;
+    if (self.record.commentOnService) {
+        self.commentLabel.text = self.record.commentOnService;
     } else{
         self.commentLabel.text = nil;
     }
@@ -150,7 +154,7 @@
 
 -(void)deleteRecord{
     NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants KCurrentUser]];
-    NSString *uniqueAddress = (NSString*)[self.record objectForKey:@"key"];    
+    NSString *uniqueAddress = self.record.uniqueFireBaseIdentifier;
     self.fireBase = [[Firebase alloc]initWithUrl:[NSString stringWithFormat:@"%@/Users/%@/records/%@",[HConstants kFireBaseURL],username,uniqueAddress]];
     [self.fireBase removeValue];
 }
