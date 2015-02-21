@@ -17,7 +17,6 @@
 
 @property (nonatomic, strong) NSDictionary *historyOfRecords;
 @property (nonatomic, strong) NSArray* dateKeys;
-@property (nonatomic, strong) NSIndexPath* selectedIndexPath;
 @property (nonatomic, strong) RecordDetailViewController *recordDetailViewController;
 
 @end
@@ -47,29 +46,19 @@ static NSString *cellIdentifier = @"RecordTableViewCell";
     // Dispose of any resources that can be recreated.
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 -(void)updateNewRecords{
     dispatch_async(dispatch_get_main_queue(), ^{
         NSData *currentUserRecordsData = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants KSanitizedCurrentUserRecords]];
         self.historyOfRecords = [NSKeyedUnarchiver unarchiveObjectWithData:currentUserRecordsData];
         self.dateKeys = [self.historyOfRecords allKeys];
-        
-        if (self.recordDetailViewController && self.selectedIndexPath && self.selectedIndexPath.row >= 0 && self.selectedIndexPath.section >= 0){
-            if ([self.dateKeys count] > self.selectedIndexPath.section && [self.historyOfRecords objectForKey:[self.dateKeys objectAtIndex:self.selectedIndexPath.section]]
-                && [((NSArray*)[self.historyOfRecords objectForKey:[self.dateKeys objectAtIndex:self.selectedIndexPath.section]]) count] > self.selectedIndexPath.row) {
-                self.recordDetailViewController.record = [((NSArray*)[self.historyOfRecords objectForKey:[self.dateKeys objectAtIndex:self.selectedIndexPath.section]])objectAtIndex:self.selectedIndexPath.row];
-            }
+        for (id key in self.historyOfRecords) {
+            NSMutableArray *results = [self.historyOfRecords objectForKey:key];
+            Record *record = results[0];
+            if ([record.uniqueFireBaseIdentifier isEqualToString:@"1"])
+                NSLog(@"that's a string of 1");
+            NSLog(@"%@", [(Record *)results[0] uniqueFireBaseIdentifier]);
         }
-        
         [self.tableView reloadData];
     });
 }
@@ -85,7 +74,6 @@ static NSString *cellIdentifier = @"RecordTableViewCell";
 
 #pragma mark - Record TableView Cell Delegate
 -(void)didClickDetailButton:(NSIndexPath*)indexPath{
-    self.selectedIndexPath = indexPath;
     self.recordDetailViewController =[[RecordDetailViewController alloc]initWithNibName:@"RecordDetailViewController" bundle:nil];
     self.recordDetailViewController.record = [((NSArray*)[self.historyOfRecords objectForKey:[self.dateKeys objectAtIndex:indexPath.section]])objectAtIndex:indexPath.row];
     [self.navigationController pushViewController:self.recordDetailViewController animated:YES];
@@ -115,13 +103,9 @@ static NSString *cellIdentifier = @"RecordTableViewCell";
     
     RecordTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     
-    NSLog(@"historyOfRecords: %@", self.historyOfRecords);
-
     NSMutableArray *records = [self.historyOfRecords objectForKey:[self.dateKeys objectAtIndex:indexPath.section]];
-    NSLog(@"%@", records.description);
     
     Record *record = [records objectAtIndex:indexPath.row];
-    
     [cell setclientNameLabelString:record.clientName];
     [cell setprojectNameLabelString:record.projectName];
     [cell sethourLabelString:record.hourOfTheService];

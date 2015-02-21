@@ -221,8 +221,13 @@
                     
                         }
                     }];
-                    
                     NSData *sanitizedCurrentUserRecordsData = [NSKeyedArchiver archivedDataWithRootObject:sanitizedCurrentUserRecords];
+                    
+                    for (id key in sanitizedCurrentUserRecords) {
+                        NSMutableArray *results = [sanitizedCurrentUserRecords objectForKey:key];
+                        NSLog(@"%@", [(Record *)results[0] uniqueFireBaseIdentifier]);
+                    }
+                    
                     [[NSUserDefaults standardUserDefaults] setObject:sanitizedCurrentUserRecordsData forKey:[HConstants KSanitizedCurrentUserRecords]];
                     [[NSUserDefaults standardUserDefaults] synchronize];
                     [[NSNotificationCenter defaultCenter] postNotificationName:kStartGetUserRecordsProcessNotification object:nil];
