@@ -90,8 +90,8 @@
                                                                
                                                            } else {
                                                                // User is now logged in!
-                                                               if ([weakSelf.delegate respondsToSelector:@selector(loginSuccessful)]) {
-                                                                   [weakSelf.delegate loginSuccessful];
+                                                               if ([weakSelf.delegate respondsToSelector:@selector(getAllDataFromFireBaseAfterLoginSuccess)]) {
+                                                                   [weakSelf.delegate getAllDataFromFireBaseAfterLoginSuccess];
                                                                }
                                                            }
                                                        }];

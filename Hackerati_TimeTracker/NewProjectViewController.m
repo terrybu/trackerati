@@ -48,7 +48,9 @@ static NSString *CellIdentifier = @"Cell";
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         NSData *masterClientsData = [[NSUserDefaults standardUserDefaults]objectForKey:[HConstants kMasterClientList]];
         self.masterClientsArray = [NSKeyedUnarchiver unarchiveObjectWithData:masterClientsData];
-        NSLog(@"%@", self.masterClientsArray.description);
+        
+        for (Client* client in self.masterClientsArray)
+            NSLog(@"%@", client.clientName);
         
         NSData *currentUserClientsData = [[NSUserDefaults standardUserDefaults]objectForKey:[HConstants KcurrentUserClientList]];
         self.currentUserClientsArray = [NSKeyedUnarchiver unarchiveObjectWithData:currentUserClientsData];
@@ -102,13 +104,17 @@ static NSString *CellIdentifier = @"Cell";
     Project *masterProject = [masterClient projectAtIndex:indexPath.row];
     cell.textLabel.text = masterProject.projectName;
     
-    //then we need to check if the current user had clients already selected. In that case, we put the checkmark
+    //then we need to check if the current user had clients already selected. In that case, we put the checkmarks into those cells
     if (self.currentUserClientsArray.count > 0) {
-//        if ([masterProject.projectName isEqualToString:currentUserProject.projectName]) {
-//            cell.accessoryView = [[ UIImageView alloc ] initWithImage:[UIImage imageNamed:@"CheckMark.png"]];
-//        } else {
-//            cell.accessoryView = nil;
-//        }
+        for (Client *client in self.currentUserClientsArray) {
+            if ([masterClient.clientName isEqualToString:client.clientName]) {
+                for (Project *project in client.projects) {
+                    if ([masterProject.projectName isEqualToString:project.projectName]) {
+                        cell.accessoryView =[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"CheckMark.png"]];
+                    }
+                }
+            }
+        }
     }
         
     return cell;
@@ -126,38 +132,38 @@ static NSString *CellIdentifier = @"Cell";
     [tableView deselectRowAtIndexPath:indexPath animated:YES]; //this is to never let the gray cell background stay
     MCSwipeTableViewCell *cell = (MCSwipeTableViewCell*)[tableView cellForRowAtIndexPath:indexPath];
     
-    Client *masterClient = [self.masterClientsArray objectAtIndex:indexPath.section];
-    Project *masterSelectedProject = [masterClient projectAtIndex:indexPath.row];
-    
-    NSLog(@"%@", masterClient);
-    NSLog(@"%@", self.currentUserClientsArray[0]);
+    Client *masterSelectedClient = [self.masterClientsArray objectAtIndex:indexPath.section];
+    Project *masterSelectedProject = [masterSelectedClient projectAtIndex:indexPath.row];
     
     if (cell.accessoryView != nil) {
-        //if it already had a checkmark, then we get rid of it and delete it from firebase
-        NSLog(@"current user clients array: %@", self.currentUserClientsArray.description);
-        
+        //this is project/checkmark REMOVING logic
+        //if project already had a checkmark, then we get rid of project and delete it from firebase
         cell.accessoryView = nil;
-        if (self.currentUserClientsArray.count > 0) {
-            //this needs fix below - indexPath.section doesn't make sense here
-            Client *selectedCurrentUserClient = [self.currentUserClientsArray objectAtIndex:indexPath.section];
-            Project *selectedCurrentUserProject = [selectedCurrentUserClient projectAtIndex:indexPath.row];
-            [self removeUserFromSelectedProject:selectedCurrentUserClient project:selectedCurrentUserProject];
-            UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"Removed Project" message:[NSString stringWithFormat:@"Project %@ was removed",selectedCurrentUserProject.projectName] delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
-            [alertView show];
-        }
+        
+        //
+        //need logic here
+        //
+        
+        
+        
+        UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"Removed Project" message:[NSString stringWithFormat:@"Project %@ was removed", masterSelectedProject.projectName] delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+        [alertView show];
+        
         return;
     }
     else {
+        //this is project/checkmark ADDING logic
+        
         //if, in our local cache, we've never had the current user select this client name, then we save it on user defaults AND send to firebase
         if (![self.currentUserClientsArray containsObject:masterSelectedProject]) {
             Client *newClient = [[Client alloc]init];
-            newClient.clientName = masterClient.clientName;
+            newClient.clientName = masterSelectedClient.clientName;
             [newClient.projects addObject: masterSelectedProject];
             [self.currentUserClientsArray addObject:newClient];
             NSData *currentUserClientListData = [NSKeyedArchiver archivedDataWithRootObject:self.currentUserClientsArray];
             [[NSUserDefaults standardUserDefaults] setObject:currentUserClientListData forKey:[HConstants KcurrentUserClientList]];
             [[NSUserDefaults standardUserDefaults]synchronize];
-            [self sendUsernameToProjectOnFireBase: masterClient.clientName project:masterSelectedProject.projectName];
+            [self sendUsernameToProjectOnFireBase: masterSelectedClient.clientName project:masterSelectedProject.projectName];
             cell.accessoryView =[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"CheckMark.png"]];
         }
         //On the contrary, if we already had the current user select this client name for a project before, check to see if particular PROJECT was selected before too and is in local cache
@@ -169,16 +175,16 @@ static NSString *CellIdentifier = @"Cell";
                 NSData *currentUserClientListData = [NSKeyedArchiver archivedDataWithRootObject:self.currentUserClientsArray];
                 [[NSUserDefaults standardUserDefaults] setObject:currentUserClientListData forKey:[HConstants KcurrentUserClientList]];
                 [[NSUserDefaults standardUserDefaults]synchronize];
-                [self sendUsernameToProjectOnFireBase: masterClient.clientName project:masterSelectedProject.projectName];
+                [self sendUsernameToProjectOnFireBase: masterSelectedClient.clientName project:masterSelectedProject.projectName];
                 cell.accessoryView =[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"CheckMark.png"]];
             }
         }
+
+        
     }
-    //2.19.2015 without hitting the data structure refreshing from loginSuccessful, we have a bug that doesn't allow you to delete right after you add something
-    //By hitting loginSuccessful here, we can make sure data gets refreshed when we add, so delete works properly
-    
-    [[DataParseManager sharedManager] loginSuccessful];
-//    [self refreshMasterClientsArrayAndCurrentUserClientsArray];
+    //2.19.2015 without refreshing data here, we have a bug that doesn't allow you to delete right after you add something
+    //By hitting DataParseManager here, we can make sure data gets refreshed when we add, so delete works properly
+    [[DataParseManager sharedManager] getAllDataFromFireBaseAfterLoginSuccess];
 }
 
 - (void) sendUsernameToProjectOnFireBase: (NSString *) client project: (NSString *) project{

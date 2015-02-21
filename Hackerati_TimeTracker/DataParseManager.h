@@ -21,7 +21,7 @@
 @property (nonatomic, weak) id <DataParseManagerProtocol> delegate;
 
 + (DataParseManager*) sharedManager;
-- (void) loginSuccessful;
+- (void) getAllDataFromFireBaseAfterLoginSuccess;
 - (void) manuallySetDelegate:(id<DataParseManagerProtocol>)delegate;
 - (void) getUserRecords;
 

@@ -222,7 +222,7 @@ static NSString *CellIdentifier = @"Cell";
         dispatch_async(dispatch_get_main_queue(), ^{
             [[FireBaseManager connectivityURLsharedFireBase] observeEventType:FEventTypeValue withBlock:^(FDataSnapshot *snapshot){
                 if([snapshot.value boolValue] && [[NSUserDefaults standardUserDefaults]objectForKey:[HConstants KCurrentUser]]) {
-                    [[DataParseManager sharedManager] loginSuccessful];
+                    [[DataParseManager sharedManager] getAllDataFromFireBaseAfterLoginSuccess];
                 } else {
                     [[NSNotificationCenter defaultCenter] postNotificationName:kStartLogInProcessNotification object:nil];
                 }

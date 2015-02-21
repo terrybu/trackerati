@@ -98,7 +98,7 @@ static NSString *cellIdentifier = @"RecordTableViewCell";
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return [self.historyOfRecords count];
+    return [self.historyOfRecords allKeys].count;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -113,8 +113,10 @@ static NSString *cellIdentifier = @"RecordTableViewCell";
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     RecordTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-    Record *record = [[self.historyOfRecords objectForKey:[self.dateKeys objectAtIndex:indexPath.section]]objectAtIndex:indexPath.row];
     
+    //Crashes here 
+    Record *record = [[self.historyOfRecords objectForKey:[self.dateKeys objectAtIndex:indexPath.section]]objectAtIndex:indexPath.row];
+    //
     
     [cell setclientNameLabelString:record.clientName];
     [cell setprojectNameLabelString:record.projectName];

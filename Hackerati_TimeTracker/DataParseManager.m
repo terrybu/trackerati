@@ -36,7 +36,7 @@
 //this is where all the main action of getting clients/projects from FireBase happens after login is successful
 //We convert them into Client, Project, User objects
 
-- (void) loginSuccessful{
+- (void) getAllDataFromFireBaseAfterLoginSuccess{
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         // Get all existing clients and projects
         [self.projects observeSingleEventOfType:FEventTypeValue withBlock:^(FDataSnapshot *snapshot) {
@@ -74,6 +74,10 @@
 }
 
 - (void) saveMasterClientListInUserDefaults: (NSDictionary *) rawMasterClientList {
+    
+    //debug
+    NSLog(rawMasterClientList.description);
+    
     __block NSMutableArray *masterClientList = [[NSMutableArray alloc]init];
     [rawMasterClientList enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop){
         __block Client *newClient = [[Client alloc]init];
@@ -97,10 +101,17 @@
                 [newClient addProject:newProject];
             }];
         }
+        //Alphabetical sorting logic for projects within a client
+        NSArray *sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"projectName" ascending:YES]];
+        NSArray *sortedProjectsArray = [newClient.projects sortedArrayUsingDescriptors:sortDescriptors];
+        newClient.projects = [sortedProjectsArray mutableCopy];
         [masterClientList addObject:newClient];
     }];
     
-    NSData *masterClientListData = [NSKeyedArchiver archivedDataWithRootObject:masterClientList];
+    //Alphabetical sorting logic for clients within master client list
+    NSArray *sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"clientName" ascending:YES]];
+    NSArray *sortedMasterClientList = [masterClientList sortedArrayUsingDescriptors:sortDescriptors];
+    NSData *masterClientListData = [NSKeyedArchiver archivedDataWithRootObject:sortedMasterClientList];
     [[NSUserDefaults standardUserDefaults]setObject:masterClientListData forKey:[HConstants kMasterClientList]];
     [[NSUserDefaults standardUserDefaults]synchronize];
 }
