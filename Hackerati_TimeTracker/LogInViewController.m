@@ -28,6 +28,7 @@
 
 // Data Source
 @property (strong, nonatomic) NSMutableArray* currentUserClientsArray;
+@property (strong, nonatomic) NSDictionary* historyOfRecords;
 
 @property (strong, nonatomic) GPPSignIn *googleSignIn;
 @property (strong, nonatomic) HistoryViewController *historyViewController;
@@ -276,7 +277,8 @@ static NSString *CellIdentifier = @"Cell";
 }
 
 - (void) historyAction:(UIBarButtonItem*)barButton{
-    self.historyViewController = [[HistoryViewController alloc]initWithNibName:nil bundle:nil];
+    self.historyViewController = [[HistoryViewController alloc]initWithNibName:@"HistoryViewController" bundle:nil];
+    self.historyViewController.historyOfRecords = self.historyOfRecords;
     [self.navigationController pushViewController:self.historyViewController animated:YES];
 }
 
@@ -304,7 +306,6 @@ static NSString *CellIdentifier = @"Cell";
 
 -(void) loadData{
     dispatch_async(dispatch_get_main_queue(), ^{
-        
         NSData *data = (NSData*)[[NSUserDefaults standardUserDefaults]objectForKey:[HConstants KcurrentUserClientList]];
         self.currentUserClientsArray = (NSMutableArray*)[NSKeyedUnarchiver unarchiveObjectWithData:data];
         [self.refreshControl endRefreshing];
@@ -312,9 +313,13 @@ static NSString *CellIdentifier = @"Cell";
     });
 }
 
+- (void) userRecordsDataReceived {
+    NSData *currentUserRecordsData = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants KSanitizedCurrentUserRecords]];
+    self.historyOfRecords = [NSKeyedUnarchiver unarchiveObjectWithData:currentUserRecordsData];
+}
+
+
 #pragma mark - Form Methods
-
-
 -(void)slideForm{
     self.formView.frame = CGRectMake(-self.view.frame.size.width-30, 0, self.view.frame.size.width-20, 500);
     CGRect frame = self.view.bounds;
@@ -389,11 +394,6 @@ static NSString *CellIdentifier = @"Cell";
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-//    
-//    for (Client *client in self.currentUserClientsArray)
-//        NSLog(client.clientName);
-    
-    
     CustomMCSwipeTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     cell.delegate =self;
     Client *client = [self.currentUserClientsArray objectAtIndex:indexPath.section];

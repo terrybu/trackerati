@@ -174,25 +174,20 @@
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
                 if (snapshot.value && [snapshot.value isKindOfClass:[NSDictionary class]]) {
                     NSDictionary *records = snapshot.value;
-                    
                     __block NSMutableDictionary *sanitizedCurrentUserRecords = [[NSMutableDictionary alloc]init];
                     [records enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop){
                         if ([obj isKindOfClass:[NSDictionary class]]) {
                             Record *newRecord = [[Record alloc]init];
                             newRecord.uniqueFireBaseIdentifier = (NSString*)key;
-                            
                             if ([obj objectForKey:[HConstants kClient]]) {
                                 newRecord.clientName = (NSString*)[obj objectForKey:[HConstants kClient]];
                             }
-                            
                             if ([obj objectForKey:[HConstants kProject]]) {
                                 newRecord.projectName = (NSString*)[obj objectForKey:[HConstants kProject]];
                             }
-                            
                             if ([obj objectForKey:[HConstants kHour]]) {
                                 newRecord.hourOfTheService = (NSString*)[obj objectForKey:[HConstants kHour]];
                             }
-                            
                             if ([obj objectForKey:[HConstants kStatus]]) {
                                 newRecord.statusOfUser = (NSString*)[obj objectForKey:[HConstants kStatus]];
                             }
@@ -204,10 +199,8 @@
                             if ([obj objectForKey:[HConstants kComment]]) {
                                 newRecord.commentOnService = (NSString*)[obj objectForKey:[HConstants kComment]];
                             }
-                            
                             if ([obj objectForKey:[HConstants kDate]]) {
                                 newRecord.dateOfTheService = (NSString*)[obj objectForKey:[HConstants kDate]];
-                                
                                 if ([sanitizedCurrentUserRecords objectForKey:newRecord.dateOfTheService]) {
                                     NSMutableArray *records = (NSMutableArray*)[sanitizedCurrentUserRecords objectForKey:newRecord.dateOfTheService];
                                     [records addObject:newRecord];
@@ -216,18 +209,10 @@
                                     [records addObject:newRecord];
                                     [sanitizedCurrentUserRecords setObject:records forKey:newRecord.dateOfTheService];
                                 }
-                                
                             }
-                    
                         }
                     }];
                     NSData *sanitizedCurrentUserRecordsData = [NSKeyedArchiver archivedDataWithRootObject:sanitizedCurrentUserRecords];
-                    
-                    for (id key in sanitizedCurrentUserRecords) {
-                        NSMutableArray *results = [sanitizedCurrentUserRecords objectForKey:key];
-                        NSLog(@"%@", [(Record *)results[0] uniqueFireBaseIdentifier]);
-                    }
-                    
                     [[NSUserDefaults standardUserDefaults] setObject:sanitizedCurrentUserRecordsData forKey:[HConstants KSanitizedCurrentUserRecords]];
                     [[NSUserDefaults standardUserDefaults] synchronize];
                     [[NSNotificationCenter defaultCenter] postNotificationName:kStartGetUserRecordsProcessNotification object:nil];
@@ -238,8 +223,8 @@
                     [[NSNotificationCenter defaultCenter] postNotificationName:kStartGetUserRecordsProcessNotification object:nil];
                 }
             });
+            [self.delegate userRecordsDataReceived];
         }];
-        
     });
 }
 

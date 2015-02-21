@@ -12,10 +12,10 @@
 #import "LogInManager.h"
 #import "RecordDetailViewController.h"
 #import "Record.h"
+#import "DataParseManager.h"
 
 @interface HistoryViewController ()<RecordTableViewCellProtocol>
 
-@property (nonatomic, strong) NSDictionary *historyOfRecords;
 @property (nonatomic, strong) NSArray* dateKeys;
 @property (nonatomic, strong) RecordDetailViewController *recordDetailViewController;
 
@@ -34,38 +34,24 @@ static NSString *cellIdentifier = @"RecordTableViewCell";
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateNewRecords) name:kStartGetUserRecordsProcessNotification object:nil];
 }
 
-- (void) viewWillAppear:(BOOL)animated{
-    [super viewWillAppear:animated];
-    NSData *currentUserRecordsData = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants KSanitizedCurrentUserRecords]];
-    self.historyOfRecords = [NSKeyedUnarchiver unarchiveObjectWithData:currentUserRecordsData];
-    self.dateKeys = [self.historyOfRecords allKeys];
-}
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-
 -(void)updateNewRecords{
     dispatch_async(dispatch_get_main_queue(), ^{
         NSData *currentUserRecordsData = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants KSanitizedCurrentUserRecords]];
         self.historyOfRecords = [NSKeyedUnarchiver unarchiveObjectWithData:currentUserRecordsData];
         self.dateKeys = [self.historyOfRecords allKeys];
-        for (id key in self.historyOfRecords) {
-            NSMutableArray *results = [self.historyOfRecords objectForKey:key];
-            Record *record = results[0];
-            if ([record.uniqueFireBaseIdentifier isEqualToString:@"1"])
-                NSLog(@"that's a string of 1");
-            NSLog(@"%@", [(Record *)results[0] uniqueFireBaseIdentifier]);
-        }
         [self.tableView reloadData];
     });
 }
 
--(void)dealloc{
-    [[NSNotificationCenter defaultCenter]removeObserver:self];
+- (void) viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    
+    [[DataParseManager sharedManager] getUserRecords];
+    if (self.historyOfRecords.count > 0)
+        self.dateKeys = [self.historyOfRecords allKeys];
+    [self.tableView reloadData];
 }
+
 
 - (void)logOutAction{
     [[NSNotificationCenter defaultCenter] postNotificationName:kStartLogOutProcessNotification object:nil];
@@ -117,6 +103,15 @@ static NSString *cellIdentifier = @"RecordTableViewCell";
 
 - (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath{
     return NO;
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+-(void)dealloc{
+    [[NSNotificationCenter defaultCenter]removeObserver:self];
 }
 
 @end
