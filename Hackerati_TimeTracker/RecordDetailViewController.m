@@ -96,15 +96,6 @@
     // Dispose of any resources that can be recreated.
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 -(void)setElements{
     self.title = self.record.dateOfTheService;
@@ -147,7 +138,6 @@
     NSString *buttonTitle = [alertView buttonTitleAtIndex:buttonIndex];
     if ([buttonTitle isEqualToString:@"delete"]) {
         [self deleteRecord];
-        [[DataParseManager sharedManager] getUserRecords];
         [self.navigationController popViewControllerAnimated:YES];
     }
 }
@@ -156,7 +146,6 @@
     NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants KCurrentUser]];
     NSString *uniqueAddress = self.record.uniqueFireBaseIdentifier;
     self.fireBase = [[Firebase alloc]initWithUrl:[NSString stringWithFormat:@"%@/Users/%@/records/%@",[HConstants kFireBaseURL],username,uniqueAddress]];
-    NSLog([NSString stringWithFormat:@"%@/Users/%@/records/%@",[HConstants kFireBaseURL],username,uniqueAddress]);
     [self.fireBase removeValue];
 }
 

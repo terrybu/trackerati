@@ -33,7 +33,7 @@
     [aCoder encodeObject:self.commentOnService forKey:@"commentOnService"];
     [aCoder encodeObject:self.statusOfUser forKey:@"statusOfUser"];
     [aCoder encodeObject:self.typeOfService forKey:@"typeOfService"];
-    [aCoder encodeObject:self.typeOfService forKey:@"firebaseUniqueKey"];
+    [aCoder encodeObject:self.uniqueFireBaseIdentifier forKey:@"uniqueFireBaseIdentifier"];
 }
 - (id)initWithCoder:(NSCoder *)aDecoder{
     NSString* clientName = [aDecoder decodeObjectForKey:@"clientName"];
@@ -43,7 +43,7 @@
     NSString* commentOnService = [aDecoder decodeObjectForKey:@"commentOnService"];
     NSString* statusOfUser = [aDecoder decodeObjectForKey:@"statusOfUser"];
     NSString* typeOfService = [aDecoder decodeObjectForKey:@"typeOfService"];
-    NSString* firebaseUniqueKey = [aDecoder decodeObjectForKey:@"firebaseUniqueKey"];
+    NSString* firebaseUniqueKey = [aDecoder decodeObjectForKey:@"uniqueFireBaseIdentifier"];
     self = [[Record alloc]init];
     self.clientName = clientName;
     self.projectName = projectName;

@@ -13,6 +13,7 @@
 
 -(void) loadData;
 -(void) loginUnsuccessful;
+-(void) userRecordsDataReceived;
 
 @end
 

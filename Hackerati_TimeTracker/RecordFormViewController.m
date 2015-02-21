@@ -14,6 +14,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "DataParseManager.h"
 #import "IQDropDownTextField.h"
+#import "RecordDetailViewController.h"
 
 
 @interface RecordFormViewController ()<THDatePickerDelegate,UITextViewDelegate,IQDropDownTextFieldDelegate>
@@ -322,7 +323,22 @@
         }
         [[DataParseManager sharedManager] getUserRecords];
         if (self.previousViewController && self.previousViewController.navigationController) {
-            [self.previousViewController.navigationController popViewControllerAnimated:YES];
+            if ([self.previousViewController isKindOfClass:[RecordDetailViewController class]]) {
+                //this needs to be updated later .. a temporary solution to show some Record detail information for previous view controller after EDIT
+                //Ethan originally used LastSavedManager to do this - but with Record model integration, some of that code needs to change there
+                RecordDetailViewController *recordDetailVC = (RecordDetailViewController *) self.previousViewController;
+                Record *tempRecordForRecordDetail = [[Record alloc]init];
+                tempRecordForRecordDetail.clientName = self.clientName;
+                tempRecordForRecordDetail.projectName = self.projectName;
+                tempRecordForRecordDetail.uniqueFireBaseIdentifier = self.existingRecord.uniqueFireBaseIdentifier;
+                tempRecordForRecordDetail.dateOfTheService = self.dateButton.titleLabel.text;
+                tempRecordForRecordDetail.hourOfTheService = self.hourTextField.text;
+                tempRecordForRecordDetail.commentOnService = self.commentTextView.text;
+                tempRecordForRecordDetail.statusOfUser = ([self.statusButton.titleLabel.text isEqualToString:[HConstants KfullTimeEmployee]])?@"1":@"0";
+                tempRecordForRecordDetail.typeOfService = ([self.typeButton.titleLabel.text isEqualToString:[HConstants KbillableHour]])?@"1":@"0";
+                recordDetailVC.record = tempRecordForRecordDetail;
+                [self.previousViewController.navigationController popViewControllerAnimated:YES];
+            }
         }else {
             [self.navigationController popViewControllerAnimated:YES];
         }
