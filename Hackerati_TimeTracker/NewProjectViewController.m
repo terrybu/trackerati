@@ -36,7 +36,7 @@ static NSString *CellIdentifier = @"Cell";
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     [self.tableView registerClass:[MCSwipeTableViewCell class] forCellReuseIdentifier:CellIdentifier];
     
-    UIBarButtonItem *addClientProjectButton = [[UIBarButtonItem alloc]initWithTitle:@"Add client" style:UIBarButtonItemStylePlain target:self action:@selector(pushAddClientProjectViewController)];
+    UIBarButtonItem *addClientProjectButton = [[UIBarButtonItem alloc]initWithTitle:@"Add More" style:UIBarButtonItemStylePlain target:self action:@selector(pushAddClientProjectViewController)];
     self.navigationItem.rightBarButtonItem = addClientProjectButton;
     
 }
@@ -71,6 +71,10 @@ static NSString *CellIdentifier = @"Cell";
 
 - (void) pushAddClientProjectViewController{
     AddClientProjectViewController *addClientProjectVC = [[AddClientProjectViewController alloc]initWithNibName:@"AddClientProjectViewController" bundle:nil];
+    
+    NSArray *masterClientNames = [self.masterClientsArray valueForKey:@"clientName"];
+    addClientProjectVC.clientNames = [masterClientNames mutableCopy];
+    
     [self.navigationItem setBackBarButtonItem:[[UIBarButtonItem alloc]
                                                initWithTitle:@"Back" style:UIBarButtonItemStyleBordered target:nil action:nil]];
     [self.navigationController pushViewController:addClientProjectVC animated:YES];

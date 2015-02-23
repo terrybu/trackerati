@@ -8,6 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
-@interface AddClientProjectViewController : UIViewController
+@interface AddClientProjectViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate>
+
+@property (weak, nonatomic) IBOutlet UIButton *confirmButton;
+@property (strong, nonatomic)  NSMutableArray *clientNames;
+
+- (IBAction)confirmButtonPressed:(id)sender;
 
 @end
