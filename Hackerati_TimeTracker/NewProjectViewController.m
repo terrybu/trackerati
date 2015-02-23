@@ -16,7 +16,10 @@
 #import "Project.h"
 
 
-@interface NewProjectViewController () <UITableViewDataSource, UITableViewDelegate, MCSwipeTableViewCellDelegate>
+@interface NewProjectViewController () <UITableViewDataSource, UITableViewDelegate, MCSwipeTableViewCellDelegate> {
+    Client *clientToDelete;
+    Project *projectToDelete;
+}
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) NSMutableArray *masterClientsArray;
 @property (strong, nonatomic) NSMutableArray *currentUserClientsArray;
@@ -43,10 +46,10 @@ static NSString *CellIdentifier = @"Cell";
 
 - (void) viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    [self refreshMasterClientsArrayAndCurrentUserClientsArray];
+    [self getMasterClientsArrayAndCurrentUserClientsArrayAndRefresh];
 }
 
-- (void) refreshMasterClientsArrayAndCurrentUserClientsArray {
+- (void) getMasterClientsArrayAndCurrentUserClientsArrayAndRefresh {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         NSData *masterClientsData = [[NSUserDefaults standardUserDefaults]objectForKey:[HConstants kMasterClientList]];
         self.masterClientsArray = [NSKeyedUnarchiver unarchiveObjectWithData:masterClientsData];
@@ -58,6 +61,7 @@ static NSString *CellIdentifier = @"Cell";
             NSArray *arrayOfProjectNamesOfClient = [client.projects valueForKey:@"projectName"];
             [self.setOfCurrentUserProjectNames addObjectsFromArray:arrayOfProjectNamesOfClient];
         }
+        NSLog(@"done refreshing");
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.tableView reloadData];
         });
@@ -123,11 +127,10 @@ static NSString *CellIdentifier = @"Cell";
     [cell setSwipeGestureWithView:eraseMark color:[UIColor whiteColor] mode:MCSwipeTableViewCellModeSwitch state:MCSwipeTableViewCellState3 completionBlock:nil];
     [cell setSwipeGestureWithView:eraseMark color:[UIColor whiteColor] mode:MCSwipeTableViewCellModeExit state:MCSwipeTableViewCellState4 completionBlock:^(MCSwipeTableViewCell *cell, MCSwipeTableViewCellState state, MCSwipeTableViewCellMode mode) {
             //Swipe Left To Remove Project altogether
-        [self removeProjectFromFireBase:masterProject];
-        
+        clientToDelete = masterClient;
+        projectToDelete = masterProject;
+        [self removeProject:masterProject client: masterClient];
     }];
-    
-    
     return cell;
 }
 
@@ -150,7 +153,7 @@ static NSString *CellIdentifier = @"Cell";
         //this is project/checkmark REMOVING logic
         //if project already had a checkmark, then we get rid of project and delete it from firebase
         cell.accessoryView = nil;
-        [self removeUserFromSelectedProject:masterSelectedClient project:masterSelectedProject];
+        [self removeUserPinFromSelectedProject:masterSelectedClient project:masterSelectedProject];
         UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"Removed Project" message:[NSString stringWithFormat:@"Project %@ was removed", masterSelectedProject.projectName] delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
         [alertView show];
         
@@ -194,11 +197,9 @@ static NSString *CellIdentifier = @"Cell";
 }
 
 
-#pragma mark Removing from Firebase Logic
-//Might want to refactor this to FireBase Manager
+#pragma mark Swipe Cell Removing Project from Firebase Logic
 
-- (void) removeProjectFromFireBase: (Project *) project {
-    
+- (void) removeProject: (Project *) project client: (Client *) client {
     //First, get confirmation
     UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"Deleting Project" message:[NSString stringWithFormat:@"Are you sure you want to delete project named %@?", project.projectName] delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles: @"Yes", nil];
     [alertView show];
@@ -206,14 +207,34 @@ static NSString *CellIdentifier = @"Cell";
 
 - (void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     NSString *buttonTitle = [alertView buttonTitleAtIndex:buttonIndex];
+    __weak typeof(self) weakSelf = self;
+
     if ([buttonTitle isEqualToString:@"Yes"]) {
-        NSLog(@"go ahead delete");
+        //Delete Logic
+        self.fireBase = [[Firebase alloc]initWithUrl:[NSString stringWithFormat:@"%@/Projects/%@/%@/",[HConstants kFireBaseURL], clientToDelete.clientName, projectToDelete.projectName]];
+        [self.fireBase removeValueWithCompletionBlock:^(NSError *error, Firebase *ref) {
+            if (!error) {
+                // Delete worked
+                NSLog(@"delete complete on firebase");
+                [clientToDelete.projects removeObject:projectToDelete];
+                if (clientToDelete.projects.count == 0)
+                    [self.masterClientsArray removeObject:clientToDelete];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [weakSelf.tableView reloadData];
+                });
+            }
+            else {
+                // cache for later, or notify user that there was an error and they should try again.
+                NSLog(@"delete was not successful on firebase due to errors: %@", error);
+                UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"Deletion Not Successful" message:[NSString stringWithFormat:@"Something went wrong, deletion not complete on server for project %@", projectToDelete.projectName] delegate:self cancelButtonTitle:nil otherButtonTitles: @"OK", nil];
+                [alertView show];
+            }
+        }];
     }
-    [self.tableView reloadData];
 }
 
 
-#pragma mark Custom Logic
+#pragma mark Custom Logic For Pinning/Removing user from project based on Cell Selection
 - (Client *) findCorrespondingClientInCurrentUserClientList: (Client *) masterClient {
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"clientName contains[c] %@", masterClient.clientName];
     NSArray *filtered = [self.currentUserClientsArray filteredArrayUsingPredicate:predicate];
@@ -236,7 +257,7 @@ static NSString *CellIdentifier = @"Cell";
     [alertView show];
 }
 
--(void)removeUserFromSelectedProject: (Client *) masterClient project: (Project *) masterProject {
+-(void)removeUserPinFromSelectedProject: (Client *) masterClient project: (Project *) masterProject {
     __weak typeof(self) weakSelf = self;
     Client *client = [self findCorrespondingClientInCurrentUserClientList:masterClient];
     Project *project = [self findCorrespondingProjectFromCorrespondingClient:client masterProject:masterProject];

@@ -23,6 +23,7 @@
 
 + (DataParseManager*) sharedManager;
 - (void) getAllDataFromFireBaseAfterLoginSuccess;
+- (void) getAllClientsAndProjectsDataFromFireBaseAndSynchronize;
 - (void) manuallySetDelegate:(id<DataParseManagerProtocol>)delegate;
 - (void) getUserRecords;
 

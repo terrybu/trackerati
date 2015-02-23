@@ -73,11 +73,22 @@
     });
 }
 
+- (void) getAllClientsAndProjectsDataFromFireBaseAndSynchronize {
+        // Get all existing clients and projects
+        [self.projects observeSingleEventOfType:FEventTypeValue withBlock:^(FDataSnapshot *snapshot) {
+                if (snapshot.value && [snapshot.value isKindOfClass:[NSDictionary class]]) {
+                    NSDictionary *rawMasterClientList = snapshot.value;
+                    [[NSUserDefaults standardUserDefaults] setObject:rawMasterClientList forKey:[HConstants kRawMasterClientList]];
+                    [[NSUserDefaults standardUserDefaults]synchronize];
+                    [self saveMasterClientListInUserDefaults:rawMasterClientList];
+                    [self saveCurrentUserClientListInUserDefaults:rawMasterClientList];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:@"clientsProjectsSynched"
+                                                                        object:nil];
+                }
+        }];
+}
+
 - (void) saveMasterClientListInUserDefaults: (NSDictionary *) rawMasterClientList {
-    
-    //debug
-//    NSLog(rawMasterClientList.description);
-    
     __block NSMutableArray *masterClientList = [[NSMutableArray alloc]init];
     [rawMasterClientList enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop){
         __block Client *newClient = [[Client alloc]init];
