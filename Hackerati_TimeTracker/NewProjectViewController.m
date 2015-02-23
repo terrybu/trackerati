@@ -202,7 +202,7 @@ static NSString *CellIdentifier = @"Cell";
 }
 
 
-#pragma mark Swipe Cell Removing Project from Firebase Logic
+#pragma mark Swipe Cell Deleting Project from Firebase Logic
 
 - (void) removeProjectAfterAlertShow: (Project *) project client: (Client *) client {
     //First, get confirmation
@@ -219,16 +219,27 @@ static NSString *CellIdentifier = @"Cell";
         self.fireBase = [[Firebase alloc]initWithUrl:[NSString stringWithFormat:@"%@/Projects/%@/%@/",[HConstants kFireBaseURL], clientToDelete.clientName, projectToDelete.projectName]];
         [self.fireBase removeValueWithCompletionBlock:^(NSError *error, Firebase *ref) {
             if (!error) {
-                // Delete worked
-                [clientToDelete.projects removeObject:projectToDelete];
-                if (clientToDelete.projects.count == 0)
-                    [self.masterClientsArray removeObject:clientToDelete];
-                NSData *masterClientListData = [NSKeyedArchiver archivedDataWithRootObject:self.masterClientsArray];
-                [[NSUserDefaults standardUserDefaults]setObject:masterClientListData forKey:[HConstants kMasterClientList]];
-                [[NSUserDefaults standardUserDefaults]synchronize];
-                
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [weakSelf.tableView reloadData];
+                // Delete worked on Firebase - delete on local cache
+                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+                    Client *currentUsersClientCorresponding = [self findCorrespondingClientInCurrentUserClientList:clientToDelete];
+                    Project *correspondingProject = [self findCorrespondingProjectFromCorrespondingClient:currentUsersClientCorresponding masterProject:projectToDelete];
+                    [currentUsersClientCorresponding.projects removeObject:correspondingProject];
+                    if (currentUsersClientCorresponding.projects.count == 0)
+                        [self.currentUserClientsArray removeObject:currentUsersClientCorresponding];
+                    NSData *currentClientsData = [NSKeyedArchiver archivedDataWithRootObject:self.currentUserClientsArray];
+                    [[NSUserDefaults standardUserDefaults]setObject:currentClientsData forKey:[HConstants KcurrentUserClientList]];
+                    [[NSUserDefaults standardUserDefaults]synchronize];
+                    
+                    [clientToDelete.projects removeObject:projectToDelete];
+                    if (clientToDelete.projects.count == 0)
+                        [self.masterClientsArray removeObject:clientToDelete];
+                    NSData *masterClientListData = [NSKeyedArchiver archivedDataWithRootObject:self.masterClientsArray];
+                    [[NSUserDefaults standardUserDefaults]setObject:masterClientListData forKey:[HConstants kMasterClientList]];
+                    [[NSUserDefaults standardUserDefaults]synchronize];
+                    
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [weakSelf.tableView reloadData];
+                    });
                 });
             }
             else {
