@@ -28,7 +28,7 @@
 
 // Data Source
 @property (strong, nonatomic) NSMutableArray* currentUserClientsArray;
-@property (strong, nonatomic) NSDictionary* historyOfRecords;
+@property (strong, nonatomic) NSMutableDictionary* historyOfRecords;
 
 @property (strong, nonatomic) GPPSignIn *googleSignIn;
 @property (strong, nonatomic) HistoryViewController *historyViewController;
@@ -236,8 +236,9 @@ static NSString *CellIdentifier = @"Cell";
 }
 
 -(void)sendForm{
-    NSDictionary *history = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants KSanitizedCurrentUserRecords]];
-    if ([history objectForKey:self.dateOfServiceTextLabel.text]) {
+    NSData *data = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants KSanitizedCurrentUserRecords]];
+    self.historyOfRecords = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+    if ([self.historyOfRecords objectForKey:self.dateOfServiceTextLabel.text]) {
         [[[UIAlertView alloc] initWithTitle:@"Warning" message:[NSString stringWithFormat: @"You already sent a record for %@. Do you still want to send this ?",self.dateOfServiceTextLabel.text] delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Send", nil] show];
     } else{
         [self submitRecord];
