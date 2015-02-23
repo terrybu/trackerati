@@ -35,7 +35,8 @@ static NSString *CellIdentifier = @"Cell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"Tap on project";
+    self.title = @"Tap to pin/unpin";
+    self.navigationItem.prompt = @"Swipe left to delete projects";
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dataReceivedSafeToRefresh) name:@"clientsProjectsSynched" object:nil];
     
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
@@ -259,8 +260,10 @@ static NSString *CellIdentifier = @"Cell";
 #pragma mark Custom Logic For Pinning/Removing user from project based on Cell Selection
 - (Client *) findCorrespondingClientInCurrentUserClientList: (Client *) masterClient {
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"clientName contains[c] %@", masterClient.clientName];
-    NSArray *filtered = [self.currentUserClientsArray filteredArrayUsingPredicate:predicate];
-    return filtered[0];
+    NSArray *resultArray = [self.currentUserClientsArray filteredArrayUsingPredicate:predicate];
+    if (resultArray == nil || [resultArray count] == 0)
+        return nil;
+    return resultArray[0];
 }
 
 - (Project *) findCorrespondingProjectFromCorrespondingClient: (Client *) correspondingClient masterProject: (Project *) masterProject{

@@ -73,9 +73,9 @@ static NSString *CellIdentifier = @"Cell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    self.title = @"Hours";
+    self.title = @"Your Projects";
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"History" style:UIBarButtonItemStyleBordered target:self action:@selector(historyAction:)];
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"Add Project" style:UIBarButtonItemStyleBordered target:self action:@selector(addNewProjects)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"Pin More" style:UIBarButtonItemStyleBordered target:self action:@selector(addNewProjects)];
     
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     [self.tableView registerClass:[CustomMCSwipeTableViewCell class] forCellReuseIdentifier:CellIdentifier];
@@ -285,6 +285,8 @@ static NSString *CellIdentifier = @"Cell";
 
 - (void)addNewProjects{
     NewProjectViewController *newProjectViewController = [[NewProjectViewController alloc]initWithNibName:@"NewProjectViewController" bundle:nil];
+    [self.navigationItem setBackBarButtonItem:[[UIBarButtonItem alloc]
+                                               initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:nil action:nil]];
     [self.navigationController pushViewController:newProjectViewController animated:YES];
 }
 

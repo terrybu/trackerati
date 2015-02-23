@@ -28,9 +28,9 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-    self.title = @"Add New Client/Project";
-    UIBarButtonItem *doneButton = [[UIBarButtonItem alloc]initWithTitle:@"Confirm" style:UIBarButtonItemStyleDone target:self action:@selector(saveNewClientProjectAndPopVC)];
-    self.navigationItem.rightBarButtonItem = doneButton;
+    self.title = @"Add new client/project";
+    UIBarButtonItem *plusButton = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(saveNewClientProjectAndPopVC)];
+    self.navigationItem.rightBarButtonItem = plusButton;
     
     autocompleteTableView = [[UITableView alloc] initWithFrame:
                              CGRectMake(0, 200, self.view.frame.size.width * 0.6, self.view.frame.size.height) style:UITableViewStylePlain];
