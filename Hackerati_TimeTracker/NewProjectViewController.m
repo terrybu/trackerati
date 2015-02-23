@@ -158,18 +158,18 @@ static NSString *CellIdentifier = @"Cell";
     }
     else {
         //this is project/checkmark ADDING logic
-        
         //if, in our local cache, we've never had the current user select this client name, then we save it on user defaults AND send to firebase
         if (![self.currentUserClientsArray containsObject:masterSelectedProject]) {
             Client *newClient = [[Client alloc]init];
             newClient.clientName = masterSelectedClient.clientName;
             [newClient.projects addObject: masterSelectedProject];
             [self.currentUserClientsArray addObject:newClient];
+            [self.setOfCurrentUserClientNames addObject:newClient.clientName];
+            [self.setOfCurrentUserProjectNames addObject:masterSelectedProject.projectName];
             NSData *currentUserClientListData = [NSKeyedArchiver archivedDataWithRootObject:self.currentUserClientsArray];
             [[NSUserDefaults standardUserDefaults] setObject:currentUserClientListData forKey:[HConstants KcurrentUserClientList]];
             [[NSUserDefaults standardUserDefaults]synchronize];
             [self sendUsernameToProjectOnFireBase: masterSelectedClient.clientName project:masterSelectedProject.projectName];
-            cell.accessoryView =[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"CheckMark.png"]];
         }
         //On the contrary, if we already had the current user select this client name for a project before, check to see if particular PROJECT was selected before too and is in local cache
         else {
@@ -177,15 +177,16 @@ static NSString *CellIdentifier = @"Cell";
             if (![selectedCurrentUserClient.projects containsObject:masterSelectedProject]) {
                 //our client didn't have the particular project, then we add it to local cache AND send to Firebase
                 [selectedCurrentUserClient.projects addObject:masterSelectedProject];
+                [self.setOfCurrentUserClientNames addObject:selectedCurrentUserClient.clientName];
+                [self.setOfCurrentUserProjectNames addObject:masterSelectedProject.projectName];
                 NSData *currentUserClientListData = [NSKeyedArchiver archivedDataWithRootObject:self.currentUserClientsArray];
                 [[NSUserDefaults standardUserDefaults] setObject:currentUserClientListData forKey:[HConstants KcurrentUserClientList]];
                 [[NSUserDefaults standardUserDefaults]synchronize];
                 [self sendUsernameToProjectOnFireBase: masterSelectedClient.clientName project:masterSelectedProject.projectName];
-                cell.accessoryView =[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"CheckMark.png"]];
             }
         }
-
-        
+        cell.accessoryView =[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"CheckMark.png"]];
+        [self.tableView reloadData];
     }
     //2.19.2015 without refreshing data here, we have a bug that doesn't allow you to delete right after you add something
     //By hitting DataParseManager here, we can make sure data gets refreshed when we add, so delete works properly
@@ -221,7 +222,10 @@ static NSString *CellIdentifier = @"Cell";
 
 - (Project *) findCorrespondingProjectFromCorrespondingClient: (Client *) correspondingClient masterProject: (Project *) masterProject{
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"projectName contains[c] %@", masterProject.projectName];
-    return [correspondingClient.projects filteredArrayUsingPredicate:predicate][0];
+    NSArray *resultArray = [correspondingClient.projects filteredArrayUsingPredicate:predicate];
+    if (resultArray == nil || [resultArray count] == 0)
+        return nil;
+    return resultArray[0];
 }
 
 - (void) sendUsernameToProjectOnFireBase: (NSString *) client project: (NSString *) project{

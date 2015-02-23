@@ -34,7 +34,7 @@
     
     self.title = @"Add New Client/Project";
     
-    UIBarButtonItem *doneButton = [[UIBarButtonItem alloc]initWithTitle:@"Done" style:UIBarButtonItemStyleDone target:self action:@selector(saveNewClientProjectAndPopVC)];
+    UIBarButtonItem *doneButton = [[UIBarButtonItem alloc]initWithTitle:@"Confirm" style:UIBarButtonItemStyleDone target:self action:@selector(saveNewClientProjectAndPopVC)];
     
     self.navigationItem.rightBarButtonItem = doneButton;
     
@@ -86,14 +86,19 @@ replacementString:(NSString *)string {
     
     NSString *clientName = self.clientTitleTextField.text;
     NSString *projectName = self.projectTitleTextField.text;
-    
     if (([clientName isEqualToString:@""]) || ([projectName isEqualToString:@""])) {
         [[[UIAlertView alloc]initWithTitle:@"Please fill both fields" message:@"Either field can't be blank" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
         return;
     }
-        
-    
     self.fireBase = [[Firebase alloc]initWithUrl:[NSString stringWithFormat:@"%@/Projects/%@/%@/",[HConstants kFireBaseURL], clientName, projectName]];
+    
+    [self runDataValidationAndSend];
+
+}
+
+- (void) runDataValidationAndSend {
+    //we can do this validation in a different way without making a network call.
+    //Since we already do a network call in the beginning, we can check all clients and projects
     
     [self.fireBase observeSingleEventOfType:FEventTypeValue withBlock:^(FDataSnapshot *snapshot) {
         if (snapshot.value && [snapshot hasChildren]) {
@@ -108,8 +113,6 @@ replacementString:(NSString *)string {
         }
     }];
 }
-
-
 
 - (void) sendPlaceholderToCreateNewClientProject {
     //we need to check if that project name under that client name already exists
