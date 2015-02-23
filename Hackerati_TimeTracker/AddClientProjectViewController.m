@@ -33,7 +33,6 @@
     // Do any additional setup after loading the view from its nib.
     
     self.title = @"Add New Client/Project";
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dataReceivedSafeToPop) name:@"clientsProjectsSynched" object:nil];
     
     UIBarButtonItem *doneButton = [[UIBarButtonItem alloc]initWithTitle:@"Confirm" style:UIBarButtonItemStyleDone target:self action:@selector(saveNewClientProjectAndPopVC)];
     
@@ -113,12 +112,8 @@ replacementString:(NSString *)string {
     [pathForPlaceholder setValue:placeHolder withCompletionBlock:^(NSError *error, Firebase *ref) {
         [[DataParseManager sharedManager]getAllClientsAndProjectsDataFromFireBaseAndSynchronize];
     }];
-}
-
-- (void) dataReceivedSafeToPop {
     [self.navigationController popViewControllerAnimated:YES];
 }
-
 
 
 #pragma mark UITableViewDataSource methods
@@ -152,8 +147,5 @@ replacementString:(NSString *)string {
 }
 
 
-- (void)dealloc {
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
 
 @end

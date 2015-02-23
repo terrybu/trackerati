@@ -36,6 +36,8 @@ static NSString *CellIdentifier = @"Cell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"Tap on project";
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dataReceivedSafeToRefresh) name:@"clientsProjectsSynched" object:nil];
+    
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     [self.tableView registerClass:[MCSwipeTableViewCell class] forCellReuseIdentifier:CellIdentifier];
     
@@ -46,6 +48,10 @@ static NSString *CellIdentifier = @"Cell";
 
 - (void) viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
+    [self getMasterClientsArrayAndCurrentUserClientsArrayAndRefresh];
+}
+
+- (void) dataReceivedSafeToRefresh {
     [self getMasterClientsArrayAndCurrentUserClientsArrayAndRefresh];
 }
 
@@ -297,5 +303,8 @@ static NSString *CellIdentifier = @"Cell";
 
 
 
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
 
 @end
