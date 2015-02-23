@@ -9,16 +9,12 @@
 #import "AddClientProjectViewController.h"
 #import "FireBaseManager.h"
 #import "HConstants.h"
+#import "DataParseManager.h"
 
 @interface AddClientProjectViewController () {
     NSMutableArray *autoCompleteClientNamesArray;
     UITableView *autocompleteTableView;
 }
-
-
-//might implement searchbar instead for future of client names
-//@property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
-//@property (strong, nonatomic) IBOutlet UISearchDisplayController *searchController;
 
 @property (weak, nonatomic) IBOutlet UITextField *clientTitleTextField;
 @property (weak, nonatomic) IBOutlet UITextField *projectTitleTextField;
@@ -33,9 +29,7 @@
     // Do any additional setup after loading the view from its nib.
     
     self.title = @"Add New Client/Project";
-    
-    UIBarButtonItem *doneButton = [[UIBarButtonItem alloc]initWithTitle:@"Done" style:UIBarButtonItemStyleDone target:self action:@selector(saveNewClientProjectAndPopVC)];
-    
+    UIBarButtonItem *doneButton = [[UIBarButtonItem alloc]initWithTitle:@"Confirm" style:UIBarButtonItemStyleDone target:self action:@selector(saveNewClientProjectAndPopVC)];
     self.navigationItem.rightBarButtonItem = doneButton;
     
     autocompleteTableView = [[UITableView alloc] initWithFrame:
@@ -60,8 +54,6 @@ replacementString:(NSString *)string {
     return YES;
 }
 
-
-
 - (void)searchAutocompleteEntriesWithSubstring:(NSString *)substring {
     
     // Put anything that starts with this substring into the autocompleteUrls array
@@ -76,14 +68,8 @@ replacementString:(NSString *)string {
     [autocompleteTableView reloadData];
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
 
 - (void) saveNewClientProjectAndPopVC {
-    
     NSString *clientName = self.clientTitleTextField.text;
     NSString *projectName = self.projectTitleTextField.text;
     
@@ -91,9 +77,16 @@ replacementString:(NSString *)string {
         [[[UIAlertView alloc]initWithTitle:@"Please fill both fields" message:@"Either field can't be blank" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
         return;
     }
-        
     
     self.fireBase = [[Firebase alloc]initWithUrl:[NSString stringWithFormat:@"%@/Projects/%@/%@/",[HConstants kFireBaseURL], clientName, projectName]];
+    
+    [self runDataValidationAndSend];
+
+}
+
+- (void) runDataValidationAndSend {
+    //we can do this validation in a different way without making a network call.
+    //Since we already do a network call in the beginning, we can check all clients and projects
     
     [self.fireBase observeSingleEventOfType:FEventTypeValue withBlock:^(FDataSnapshot *snapshot) {
         if (snapshot.value && [snapshot hasChildren]) {
@@ -102,9 +95,8 @@ replacementString:(NSString *)string {
             return;
         }
         else if ([snapshot.value isEqual:[NSNull null]]){
-            //if we don't get any data back, then we can write here
+            //if we don't get any data back, then we can safely write here to this path
             [self sendPlaceholderToCreateNewClientProject];
-            [self.navigationController popViewControllerAnimated:YES];
         }
     }];
 }
@@ -113,10 +105,12 @@ replacementString:(NSString *)string {
 
 - (void) sendPlaceholderToCreateNewClientProject {
     //we need to check if that project name under that client name already exists
-    BOOL __block check = FALSE;
     Firebase *pathForPlaceholder =   [self.fireBase childByAutoId];
     NSDictionary *placeHolder = @{ @"name" : @"placeholder" };
-    [pathForPlaceholder setValue:placeHolder];
+    [pathForPlaceholder setValue:placeHolder withCompletionBlock:^(NSError *error, Firebase *ref) {
+        [[DataParseManager sharedManager]getAllClientsAndProjectsDataFromFireBaseAndSynchronize];
+    }];
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 
@@ -128,7 +122,6 @@ replacementString:(NSString *)string {
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
     UITableViewCell *cell = nil;
     static NSString *AutoCompleteRowIdentifier = @"AutoCompleteRowIdentifier";
     cell = [tableView dequeueReusableCellWithIdentifier:AutoCompleteRowIdentifier];
@@ -136,7 +129,6 @@ replacementString:(NSString *)string {
         cell = [[UITableViewCell alloc]
                  initWithStyle:UITableViewCellStyleDefault reuseIdentifier:AutoCompleteRowIdentifier];
     }
-    
     cell.textLabel.text = [autoCompleteClientNamesArray objectAtIndex:indexPath.row];
     return cell;
 }
@@ -144,11 +136,15 @@ replacementString:(NSString *)string {
 #pragma mark UITableViewDelegate methods
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    
     UITableViewCell *selectedCell = [tableView cellForRowAtIndexPath:indexPath];
     self.clientTitleTextField.text = selectedCell.textLabel.text;
-
-    
 }
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+
 
 @end

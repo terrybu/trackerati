@@ -10,6 +10,6 @@
 
 @interface HistoryViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
-@property (nonatomic, strong) NSDictionary *historyOfRecords;
+@property (nonatomic, strong) NSMutableDictionary *historyOfRecords;
 
 @end
