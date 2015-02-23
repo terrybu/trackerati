@@ -67,7 +67,6 @@ static NSString *CellIdentifier = @"Cell";
             NSArray *arrayOfProjectNamesOfClient = [client.projects valueForKey:@"projectName"];
             [self.setOfCurrentUserProjectNames addObjectsFromArray:arrayOfProjectNamesOfClient];
         }
-        NSLog(@"done refreshing");
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.tableView reloadData];
         });
@@ -132,10 +131,10 @@ static NSString *CellIdentifier = @"Cell";
     UIImageView *eraseMark = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Erase.png"]];
     [cell setSwipeGestureWithView:eraseMark color:[UIColor whiteColor] mode:MCSwipeTableViewCellModeSwitch state:MCSwipeTableViewCellState3 completionBlock:nil];
     [cell setSwipeGestureWithView:eraseMark color:[UIColor whiteColor] mode:MCSwipeTableViewCellModeExit state:MCSwipeTableViewCellState4 completionBlock:^(MCSwipeTableViewCell *cell, MCSwipeTableViewCellState state, MCSwipeTableViewCellMode mode) {
-            //Swipe Left To Remove Project altogether
+        //Swipe Left To Remove Project altogether
         clientToDelete = masterClient;
         projectToDelete = masterProject;
-        [self removeProject:masterProject client: masterClient];
+        [self removeProjectAfterAlertShow:masterProject client: masterClient];
     }];
     return cell;
 }
@@ -178,7 +177,7 @@ static NSString *CellIdentifier = @"Cell";
             NSData *currentUserClientListData = [NSKeyedArchiver archivedDataWithRootObject:self.currentUserClientsArray];
             [[NSUserDefaults standardUserDefaults] setObject:currentUserClientListData forKey:[HConstants KcurrentUserClientList]];
             [[NSUserDefaults standardUserDefaults]synchronize];
-            [self sendUsernameToProjectOnFireBase: masterSelectedClient.clientName project:masterSelectedProject.projectName];
+            [self pinUserToProjectOnFireBase: masterSelectedClient.clientName project:masterSelectedProject.projectName];
         }
         //On the contrary, if we already had the current user select this client name for a project before, check to see if particular PROJECT was selected before too and is in local cache
         else {
@@ -191,7 +190,7 @@ static NSString *CellIdentifier = @"Cell";
                 NSData *currentUserClientListData = [NSKeyedArchiver archivedDataWithRootObject:self.currentUserClientsArray];
                 [[NSUserDefaults standardUserDefaults] setObject:currentUserClientListData forKey:[HConstants KcurrentUserClientList]];
                 [[NSUserDefaults standardUserDefaults]synchronize];
-                [self sendUsernameToProjectOnFireBase: masterSelectedClient.clientName project:masterSelectedProject.projectName];
+                [self pinUserToProjectOnFireBase: masterSelectedClient.clientName project:masterSelectedProject.projectName];
             }
         }
         cell.accessoryView =[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"CheckMark.png"]];
@@ -205,7 +204,7 @@ static NSString *CellIdentifier = @"Cell";
 
 #pragma mark Swipe Cell Removing Project from Firebase Logic
 
-- (void) removeProject: (Project *) project client: (Client *) client {
+- (void) removeProjectAfterAlertShow: (Project *) project client: (Client *) client {
     //First, get confirmation
     UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"Deleting Project" message:[NSString stringWithFormat:@"Are you sure you want to delete project named %@?", project.projectName] delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles: @"Yes", nil];
     [alertView show];
@@ -221,10 +220,13 @@ static NSString *CellIdentifier = @"Cell";
         [self.fireBase removeValueWithCompletionBlock:^(NSError *error, Firebase *ref) {
             if (!error) {
                 // Delete worked
-                NSLog(@"delete complete on firebase");
                 [clientToDelete.projects removeObject:projectToDelete];
                 if (clientToDelete.projects.count == 0)
                     [self.masterClientsArray removeObject:clientToDelete];
+                NSData *masterClientListData = [NSKeyedArchiver archivedDataWithRootObject:self.masterClientsArray];
+                [[NSUserDefaults standardUserDefaults]setObject:masterClientListData forKey:[HConstants kMasterClientList]];
+                [[NSUserDefaults standardUserDefaults]synchronize];
+                
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [weakSelf.tableView reloadData];
                 });
@@ -236,6 +238,9 @@ static NSString *CellIdentifier = @"Cell";
                 [alertView show];
             }
         }];
+    }
+    else {
+        [self.tableView reloadData];
     }
 }
 
@@ -255,7 +260,7 @@ static NSString *CellIdentifier = @"Cell";
     return resultArray[0];
 }
 
-- (void) sendUsernameToProjectOnFireBase: (NSString *) client project: (NSString *) project{
+- (void) pinUserToProjectOnFireBase: (NSString *) client project: (NSString *) project{
     self.fireBase = [[Firebase alloc]initWithUrl:[NSString stringWithFormat:@"%@/Projects/%@/%@",[HConstants kFireBaseURL],client,project]];
     NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants KCurrentUser]];
     [[self.fireBase childByAutoId] setValue:@{@"name":username}];
