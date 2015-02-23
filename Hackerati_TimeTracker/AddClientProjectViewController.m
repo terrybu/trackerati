@@ -16,20 +16,13 @@
 }
 
 
-//might implement searchbar instead for future
+//might implement searchbar instead for future of client names
 //@property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
 //@property (strong, nonatomic) IBOutlet UISearchDisplayController *searchController;
 
-
 @property (weak, nonatomic) IBOutlet UITextField *clientTitleTextField;
-
-
 @property (weak, nonatomic) IBOutlet UITextField *projectTitleTextField;
-
-
 @property (strong, nonatomic) Firebase *fireBase;
-
-
 
 @end
 
@@ -39,17 +32,14 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-    UIBarButtonItem *doneButton = [[UIBarButtonItem alloc]initWithTitle:@"Confirm Add" style:UIBarButtonItemStyleDone target:self action:@selector(saveNewClientProjectAndPopVC)];
+    self.title = @"Add New Client/Project";
+    
+    UIBarButtonItem *doneButton = [[UIBarButtonItem alloc]initWithTitle:@"Done" style:UIBarButtonItemStyleDone target:self action:@selector(saveNewClientProjectAndPopVC)];
     
     self.navigationItem.rightBarButtonItem = doneButton;
     
-    self.confirmButton.layer.cornerRadius = 5.0f;
-    self.confirmButton.clipsToBounds = YES;
-    [self.confirmButton.layer setBorderWidth:0.5f];
-    [self.confirmButton.layer setBorderColor:[UIColor grayColor].CGColor];
-    
     autocompleteTableView = [[UITableView alloc] initWithFrame:
-                             CGRectMake(0, 200, self.view.frame.size.width, 120) style:UITableViewStylePlain];
+                             CGRectMake(0, 200, self.view.frame.size.width * 0.6, self.view.frame.size.height) style:UITableViewStylePlain];
     autocompleteTableView.delegate = self;
     autocompleteTableView.dataSource = self;
     autocompleteTableView.scrollEnabled = YES;
@@ -97,14 +87,38 @@ replacementString:(NSString *)string {
     NSString *clientName = self.clientTitleTextField.text;
     NSString *projectName = self.projectTitleTextField.text;
     
+    if (([clientName isEqualToString:@""]) || ([projectName isEqualToString:@""])) {
+        [[[UIAlertView alloc]initWithTitle:@"Please fill both fields" message:@"Either field can't be blank" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+        return;
+    }
+        
+    
     self.fireBase = [[Firebase alloc]initWithUrl:[NSString stringWithFormat:@"%@/Projects/%@/%@/",[HConstants kFireBaseURL], clientName, projectName]];
     
+    [self.fireBase observeSingleEventOfType:FEventTypeValue withBlock:^(FDataSnapshot *snapshot) {
+        if (snapshot.value && [snapshot hasChildren]) {
+            //if we got data back, then it means we can't write here
+            [[[UIAlertView alloc]initWithTitle:@"Same project name exists" message:@"You cannot add this project name because an existing project was already found" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+            return;
+        }
+        else if ([snapshot.value isEqual:[NSNull null]]){
+            //if we don't get any data back, then we can write here
+            [self sendPlaceholderToCreateNewClientProject];
+            [self.navigationController popViewControllerAnimated:YES];
+        }
+    }];
+}
+
+
+
+- (void) sendPlaceholderToCreateNewClientProject {
+    //we need to check if that project name under that client name already exists
+    BOOL __block check = FALSE;
     Firebase *pathForPlaceholder =   [self.fireBase childByAutoId];
     NSDictionary *placeHolder = @{ @"name" : @"placeholder" };
     [pathForPlaceholder setValue:placeHolder];
-    
-    [self.navigationController popViewControllerAnimated:YES];
 }
+
 
 
 #pragma mark UITableViewDataSource methods

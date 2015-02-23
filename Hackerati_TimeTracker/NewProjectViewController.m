@@ -21,7 +21,7 @@
 @property (strong, nonatomic) NSMutableArray *masterClientsArray;
 @property (strong, nonatomic) NSMutableArray *currentUserClientsArray;
 @property (strong, nonatomic) Firebase *fireBase;
-@property (strong, nonatomic) NSMutableSet *setOfCurrentUserClientNames;;
+@property (strong, nonatomic) NSMutableSet *setOfCurrentUserClientNames;
 @property (strong, nonatomic) NSMutableSet *setOfCurrentUserProjectNames;
 
 @end
@@ -36,7 +36,7 @@ static NSString *CellIdentifier = @"Cell";
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     [self.tableView registerClass:[MCSwipeTableViewCell class] forCellReuseIdentifier:CellIdentifier];
     
-    UIBarButtonItem *addClientProjectButton = [[UIBarButtonItem alloc]initWithTitle:@"Add More" style:UIBarButtonItemStylePlain target:self action:@selector(pushAddClientProjectViewController)];
+    UIBarButtonItem *addClientProjectButton = [[UIBarButtonItem alloc]initWithTitle:@"Add New" style:UIBarButtonItemStylePlain target:self action:@selector(pushAddClientProjectViewController)];
     self.navigationItem.rightBarButtonItem = addClientProjectButton;
     
 }
@@ -74,6 +74,7 @@ static NSString *CellIdentifier = @"Cell";
     
     NSArray *masterClientNames = [self.masterClientsArray valueForKey:@"clientName"];
     addClientProjectVC.clientNames = [masterClientNames mutableCopy];
+    addClientProjectVC.setOfCurrentUserProjectNames = self.setOfCurrentUserProjectNames;
     
     [self.navigationItem setBackBarButtonItem:[[UIBarButtonItem alloc]
                                                initWithTitle:@"Back" style:UIBarButtonItemStyleBordered target:nil action:nil]];
@@ -99,9 +100,6 @@ static NSString *CellIdentifier = @"Cell";
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    // Row display. Implementers should *always* try to reuse cells by setting each cell's reuseIdentifier and querying for available reusable cells with dequeueReusableCellWithIdentifier:
-    // Cell gets various attributes set automatically based on table (separators) and data source (accessory views, editing controls)
-    
     MCSwipeTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     cell.delegate =self;
     
@@ -110,6 +108,8 @@ static NSString *CellIdentifier = @"Cell";
     Project *masterProject = [masterClient projectAtIndex:indexPath.row];
     cell.textLabel.text = masterProject.projectName;
     
+    //Checkmark addition logic
+    //we loop over these sets to find if this particular project was indeed selected by current user in the past
     if ((self.setOfCurrentUserClientNames != nil) && ([self.setOfCurrentUserClientNames containsObject:masterClient.clientName])) {
         if ((self.setOfCurrentUserProjectNames != nil) && ([self.setOfCurrentUserProjectNames containsObject:masterProject.projectName])) {
             cell.accessoryView =[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"CheckMark.png"]];
@@ -117,6 +117,16 @@ static NSString *CellIdentifier = @"Cell";
     }
     else
         cell.accessoryView = nil;
+    
+    
+    UIImageView *eraseMark = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Erase.png"]];
+    [cell setSwipeGestureWithView:eraseMark color:[UIColor whiteColor] mode:MCSwipeTableViewCellModeSwitch state:MCSwipeTableViewCellState3 completionBlock:nil];
+    [cell setSwipeGestureWithView:eraseMark color:[UIColor whiteColor] mode:MCSwipeTableViewCellModeExit state:MCSwipeTableViewCellState4 completionBlock:^(MCSwipeTableViewCell *cell, MCSwipeTableViewCellState state, MCSwipeTableViewCellMode mode) {
+            //Swipe Left To Remove Project altogether
+        [self removeProjectFromFireBase:masterProject];
+        
+    }];
+    
     
     return cell;
 }
@@ -182,6 +192,27 @@ static NSString *CellIdentifier = @"Cell";
     [[DataParseManager sharedManager] getAllDataFromFireBaseAfterLoginSuccess];
 }
 
+
+#pragma mark Removing from Firebase Logic
+//Might want to refactor this to FireBase Manager
+
+- (void) removeProjectFromFireBase: (Project *) project {
+    
+    //First, get confirmation
+    UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"Deleting Project" message:[NSString stringWithFormat:@"Are you sure you want to delete project named %@?", project.projectName] delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles: @"Yes", nil];
+    [alertView show];
+}
+
+- (void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    NSString *buttonTitle = [alertView buttonTitleAtIndex:buttonIndex];
+    if ([buttonTitle isEqualToString:@"Yes"]) {
+        NSLog(@"go ahead delete");
+    }
+    [self.tableView reloadData];
+}
+
+
+#pragma mark Custom Logic
 - (Client *) findCorrespondingClientInCurrentUserClientList: (Client *) masterClient {
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"clientName contains[c] %@", masterClient.clientName];
     NSArray *filtered = [self.currentUserClientsArray filteredArrayUsingPredicate:predicate];
@@ -238,6 +269,7 @@ static NSString *CellIdentifier = @"Cell";
     });
 
 }
+
 
 
 
