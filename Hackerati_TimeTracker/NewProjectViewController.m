@@ -21,7 +21,7 @@
 @property (strong, nonatomic) NSMutableArray *masterClientsArray;
 @property (strong, nonatomic) NSMutableArray *currentUserClientsArray;
 @property (strong, nonatomic) Firebase *fireBase;
-@property (strong, nonatomic) NSMutableSet *setOfCurrentUserClientNames;;
+@property (strong, nonatomic) NSMutableSet *setOfCurrentUserClientNames;
 @property (strong, nonatomic) NSMutableSet *setOfCurrentUserProjectNames;
 
 @end
@@ -36,7 +36,7 @@ static NSString *CellIdentifier = @"Cell";
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     [self.tableView registerClass:[MCSwipeTableViewCell class] forCellReuseIdentifier:CellIdentifier];
     
-    UIBarButtonItem *addClientProjectButton = [[UIBarButtonItem alloc]initWithTitle:@"Add More" style:UIBarButtonItemStylePlain target:self action:@selector(pushAddClientProjectViewController)];
+    UIBarButtonItem *addClientProjectButton = [[UIBarButtonItem alloc]initWithTitle:@"Add New" style:UIBarButtonItemStylePlain target:self action:@selector(pushAddClientProjectViewController)];
     self.navigationItem.rightBarButtonItem = addClientProjectButton;
     
 }
@@ -74,6 +74,7 @@ static NSString *CellIdentifier = @"Cell";
     
     NSArray *masterClientNames = [self.masterClientsArray valueForKey:@"clientName"];
     addClientProjectVC.clientNames = [masterClientNames mutableCopy];
+    addClientProjectVC.setOfCurrentUserProjectNames = self.setOfCurrentUserProjectNames;
     
     [self.navigationItem setBackBarButtonItem:[[UIBarButtonItem alloc]
                                                initWithTitle:@"Back" style:UIBarButtonItemStyleBordered target:nil action:nil]];
