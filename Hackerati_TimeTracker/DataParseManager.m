@@ -223,8 +223,9 @@
                             }
                         }
                     }];
-                    NSData *sanitizedCurrentUserRecordsData = [NSKeyedArchiver archivedDataWithRootObject:sanitizedCurrentUserRecords];
-                    [[NSUserDefaults standardUserDefaults] setObject:sanitizedCurrentUserRecordsData forKey:[HConstants KSanitizedCurrentUserRecords]];
+                    
+                    NSData *currentUserRecordsData = [NSKeyedArchiver archivedDataWithRootObject:sanitizedCurrentUserRecords];
+                    [[NSUserDefaults standardUserDefaults] setObject:currentUserRecordsData forKey:[HConstants KSanitizedCurrentUserRecords]];
                     [[NSUserDefaults standardUserDefaults] synchronize];
                     [[NSNotificationCenter defaultCenter] postNotificationName:kStartGetUserRecordsProcessNotification object:nil];
                 }
