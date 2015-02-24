@@ -39,29 +39,25 @@ static NSString *cellIdentifier = @"RecordTableViewCell";
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         NSData *currentUserRecordsData = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants KSanitizedCurrentUserRecords]];
         self.recordsHistoryDictionary = [NSKeyedUnarchiver unarchiveObjectWithData:currentUserRecordsData];
-        self.sortedDateKeys = [self returnSortedDateStringKeysArray:[self.recordsHistoryDictionary allKeys]];
+        if (self.recordsHistoryDictionary.count > 0)
+            self.sortedDateKeys = [self returnSortedDateStringKeysArray:[self.recordsHistoryDictionary allKeys]];
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.tableView reloadData];
         });
     });
 }
-
-
-
 
 - (void) viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         [[DataParseManager sharedManager] getUserRecords];
-        if (self.recordsHistoryDictionary.count > 0) {
+        if (self.recordsHistoryDictionary.count > 0)
             self.sortedDateKeys = [self returnSortedDateStringKeysArray:[self.recordsHistoryDictionary allKeys]];
-        }
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.tableView reloadData];
         });
     });
 }
-
 
 - (void)logOutAction{
     [[NSNotificationCenter defaultCenter] postNotificationName:kStartLogOutProcessNotification object:nil];
