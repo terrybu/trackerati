@@ -9,7 +9,8 @@
 #import <UIKit/UIKit.h>
 
 @interface HistoryViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
+
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
-@property (nonatomic, strong) NSMutableDictionary *historyOfRecords;
+@property (nonatomic, strong) NSMutableDictionary *recordsHistoryDictionary;
 
 @end

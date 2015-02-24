@@ -21,9 +21,9 @@
     Project *projectToDelete;
 }
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (strong, nonatomic) Firebase *fireBase;
 @property (strong, nonatomic) NSMutableArray *masterClientsArray;
 @property (strong, nonatomic) NSMutableArray *currentUserClientsArray;
-@property (strong, nonatomic) Firebase *fireBase;
 @property (strong, nonatomic) NSMutableSet *setOfCurrentUserClientNames;
 @property (strong, nonatomic) NSMutableSet *setOfCurrentUserProjectNames;
 

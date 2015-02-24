@@ -28,7 +28,7 @@
 
 // Data Source
 @property (strong, nonatomic) NSMutableArray* currentUserClientsArray;
-@property (strong, nonatomic) NSMutableDictionary* historyOfRecords;
+@property (strong, nonatomic) NSMutableDictionary* recordsHistoryDictionary;
 
 @property (strong, nonatomic) GPPSignIn *googleSignIn;
 @property (strong, nonatomic) HistoryViewController *historyViewController;
@@ -237,8 +237,8 @@ static NSString *CellIdentifier = @"Cell";
 
 -(void)sendForm{
     NSData *data = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants KSanitizedCurrentUserRecords]];
-    self.historyOfRecords = [NSKeyedUnarchiver unarchiveObjectWithData:data];
-    if ([self.historyOfRecords objectForKey:self.dateOfServiceTextLabel.text]) {
+    self.recordsHistoryDictionary = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+    if ([self.recordsHistoryDictionary objectForKey:self.dateOfServiceTextLabel.text]) {
         [[[UIAlertView alloc] initWithTitle:@"Warning" message:[NSString stringWithFormat: @"You already sent a record for %@. Do you still want to send this ?",self.dateOfServiceTextLabel.text] delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Send", nil] show];
     } else{
         [self submitRecord];
@@ -279,7 +279,7 @@ static NSString *CellIdentifier = @"Cell";
 
 - (void) historyAction:(UIBarButtonItem*)barButton{
     self.historyViewController = [[HistoryViewController alloc]initWithNibName:@"HistoryViewController" bundle:nil];
-    self.historyViewController.historyOfRecords = self.historyOfRecords;
+    self.historyViewController.recordsHistoryDictionary = self.recordsHistoryDictionary;
     [self.navigationController pushViewController:self.historyViewController animated:YES];
 }
 
@@ -309,8 +309,8 @@ static NSString *CellIdentifier = @"Cell";
 
 -(void) loadData{
     dispatch_async(dispatch_get_main_queue(), ^{
-        NSData *data = (NSData*)[[NSUserDefaults standardUserDefaults]objectForKey:[HConstants KcurrentUserClientList]];
-        self.currentUserClientsArray = (NSMutableArray*)[NSKeyedUnarchiver unarchiveObjectWithData:data];
+        NSData *data = [[NSUserDefaults standardUserDefaults]objectForKey:[HConstants KcurrentUserClientList]];        
+        self.currentUserClientsArray = [NSKeyedUnarchiver unarchiveObjectWithData:data];
         [self.refreshControl endRefreshing];
         [self.tableView reloadData];
     });
@@ -318,7 +318,7 @@ static NSString *CellIdentifier = @"Cell";
 
 - (void) userRecordsDataReceived {
     NSData *currentUserRecordsData = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants KSanitizedCurrentUserRecords]];
-    self.historyOfRecords = [NSKeyedUnarchiver unarchiveObjectWithData:currentUserRecordsData];
+    self.recordsHistoryDictionary = [NSKeyedUnarchiver unarchiveObjectWithData:currentUserRecordsData];
 }
 
 

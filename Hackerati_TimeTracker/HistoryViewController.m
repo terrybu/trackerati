@@ -29,6 +29,9 @@ static NSString *cellIdentifier = @"RecordTableViewCell";
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     self.title = @"History";
+    
+    NSLog(self.recordsHistoryDictionary.description);
+    
     [self.tableView registerNib:[UINib nibWithNibName:@"RecordTableViewCell" bundle:nil] forCellReuseIdentifier:cellIdentifier];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Log Out" style:UIBarButtonItemStylePlain target:self action:@selector(logOutAction)];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateNewRecords) name:kStartGetUserRecordsProcessNotification object:nil];
@@ -37,8 +40,8 @@ static NSString *cellIdentifier = @"RecordTableViewCell";
 -(void)updateNewRecords{
     dispatch_async(dispatch_get_main_queue(), ^{
         NSData *currentUserRecordsData = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants KSanitizedCurrentUserRecords]];
-        self.historyOfRecords = [NSKeyedUnarchiver unarchiveObjectWithData:currentUserRecordsData];
-        self.dateKeys = [self.historyOfRecords allKeys];
+        self.recordsHistoryDictionary = [NSKeyedUnarchiver unarchiveObjectWithData:currentUserRecordsData];
+        self.dateKeys = [self.recordsHistoryDictionary allKeys];
         [self.tableView reloadData];
     });
 }
@@ -47,8 +50,8 @@ static NSString *cellIdentifier = @"RecordTableViewCell";
     [super viewWillAppear:animated];
     
     [[DataParseManager sharedManager] getUserRecords];
-    if (self.historyOfRecords.count > 0)
-        self.dateKeys = [self.historyOfRecords allKeys];
+    if (self.recordsHistoryDictionary.count > 0)
+        self.dateKeys = [self.recordsHistoryDictionary allKeys];
     [self.tableView reloadData];
 }
 
@@ -61,7 +64,7 @@ static NSString *cellIdentifier = @"RecordTableViewCell";
 #pragma mark - Record TableView Cell Delegate
 -(void)didClickDetailButton:(NSIndexPath*)indexPath{
     self.recordDetailViewController =[[RecordDetailViewController alloc]initWithNibName:@"RecordDetailViewController" bundle:nil];
-    self.recordDetailViewController.record = [((NSArray*)[self.historyOfRecords objectForKey:[self.dateKeys objectAtIndex:indexPath.section]])objectAtIndex:indexPath.row];
+    self.recordDetailViewController.record = [((NSArray*)[self.recordsHistoryDictionary objectForKey:[self.dateKeys objectAtIndex:indexPath.section]])objectAtIndex:indexPath.row];
     [self.navigationController pushViewController:self.recordDetailViewController animated:YES];
 }
 
@@ -72,7 +75,7 @@ static NSString *cellIdentifier = @"RecordTableViewCell";
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    NSMutableArray *records = [self.historyOfRecords objectForKey:[self.dateKeys objectAtIndex:section]];
+    NSMutableArray *records = [self.recordsHistoryDictionary objectForKey:[self.dateKeys objectAtIndex:section]];
     return records.count;
 }
 
@@ -89,7 +92,7 @@ static NSString *cellIdentifier = @"RecordTableViewCell";
     
     RecordTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     
-    NSMutableArray *records = [self.historyOfRecords objectForKey:[self.dateKeys objectAtIndex:indexPath.section]];
+    NSMutableArray *records = [self.recordsHistoryDictionary objectForKey:[self.dateKeys objectAtIndex:indexPath.section]];
     
     Record *record = [records objectAtIndex:indexPath.row];
     [cell setclientNameLabelString:record.clientName];
