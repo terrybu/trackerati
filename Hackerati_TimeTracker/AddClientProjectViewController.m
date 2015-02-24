@@ -28,7 +28,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-    self.title = @"Add new client/project";
+    self.title = @"Create New";
     UIBarButtonItem *plusButton = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(saveNewClientProjectAndPopVC)];
     self.navigationItem.rightBarButtonItem = plusButton;
     

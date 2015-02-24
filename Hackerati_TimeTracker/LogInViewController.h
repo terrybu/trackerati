@@ -12,6 +12,7 @@
 #import "DataParseManager.h"
 
 @interface LogInViewController : UIViewController <UITableViewDataSource, UITableViewDelegate,DataParseManagerProtocol,UIGestureRecognizerDelegate>
+
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 @end

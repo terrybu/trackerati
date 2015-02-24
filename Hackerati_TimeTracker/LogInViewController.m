@@ -76,7 +76,7 @@ static NSString *CellIdentifier = @"Cell";
     self.title = @"Your Projects";
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"History" style:UIBarButtonItemStyleBordered target:self action:@selector(historyAction:)];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"Pin More" style:UIBarButtonItemStyleBordered target:self action:@selector(addNewProjects)];
-    
+
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     [self.tableView registerClass:[CustomMCSwipeTableViewCell class] forCellReuseIdentifier:CellIdentifier];
     
@@ -207,6 +207,12 @@ static NSString *CellIdentifier = @"Cell";
     [self.formView.layer setBorderColor:[UIColor grayColor].CGColor];
     
     [self.view addSubview:self.formView];
+    
+    
+    //without this line, iPhone 6+ has a weird way of making the tableview smaller than screen width?
+    self.tableView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
+    
+    NSLog(@"x %f y %f width %f height %f ",self.tableView.frame.origin.x, self.tableView.frame.origin.y, self.tableView.frame.size.width, self.tableView.frame.size.height);
 }
 
 -(void) viewWillAppear:(BOOL)animated{
@@ -287,7 +293,7 @@ static NSString *CellIdentifier = @"Cell";
     NewProjectViewController *newProjectViewController = [[NewProjectViewController alloc]initWithNibName:@"NewProjectViewController" bundle:nil];
     [self.navigationItem setBackBarButtonItem:[[UIBarButtonItem alloc]
                                                initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:nil action:nil]];
-    [self.navigationController pushViewController:newProjectViewController animated:YES];
+    [self.navigationController pushViewController:newProjectViewController animated:NO];
 }
 
 
