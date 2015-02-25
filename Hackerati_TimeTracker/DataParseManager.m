@@ -7,7 +7,6 @@
 //
 
 #import "DataParseManager.h"
-#import "FireBaseManager.h"
 #import "HConstants.h"
 #import "Client.h"
 #import "Project.h"
@@ -17,9 +16,10 @@
 @interface DataParseManager ()
 
 @property (nonatomic, strong) Firebase *projects;
-@property (nonatomic, strong) Firebase *records;
 
 @end
+
+static BOOL loggedOut = YES;
 
 @implementation DataParseManager
 
@@ -33,10 +33,20 @@
     return _sharedManager;
 }
 
-//this is where all the main action of getting clients/projects from FireBase happens after login is successful
-//We convert them into Client, Project, User objects
+-(Firebase*)records{
+    if (!_records) {
+        _records = [FireBaseManager recordURLsharedFireBase];
+    }
+    return _records;
+}
+
+
 
 - (void) getAllDataFromFireBaseAfterLoginSuccess{
+    //this is where all the main action of getting clients/projects from FireBase happens after login is successful
+    //We convert them into Client, Project, User objects
+    
+    //this is to let LoginViewController know in case we want to do some things on completion
     [self.delegate loginSuccessful];
 
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
@@ -185,11 +195,13 @@
 
 - (void) getUserRecords{
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+        
         // Get last 50 records by date
         [[[self.records queryOrderedByChild:[HConstants kDate]] queryLimitedToLast:50] observeEventType:FEventTypeValue withBlock:^(FDataSnapshot *snapshot) {
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
                 if (snapshot.value && [snapshot.value isKindOfClass:[NSDictionary class]]) {
                     NSDictionary *records = snapshot.value;
+                    NSLog(records.description);
                     __block NSMutableDictionary *sanitizedCurrentUserRecords = [[NSMutableDictionary alloc]init];
                     [records enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop){
                         if ([obj isKindOfClass:[NSDictionary class]]) {
@@ -247,12 +259,20 @@
 
 
 #pragma mark Login-Related
+
++ (BOOL) loggedOut {
+    return loggedOut;
+}
+
++ (void) setLoggedOut: (BOOL) value {
+    loggedOut = value;
+}
+
 -(void) loginSuccessful {
     if ([self.delegate respondsToSelector:@selector(loginSuccessful)]) {
         [self.delegate loginSuccessful];
     }
 }
-
 
 -(void) loginUnsuccessful{
     if ([self.delegate respondsToSelector:@selector(loginUnsuccessful)]) {
@@ -264,12 +284,6 @@
     self.delegate = delegate;
 }
 
--(Firebase*)records{
-    if (!_records) {
-        _records = [FireBaseManager recordURLsharedFireBase];
-    }
-    return _records;
-}
 
 @end
 

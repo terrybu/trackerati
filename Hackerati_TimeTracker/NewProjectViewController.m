@@ -42,8 +42,10 @@ static NSString *CellIdentifier = @"Cell";
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     [self.tableView registerClass:[MCSwipeTableViewCell class] forCellReuseIdentifier:CellIdentifier];
     
-    UIBarButtonItem *addClientProjectButton = [[UIBarButtonItem alloc]initWithTitle:@"Create" style:UIBarButtonItemStylePlain target:self action:@selector(pushAddClientProjectViewController)];
-    self.navigationItem.rightBarButtonItem = addClientProjectButton;
+    if (![DataParseManager loggedOut]) {
+        UIBarButtonItem *addClientProjectButton = [[UIBarButtonItem alloc]initWithTitle:@"Create" style:UIBarButtonItemStylePlain target:self action:@selector(pushAddClientProjectViewController)];
+        self.navigationItem.rightBarButtonItem = addClientProjectButton;
+    }
     
 }
 

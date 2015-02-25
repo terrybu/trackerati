@@ -312,6 +312,7 @@ static NSString *CellIdentifier = @"Cell";
 - (void) loginSuccessful {
 //    self.navigationItem.leftBarButtonItem.enabled = YES;
 //    self.navigationItem.rightBarButtonItem.enabled = YES;
+    [DataParseManager setLoggedOut:NO];
 }
 
 - (void) loginUnsuccessful{

@@ -104,7 +104,7 @@
 }
 
 - (void)logOut{
-    // Clean out NSUserDefault and Clear FireBase Managers
+    // Clear FireBase Managers, clear NSUserDefaults
     [[GPPSignIn sharedInstance] signOut];
     [[FireBaseManager recordURLsharedFireBase] removeAllObservers];
     [[FireBaseManager projectURLsharedFireBase] removeAllObservers];
@@ -112,6 +112,7 @@
     [[FireBaseManager baseURLsharedFireBase]unauth];
     [[FireBaseManager projectURLsharedFireBase]unauth];
     [[FireBaseManager recordURLsharedFireBase]unauth];
+    
     NSUserDefaults * defs = [NSUserDefaults standardUserDefaults];
     NSDictionary * dict = [defs dictionaryRepresentation];
     for (id key in dict) {

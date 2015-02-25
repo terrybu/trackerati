@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "LogInManager.h"
+#import "FireBaseManager.h"
 
 @protocol DataParseManagerProtocol <NSObject>
 
@@ -21,11 +22,16 @@
 @interface DataParseManager : NSObject <LogInManagerProtocol>
 
 @property (nonatomic, weak) id <DataParseManagerProtocol> delegate;
+@property (nonatomic, strong) Firebase *records;
+
++ (BOOL) loggedOut;
++ (void) setLoggedOut: (BOOL) value;
 
 + (DataParseManager*) sharedManager;
 - (void) getAllDataFromFireBaseAfterLoginSuccess;
 - (void) getAllClientsAndProjectsDataFromFireBaseAndSynchronize;
 - (void) manuallySetDelegate:(id<DataParseManagerProtocol>)delegate;
 - (void) getUserRecords;
+
 
 @end

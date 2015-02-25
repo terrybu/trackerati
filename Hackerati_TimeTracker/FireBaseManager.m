@@ -30,14 +30,14 @@
 }
 
 + (Firebase*)recordURLsharedFireBase{
-    static Firebase *recordURLsharedFireBase = nil;
-    static dispatch_once_t onceToken3;
-    dispatch_once(&onceToken3, ^{
-        NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants KCurrentUser]];
-        recordURLsharedFireBase = [[Firebase alloc]initWithUrl:[NSString stringWithFormat:@"%@/Users/%@/records",[HConstants kFireBaseURL],username]];
-    });
+    //we can't use dispatch_once token here because when a user logs out, we need to change the recordURL accordingly based on username, which change based on which user logs in
+    //if we use dispatch once_token here as well as a static Firebase variable, we had a bug where when another user logs in, the History of Records would still pull from previous user that was logged in
+    NSLog(@"%@", [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants KCurrentUser]]);
+    NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants KCurrentUser]];
+    Firebase *recordURLsharedFireBase = [[Firebase alloc]initWithUrl:[NSString stringWithFormat:@"%@/Users/%@/records",[HConstants kFireBaseURL],username]];
     return recordURLsharedFireBase;
 }
+
 
 + (Firebase*)connectivityURLsharedFireBase{
     static Firebase *connectivityURLsharedFireBase = nil;

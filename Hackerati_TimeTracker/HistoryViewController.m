@@ -49,19 +49,29 @@ static NSString *cellIdentifier = @"RecordTableViewCell";
 
 - (void) viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-        [[DataParseManager sharedManager] getUserRecords];
-        if (self.recordsHistoryDictionary.count > 0)
-            self.sortedDateKeys = [self returnSortedDateStringKeysArray:[self.recordsHistoryDictionary allKeys]];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self.tableView reloadData];
+        
+    if (![DataParseManager loggedOut]) {
+        NSLog(@"logged in as %@, reporting from history vc", [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants KCurrentUser]]);
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+            [[DataParseManager sharedManager] getUserRecords];
+            if (self.recordsHistoryDictionary.count > 0)
+                self.sortedDateKeys = [self returnSortedDateStringKeysArray:[self.recordsHistoryDictionary allKeys]];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.tableView reloadData];
+            });
         });
-    });
+    }
+    else { //if logged out don't do anything, hide logout button
+        NSLog(@"logged out, reporting from history vc");
+        self.navigationItem.rightBarButtonItem = nil;
+        [self.tableView reloadData];
+    }
 }
 
 - (void)logOutAction{
     [[NSNotificationCenter defaultCenter] postNotificationName:kStartLogOutProcessNotification object:nil];
-    
+    [DataParseManager setLoggedOut:YES];
+    [DataParseManager sharedManager].records = nil;
     [self.navigationController popViewControllerAnimated:YES];
 }
 
