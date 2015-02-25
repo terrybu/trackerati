@@ -20,6 +20,7 @@ static NSString *kStartGetUserRecordsProcessNotification = @"kStartGetUserRecord
 
 @end
 
+
 @interface LogInManager : NSObject <GPPSignInDelegate>
 
 @property (nonatomic, weak) id <LogInManagerProtocol> delegate;
@@ -27,9 +28,9 @@ static NSString *kStartGetUserRecordsProcessNotification = @"kStartGetUserRecord
 + (LogInManager*)sharedManager;
 
 - (void)startLogInProcess;
-
 - (void)logOut;
-
 - (void)manuallySetDelegate:(id<LogInManagerProtocol>)delegate;
+
+
 
 @end

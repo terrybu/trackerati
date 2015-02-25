@@ -52,7 +52,7 @@ static NSString * const kType = @"type";
     return KCurrentUserRecords;
 }
 
-+(NSString*)KcurrentUserClientList{
++(NSString*)KCurrentUserClientList{
     return KcurrentUserClientList;
 }
 

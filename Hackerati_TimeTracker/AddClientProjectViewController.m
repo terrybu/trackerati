@@ -29,7 +29,7 @@
     // Do any additional setup after loading the view from its nib.
     
     self.title = @"Create New";
-    UIBarButtonItem *plusButton = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(saveNewClientProjectAndPopVC)];
+    UIBarButtonItem *plusButton = [[UIBarButtonItem alloc]initWithTitle:@"Save" style:UIBarButtonItemStylePlain target:self action:@selector(saveNewClientProjectAndPopVC)];
     self.navigationItem.rightBarButtonItem = plusButton;
     
     autocompleteTableView = [[UITableView alloc] initWithFrame:
@@ -109,8 +109,10 @@ replacementString:(NSString *)string {
     NSDictionary *placeHolder = @{ @"name" : @"placeholder" };
     [pathForPlaceholder setValue:placeHolder withCompletionBlock:^(NSError *error, Firebase *ref) {
         [[DataParseManager sharedManager]getAllClientsAndProjectsDataFromFireBaseAndSynchronize];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.navigationController popViewControllerAnimated:YES];
+        });
     }];
-    [self.navigationController popViewControllerAnimated:YES];
 }
 
 

@@ -37,6 +37,8 @@
 //We convert them into Client, Project, User objects
 
 - (void) getAllDataFromFireBaseAfterLoginSuccess{
+    [self.delegate loginSuccessful];
+
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         // Get all existing clients and projects
         [self.projects observeSingleEventOfType:FEventTypeValue withBlock:^(FDataSnapshot *snapshot) {
@@ -55,10 +57,9 @@
                     }
                 }
                 else {
-                    
                     [[NSUserDefaults standardUserDefaults] removeObjectForKey:[HConstants kRawMasterClientList]];
                     [[NSUserDefaults standardUserDefaults] removeObjectForKey:[HConstants kMasterClientList]];
-                    [[NSUserDefaults standardUserDefaults] removeObjectForKey:[HConstants KcurrentUserClientList]];
+                    [[NSUserDefaults standardUserDefaults] removeObjectForKey:[HConstants KCurrentUserClientList]];
                     [[NSUserDefaults standardUserDefaults]synchronize];
                     
                     if ([self.delegate respondsToSelector:@selector(loadData)]) {
@@ -112,15 +113,13 @@
                 [newClient addProject:newProject];
             }];
         }
-        //Alphabetical sorting logic for projects within a client
-        NSArray *sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"projectName" ascending:YES]];
-        NSArray *sortedProjectsArray = [newClient.projects sortedArrayUsingDescriptors:sortDescriptors];
-        newClient.projects = (NSMutableArray *) [sortedProjectsArray mutableCopy];
+        //Alphabetical sorting logic for master projects within a master client
+        [self sortProjectsForClientByDescriptor:newClient sortDescriptor:@"projectName"];
         [masterClientList addObject:newClient];
     }];
     
-    //Alphabetical sorting logic for clients within master client list
-    NSData *masterClientListData = [self returnArchivedDataOfSortedArrayByDescriptor:masterClientList sortDescriptor:@"clientName"];
+    //Alphabetical sorting logic for master clients within master client list
+    NSData *masterClientListData = [self getArchivedDataOfSortedArrayByDescriptor:masterClientList sortDescriptor:@"clientName"];
     [[NSUserDefaults standardUserDefaults]setObject:masterClientListData forKey:[HConstants kMasterClientList]];
     [[NSUserDefaults standardUserDefaults]synchronize];
 }
@@ -156,23 +155,29 @@
                     [newClient addProject:newProject];
                 }
             }];
-            //Alphabetical sorting logic for projects within a client
-            NSArray *sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"projectName" ascending:YES]];
-            NSArray *sortedProjectsArray = [newClient.projects sortedArrayUsingDescriptors:sortDescriptors];
-            newClient.projects = (NSMutableArray *)[sortedProjectsArray mutableCopy];
+            //Alphabetical sorting logic for user's projects within a currenclient
+            [self sortProjectsForClientByDescriptor:newClient sortDescriptor:@"projectName"];
         }
         if (![newClient isProjectsEmpty]) {
             [currentUserClientList addObject:newClient];
         }
     }];
-    //Alphabetical sorting logic for clients within currentUserClient
-    NSData *currentUserClientListData = [self returnArchivedDataOfSortedArrayByDescriptor:currentUserClientList sortDescriptor:@"clientName"];
-    [[NSUserDefaults standardUserDefaults]setObject:currentUserClientListData forKey:[HConstants KcurrentUserClientList]];
+    //Alphabetical sorting logic for clients within currentUserClients
+    NSData *currentUserClientListData = [self getArchivedDataOfSortedArrayByDescriptor:currentUserClientList sortDescriptor:@"clientName"];
+    [[NSUserDefaults standardUserDefaults]setObject:currentUserClientListData forKey:[HConstants KCurrentUserClientList]];
     [[NSUserDefaults standardUserDefaults]synchronize];
 }
 
-- (NSData *) returnArchivedDataOfSortedArrayByDescriptor: (NSArray *) arrayToSort sortDescriptor: (NSString *) descriptor {
-    NSArray *sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:descriptor ascending:YES]];
+- (void) sortProjectsForClientByDescriptor: (Client *) client sortDescriptor: (NSString *) descriptor {
+    NSSortDescriptor * sortByName = [[NSSortDescriptor alloc] initWithKey:descriptor ascending:YES selector:@selector(caseInsensitiveCompare:)];
+    NSArray *sortDescriptors = @[sortByName];
+    NSArray *sortedProjectsArray = [client.projects sortedArrayUsingDescriptors:sortDescriptors];
+    client.projects = (NSMutableArray *)[sortedProjectsArray mutableCopy];
+}
+
+- (NSData *) getArchivedDataOfSortedArrayByDescriptor: (NSArray *) arrayToSort sortDescriptor: (NSString *) descriptor {
+    NSSortDescriptor * sortByName = [[NSSortDescriptor alloc] initWithKey:descriptor ascending:YES selector:@selector(caseInsensitiveCompare:)];
+    NSArray *sortDescriptors = @[sortByName];
     NSMutableArray *sortedArray = (NSMutableArray *) [[arrayToSort sortedArrayUsingDescriptors:sortDescriptors] mutableCopy];
     NSData *archivedArray = [NSKeyedArchiver archivedDataWithRootObject:sortedArray];
     return archivedArray;
@@ -239,6 +244,13 @@
         }];
     });
 }
+
+-(void) loginSuccessful {
+    if ([self.delegate respondsToSelector:@selector(loginSuccessful)]) {
+        [self.delegate loginSuccessful];
+    }
+}
+
 
 -(void) loginUnsuccessful{
     if ([self.delegate respondsToSelector:@selector(loginUnsuccessful)]) {

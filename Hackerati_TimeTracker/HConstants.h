@@ -17,11 +17,10 @@
 +(NSString*)kMasterClientList;
 +(NSString*)KCurrentUser;
 +(NSString*)KCurrentUserRecords;
-+(NSString*)KcurrentUserClientList;
++(NSString*)KCurrentUserClientList;
 +(NSString*)KlastSavedRecord;
 +(NSString*)kRawMasterClientList;
 +(NSString*)KSanitizedCurrentUserRecords;
-//+(NSString*)KSanitizedCurrentUserRecordsKeys;
 +(NSString*)KfullTimeEmployee;
 +(NSString*)KpartTimeEmployee;
 +(NSString*)KbillableHour;

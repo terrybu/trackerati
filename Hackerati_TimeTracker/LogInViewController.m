@@ -89,7 +89,7 @@ static NSString *CellIdentifier = @"Cell";
     [self.tableView addSubview:self.refreshControl];
     
     UILabel *messageLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)];
-    messageLabel.text = @"Pull to refresh / Click + to add your projects";
+    messageLabel.text = @"Pull to refresh or log back in";
     messageLabel.textColor = [UIColor blackColor];
     messageLabel.numberOfLines = 0;
     messageLabel.textAlignment = NSTextAlignmentCenter;
@@ -99,6 +99,10 @@ static NSString *CellIdentifier = @"Cell";
     
     self.formatter = [[NSDateFormatter alloc] init];
     [self.formatter setDateFormat:@"MM/dd/yyyy"];
+    
+    self.navigationItem.leftBarButtonItem.enabled = NO;
+    self.navigationItem.rightBarButtonItem.enabled = NO;
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(disableButtonsOnLogOut) name:kStartLogOutProcessNotification object:nil];
 }
 
 - (void)viewWillLayoutSubviews{
@@ -208,11 +212,8 @@ static NSString *CellIdentifier = @"Cell";
     
     [self.view addSubview:self.formView];
     
-    
     //without this line, iPhone 6+ has a weird way of making the tableview smaller than screen width?
     self.tableView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
-    
-    NSLog(@"x %f y %f width %f height %f ",self.tableView.frame.origin.x, self.tableView.frame.origin.y, self.tableView.frame.size.width, self.tableView.frame.size.height);
 }
 
 -(void) viewWillAppear:(BOOL)animated{
@@ -302,9 +303,14 @@ static NSString *CellIdentifier = @"Cell";
     // Dispose of any resources that can be recreated.
 }
 
-#pragma mark - Data Parser Delegate Methods
+#pragma mark - Data Parser Delegate Methods and Login-Related
 
--(void) loginUnsuccessful{
+- (void) loginSuccessful {
+    self.navigationItem.leftBarButtonItem.enabled = YES;
+    self.navigationItem.rightBarButtonItem.enabled = YES;
+}
+
+- (void) loginUnsuccessful{
     dispatch_async(dispatch_get_main_queue(), ^{
         [self loadData];
         [self.refreshControl endRefreshing];
@@ -313,9 +319,16 @@ static NSString *CellIdentifier = @"Cell";
     });
 }
 
+
+- (void) disableButtonsOnLogOut {
+    self.navigationItem.leftBarButtonItem.enabled = NO;
+    self.navigationItem.rightBarButtonItem.enabled = NO;
+}
+
+
 -(void) loadData{
     dispatch_async(dispatch_get_main_queue(), ^{
-        NSData *data = [[NSUserDefaults standardUserDefaults]objectForKey:[HConstants KcurrentUserClientList]];        
+        NSData *data = [[NSUserDefaults standardUserDefaults]objectForKey:[HConstants KCurrentUserClientList]];        
         self.currentUserClientsArray = [NSKeyedUnarchiver unarchiveObjectWithData:data];
         [self.refreshControl endRefreshing];
         [self.tableView reloadData];
@@ -433,7 +446,7 @@ static NSString *CellIdentifier = @"Cell";
         [self.currentUserClientsArray removeObject:client];
     }
     NSData *currentUserClientListData = [NSKeyedArchiver archivedDataWithRootObject:self.currentUserClientsArray];
-    [[NSUserDefaults standardUserDefaults] setObject:currentUserClientListData forKey:[HConstants KcurrentUserClientList]];
+    [[NSUserDefaults standardUserDefaults] setObject:currentUserClientListData forKey:[HConstants KCurrentUserClientList]];
     [[NSUserDefaults standardUserDefaults]synchronize];
     
     NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants KCurrentUser]];
@@ -509,6 +522,10 @@ static NSString *CellIdentifier = @"Cell";
         [self slideForm];
         
     }
+}
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter]removeObserver:self];
 }
 
 @end

@@ -60,7 +60,7 @@ static NSString *CellIdentifier = @"Cell";
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         NSData *masterClientsData = [[NSUserDefaults standardUserDefaults]objectForKey:[HConstants kMasterClientList]];
         self.masterClientsArray = [NSKeyedUnarchiver unarchiveObjectWithData:masterClientsData];
-        NSData *currentUserClientsData = [[NSUserDefaults standardUserDefaults]objectForKey:[HConstants KcurrentUserClientList]];
+        NSData *currentUserClientsData = [[NSUserDefaults standardUserDefaults]objectForKey:[HConstants KCurrentUserClientList]];
         self.currentUserClientsArray = [NSKeyedUnarchiver unarchiveObjectWithData:currentUserClientsData];
         self.setOfCurrentUserClientNames = [NSMutableSet setWithArray:[self.currentUserClientsArray valueForKey:@"clientName"]];
         self.setOfCurrentUserProjectNames = [[NSMutableSet alloc]init];
@@ -176,7 +176,7 @@ static NSString *CellIdentifier = @"Cell";
             [self.setOfCurrentUserClientNames addObject:newClient.clientName];
             [self.setOfCurrentUserProjectNames addObject:masterSelectedProject.projectName];
             NSData *currentUserClientListData = [NSKeyedArchiver archivedDataWithRootObject:self.currentUserClientsArray];
-            [[NSUserDefaults standardUserDefaults] setObject:currentUserClientListData forKey:[HConstants KcurrentUserClientList]];
+            [[NSUserDefaults standardUserDefaults] setObject:currentUserClientListData forKey:[HConstants KCurrentUserClientList]];
             [[NSUserDefaults standardUserDefaults]synchronize];
             [self pinUserToProjectOnFireBase: masterSelectedClient.clientName project:masterSelectedProject.projectName];
         }
@@ -189,7 +189,7 @@ static NSString *CellIdentifier = @"Cell";
                 [self.setOfCurrentUserClientNames addObject:selectedCurrentUserClient.clientName];
                 [self.setOfCurrentUserProjectNames addObject:masterSelectedProject.projectName];
                 NSData *currentUserClientListData = [NSKeyedArchiver archivedDataWithRootObject:self.currentUserClientsArray];
-                [[NSUserDefaults standardUserDefaults] setObject:currentUserClientListData forKey:[HConstants KcurrentUserClientList]];
+                [[NSUserDefaults standardUserDefaults] setObject:currentUserClientListData forKey:[HConstants KCurrentUserClientList]];
                 [[NSUserDefaults standardUserDefaults]synchronize];
                 [self pinUserToProjectOnFireBase: masterSelectedClient.clientName project:masterSelectedProject.projectName];
             }
@@ -228,7 +228,7 @@ static NSString *CellIdentifier = @"Cell";
                     if (currentUsersClientCorresponding.projects.count == 0)
                         [self.currentUserClientsArray removeObject:currentUsersClientCorresponding];
                     NSData *currentClientsData = [NSKeyedArchiver archivedDataWithRootObject:self.currentUserClientsArray];
-                    [[NSUserDefaults standardUserDefaults]setObject:currentClientsData forKey:[HConstants KcurrentUserClientList]];
+                    [[NSUserDefaults standardUserDefaults]setObject:currentClientsData forKey:[HConstants KCurrentUserClientList]];
                     [[NSUserDefaults standardUserDefaults]synchronize];
                     
                     [clientToDelete.projects removeObject:projectToDelete];
@@ -295,7 +295,7 @@ static NSString *CellIdentifier = @"Cell";
         [self.setOfCurrentUserClientNames removeObject:client.clientName];
     }
      NSData *currentUserClientListData = [NSKeyedArchiver archivedDataWithRootObject:self.currentUserClientsArray];
-    [[NSUserDefaults standardUserDefaults] setObject:currentUserClientListData forKey:[HConstants KcurrentUserClientList]];
+    [[NSUserDefaults standardUserDefaults] setObject:currentUserClientListData forKey:[HConstants KCurrentUserClientList]];
     [[NSUserDefaults standardUserDefaults]synchronize];
     
     NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants KCurrentUser]];

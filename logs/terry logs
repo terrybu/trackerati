@@ -1,0 +1,11 @@
+
+
+2.24.2015 Tuesday
+By Terry
+
+Auto-Layout is not used across the app, but just in certain places for now, a lot of things are done in code.
+
+Screen compability across devices mostly seem fine, except for iPhone 6 Plus on the simulator. Screen gets horribly cut off in the simulator. This might be a simulator error, and might not be a problem on a real physical device.
+
+
+
