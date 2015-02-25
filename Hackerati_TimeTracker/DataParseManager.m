@@ -201,7 +201,6 @@ static BOOL loggedOut = YES;
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
                 if (snapshot.value && [snapshot.value isKindOfClass:[NSDictionary class]]) {
                     NSDictionary *records = snapshot.value;
-                    NSLog(records.description);
                     __block NSMutableDictionary *sanitizedCurrentUserRecords = [[NSMutableDictionary alloc]init];
                     [records enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop){
                         if ([obj isKindOfClass:[NSDictionary class]]) {

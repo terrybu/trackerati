@@ -51,7 +51,6 @@ static NSString *cellIdentifier = @"RecordTableViewCell";
     [super viewWillAppear:animated];
         
     if (![DataParseManager loggedOut]) {
-        NSLog(@"logged in as %@, reporting from history vc", [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants KCurrentUser]]);
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
             [[DataParseManager sharedManager] getUserRecords];
             if (self.recordsHistoryDictionary.count > 0)
@@ -62,7 +61,6 @@ static NSString *cellIdentifier = @"RecordTableViewCell";
         });
     }
     else { //if logged out don't do anything, hide logout button
-        NSLog(@"logged out, reporting from history vc");
         self.navigationItem.rightBarButtonItem = nil;
         [self.tableView reloadData];
     }

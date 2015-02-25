@@ -122,14 +122,12 @@ static NSString *CellIdentifier = @"Cell";
     
     //Checkmark addition logic
     //we loop over these sets to find if this particular project was indeed selected by current user in the past
+    cell.accessoryView = nil;
     if ((self.setOfCurrentUserClientNames != nil) && ([self.setOfCurrentUserClientNames containsObject:masterClient.clientName])) {
         if ((self.setOfCurrentUserProjectNames != nil) && ([self.setOfCurrentUserProjectNames containsObject:masterProject.projectName])) {
             cell.accessoryView =[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"CheckMark.png"]];
         }
     }
-    else
-        cell.accessoryView = nil;
-    
     
     UIImageView *eraseMark = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Erase.png"]];
     [cell setSwipeGestureWithView:eraseMark color:[UIColor whiteColor] mode:MCSwipeTableViewCellModeSwitch state:MCSwipeTableViewCellState3 completionBlock:nil];
