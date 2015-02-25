@@ -245,6 +245,8 @@
     });
 }
 
+
+#pragma mark Login-Related
 -(void) loginSuccessful {
     if ([self.delegate respondsToSelector:@selector(loginSuccessful)]) {
         [self.delegate loginSuccessful];

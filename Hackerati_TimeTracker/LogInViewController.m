@@ -100,9 +100,13 @@ static NSString *CellIdentifier = @"Cell";
     self.formatter = [[NSDateFormatter alloc] init];
     [self.formatter setDateFormat:@"MM/dd/yyyy"];
     
-    self.navigationItem.leftBarButtonItem.enabled = NO;
-    self.navigationItem.rightBarButtonItem.enabled = NO;
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(disableButtonsOnLogOut) name:kStartLogOutProcessNotification object:nil];
+    
+    //Some of this nav bar button items disable/enabling logic was a way to disallow users to access History/Projects if they are not logged in
+    //But it causes a bit of lag on launch. Since logout won't be prevalent among almost all users, I don't think is necessary
+    //Will comment out for now (2/25/2015)
+//    self.navigationItem.leftBarButtonItem.enabled = NO;
+//    self.navigationItem.rightBarButtonItem.enabled = NO;
+//    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(disableButtonsOnLogOut) name:kStartLogOutProcessNotification object:nil];
 }
 
 - (void)viewWillLayoutSubviews{
@@ -306,8 +310,8 @@ static NSString *CellIdentifier = @"Cell";
 #pragma mark - Data Parser Delegate Methods and Login-Related
 
 - (void) loginSuccessful {
-    self.navigationItem.leftBarButtonItem.enabled = YES;
-    self.navigationItem.rightBarButtonItem.enabled = YES;
+//    self.navigationItem.leftBarButtonItem.enabled = YES;
+//    self.navigationItem.rightBarButtonItem.enabled = YES;
 }
 
 - (void) loginUnsuccessful{
@@ -320,10 +324,10 @@ static NSString *CellIdentifier = @"Cell";
 }
 
 
-- (void) disableButtonsOnLogOut {
-    self.navigationItem.leftBarButtonItem.enabled = NO;
-    self.navigationItem.rightBarButtonItem.enabled = NO;
-}
+//- (void) disableButtonsOnLogOut {
+//    self.navigationItem.leftBarButtonItem.enabled = NO;
+//    self.navigationItem.rightBarButtonItem.enabled = NO;
+//}
 
 
 -(void) loadData{
@@ -525,7 +529,7 @@ static NSString *CellIdentifier = @"Cell";
 }
 
 - (void)dealloc {
-    [[NSNotificationCenter defaultCenter]removeObserver:self];
+//    [[NSNotificationCenter defaultCenter]removeObserver:self];
 }
 
 @end

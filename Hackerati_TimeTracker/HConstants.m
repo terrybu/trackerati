@@ -17,7 +17,6 @@ static NSString * const KCurrentUserRecords = @"currentUserRecords";
 static NSString * const KcurrentUserClientList = @"currentUserClientList";
 static NSString * const KlastSavedRecord = @"lastSavedRecord";
 static NSString * const KSanitizedCurrentUserRecords = @"SanitizedCurrentUserRecords";
-//static NSString * const KSanitizedCurrentUserRecordsKeys = @"SanitizedCurrentUserRecordsKeys";
 static NSString * const KfullTimeEmployee = @"Full-Time Employee";
 static NSString * const KpartTimeEmployee = @"Part-Time Employee";
 static NSString * const KbillableHour = @"Billable Hour";
@@ -67,10 +66,6 @@ static NSString * const kType = @"type";
 +(NSString*)KSanitizedCurrentUserRecords{
     return KSanitizedCurrentUserRecords;
 }
-
-//+(NSString*)KSanitizedCurrentUserRecordsKeys{
-//    return KSanitizedCurrentUserRecordsKeys;
-//}
 
 +(NSString*)KfullTimeEmployee{
     return KfullTimeEmployee;

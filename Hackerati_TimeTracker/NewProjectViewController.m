@@ -36,7 +36,7 @@ static NSString *CellIdentifier = @"Cell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"Tap to pin/unpin";
-    self.navigationItem.prompt = @"Swipe left to delete entirely from server";
+    self.navigationItem.prompt = @"Swipe left to delete entirely from database";
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dataReceivedSafeToRefresh) name:@"clientsProjectsSynched" object:nil];
     
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
@@ -132,10 +132,10 @@ static NSString *CellIdentifier = @"Cell";
     UIImageView *eraseMark = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Erase.png"]];
     [cell setSwipeGestureWithView:eraseMark color:[UIColor whiteColor] mode:MCSwipeTableViewCellModeSwitch state:MCSwipeTableViewCellState3 completionBlock:nil];
     [cell setSwipeGestureWithView:eraseMark color:[UIColor whiteColor] mode:MCSwipeTableViewCellModeExit state:MCSwipeTableViewCellState4 completionBlock:^(MCSwipeTableViewCell *cell, MCSwipeTableViewCellState state, MCSwipeTableViewCellMode mode) {
-        //Swipe Left To Remove Project altogether
+        //Swipe Left To Remove Project altogether from server
         clientToDelete = masterClient;
         projectToDelete = masterProject;
-        [self removeProjectAfterAlertShow:masterProject client: masterClient];
+        [self removeProjectAfterConfirmationAlert:masterProject client: masterClient];
     }];
     return cell;
 }
@@ -203,11 +203,16 @@ static NSString *CellIdentifier = @"Cell";
 }
 
 
-#pragma mark Swipe Cell Deleting Project from Firebase Logic
+#pragma mark Swipe Cell - Removing Project from Firebase Logic
 
-- (void) removeProjectAfterAlertShow: (Project *) project client: (Client *) client {
-    //First, get confirmation
-    UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"Deleting Project" message:[NSString stringWithFormat:@"Are you sure you want to delete project named %@?", project.projectName] delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles: @"Yes", nil];
+- (void) removeProjectAfterConfirmationAlert: (Project *) project client: (Client *) client {
+    UIAlertView *alertView;
+    if (client.projects.count == 1) {
+        alertView = [[UIAlertView alloc]initWithTitle:@"Deleting From Database" message:[NSString stringWithFormat:@"Are you sure you want to delete project named %@ permanently from the database? This will also delete client named %@.", project.projectName, client.clientName] delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles: @"Yes", nil];
+    }
+    else {
+         alertView = [[UIAlertView alloc]initWithTitle:@"Deleting From Database" message:[NSString stringWithFormat:@"Are you sure you want to delete project named %@ permanently from the database?", project.projectName] delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles: @"Yes", nil];
+    }
     [alertView show];
 }
 
