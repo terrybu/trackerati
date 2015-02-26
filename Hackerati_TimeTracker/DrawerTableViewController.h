@@ -10,4 +10,6 @@
 
 @interface DrawerTableViewController : UITableViewController
 
+- (void) loginRefresh;
+
 @end

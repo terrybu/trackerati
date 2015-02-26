@@ -109,7 +109,13 @@ static const CGFloat kJVTableViewTopInset = 80.0;
     
     //this reloading is needed because without it, when we log out from home screen, old projects still show up on the tableview of login vc
     UINavigationController *homeNav = [[AppDelegate globalDelegate].controllersDictionary objectForKey:kHomeNavControllerKey];
-    LoginViewController *lvc = (LoginViewController *) homeNav.topViewController;
+    LoginViewController *lvc = (LoginViewController *) homeNav.viewControllers[0];
+    [lvc reloadLocalCacheData];
+}
+
+- (void) loginRefresh {
+    UINavigationController *homeNav = [[AppDelegate globalDelegate].controllersDictionary objectForKey:kHomeNavControllerKey];
+    LoginViewController *lvc = (LoginViewController *) homeNav.viewControllers[0];
     [lvc reloadLocalCacheData];
 }
 

@@ -12,6 +12,9 @@
 #import "Project.h"
 #import "User.h"
 #import "Record.h"
+#import "AppDelegate.h"
+#import "DrawerTableViewController.h"
+
 
 @interface DataParseManager ()
 
@@ -61,6 +64,8 @@
                     if ([self.delegate respondsToSelector:@selector(loadData)]) {
                         dispatch_async(dispatch_get_main_queue(), ^{
                             [self.delegate loadData];
+                            DrawerTableViewController *dtvc = (DrawerTableViewController *) [AppDelegate globalDelegate].drawerViewController.leftViewController;
+                            [dtvc loginRefresh];
                         });
                     }
                 }
