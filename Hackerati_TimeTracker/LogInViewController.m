@@ -1,12 +1,12 @@
 //
-//  LogInViewController.m
+//  LoginViewController.m
 //  Hackerati_TimeTracker
 //
 //  Created by Ethan on 1/5/15.
 //  Copyright (c) 2015 Hackerati. All rights reserved.
 //
 
-#import "LogInViewController.h"
+#import "LoginViewController.h"
 #import "HistoryViewController.h"
 #import <QuartzCore/QuartzCore.h>
 #import "HConstants.h"
@@ -14,7 +14,7 @@
 #import "RecordFormViewController.h"
 #import "FireBaseManager.h"
 #import "DataParseManager.h"
-#import "LogInManager.h"
+#import "LoginManager.h"
 #import "PinProjectViewController.h"
 #import "LastSavedManager.h"
 #import "CustomLabel.h"
@@ -25,7 +25,7 @@
 #import "AppDelegate.h"
 
 
-@interface LogInViewController ()<CustomMCSwipeTableViewCellDelegate>
+@interface LoginViewController ()<CustomMCSwipeTableViewCellDelegate>
 
 // Data Source
 @property (strong, nonatomic) NSMutableArray* currentUserClientsArray;
@@ -66,7 +66,7 @@
 
 @end
 
-@implementation LogInViewController
+@implementation LoginViewController
 
 static NSString *CellIdentifier = @"Cell";
 
@@ -84,7 +84,20 @@ static NSString *CellIdentifier = @"Cell";
 }
 
 
+- (void)viewWillLayoutSubviews{
+    
+    [super viewWillLayoutSubviews];
+    [self createFormViewForSlideOutEffectOnSwipe];
+    
+    //without this line, iPhone 6+ has a weird way of making the tableview smaller than screen width/height?
+    self.tableView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
+}
 
+-(void) viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    
+    [self loadData];
+}
 
 
 
@@ -131,19 +144,7 @@ static NSString *CellIdentifier = @"Cell";
     [[AppDelegate globalDelegate] toggleLeftDrawer:self animated:YES];
 }
 
-- (void)viewWillLayoutSubviews{
-    
-    [super viewWillLayoutSubviews];
-    [self createFormViewForSlideOutEffectOnSwipe];
-    
-    //without this line, iPhone 6+ has a weird way of making the tableview smaller than screen width/height?
-    self.tableView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
-}
 
--(void) viewWillAppear:(BOOL)animated{
-    [super viewWillAppear:animated];
-    [self loadData];
-}
 
 
 #pragma mark Slide Out Form Effect
@@ -264,7 +265,7 @@ static NSString *CellIdentifier = @"Cell";
                 if([snapshot.value boolValue] && [[NSUserDefaults standardUserDefaults]objectForKey:[HConstants kCurrentUser]]) {
                     [[DataParseManager sharedManager] getAllDataFromFireBaseAfterLoginSuccess];
                 } else {
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kStartLogInProcessNotification object:nil];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kStartLoginProcessNotification object:nil];
                 }
             }];
         });
@@ -331,7 +332,6 @@ static NSString *CellIdentifier = @"Cell";
 }
 
 #pragma mark - Data Parser Delegate Methods
-
 - (void) loginUnsuccessful{
     dispatch_async(dispatch_get_main_queue(), ^{
         [self loadData];

@@ -43,7 +43,7 @@ static NSString *CellIdentifier = @"Cell";
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     [self.tableView registerClass:[MCSwipeTableViewCell class] forCellReuseIdentifier:CellIdentifier];
     
-    if (![LogInManager loggedOut]) {
+    if (![LoginManager loggedOut]) {
         [self enableCreateButton];
     }
     

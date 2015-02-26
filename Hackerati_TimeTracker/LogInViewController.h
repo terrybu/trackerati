@@ -1,5 +1,5 @@
 //
-//  LogInViewController.h
+//  LoginViewController.h
 //  Hackerati_TimeTracker
 //
 //  Created by Ethan on 1/5/15.
@@ -7,11 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "LogInManager.h"
+#import "LoginManager.h"
 #import "Reachability.h"
 #import "DataParseManager.h"
 
-@interface LogInViewController : UIViewController <UITableViewDataSource, UITableViewDelegate,DataParseManagerProtocol,UIGestureRecognizerDelegate>
+@interface LoginViewController : UIViewController <UITableViewDataSource, UITableViewDelegate,DataParseManagerProtocol,UIGestureRecognizerDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 

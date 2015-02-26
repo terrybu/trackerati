@@ -94,12 +94,18 @@ static const CGFloat kJVTableViewTopInset = 80.0;
         [[[AppDelegate globalDelegate] drawerViewController] setCenterViewController:destinationNavController];
     }
     else if (indexPath.row == CellIndexTypeLogout) {
-        NSLog(@"log out!");
+        [self logOutAction];
     }
     
     [[AppDelegate globalDelegate] toggleLeftDrawer:self animated:YES];
 
     
+}
+
+- (void)logOutAction{
+    [[NSNotificationCenter defaultCenter] postNotificationName:kStartLogOutProcessNotification object:nil];
+    [LoginManager setLoggedOut:YES];
+    [DataParseManager sharedManager].records = nil;
 }
 
 - (void)didReceiveMemoryWarning {

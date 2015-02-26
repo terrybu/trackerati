@@ -1,5 +1,5 @@
 //
-//  LogInManager.h
+//  LoginManager.h
 //  Hackerati_TimeTracker
 //
 //  Created by Ethan on 1/5/15.
@@ -9,11 +9,11 @@
 #import <Foundation/Foundation.h>
 #import <GooglePlus/GooglePlus.h>
 
-static NSString *kStartLogInProcessNotification = @"kStartLogInProcessNotification";
+static NSString *kStartLoginProcessNotification = @"kStartLoginProcessNotification";
 static NSString *kStartLogOutProcessNotification = @"kStartLogOutProcessNotification";
 static NSString *kStartGetUserRecordsProcessNotification = @"kStartGetUserRecordsProcessNotification";
 
-@protocol LogInManagerProtocol <NSObject>
+@protocol LoginManagerProtocol <NSObject>
 
 -(void) getAllDataFromFireBaseAfterLoginSuccess;
 -(void) loginUnsuccessful;
@@ -21,15 +21,15 @@ static NSString *kStartGetUserRecordsProcessNotification = @"kStartGetUserRecord
 @end
 
 
-@interface LogInManager : NSObject <GPPSignInDelegate>
+@interface LoginManager : NSObject <GPPSignInDelegate>
 
-@property (nonatomic, weak) id <LogInManagerProtocol> delegate;
+@property (nonatomic, weak) id <LoginManagerProtocol> delegate;
 
-+ (LogInManager*)sharedManager;
++ (LoginManager*)sharedManager;
 
-- (void)startLogInProcess;
+- (void)startLoginProcess;
 - (void)logOut;
-- (void)manuallySetDelegate:(id<LogInManagerProtocol>)delegate;
+- (void)manuallySetDelegate:(id<LoginManagerProtocol>)delegate;
 
 
 + (BOOL) loggedOut;

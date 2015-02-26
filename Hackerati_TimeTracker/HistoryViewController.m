@@ -9,7 +9,7 @@
 #import "HistoryViewController.h"
 #import "RecordTableViewCell.h"
 #import "HConstants.h"
-#import "LogInManager.h"
+#import "LoginManager.h"
 #import "RecordDetailViewController.h"
 #import "Record.h"
 #import "DataParseManager.h"
@@ -57,7 +57,7 @@ static NSString *cellIdentifier = @"RecordTableViewCell";
 - (void) viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
         
-    if (![LogInManager loggedOut]) {
+    if (![LoginManager loggedOut]) {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
             [[DataParseManager sharedManager] getUserRecords];
             if (self.recordsHistoryDictionary.count > 0)
@@ -73,12 +73,6 @@ static NSString *cellIdentifier = @"RecordTableViewCell";
     }
 }
 
-- (void)logOutAction{
-    [[NSNotificationCenter defaultCenter] postNotificationName:kStartLogOutProcessNotification object:nil];
-    [LogInManager setLoggedOut:YES];
-    [DataParseManager sharedManager].records = nil;
-    [self.navigationController popViewControllerAnimated:YES];
-}
 
 #pragma mark - Record TableView Cell Delegate
 -(void)didClickDetailButton:(NSIndexPath*)indexPath{

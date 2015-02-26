@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "LogInManager.h"
+#import "LoginManager.h"
 #import "FireBaseManager.h"
 
 @protocol DataParseManagerProtocol <NSObject>
@@ -19,7 +19,7 @@
 
 @end
 
-@interface DataParseManager : NSObject <LogInManagerProtocol>
+@interface DataParseManager : NSObject <LoginManagerProtocol>
 
 @property (nonatomic, weak) id <DataParseManagerProtocol> delegate;
 @property (nonatomic, strong) Firebase *records;

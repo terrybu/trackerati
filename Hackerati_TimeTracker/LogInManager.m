@@ -1,37 +1,37 @@
 //
-//  LogInManager.m
+//  LoginManager.m
 //  Hackerati_TimeTracker
 //
 //  Created by Ethan on 1/5/15.
 //  Copyright (c) 2015 Hackerati. All rights reserved.
 //
 
-#import "LogInManager.h"
+#import "LoginManager.h"
 #import <GoogleOpenSource/GoogleOpenSource.h>
 #import "FireBaseManager.h"
 #import "HConstants.h"
 #import "Reachability.h"
 
-@interface LogInManager ()
+@interface LoginManager ()
 
 @end
 
 static BOOL loggedOut = YES;
 
 
-@implementation LogInManager
+@implementation LoginManager
 
-+ (LogInManager*)sharedManager{
-    static LogInManager *_sharedManager = nil;
++ (LoginManager*)sharedManager{
+    static LoginManager *_sharedManager = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        _sharedManager = [[LogInManager alloc]init];
+        _sharedManager = [[LoginManager alloc]init];
         [[NSNotificationCenter defaultCenter]addObserver:_sharedManager selector:@selector(logOut) name:kStartLogOutProcessNotification object:nil];
     });
     return _sharedManager;
 }
 
-- (void)startLogInProcess{
+- (void)startLoginProcess{
     dispatch_async(dispatch_get_main_queue(), ^{
         GPPSignIn *signIn = [GPPSignIn sharedInstance];
         signIn.shouldFetchGoogleUserEmail = YES;
@@ -51,7 +51,7 @@ static BOOL loggedOut = YES;
             }
             @catch (NSException *exception) {
                 [self logOut];
-                [[NSNotificationCenter defaultCenter] postNotificationName:kStartLogInProcessNotification object:nil];
+                [[NSNotificationCenter defaultCenter] postNotificationName:kStartLoginProcessNotification object:nil];
             }
             @finally {
                 
@@ -94,7 +94,7 @@ static BOOL loggedOut = YES;
                                                            } else {
                                                                // User is now logged in!
                                                                if ([weakSelf.delegate respondsToSelector:@selector(getAllDataFromFireBaseAfterLoginSuccess)]) {
-                                                                   [LogInManager setLoggedOut:NO];
+                                                                   [LoginManager setLoggedOut:NO];
                                                                    [[NSNotificationCenter defaultCenter] postNotificationName:@"loginSuccess" object:nil];
 
                                                                    [weakSelf.delegate getAllDataFromFireBaseAfterLoginSuccess];
@@ -105,7 +105,7 @@ static BOOL loggedOut = YES;
     });
 }
 
-- (void)manuallySetDelegate:(id<LogInManagerProtocol>)delegate{
+- (void)manuallySetDelegate:(id<LoginManagerProtocol>)delegate{
     self.delegate = delegate;
 }
 
@@ -133,6 +133,7 @@ static BOOL loggedOut = YES;
         [defs removeObjectForKey:key];
     }
     [defs synchronize];
+    NSLog(@"login manager calling logout");
 }
 
 - (void)dealloc{

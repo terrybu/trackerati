@@ -8,7 +8,7 @@
 
 #import "AppDelegate.h"
 #import <GooglePlus/GooglePlus.h>
-#import "LogInManager.h"
+#import "LoginManager.h"
 #import "DataParseManager.h"
 #import "WeeklyNotificationManager.h"
 #import <HockeySDK/HockeySDK.h>
@@ -31,14 +31,14 @@
     [self configureHockey];
     [self configureNotifications:application];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appDelegatestartLogInProcess) name:kStartLogInProcessNotification object:nil];
-    [LogInManager setLoggedOut:YES];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appDelegatestartLoginProcess) name:kStartLoginProcessNotification object:nil];
+    [LoginManager setLoggedOut:YES];
 
-    self.logInViewController = [[LogInViewController alloc]initWithNibName:@"LogInViewController" bundle:nil];
+    self.logInViewController = [[LoginViewController alloc]initWithNibName:@"LoginViewController" bundle:nil];
     
-    [[LogInManager sharedManager] manuallySetDelegate:[DataParseManager sharedManager]];
+    [[LoginManager sharedManager] manuallySetDelegate:[DataParseManager sharedManager]];
     [[DataParseManager sharedManager] manuallySetDelegate:self.logInViewController];
-    [self appDelegatestartLogInProcess];
+    [self appDelegatestartLoginProcess];
     
     self.window = [[UIWindow alloc]initWithFrame:[UIScreen mainScreen].bounds];
     [[UINavigationBar appearance] setTintColor:[UIColor blackColor]];
@@ -80,9 +80,9 @@
                          annotation:annotation];
 }
 
-- (void)appDelegatestartLogInProcess{
+- (void)appDelegatestartLoginProcess{
     dispatch_async(dispatch_get_main_queue(), ^{
-        [[LogInManager sharedManager] startLogInProcess];
+        [[LoginManager sharedManager] startLoginProcess];
     });
 }
 
@@ -98,7 +98,7 @@
 - (void)setUpStructureForFloatingDrawer {
     self.drawerViewController = [[JVFloatingDrawerViewController alloc]init];
     
-    UINavigationController *homeViewNavController = [[UINavigationController alloc]initWithRootViewController:[[LogInViewController alloc]initWithNibName:@"LogInViewController" bundle:nil]];
+    UINavigationController *homeViewNavController = [[UINavigationController alloc]initWithRootViewController:[[LoginViewController alloc]initWithNibName:@"LoginViewController" bundle:nil]];
     UINavigationController *historyViewNavController = [[UINavigationController alloc]initWithRootViewController:[[HistoryViewController alloc]initWithNibName:@"HistoryViewController" bundle:nil]];
     
     self.controllersDictionary = [[NSMutableDictionary alloc]init];

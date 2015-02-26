@@ -7,13 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "LogInViewController.h"
+#import "LoginViewController.h"
 #import "JVFloatingDrawerViewController.h"
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
-@property (strong, nonatomic) LogInViewController *logInViewController;
+@property (strong, nonatomic) LoginViewController *logInViewController;
 @property (strong, nonatomic) UINavigationController *naviController;
 
 @property (nonatomic, strong) JVFloatingDrawerViewController *drawerViewController;

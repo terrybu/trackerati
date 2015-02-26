@@ -21,12 +21,12 @@
 		CE07C0471A5B05E200A3B961 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE07C0461A5B05E200A3B961 /* MediaPlayer.framework */; };
 		CE07C0491A5B05EA00A3B961 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE07C0481A5B05EA00A3B961 /* Security.framework */; };
 		CE07C04D1A5B05FB00A3B961 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE07C04C1A5B05FB00A3B961 /* UIKit.framework */; };
-		CE07C0511A5B087C00A3B961 /* LogInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE07C04F1A5B087C00A3B961 /* LogInViewController.m */; };
-		CE07C0521A5B087C00A3B961 /* LogInViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE07C0501A5B087C00A3B961 /* LogInViewController.xib */; };
+		CE07C0511A5B087C00A3B961 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE07C04F1A5B087C00A3B961 /* LoginViewController.m */; };
+		CE07C0521A5B087C00A3B961 /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE07C0501A5B087C00A3B961 /* LoginViewController.xib */; };
 		CE07C0551A5B132700A3B961 /* HConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = CE07C0541A5B132700A3B961 /* HConstants.m */; };
 		CE07C0571A5B6AEF00A3B961 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CE07C0561A5B6AEF00A3B961 /* Default-568h@2x.png */; };
 		CE07C05F1A5B74F400A3B961 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE07C05E1A5B74F400A3B961 /* CoreData.framework */; };
-		CE07C0621A5B87D100A3B961 /* LogInManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CE07C0611A5B87D100A3B961 /* LogInManager.m */; };
+		CE07C0621A5B87D100A3B961 /* LoginManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CE07C0611A5B87D100A3B961 /* LoginManager.m */; };
 		CE07C0651A5B966100A3B961 /* FireBaseManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CE07C0641A5B966100A3B961 /* FireBaseManager.m */; };
 		CE07C0681A5B9D3E00A3B961 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = CE07C0671A5B9D3E00A3B961 /* Reachability.m */; };
 		CE07C06B1A5BAA9B00A3B961 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE07C0691A5BAA9B00A3B961 /* CFNetwork.framework */; };
@@ -104,15 +104,15 @@
 		CE07C0481A5B05EA00A3B961 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		CE07C04A1A5B05F600A3B961 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		CE07C04C1A5B05FB00A3B961 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
-		CE07C04E1A5B087C00A3B961 /* LogInViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LogInViewController.h; sourceTree = "<group>"; };
-		CE07C04F1A5B087C00A3B961 /* LogInViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LogInViewController.m; sourceTree = "<group>"; };
-		CE07C0501A5B087C00A3B961 /* LogInViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LogInViewController.xib; sourceTree = "<group>"; };
+		CE07C04E1A5B087C00A3B961 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
+		CE07C04F1A5B087C00A3B961 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
+		CE07C0501A5B087C00A3B961 /* LoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoginViewController.xib; sourceTree = "<group>"; };
 		CE07C0531A5B132700A3B961 /* HConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HConstants.h; sourceTree = "<group>"; };
 		CE07C0541A5B132700A3B961 /* HConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HConstants.m; sourceTree = "<group>"; };
 		CE07C0561A5B6AEF00A3B961 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-568h@2x.png"; path = "../Default-568h@2x.png"; sourceTree = "<group>"; };
 		CE07C05E1A5B74F400A3B961 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
-		CE07C0601A5B87D100A3B961 /* LogInManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LogInManager.h; sourceTree = "<group>"; };
-		CE07C0611A5B87D100A3B961 /* LogInManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LogInManager.m; sourceTree = "<group>"; };
+		CE07C0601A5B87D100A3B961 /* LoginManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginManager.h; sourceTree = "<group>"; };
+		CE07C0611A5B87D100A3B961 /* LoginManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginManager.m; sourceTree = "<group>"; };
 		CE07C0631A5B966100A3B961 /* FireBaseManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FireBaseManager.h; sourceTree = "<group>"; };
 		CE07C0641A5B966100A3B961 /* FireBaseManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FireBaseManager.m; sourceTree = "<group>"; };
 		CE07C0661A5B9D3E00A3B961 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
@@ -268,8 +268,8 @@
 			children = (
 				CE07C0661A5B9D3E00A3B961 /* Reachability.h */,
 				CE07C0671A5B9D3E00A3B961 /* Reachability.m */,
-				CE07C0601A5B87D100A3B961 /* LogInManager.h */,
-				CE07C0611A5B87D100A3B961 /* LogInManager.m */,
+				CE07C0601A5B87D100A3B961 /* LoginManager.h */,
+				CE07C0611A5B87D100A3B961 /* LoginManager.m */,
 				CE07C0631A5B966100A3B961 /* FireBaseManager.h */,
 				CE07C0641A5B966100A3B961 /* FireBaseManager.m */,
 				CE872C7C1A74C525002C9930 /* DataParseManager.h */,
@@ -285,9 +285,9 @@
 		CE08157F1A645E54008ABECF /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				CE07C04E1A5B087C00A3B961 /* LogInViewController.h */,
-				CE07C04F1A5B087C00A3B961 /* LogInViewController.m */,
-				CE07C0501A5B087C00A3B961 /* LogInViewController.xib */,
+				CE07C04E1A5B087C00A3B961 /* LoginViewController.h */,
+				CE07C04F1A5B087C00A3B961 /* LoginViewController.m */,
+				CE07C0501A5B087C00A3B961 /* LoginViewController.xib */,
 				CE07C0AE1A5DA83800A3B961 /* PinProjectViewController.h */,
 				CE07C0AF1A5DA83800A3B961 /* PinProjectViewController.m */,
 				CE07C0B01A5DA83800A3B961 /* PinProjectViewController.xib */,
@@ -563,7 +563,7 @@
 				CED58C281A5ADAB3001C343B /* Images.xcassets in Resources */,
 				CE07C0971A5C8B2900A3B961 /* RecordTableViewCell.xib in Resources */,
 				CE07C0901A5C6C4200A3B961 /* HistoryViewController.xib in Resources */,
-				CE07C0521A5B087C00A3B961 /* LogInViewController.xib in Resources */,
+				CE07C0521A5B087C00A3B961 /* LoginViewController.xib in Resources */,
 				CE3BC5631A60282D006340F7 /* RecordDetailViewController.xib in Resources */,
 				CE07C0B21A5DA83800A3B961 /* PinProjectViewController.xib in Resources */,
 				CEA5FB151A696A2D00280E39 /* Default-736h@3x.png in Resources */,
@@ -642,14 +642,14 @@
 				CE07C0551A5B132700A3B961 /* HConstants.m in Sources */,
 				CED58C201A5ADAB3001C343B /* AppDelegate.m in Sources */,
 				CE07C0B51A5EBFDD00A3B961 /* WeeklyNotificationManager.m in Sources */,
-				CE07C0621A5B87D100A3B961 /* LogInManager.m in Sources */,
+				CE07C0621A5B87D100A3B961 /* LoginManager.m in Sources */,
 				CE872C7B1A74BDDC002C9930 /* User.m in Sources */,
 				CE07C0AA1A5D771500A3B961 /* THDateDay.m in Sources */,
 				CE872C7E1A74C525002C9930 /* DataParseManager.m in Sources */,
 				CED58C1D1A5ADAB3001C343B /* main.m in Sources */,
 				CE3BC5661A6031ED006340F7 /* CustomLabel.m in Sources */,
 				CE07C0AC1A5D771500A3B961 /* THDatePickerViewController.m in Sources */,
-				CE07C0511A5B087C00A3B961 /* LogInViewController.m in Sources */,
+				CE07C0511A5B087C00A3B961 /* LoginViewController.m in Sources */,
 				CE07C0681A5B9D3E00A3B961 /* Reachability.m in Sources */,
 				D944F2BE1A96A9CC0046A91B /* AddClientProjectViewController.m in Sources */,
 				CEA5FB211A6A421300280E39 /* IQDropDownTextField.m in Sources */,
