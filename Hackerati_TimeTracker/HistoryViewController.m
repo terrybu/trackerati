@@ -69,6 +69,8 @@ static NSString *cellIdentifier = @"RecordTableViewCell";
     }
     else { //if logged out, don't do anything, hide logout button
         self.navigationItem.rightBarButtonItem = nil;
+        self.recordsHistoryDictionary = nil;
+        self.sortedDateKeys = nil;
         [self.tableView reloadData];
     }
 }
