@@ -19,8 +19,6 @@
 
 @end
 
-static BOOL loggedOut = YES;
-
 @implementation DataParseManager
 
 + (DataParseManager*) sharedManager{
@@ -259,13 +257,6 @@ static BOOL loggedOut = YES;
 
 #pragma mark Login-Related
 
-+ (BOOL) loggedOut {
-    return loggedOut;
-}
-
-+ (void) setLoggedOut: (BOOL) value {
-    loggedOut = value;
-}
 
 -(void) loginSuccessful {
     if ([self.delegate respondsToSelector:@selector(loginSuccessful)]) {

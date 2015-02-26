@@ -53,7 +53,7 @@
     
     [[LogInManager sharedManager] manuallySetDelegate:[DataParseManager sharedManager]];
     [[DataParseManager sharedManager] manuallySetDelegate:self.logInViewController];
-    [DataParseManager setLoggedOut:YES];
+    [LogInManager setLoggedOut:YES];
     [self appDelegatestartLogInProcess];
     
     self.naviController = [[UINavigationController alloc]initWithRootViewController:self.logInViewController];

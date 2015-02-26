@@ -32,5 +32,7 @@ static NSString *kStartGetUserRecordsProcessNotification = @"kStartGetUserRecord
 - (void)manuallySetDelegate:(id<LogInManagerProtocol>)delegate;
 
 
++ (BOOL) loggedOut;
++ (void) setLoggedOut: (BOOL) value;
 
 @end

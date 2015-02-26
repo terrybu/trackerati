@@ -16,6 +16,9 @@
 
 @end
 
+static BOOL loggedOut = YES;
+
+
 @implementation LogInManager
 
 + (LogInManager*)sharedManager{
@@ -91,6 +94,9 @@
                                                            } else {
                                                                // User is now logged in!
                                                                if ([weakSelf.delegate respondsToSelector:@selector(getAllDataFromFireBaseAfterLoginSuccess)]) {
+                                                                   [LogInManager setLoggedOut:NO];
+                                                                   [[NSNotificationCenter defaultCenter] postNotificationName:@"loginSuccess" object:nil];
+
                                                                    [weakSelf.delegate getAllDataFromFireBaseAfterLoginSuccess];
                                                                }
                                                            }
@@ -101,6 +107,14 @@
 
 - (void)manuallySetDelegate:(id<LogInManagerProtocol>)delegate{
     self.delegate = delegate;
+}
+
++ (BOOL) loggedOut {
+    return loggedOut;
+}
+
++ (void) setLoggedOut: (BOOL) value {
+    loggedOut = value;
 }
 
 - (void)logOut{

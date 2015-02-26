@@ -24,9 +24,6 @@
 @property (nonatomic, weak) id <DataParseManagerProtocol> delegate;
 @property (nonatomic, strong) Firebase *records;
 
-+ (BOOL) loggedOut;
-+ (void) setLoggedOut: (BOOL) value;
-
 + (DataParseManager*) sharedManager;
 - (void) getAllDataFromFireBaseAfterLoginSuccess;
 - (void) getAllClientsAndProjectsDataFromFireBaseAndSynchronize;

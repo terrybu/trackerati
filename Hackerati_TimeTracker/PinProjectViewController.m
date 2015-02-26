@@ -38,13 +38,13 @@ static NSString *CellIdentifier = @"Cell";
     self.title = @"Tap to pin/unpin";
     self.navigationItem.prompt = @"Swipe left to delete entirely from database";
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dataReceivedSafeToRefresh) name:@"clientsProjectsSynched" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(enableCreateButton) name:@"loginSuccess" object:nil];
     
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     [self.tableView registerClass:[MCSwipeTableViewCell class] forCellReuseIdentifier:CellIdentifier];
     
-    if (![DataParseManager loggedOut]) {
-        UIBarButtonItem *addClientProjectButton = [[UIBarButtonItem alloc]initWithTitle:@"Create" style:UIBarButtonItemStylePlain target:self action:@selector(pushAddClientProjectViewController)];
-        self.navigationItem.rightBarButtonItem = addClientProjectButton;
+    if (![LogInManager loggedOut]) {
+        [self enableCreateButton];
     }
     
 }
@@ -56,6 +56,11 @@ static NSString *CellIdentifier = @"Cell";
 
 - (void) dataReceivedSafeToRefresh {
     [self getMasterClientsArrayAndCurrentUserClientsArrayAndRefresh];
+}
+
+- (void) enableCreateButton {
+    UIBarButtonItem *addClientProjectButton = [[UIBarButtonItem alloc]initWithTitle:@"Create" style:UIBarButtonItemStylePlain target:self action:@selector(pushAddClientProjectViewController)];
+    self.navigationItem.rightBarButtonItem = addClientProjectButton;
 }
 
 - (void) getMasterClientsArrayAndCurrentUserClientsArrayAndRefresh {
