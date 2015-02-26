@@ -153,6 +153,7 @@ static NSString *CellIdentifier = @"Cell";
     return 40.0f;
 }
 
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES]; //this is to never let the gray cell background stay
     MCSwipeTableViewCell *cell = (MCSwipeTableViewCell*)[tableView cellForRowAtIndexPath:indexPath];
@@ -180,43 +181,106 @@ static NSString *CellIdentifier = @"Cell";
             [self.currentUserClientsArray addObject:newClient];
             [self.setOfCurrentUserClientNames addObject:newClient.clientName];
             [self.setOfCurrentUserProjectNames addObject:masterSelectedProject.projectName];
-            NSData *currentUserClientListData = [NSKeyedArchiver archivedDataWithRootObject:self.currentUserClientsArray];
-            [[NSUserDefaults standardUserDefaults] setObject:currentUserClientListData forKey:[HConstants kCurrentUserClientList]];
-            [[NSUserDefaults standardUserDefaults]synchronize];
-            [self pinUserToProjectOnFireBase: masterSelectedClient.clientName project:masterSelectedProject.projectName];
         }
-        //On the contrary, if we already had the current user select this client name for a project before, check to see if particular PROJECT was selected before too and is in local cache
         else {
+            //On the contrary, if we already had the current user select this client name for a project before, check to see if particular PROJECT was selected before too and is in local cache
             Client *selectedCurrentUserClient = [self.currentUserClientsArray objectAtIndex:indexPath.section];
             if (![selectedCurrentUserClient.projects containsObject:masterSelectedProject]) {
                 //our client didn't have the particular project, then we add it to local cache AND send to Firebase
                 [selectedCurrentUserClient.projects addObject:masterSelectedProject];
                 [self.setOfCurrentUserClientNames addObject:selectedCurrentUserClient.clientName];
                 [self.setOfCurrentUserProjectNames addObject:masterSelectedProject.projectName];
-                NSData *currentUserClientListData = [NSKeyedArchiver archivedDataWithRootObject:self.currentUserClientsArray];
-                [[NSUserDefaults standardUserDefaults] setObject:currentUserClientListData forKey:[HConstants kCurrentUserClientList]];
-                [[NSUserDefaults standardUserDefaults]synchronize];
-                [self pinUserToProjectOnFireBase: masterSelectedClient.clientName project:masterSelectedProject.projectName];
             }
         }
+        [self cacheCurrentUserClients];
+        [self pinUserToProjectOnFireBase: masterSelectedClient.clientName project:masterSelectedProject.projectName];
         cell.accessoryView =[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"CheckMark.png"]];
-        [self.tableView reloadData];
     }
     //2.19.2015 without refreshing data here, we have a bug that doesn't allow you to delete right after you add something
     //By hitting DataParseManager here, we can make sure data gets refreshed when we add, so delete works properly
     [[DataParseManager sharedManager] getAllDataFromFireBaseAfterLoginSuccess];
+    [self.tableView reloadData];
+}
+
+- (void)cacheCurrentUserClients {
+    NSData *currentUserClientListData = [NSKeyedArchiver archivedDataWithRootObject:self.currentUserClientsArray];
+    [[NSUserDefaults standardUserDefaults] setObject:currentUserClientListData forKey:[HConstants kCurrentUserClientList]];
+    [[NSUserDefaults standardUserDefaults]synchronize];
 }
 
 
-#pragma mark Swipe Cell - Removing Project from Firebase Logic
+#pragma mark Custom Logic For Pinning/Removing user from project based on Cell Selection
 
+- (void) pinUserToProjectOnFireBase: (NSString *) client project: (NSString *) project{
+    self.fireBase = [[Firebase alloc]initWithUrl:[NSString stringWithFormat:@"%@/Projects/%@/%@",[HConstants kFireBaseURL],client,project]];
+    NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants kCurrentUser]];
+    [[self.fireBase childByAutoId] setValue:@{@"name":username}];
+    UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"New Project" message:[NSString stringWithFormat:@"%@ Added",project] delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+    [alertView show];
+}
+
+
+-(void)removeUserPinFromSelectedProject: (Client *) masterClient project: (Project *) masterProject {
+    Client *client = [self findCorrespondingClientInCurrentUserClientList:masterClient];
+    Project *project = [self findCorrespondingProjectFromCorrespondingClient:client masterProject:masterProject];
+    if (project != nil) {
+        [client.projects removeObject:project];
+        [self.setOfCurrentUserProjectNames removeObject:project.projectName];
+    }
+    if ([client.projects count]== 0) {
+        [self.currentUserClientsArray removeObject:client];
+        [self.setOfCurrentUserClientNames removeObject:client.clientName];
+    }
+    [self cacheCurrentUserClients];
+    
+    [self removePinFromFireBase:project client:client];
+    
+    [self.tableView reloadData];
+}
+
+- (void)removePinFromFireBase:(Project *)project client:(Client *)client {
+    __weak typeof(self) weakSelf = self;
+    NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants kCurrentUser]];
+    __block NSString *uniqueAddress = nil;
+    NSDictionary* rawMasterClientList = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants kRawMasterClientList]];
+    if ([[rawMasterClientList objectForKey:client.clientName]objectForKey:project.projectName]) {
+        NSDictionary* rawUserList = [[rawMasterClientList objectForKey:client.clientName]objectForKey:project.projectName];
+        [rawUserList enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop){
+            if ([obj objectForKey:@"name"] && ([[obj objectForKey:@"name"]isEqualToString:username ])) {
+                uniqueAddress = key;
+                *stop = YES;
+                return;
+            }
+        }];
+        weakSelf.fireBase = [[Firebase alloc]initWithUrl:[NSString stringWithFormat:@"%@/Projects/%@/%@/%@",[HConstants kFireBaseURL],client.clientName, project.projectName, uniqueAddress]];
+        [weakSelf.fireBase removeValue];
+    }
+}
+
+- (Client *) findCorrespondingClientInCurrentUserClientList: (Client *) masterClient {
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"clientName contains[c] %@", masterClient.clientName];
+    NSArray *resultArray = [self.currentUserClientsArray filteredArrayUsingPredicate:predicate];
+    if (resultArray == nil || [resultArray count] == 0)
+        return nil;
+    return resultArray[0];
+}
+
+- (Project *) findCorrespondingProjectFromCorrespondingClient: (Client *) correspondingClient masterProject: (Project *) masterProject{
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"projectName contains[c] %@", masterProject.projectName];
+    NSArray *resultArray = [correspondingClient.projects filteredArrayUsingPredicate:predicate];
+    if (resultArray == nil || [resultArray count] == 0)
+        return nil;
+    return resultArray[0];
+}
+
+#pragma mark Swipe Cell - Removing Project from Firebase Logic
 - (void) removeProjectAfterConfirmationAlert: (Project *) project client: (Client *) client {
     UIAlertView *alertView;
     if (client.projects.count == 1) {
         alertView = [[UIAlertView alloc]initWithTitle:@"Warning" message:[NSString stringWithFormat:@"Are you sure you want to delete project named %@ permanently from the database? This will also delete client named %@.", project.projectName, client.clientName] delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles: @"Yes", nil];
     }
     else {
-         alertView = [[UIAlertView alloc]initWithTitle:@"Warning" message:[NSString stringWithFormat:@"Are you sure you want to delete project named %@ permanently from the database? This will also affect other users listed on the project.", project.projectName] delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles: @"Yes", nil];
+        alertView = [[UIAlertView alloc]initWithTitle:@"Warning" message:[NSString stringWithFormat:@"Are you sure you want to delete project named %@ permanently from the database? This will also affect other users listed on the project.", project.projectName] delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles: @"Yes", nil];
     }
     [alertView show];
 }
@@ -224,7 +288,7 @@ static NSString *CellIdentifier = @"Cell";
 - (void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     NSString *buttonTitle = [alertView buttonTitleAtIndex:buttonIndex];
     __weak typeof(self) weakSelf = self;
-
+    
     if ([buttonTitle isEqualToString:@"Yes"]) {
         //Delete Logic
         self.fireBase = [[Firebase alloc]initWithUrl:[NSString stringWithFormat:@"%@/Projects/%@/%@/",[HConstants kFireBaseURL], clientToDelete.clientName, projectToDelete.projectName]];
@@ -264,70 +328,6 @@ static NSString *CellIdentifier = @"Cell";
     else {
         [self.tableView reloadData];
     }
-}
-
-
-#pragma mark Custom Logic For Pinning/Removing user from project based on Cell Selection
-- (Client *) findCorrespondingClientInCurrentUserClientList: (Client *) masterClient {
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"clientName contains[c] %@", masterClient.clientName];
-    NSArray *resultArray = [self.currentUserClientsArray filteredArrayUsingPredicate:predicate];
-    if (resultArray == nil || [resultArray count] == 0)
-        return nil;
-    return resultArray[0];
-}
-
-- (Project *) findCorrespondingProjectFromCorrespondingClient: (Client *) correspondingClient masterProject: (Project *) masterProject{
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"projectName contains[c] %@", masterProject.projectName];
-    NSArray *resultArray = [correspondingClient.projects filteredArrayUsingPredicate:predicate];
-    if (resultArray == nil || [resultArray count] == 0)
-        return nil;
-    return resultArray[0];
-}
-
-- (void) pinUserToProjectOnFireBase: (NSString *) client project: (NSString *) project{
-    self.fireBase = [[Firebase alloc]initWithUrl:[NSString stringWithFormat:@"%@/Projects/%@/%@",[HConstants kFireBaseURL],client,project]];
-    NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants kCurrentUser]];
-    [[self.fireBase childByAutoId] setValue:@{@"name":username}];
-    UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"New Project" message:[NSString stringWithFormat:@"%@ Added",project] delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
-    [alertView show];
-}
-
--(void)removeUserPinFromSelectedProject: (Client *) masterClient project: (Project *) masterProject {
-    __weak typeof(self) weakSelf = self;
-    Client *client = [self findCorrespondingClientInCurrentUserClientList:masterClient];
-    Project *project = [self findCorrespondingProjectFromCorrespondingClient:client masterProject:masterProject];
-    
-    [client.projects removeObject:project];
-    [self.setOfCurrentUserProjectNames removeObject:project.projectName];
-    
-    if ([client.projects count]== 0) {
-        [self.currentUserClientsArray removeObject:client];
-        [self.setOfCurrentUserClientNames removeObject:client.clientName];
-    }
-     NSData *currentUserClientListData = [NSKeyedArchiver archivedDataWithRootObject:self.currentUserClientsArray];
-    [[NSUserDefaults standardUserDefaults] setObject:currentUserClientListData forKey:[HConstants kCurrentUserClientList]];
-    [[NSUserDefaults standardUserDefaults]synchronize];
-    
-    NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants kCurrentUser]];
-    __block NSString *uniqueAddress = nil;
-    NSDictionary* rawMasterClientList = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants kRawMasterClientList]];
-    if ([[rawMasterClientList objectForKey:client.clientName]objectForKey:project.projectName]) {
-        NSDictionary* rawUserList = [[rawMasterClientList objectForKey:client.clientName]objectForKey:project.projectName];
-        [rawUserList enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop){
-            if ([obj objectForKey:@"name"] && ([[obj objectForKey:@"name"]isEqualToString:username ])) {
-                uniqueAddress = key;
-                *stop = YES;
-                return;
-            }
-        }];
-        weakSelf.fireBase = [[Firebase alloc]initWithUrl:[NSString stringWithFormat:@"%@/Projects/%@/%@/%@",[HConstants kFireBaseURL],client.clientName, project.projectName, uniqueAddress]];
-        [weakSelf.fireBase removeValue];
-    }
-    
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [weakSelf.tableView reloadData];
-    });
-
 }
 
 
