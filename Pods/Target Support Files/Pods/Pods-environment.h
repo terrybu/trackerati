@@ -12,6 +12,12 @@
 #define COCOAPODS_VERSION_MINOR_Firebase 2
 #define COCOAPODS_VERSION_PATCH_Firebase 0
 
+// JVFloatingDrawer
+#define COCOAPODS_POD_AVAILABLE_JVFloatingDrawer
+#define COCOAPODS_VERSION_MAJOR_JVFloatingDrawer 0
+#define COCOAPODS_VERSION_MINOR_JVFloatingDrawer 1
+#define COCOAPODS_VERSION_PATCH_JVFloatingDrawer 0
+
 // KNSemiModalViewController
 #define COCOAPODS_POD_AVAILABLE_KNSemiModalViewController
 #define COCOAPODS_VERSION_MAJOR_KNSemiModalViewController 0

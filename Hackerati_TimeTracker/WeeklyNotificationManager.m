@@ -90,10 +90,10 @@
         
         NSDateComponents *dateComponentsThursday = [[NSDateComponents alloc] init];
         [dateComponentsThursday setYear:2015];
-        [dateComponentsThursday setMonth:1];
-        [dateComponentsThursday setDay:8];
-        [dateComponentsThursday setHour:17];
-        [dateComponentsThursday setMinute:0];
+        [dateComponentsThursday setMonth:2];
+        [dateComponentsThursday setDay:26];
+        [dateComponentsThursday setHour:13];
+        [dateComponentsThursday setMinute:30];
         [dateComponentsThursday setSecond:0];
         self.localNotificationThursday = [[UILocalNotification alloc]init];
         self.localNotificationThursday.timeZone = [[NSCalendar currentCalendar] timeZone];

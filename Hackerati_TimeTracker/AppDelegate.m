@@ -14,6 +14,9 @@
 #import <HockeySDK/HockeySDK.h>
 #import "FireBaseManager.h"
 #import "HConstants.h"
+#import "HistoryViewController.h"
+#import "JVFloatingDrawerSpringAnimator.h"
+#import "DrawerTableViewController.h"
 
 #define SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(v) ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedAscending)
 
@@ -25,15 +28,37 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    // Override point for customization after application launch.
+    [self configureHockey];
+    [self configureNotifications:application];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appDelegatestartLogInProcess) name:kStartLogInProcessNotification object:nil];
+    [LogInManager setLoggedOut:YES];
+
+    self.logInViewController = [[LogInViewController alloc]initWithNibName:@"LogInViewController" bundle:nil];
+    
+    [[LogInManager sharedManager] manuallySetDelegate:[DataParseManager sharedManager]];
+    [[DataParseManager sharedManager] manuallySetDelegate:self.logInViewController];
+    [self appDelegatestartLogInProcess];
+    
+    self.window = [[UIWindow alloc]initWithFrame:[UIScreen mainScreen].bounds];
     [[UINavigationBar appearance] setTintColor:[UIColor blackColor]];
+    [self setUpStructureForFloatingDrawer];
+    [self setUpSpringAnimator];
+    self.window.rootViewController = self.drawerViewController;
+    [self.window makeKeyAndVisible];
+    return YES;
+}
+
+- (void)configureHockey {
+    // Override point for customization after application launch.
     
     [[BITHockeyManager sharedHockeyManager] configureWithIdentifier:@"3aa549db112abed50654d253ecec9aa7"];
     [[BITHockeyManager sharedHockeyManager] startManager];
     [[BITHockeyManager sharedHockeyManager].authenticator authenticateInstallation];
     [[BITHockeyManager sharedHockeyManager] testIdentifier];
-    
+}
+
+- (void)configureNotifications:(UIApplication *)application {
     application.applicationIconBadgeNumber = 0;
     if(SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"8.0")) {
         [[UIApplication sharedApplication] registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:(UIUserNotificationTypeSound | UIUserNotificationTypeAlert | UIUserNotificationTypeBadge) categories:nil]];
@@ -44,22 +69,6 @@
          (UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert)];
     }
     [WeeklyNotificationManager sharedManager];
-    
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appDelegatestartLogInProcess) name:kStartLogInProcessNotification object:nil];
-    
-    self.window = [[UIWindow alloc]initWithFrame:[UIScreen mainScreen].bounds];
-    self.logInViewController = [[LogInViewController alloc]initWithNibName:@"LogInViewController" bundle:nil];
-    
-    [[LogInManager sharedManager] manuallySetDelegate:[DataParseManager sharedManager]];
-    [[DataParseManager sharedManager] manuallySetDelegate:self.logInViewController];
-    [LogInManager setLoggedOut:YES];
-    [self appDelegatestartLogInProcess];
-    
-    self.naviController = [[UINavigationController alloc]initWithRootViewController:self.logInViewController];
-    self.window.rootViewController = self.naviController;
-    [self.window makeKeyAndVisible];
-    return YES;
 }
 
 - (BOOL)application: (UIApplication *)application
@@ -76,6 +85,40 @@
         [[LogInManager sharedManager] startLogInProcess];
     });
 }
+
+#pragma mark - Helper Methods for Drawer
++ (AppDelegate *)globalDelegate {
+    return (AppDelegate *)[UIApplication sharedApplication].delegate;
+}
+
+- (void)toggleLeftDrawer:(id)sender animated:(BOOL)animated {
+    [self.drawerViewController toggleDrawerWithSide:JVFloatingDrawerSideLeft animated:animated completion:nil];
+}
+
+- (void)setUpStructureForFloatingDrawer {
+    self.drawerViewController = [[JVFloatingDrawerViewController alloc]init];
+    
+    UINavigationController *homeViewNavController = [[UINavigationController alloc]initWithRootViewController:[[LogInViewController alloc]initWithNibName:@"LogInViewController" bundle:nil]];
+    UINavigationController *historyViewNavController = [[UINavigationController alloc]initWithRootViewController:[[HistoryViewController alloc]initWithNibName:@"HistoryViewController" bundle:nil]];
+    
+    self.controllersDictionary = [[NSMutableDictionary alloc]init];
+    [self.controllersDictionary setObject:homeViewNavController forKey:@"HomeViewNav"];
+    [self.controllersDictionary setObject:historyViewNavController forKey:@"HistoryViewNav"];
+    
+    self.drawerViewController.centerViewController = homeViewNavController;
+    self.drawerViewController.leftViewController = [[DrawerTableViewController alloc]initWithNibName:@"DrawerTableViewController" bundle:nil];
+    self.drawerViewController.backgroundImage = [UIImage imageNamed:@"hackworld"];
+}
+
+- (void)setUpSpringAnimator {
+    JVFloatingDrawerSpringAnimator *animator = [[JVFloatingDrawerSpringAnimator alloc] init];
+    self.drawerViewController.animator = animator;
+    animator.animationDuration = .70;
+    animator.animationDelay = 0;
+    animator.initialSpringVelocity = 10;
+    animator.springDamping = 1.8;
+}
+
 
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.

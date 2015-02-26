@@ -71,6 +71,10 @@
 		CED58C371A5ADAB3001C343B /* Hackerati_TimeTrackerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CED58C361A5ADAB3001C343B /* Hackerati_TimeTrackerTests.m */; };
 		D944F2BE1A96A9CC0046A91B /* AddClientProjectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D944F2BC1A96A9CC0046A91B /* AddClientProjectViewController.m */; };
 		D944F2BF1A96A9CC0046A91B /* AddClientProjectViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D944F2BD1A96A9CC0046A91B /* AddClientProjectViewController.xib */; };
+		D9CA83AD1A9F99B5009B6424 /* DrawerCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D9CA83A81A9F99B5009B6424 /* DrawerCell.m */; };
+		D9CA83AE1A9F99B5009B6424 /* DrawerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D9CA83A91A9F99B5009B6424 /* DrawerCell.xib */; };
+		D9CA83AF1A9F99B5009B6424 /* DrawerTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D9CA83AB1A9F99B5009B6424 /* DrawerTableViewController.m */; };
+		D9CA83B01A9F99B5009B6424 /* DrawerTableViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D9CA83AC1A9F99B5009B6424 /* DrawerTableViewController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -180,6 +184,12 @@
 		D944F2BB1A96A9CC0046A91B /* AddClientProjectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddClientProjectViewController.h; sourceTree = "<group>"; };
 		D944F2BC1A96A9CC0046A91B /* AddClientProjectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddClientProjectViewController.m; sourceTree = "<group>"; };
 		D944F2BD1A96A9CC0046A91B /* AddClientProjectViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddClientProjectViewController.xib; sourceTree = "<group>"; };
+		D9CA83A71A9F99B5009B6424 /* DrawerCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawerCell.h; sourceTree = "<group>"; };
+		D9CA83A81A9F99B5009B6424 /* DrawerCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DrawerCell.m; sourceTree = "<group>"; };
+		D9CA83A91A9F99B5009B6424 /* DrawerCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DrawerCell.xib; sourceTree = "<group>"; };
+		D9CA83AA1A9F99B5009B6424 /* DrawerTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawerTableViewController.h; sourceTree = "<group>"; };
+		D9CA83AB1A9F99B5009B6424 /* DrawerTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DrawerTableViewController.m; sourceTree = "<group>"; };
+		D9CA83AC1A9F99B5009B6424 /* DrawerTableViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DrawerTableViewController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -364,10 +374,11 @@
 			children = (
 				CED58C1E1A5ADAB3001C343B /* AppDelegate.h */,
 				CED58C1F1A5ADAB3001C343B /* AppDelegate.m */,
+				CE0815821A647B5F008ABECF /* Constants */,
 				CE872C7F1A74C59F002C9930 /* DataModel */,
 				CE08157E1A645E25008ABECF /* Managers */,
-				CE0815821A647B5F008ABECF /* Constants */,
 				CE0815801A645E77008ABECF /* CustomViews */,
+				D9CA83A61A9F9997009B6424 /* Drawer Effect Related */,
 				CE08157F1A645E54008ABECF /* ViewControllers */,
 				CE07C0A11A5D771500A3B961 /* THCalendarDatePicker */,
 				CED58C271A5ADAB3001C343B /* Images.xcassets */,
@@ -416,6 +427,19 @@
 				A2368C21D2A903653271B4CA /* Pods.release.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		D9CA83A61A9F9997009B6424 /* Drawer Effect Related */ = {
+			isa = PBXGroup;
+			children = (
+				D9CA83A71A9F99B5009B6424 /* DrawerCell.h */,
+				D9CA83A81A9F99B5009B6424 /* DrawerCell.m */,
+				D9CA83A91A9F99B5009B6424 /* DrawerCell.xib */,
+				D9CA83AA1A9F99B5009B6424 /* DrawerTableViewController.h */,
+				D9CA83AB1A9F99B5009B6424 /* DrawerTableViewController.m */,
+				D9CA83AC1A9F99B5009B6424 /* DrawerTableViewController.xib */,
+			);
+			name = "Drawer Effect Related";
 			sourceTree = "<group>";
 		};
 		F372E6C576BF895AA44EAD0A /* Frameworks */ = {
@@ -528,6 +552,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D9CA83B01A9F99B5009B6424 /* DrawerTableViewController.xib in Resources */,
 				CE07C0361A5B057900A3B961 /* GooglePlus.bundle in Resources */,
 				D944F2BF1A96A9CC0046A91B /* AddClientProjectViewController.xib in Resources */,
 				CE07C0AB1A5D771500A3B961 /* THDateDay.xib in Resources */,
@@ -545,6 +570,7 @@
 				CE07C09B1A5C9A6100A3B961 /* CheckMark@2x.png in Resources */,
 				CE07C0A01A5CF22E00A3B961 /* RecordFormViewController.xib in Resources */,
 				CE07C0991A5C9A5700A3B961 /* Erase@2x.png in Resources */,
+				D9CA83AE1A9F99B5009B6424 /* DrawerCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -630,9 +656,11 @@
 				CE07C08F1A5C6C4200A3B961 /* HistoryViewController.m in Sources */,
 				CEA5FB0D1A688D4700280E39 /* CustomButton.m in Sources */,
 				CE07C0B11A5DA83800A3B961 /* PinProjectViewController.m in Sources */,
+				D9CA83AF1A9F99B5009B6424 /* DrawerTableViewController.m in Sources */,
 				CE872C781A74BDCF002C9930 /* Project.m in Sources */,
 				CE07C0B81A5ED6FB00A3B961 /* LastSavedManager.m in Sources */,
 				CE872C751A74BD93002C9930 /* Client.m in Sources */,
+				D9CA83AD1A9F99B5009B6424 /* DrawerCell.m in Sources */,
 				CE3BC5691A6064C4006340F7 /* CustomMCSwipeTableViewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
