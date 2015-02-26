@@ -15,7 +15,7 @@
 #import "FireBaseManager.h"
 #import "DataParseManager.h"
 #import "LogInManager.h"
-#import "NewProjectViewController.h"
+#import "PinProjectViewController.h"
 #import "LastSavedManager.h"
 #import "CustomLabel.h"
 #import "Client.h"
@@ -112,6 +112,19 @@ static NSString *CellIdentifier = @"Cell";
 - (void)viewWillLayoutSubviews{
     
     [super viewWillLayoutSubviews];
+    
+    [self createFormViewForSlideOutEffectOnSwipe];
+    
+    //without this line, iPhone 6+ has a weird way of making the tableview smaller than screen width/height?
+    self.tableView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
+}
+
+-(void) viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    [self loadData];
+}
+
+-(void)createFormViewForSlideOutEffectOnSwipe {
     
     self.formView = [[UIView alloc]initWithFrame:CGRectMake(-self.view.frame.size.width-30, 0, self.view.frame.size.width-20, 500)];
     
@@ -215,14 +228,6 @@ static NSString *CellIdentifier = @"Cell";
     [self.formView.layer setBorderColor:[UIColor grayColor].CGColor];
     
     [self.view addSubview:self.formView];
-    
-    //without this line, iPhone 6+ has a weird way of making the tableview smaller than screen width?
-    self.tableView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
-}
-
--(void) viewWillAppear:(BOOL)animated{
-    [super viewWillAppear:animated];
-    [self loadData];
 }
 
 -(void)refreshControlAction{
@@ -269,7 +274,7 @@ static NSString *CellIdentifier = @"Cell";
 -(void)submitRecord{
     //Two tables --> Users and Projects
     //When you are sending or submitting data here, it means to send a Record data to Records key under User key in Users table
-    //However, when you are just adding a project to a user in NewProjectViewController, you are not dealing with Records table at all. You are dealing with Projects table --> Company key --> Project name and adding a uniqueID key that contains the username ex) terrythehackerati.com --> basically just registering a name under a project
+    //However, when you are just pinning a project to a user in PinProjectViewController, you are not dealing with Records table at all. You are dealing with Projects table --> Company key --> Project name and adding a uniqueID key that contains the username ex) terrythehackerati.com --> basically just registering a name under a project
     
     self.tableView.userInteractionEnabled = YES;
     self.fireBase = [FireBaseManager recordURLsharedFireBase];
@@ -295,10 +300,10 @@ static NSString *CellIdentifier = @"Cell";
 }
 
 - (void)addNewProjects{
-    NewProjectViewController *newProjectViewController = [[NewProjectViewController alloc]initWithNibName:@"NewProjectViewController" bundle:nil];
+    PinProjectViewController *pinProjectViewController = [[PinProjectViewController alloc]initWithNibName:@"PinProjectViewController" bundle:nil];
     [self.navigationItem setBackBarButtonItem:[[UIBarButtonItem alloc]
                                                initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:nil action:nil]];
-    [self.navigationController pushViewController:newProjectViewController animated:NO];
+    [self.navigationController pushViewController:pinProjectViewController animated:NO];
 }
 
 

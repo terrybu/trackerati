@@ -1,12 +1,12 @@
 //
-//  NewProjectViewController.m
+//  PinProjectViewController.m
 //  trackerati-ios
 //
 //  Created by Ethan on 1/7/15.
 //  Copyright (c) 2015 Hackerati. All rights reserved.
 //
 
-#import "NewProjectViewController.h"
+#import "PinProjectViewController.h"
 #import "HConstants.h"
 #import <MCSwipeTableViewCell.h>
 #import <Firebase/Firebase.h>
@@ -16,7 +16,7 @@
 #import "Project.h"
 
 
-@interface NewProjectViewController () <UITableViewDataSource, UITableViewDelegate, MCSwipeTableViewCellDelegate> {
+@interface PinProjectViewController () <UITableViewDataSource, UITableViewDelegate, MCSwipeTableViewCellDelegate> {
     Client *clientToDelete;
     Project *projectToDelete;
 }
@@ -29,7 +29,7 @@
 
 @end
 
-@implementation NewProjectViewController
+@implementation PinProjectViewController
 
 static NSString *CellIdentifier = @"Cell";
 
@@ -208,10 +208,10 @@ static NSString *CellIdentifier = @"Cell";
 - (void) removeProjectAfterConfirmationAlert: (Project *) project client: (Client *) client {
     UIAlertView *alertView;
     if (client.projects.count == 1) {
-        alertView = [[UIAlertView alloc]initWithTitle:@"Deleting From Database" message:[NSString stringWithFormat:@"Are you sure you want to delete project named %@ permanently from the database? This will also delete client named %@.", project.projectName, client.clientName] delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles: @"Yes", nil];
+        alertView = [[UIAlertView alloc]initWithTitle:@"Warning" message:[NSString stringWithFormat:@"Are you sure you want to delete project named %@ permanently from the database? This will also delete client named %@.", project.projectName, client.clientName] delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles: @"Yes", nil];
     }
     else {
-         alertView = [[UIAlertView alloc]initWithTitle:@"Deleting From Database" message:[NSString stringWithFormat:@"Are you sure you want to delete project named %@ permanently from the database?", project.projectName] delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles: @"Yes", nil];
+         alertView = [[UIAlertView alloc]initWithTitle:@"Warning" message:[NSString stringWithFormat:@"Are you sure you want to delete project named %@ permanently from the database? This will also affect other users listed on the project.", project.projectName] delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles: @"Yes", nil];
     }
     [alertView show];
 }

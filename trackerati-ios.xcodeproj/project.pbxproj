@@ -45,8 +45,8 @@
 		CE07C0AB1A5D771500A3B961 /* THDateDay.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE07C0A51A5D771500A3B961 /* THDateDay.xib */; };
 		CE07C0AC1A5D771500A3B961 /* THDatePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE07C0A71A5D771500A3B961 /* THDatePickerViewController.m */; };
 		CE07C0AD1A5D771500A3B961 /* THDatePickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE07C0A81A5D771500A3B961 /* THDatePickerViewController.xib */; };
-		CE07C0B11A5DA83800A3B961 /* NewProjectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE07C0AF1A5DA83800A3B961 /* NewProjectViewController.m */; };
-		CE07C0B21A5DA83800A3B961 /* NewProjectViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE07C0B01A5DA83800A3B961 /* NewProjectViewController.xib */; };
+		CE07C0B11A5DA83800A3B961 /* PinProjectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE07C0AF1A5DA83800A3B961 /* PinProjectViewController.m */; };
+		CE07C0B21A5DA83800A3B961 /* PinProjectViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE07C0B01A5DA83800A3B961 /* PinProjectViewController.xib */; };
 		CE07C0B51A5EBFDD00A3B961 /* WeeklyNotificationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CE07C0B41A5EBFDD00A3B961 /* WeeklyNotificationManager.m */; };
 		CE07C0B81A5ED6FB00A3B961 /* LastSavedManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CE07C0B71A5ED6FB00A3B961 /* LastSavedManager.m */; };
 		CE07C0BB1A5F29AF00A3B961 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE07C0BA1A5F29AF00A3B961 /* MobileCoreServices.framework */; };
@@ -133,9 +133,9 @@
 		CE07C0A61A5D771500A3B961 /* THDatePickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = THDatePickerViewController.h; sourceTree = "<group>"; };
 		CE07C0A71A5D771500A3B961 /* THDatePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = THDatePickerViewController.m; sourceTree = "<group>"; };
 		CE07C0A81A5D771500A3B961 /* THDatePickerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = THDatePickerViewController.xib; sourceTree = "<group>"; };
-		CE07C0AE1A5DA83800A3B961 /* NewProjectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewProjectViewController.h; sourceTree = "<group>"; };
-		CE07C0AF1A5DA83800A3B961 /* NewProjectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewProjectViewController.m; sourceTree = "<group>"; };
-		CE07C0B01A5DA83800A3B961 /* NewProjectViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NewProjectViewController.xib; sourceTree = "<group>"; };
+		CE07C0AE1A5DA83800A3B961 /* PinProjectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PinProjectViewController.h; sourceTree = "<group>"; };
+		CE07C0AF1A5DA83800A3B961 /* PinProjectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PinProjectViewController.m; sourceTree = "<group>"; };
+		CE07C0B01A5DA83800A3B961 /* PinProjectViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PinProjectViewController.xib; sourceTree = "<group>"; };
 		CE07C0B31A5EBFDD00A3B961 /* WeeklyNotificationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WeeklyNotificationManager.h; sourceTree = "<group>"; };
 		CE07C0B41A5EBFDD00A3B961 /* WeeklyNotificationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WeeklyNotificationManager.m; sourceTree = "<group>"; };
 		CE07C0B61A5ED6FA00A3B961 /* LastSavedManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LastSavedManager.h; sourceTree = "<group>"; };
@@ -278,9 +278,9 @@
 				CE07C04E1A5B087C00A3B961 /* LogInViewController.h */,
 				CE07C04F1A5B087C00A3B961 /* LogInViewController.m */,
 				CE07C0501A5B087C00A3B961 /* LogInViewController.xib */,
-				CE07C0AE1A5DA83800A3B961 /* NewProjectViewController.h */,
-				CE07C0AF1A5DA83800A3B961 /* NewProjectViewController.m */,
-				CE07C0B01A5DA83800A3B961 /* NewProjectViewController.xib */,
+				CE07C0AE1A5DA83800A3B961 /* PinProjectViewController.h */,
+				CE07C0AF1A5DA83800A3B961 /* PinProjectViewController.m */,
+				CE07C0B01A5DA83800A3B961 /* PinProjectViewController.xib */,
 				D944F2BB1A96A9CC0046A91B /* AddClientProjectViewController.h */,
 				D944F2BC1A96A9CC0046A91B /* AddClientProjectViewController.m */,
 				D944F2BD1A96A9CC0046A91B /* AddClientProjectViewController.xib */,
@@ -540,7 +540,7 @@
 				CE07C0901A5C6C4200A3B961 /* HistoryViewController.xib in Resources */,
 				CE07C0521A5B087C00A3B961 /* LogInViewController.xib in Resources */,
 				CE3BC5631A60282D006340F7 /* RecordDetailViewController.xib in Resources */,
-				CE07C0B21A5DA83800A3B961 /* NewProjectViewController.xib in Resources */,
+				CE07C0B21A5DA83800A3B961 /* PinProjectViewController.xib in Resources */,
 				CEA5FB151A696A2D00280E39 /* Default-736h@3x.png in Resources */,
 				CE07C09B1A5C9A6100A3B961 /* CheckMark@2x.png in Resources */,
 				CE07C0A01A5CF22E00A3B961 /* RecordFormViewController.xib in Resources */,
@@ -629,7 +629,7 @@
 				CEA5FB211A6A421300280E39 /* IQDropDownTextField.m in Sources */,
 				CE07C08F1A5C6C4200A3B961 /* HistoryViewController.m in Sources */,
 				CEA5FB0D1A688D4700280E39 /* CustomButton.m in Sources */,
-				CE07C0B11A5DA83800A3B961 /* NewProjectViewController.m in Sources */,
+				CE07C0B11A5DA83800A3B961 /* PinProjectViewController.m in Sources */,
 				CE872C781A74BDCF002C9930 /* Project.m in Sources */,
 				CE07C0B81A5ED6FB00A3B961 /* LastSavedManager.m in Sources */,
 				CE872C751A74BD93002C9930 /* Client.m in Sources */,

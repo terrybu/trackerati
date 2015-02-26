@@ -1,5 +1,5 @@
 //
-//  NewProjectViewController.h
+//  PinProjectViewController.h
 //  trackerati-ios
 //
 //  Created by Ethan on 1/7/15.
@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface NewProjectViewController : UIViewController
+@interface PinProjectViewController : UIViewController
 
 @end
