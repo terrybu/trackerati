@@ -116,8 +116,8 @@
         self.clientLabel.text = self.clientName;
         [self.dateButton setTitle:[self.formatter stringFromDate:[NSDate date]] forState:UIControlStateNormal];
         self.hourTextField.text = @"8.0";
-        [self.statusButton setTitle:[HConstants KfullTimeEmployee] forState:UIControlStateNormal];
-        [self.typeButton setTitle:[HConstants KbillableHour] forState:UIControlStateNormal];
+        [self.statusButton setTitle:[HConstants kFullTimeEmployee] forState:UIControlStateNormal];
+        [self.typeButton setTitle:[HConstants kBillableHour] forState:UIControlStateNormal];
         
         NSDictionary *lastSavedRecord = [[LastSavedManager sharedManager]getRecordForClient:self.clientLabel.text withProject:self.self.projectLabel.text];
         if ([lastSavedRecord objectForKey:[HConstants kComment]]) {
@@ -132,15 +132,15 @@
         [self.dateButton setTitle:self.existingRecord.dateOfTheService forState:UIControlStateNormal];
         self.hourTextField.text = self.existingRecord.hourOfTheService;
         if (self.existingRecord.statusOfUser && [self.existingRecord.statusOfUser isEqualToString:@"1"] ) {
-            [self.statusButton setTitle:[HConstants KfullTimeEmployee] forState:UIControlStateNormal];
+            [self.statusButton setTitle:[HConstants kFullTimeEmployee] forState:UIControlStateNormal];
         } else{
-            [self.statusButton setTitle:[HConstants KpartTimeEmployee] forState:UIControlStateNormal];
+            [self.statusButton setTitle:[HConstants kPartTimeEmployee] forState:UIControlStateNormal];
         }
         
         if (self.existingRecord.typeOfService && [self.existingRecord.typeOfService isEqualToString:@"1"] ) {
-            [self.typeButton setTitle:[HConstants KbillableHour] forState:UIControlStateNormal];
+            [self.typeButton setTitle:[HConstants kBillableHour] forState:UIControlStateNormal];
         }else{
-            [self.typeButton setTitle:[HConstants KunbillableHour] forState:UIControlStateNormal];
+            [self.typeButton setTitle:[HConstants kUnbillableHour] forState:UIControlStateNormal];
         }
         
         if (self.existingRecord.commentOnService) {
@@ -167,20 +167,20 @@
 
 - (IBAction)typeButtonAction:(id)sender {
     UIButton *typeButton = (UIButton*)sender;
-    if ([typeButton.titleLabel.text isEqualToString:[HConstants KbillableHour]]){
-        [typeButton setTitle:[HConstants KunbillableHour] forState:UIControlStateNormal];
+    if ([typeButton.titleLabel.text isEqualToString:[HConstants kBillableHour]]){
+        [typeButton setTitle:[HConstants kUnbillableHour] forState:UIControlStateNormal];
     } else{
-        [typeButton setTitle:[HConstants KbillableHour] forState:UIControlStateNormal];
+        [typeButton setTitle:[HConstants kBillableHour] forState:UIControlStateNormal];
     }
     
 }
 
 - (IBAction)statusButtonAction:(id)sender {
     UIButton *statusButton = (UIButton*)sender;
-    if ([statusButton.titleLabel.text isEqualToString:[HConstants KfullTimeEmployee]]){
-        [statusButton setTitle:[HConstants KpartTimeEmployee] forState:UIControlStateNormal];
+    if ([statusButton.titleLabel.text isEqualToString:[HConstants kFullTimeEmployee]]){
+        [statusButton setTitle:[HConstants kPartTimeEmployee] forState:UIControlStateNormal];
     } else{
-        [statusButton setTitle:[HConstants KfullTimeEmployee] forState:UIControlStateNormal];
+        [statusButton setTitle:[HConstants kFullTimeEmployee] forState:UIControlStateNormal];
     }
 
 }
@@ -230,7 +230,7 @@
 
 - (IBAction)submitRecordAction:(id)sender {
     if (self.isNewRecord) {
-        NSData *currentUserRecordsData = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants KSanitizedCurrentUserRecords]];
+        NSData *currentUserRecordsData = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants kSanitizedCurrentUserRecords]];
         NSDictionary* currentUserRecordsDictionary = [NSKeyedUnarchiver unarchiveObjectWithData:currentUserRecordsData];
         if ([currentUserRecordsDictionary objectForKey:self.dateButton.titleLabel.text]) {
             [[[UIAlertView alloc] initWithTitle:@"Warning" message:[NSString stringWithFormat: @"You already sent a record for %@. Do you still want to send this ?",self.dateButton.titleLabel.text] delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Send", nil] show];
@@ -303,22 +303,22 @@
         if (self.isNewRecord) {
             self.fireBase = [FireBaseManager recordURLsharedFireBase];
             if (self.commentTextView.text && ([self.commentTextView.text length] > 0)) {
-                [[self.fireBase childByAutoId] setValue:@{[HConstants kClient]:self.clientName,[HConstants kDate]:self.dateButton.titleLabel.text,[HConstants kHour]:self.hourTextField.text,[HConstants kProject]:self.projectName,[HConstants kComment]:self.commentTextView.text,[HConstants kStatus]:(([self.statusButton.titleLabel.text isEqualToString:[HConstants KfullTimeEmployee]])?@"1":@"0"),[HConstants kType]:(([self.typeButton.titleLabel.text isEqualToString:[HConstants KbillableHour]])?@"1":@"0")}];
-                [[LastSavedManager sharedManager] saveRecord:@{[HConstants kClient]:self.clientName,[HConstants kDate]:self.dateButton.titleLabel.text,[HConstants kHour]:self.hourTextField.text,[HConstants kProject]:self.projectName,[HConstants kStatus]:(([self.statusButton.titleLabel.text isEqualToString:[HConstants KfullTimeEmployee]])?@"1":@"0"),[HConstants kType]:(([self.typeButton.titleLabel.text isEqualToString:[HConstants KbillableHour]])?@"1":@"0"),[HConstants kComment]:self.commentTextView.text}];
+                [[self.fireBase childByAutoId] setValue:@{[HConstants kClient]:self.clientName,[HConstants kDate]:self.dateButton.titleLabel.text,[HConstants kHour]:self.hourTextField.text,[HConstants kProject]:self.projectName,[HConstants kComment]:self.commentTextView.text,[HConstants kStatus]:(([self.statusButton.titleLabel.text isEqualToString:[HConstants kFullTimeEmployee]])?@"1":@"0"),[HConstants kType]:(([self.typeButton.titleLabel.text isEqualToString:[HConstants kBillableHour]])?@"1":@"0")}];
+                [[LastSavedManager sharedManager] saveRecord:@{[HConstants kClient]:self.clientName,[HConstants kDate]:self.dateButton.titleLabel.text,[HConstants kHour]:self.hourTextField.text,[HConstants kProject]:self.projectName,[HConstants kStatus]:(([self.statusButton.titleLabel.text isEqualToString:[HConstants kFullTimeEmployee]])?@"1":@"0"),[HConstants kType]:(([self.typeButton.titleLabel.text isEqualToString:[HConstants kBillableHour]])?@"1":@"0"),[HConstants kComment]:self.commentTextView.text}];
             } else{
-                [[self.fireBase childByAutoId] setValue:@{[HConstants kClient]:self.clientName,[HConstants kDate]:self.dateButton.titleLabel.text,[HConstants kHour]:self.hourTextField.text,[HConstants kProject]:self.projectName,[HConstants kStatus]:(([self.statusButton.titleLabel.text isEqualToString:[HConstants KfullTimeEmployee]])?@"1":@"0"),[HConstants kType]:(([self.typeButton.titleLabel.text isEqualToString:[HConstants KbillableHour]])?@"1":@"0")}];
-                [[LastSavedManager sharedManager] saveRecord:@{[HConstants kClient]:self.clientName,[HConstants kDate]:self.dateButton.titleLabel.text,[HConstants kHour]:self.hourTextField.text,[HConstants kProject]:self.projectName,[HConstants kStatus]:(([self.statusButton.titleLabel.text isEqualToString:[HConstants KfullTimeEmployee]])?@"1":@"0"),[HConstants kType]:(([self.typeButton.titleLabel.text isEqualToString:[HConstants KbillableHour]])?@"1":@"0")}];
+                [[self.fireBase childByAutoId] setValue:@{[HConstants kClient]:self.clientName,[HConstants kDate]:self.dateButton.titleLabel.text,[HConstants kHour]:self.hourTextField.text,[HConstants kProject]:self.projectName,[HConstants kStatus]:(([self.statusButton.titleLabel.text isEqualToString:[HConstants kFullTimeEmployee]])?@"1":@"0"),[HConstants kType]:(([self.typeButton.titleLabel.text isEqualToString:[HConstants kBillableHour]])?@"1":@"0")}];
+                [[LastSavedManager sharedManager] saveRecord:@{[HConstants kClient]:self.clientName,[HConstants kDate]:self.dateButton.titleLabel.text,[HConstants kHour]:self.hourTextField.text,[HConstants kProject]:self.projectName,[HConstants kStatus]:(([self.statusButton.titleLabel.text isEqualToString:[HConstants kFullTimeEmployee]])?@"1":@"0"),[HConstants kType]:(([self.typeButton.titleLabel.text isEqualToString:[HConstants kBillableHour]])?@"1":@"0")}];
             }
         } else{
-            NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants KCurrentUser]];
+            NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants kCurrentUser]];
             NSString *uniqueAddress = self.existingRecord.uniqueFireBaseIdentifier;
             self.fireBase = [[Firebase alloc]initWithUrl:[NSString stringWithFormat:@"%@/Users/%@/records/%@",[HConstants kFireBaseURL],username,uniqueAddress]];
             if (self.commentTextView.text && ([self.commentTextView.text length] > 0)) {
-                [self.fireBase updateChildValues:@{[HConstants kClient]:self.clientName,[HConstants kDate]:self.dateButton.titleLabel.text,[HConstants kHour]:self.hourTextField.text,[HConstants kProject]:self.projectName,[HConstants kComment]:self.commentTextView.text,[HConstants kStatus]:(([self.statusButton.titleLabel.text isEqualToString:[HConstants KfullTimeEmployee]])?@"1":@"0"),[HConstants kType]:(([self.typeButton.titleLabel.text isEqualToString:[HConstants KbillableHour]])?@"1":@"0")}];
-                [[LastSavedManager sharedManager] saveRecord:@{[HConstants kClient]:self.clientName,[HConstants kDate]:self.dateButton.titleLabel.text,[HConstants kHour]:self.hourTextField.text,[HConstants kProject]:self.projectName,[HConstants kStatus]:(([self.statusButton.titleLabel.text isEqualToString:[HConstants KfullTimeEmployee]])?@"1":@"0"),[HConstants kType]:(([self.typeButton.titleLabel.text isEqualToString:[HConstants KbillableHour]])?@"1":@"0"),[HConstants kComment]:self.commentTextView.text}];
+                [self.fireBase updateChildValues:@{[HConstants kClient]:self.clientName,[HConstants kDate]:self.dateButton.titleLabel.text,[HConstants kHour]:self.hourTextField.text,[HConstants kProject]:self.projectName,[HConstants kComment]:self.commentTextView.text,[HConstants kStatus]:(([self.statusButton.titleLabel.text isEqualToString:[HConstants kFullTimeEmployee]])?@"1":@"0"),[HConstants kType]:(([self.typeButton.titleLabel.text isEqualToString:[HConstants kBillableHour]])?@"1":@"0")}];
+                [[LastSavedManager sharedManager] saveRecord:@{[HConstants kClient]:self.clientName,[HConstants kDate]:self.dateButton.titleLabel.text,[HConstants kHour]:self.hourTextField.text,[HConstants kProject]:self.projectName,[HConstants kStatus]:(([self.statusButton.titleLabel.text isEqualToString:[HConstants kFullTimeEmployee]])?@"1":@"0"),[HConstants kType]:(([self.typeButton.titleLabel.text isEqualToString:[HConstants kBillableHour]])?@"1":@"0"),[HConstants kComment]:self.commentTextView.text}];
             } else{
-                [self.fireBase updateChildValues:@{[HConstants kClient]:self.clientName,[HConstants kDate]:self.dateButton.titleLabel.text,[HConstants kHour]:self.hourTextField.text,[HConstants kProject]:self.projectName,[HConstants kStatus]:(([self.statusButton.titleLabel.text isEqualToString:[HConstants KfullTimeEmployee]])?@"1":@"0"),[HConstants kType]:(([self.typeButton.titleLabel.text isEqualToString:[HConstants KbillableHour]])?@"1":@"0"),[HConstants kComment]:@""}];
-                [[LastSavedManager sharedManager] saveRecord:@{[HConstants kClient]:self.clientName,[HConstants kDate]:self.dateButton.titleLabel.text,[HConstants kHour]:self.hourTextField.text,[HConstants kProject]:self.projectName,[HConstants kStatus]:(([self.statusButton.titleLabel.text isEqualToString:[HConstants KfullTimeEmployee]])?@"1":@"0"),[HConstants kType]:(([self.typeButton.titleLabel.text isEqualToString:[HConstants KbillableHour]])?@"1":@"0"),[HConstants kComment]:@""}];
+                [self.fireBase updateChildValues:@{[HConstants kClient]:self.clientName,[HConstants kDate]:self.dateButton.titleLabel.text,[HConstants kHour]:self.hourTextField.text,[HConstants kProject]:self.projectName,[HConstants kStatus]:(([self.statusButton.titleLabel.text isEqualToString:[HConstants kFullTimeEmployee]])?@"1":@"0"),[HConstants kType]:(([self.typeButton.titleLabel.text isEqualToString:[HConstants kBillableHour]])?@"1":@"0"),[HConstants kComment]:@""}];
+                [[LastSavedManager sharedManager] saveRecord:@{[HConstants kClient]:self.clientName,[HConstants kDate]:self.dateButton.titleLabel.text,[HConstants kHour]:self.hourTextField.text,[HConstants kProject]:self.projectName,[HConstants kStatus]:(([self.statusButton.titleLabel.text isEqualToString:[HConstants kFullTimeEmployee]])?@"1":@"0"),[HConstants kType]:(([self.typeButton.titleLabel.text isEqualToString:[HConstants kBillableHour]])?@"1":@"0"),[HConstants kComment]:@""}];
             }
         }
         [[DataParseManager sharedManager] getUserRecords];
@@ -334,8 +334,8 @@
                 tempRecordForRecordDetail.dateOfTheService = self.dateButton.titleLabel.text;
                 tempRecordForRecordDetail.hourOfTheService = self.hourTextField.text;
                 tempRecordForRecordDetail.commentOnService = self.commentTextView.text;
-                tempRecordForRecordDetail.statusOfUser = ([self.statusButton.titleLabel.text isEqualToString:[HConstants KfullTimeEmployee]])?@"1":@"0";
-                tempRecordForRecordDetail.typeOfService = ([self.typeButton.titleLabel.text isEqualToString:[HConstants KbillableHour]])?@"1":@"0";
+                tempRecordForRecordDetail.statusOfUser = ([self.statusButton.titleLabel.text isEqualToString:[HConstants kFullTimeEmployee]])?@"1":@"0";
+                tempRecordForRecordDetail.typeOfService = ([self.typeButton.titleLabel.text isEqualToString:[HConstants kBillableHour]])?@"1":@"0";
                 recordDetailVC.record = tempRecordForRecordDetail;
                 [self.previousViewController.navigationController popViewControllerAnimated:YES];
             }

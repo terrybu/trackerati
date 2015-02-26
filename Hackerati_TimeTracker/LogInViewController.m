@@ -238,7 +238,7 @@ static NSString *CellIdentifier = @"Cell";
     if (internetStatus != NotReachable) {
         dispatch_async(dispatch_get_main_queue(), ^{
             [[FireBaseManager connectivityURLsharedFireBase] observeEventType:FEventTypeValue withBlock:^(FDataSnapshot *snapshot){
-                if([snapshot.value boolValue] && [[NSUserDefaults standardUserDefaults]objectForKey:[HConstants KCurrentUser]]) {
+                if([snapshot.value boolValue] && [[NSUserDefaults standardUserDefaults]objectForKey:[HConstants kCurrentUser]]) {
                     [[DataParseManager sharedManager] getAllDataFromFireBaseAfterLoginSuccess];
                 } else {
                     [[NSNotificationCenter defaultCenter] postNotificationName:kStartLogInProcessNotification object:nil];
@@ -252,7 +252,7 @@ static NSString *CellIdentifier = @"Cell";
 }
 
 -(void)sendForm{
-    NSData *data = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants KSanitizedCurrentUserRecords]];
+    NSData *data = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants kSanitizedCurrentUserRecords]];
     self.recordsHistoryDictionary = [NSKeyedUnarchiver unarchiveObjectWithData:data];
     if ([self.recordsHistoryDictionary objectForKey:self.dateOfServiceTextLabel.text]) {
         [[[UIAlertView alloc] initWithTitle:@"Warning" message:[NSString stringWithFormat: @"You already sent a record for %@. Do you still want to send this ?",self.dateOfServiceTextLabel.text] delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Send", nil] show];
@@ -280,13 +280,13 @@ static NSString *CellIdentifier = @"Cell";
     self.fireBase = [FireBaseManager recordURLsharedFireBase];
     
     if (self.commentTextLabel.text && [self.commentTextLabel.text length] > 0) {
-        [[self.fireBase childByAutoId] setValue:@{[HConstants kClient]:self.clientNameTextLabel.text,[HConstants kDate]:self.dateOfServiceTextLabel.text,[HConstants kHour]:self.hourOfServiceTextLabel.text,[HConstants kProject]:self.projectTextLabel.text,[HConstants kStatus]:(([self.statusTextLabel.text isEqualToString:[HConstants KfullTimeEmployee]])?@"1":@"0"),[HConstants kType]:(([self.typeTextLabel.text isEqualToString:[HConstants KbillableHour]])?@"1":@"0"),[HConstants kComment]:self.commentTextLabel.text}];
+        [[self.fireBase childByAutoId] setValue:@{[HConstants kClient]:self.clientNameTextLabel.text,[HConstants kDate]:self.dateOfServiceTextLabel.text,[HConstants kHour]:self.hourOfServiceTextLabel.text,[HConstants kProject]:self.projectTextLabel.text,[HConstants kStatus]:(([self.statusTextLabel.text isEqualToString:[HConstants kFullTimeEmployee]])?@"1":@"0"),[HConstants kType]:(([self.typeTextLabel.text isEqualToString:[HConstants kBillableHour]])?@"1":@"0"),[HConstants kComment]:self.commentTextLabel.text}];
         
-        [[LastSavedManager sharedManager] saveRecord:@{[HConstants kClient]:self.clientNameTextLabel.text,[HConstants kDate]:self.dateOfServiceTextLabel.text,[HConstants kHour]:self.hourOfServiceTextLabel.text,[HConstants kProject]:self.projectTextLabel.text,[HConstants kStatus]:(([self.statusTextLabel.text isEqualToString:[HConstants KfullTimeEmployee]])?@"1":@"0"),[HConstants kType]:(([self.typeTextLabel.text isEqualToString:[HConstants KbillableHour]])?@"1":@"0"),[HConstants kComment]:self.commentTextLabel.text}];
+        [[LastSavedManager sharedManager] saveRecord:@{[HConstants kClient]:self.clientNameTextLabel.text,[HConstants kDate]:self.dateOfServiceTextLabel.text,[HConstants kHour]:self.hourOfServiceTextLabel.text,[HConstants kProject]:self.projectTextLabel.text,[HConstants kStatus]:(([self.statusTextLabel.text isEqualToString:[HConstants kFullTimeEmployee]])?@"1":@"0"),[HConstants kType]:(([self.typeTextLabel.text isEqualToString:[HConstants kBillableHour]])?@"1":@"0"),[HConstants kComment]:self.commentTextLabel.text}];
     } else{
-        [[self.fireBase childByAutoId] setValue:@{[HConstants kClient]:self.clientNameTextLabel.text,[HConstants kDate]:self.dateOfServiceTextLabel.text,[HConstants kHour]:self.hourOfServiceTextLabel.text,[HConstants kProject]:self.projectTextLabel.text,[HConstants kStatus]:(([self.statusTextLabel.text isEqualToString:[HConstants KfullTimeEmployee]])?@"1":@"0"),[HConstants kType]:(([self.typeTextLabel.text isEqualToString:[HConstants KbillableHour]])?@"1":@"0")}];
+        [[self.fireBase childByAutoId] setValue:@{[HConstants kClient]:self.clientNameTextLabel.text,[HConstants kDate]:self.dateOfServiceTextLabel.text,[HConstants kHour]:self.hourOfServiceTextLabel.text,[HConstants kProject]:self.projectTextLabel.text,[HConstants kStatus]:(([self.statusTextLabel.text isEqualToString:[HConstants kFullTimeEmployee]])?@"1":@"0"),[HConstants kType]:(([self.typeTextLabel.text isEqualToString:[HConstants kBillableHour]])?@"1":@"0")}];
         
-        [[LastSavedManager sharedManager] saveRecord:@{[HConstants kClient]:self.clientNameTextLabel.text,[HConstants kDate]:self.dateOfServiceTextLabel.text,[HConstants kHour]:self.hourOfServiceTextLabel.text,[HConstants kProject]:self.projectTextLabel.text,[HConstants kStatus]:(([self.statusTextLabel.text isEqualToString:[HConstants KfullTimeEmployee]])?@"1":@"0"),[HConstants kType]:(([self.typeTextLabel.text isEqualToString:[HConstants KbillableHour]])?@"1":@"0")}];
+        [[LastSavedManager sharedManager] saveRecord:@{[HConstants kClient]:self.clientNameTextLabel.text,[HConstants kDate]:self.dateOfServiceTextLabel.text,[HConstants kHour]:self.hourOfServiceTextLabel.text,[HConstants kProject]:self.projectTextLabel.text,[HConstants kStatus]:(([self.statusTextLabel.text isEqualToString:[HConstants kFullTimeEmployee]])?@"1":@"0"),[HConstants kType]:(([self.typeTextLabel.text isEqualToString:[HConstants kBillableHour]])?@"1":@"0")}];
     }
     
     [self slideOutForm];
@@ -337,7 +337,7 @@ static NSString *CellIdentifier = @"Cell";
 
 -(void) loadData{
     dispatch_async(dispatch_get_main_queue(), ^{
-        NSData *data = [[NSUserDefaults standardUserDefaults]objectForKey:[HConstants KCurrentUserClientList]];        
+        NSData *data = [[NSUserDefaults standardUserDefaults]objectForKey:[HConstants kCurrentUserClientList]];        
         self.currentUserClientsArray = [NSKeyedUnarchiver unarchiveObjectWithData:data];
         [self.refreshControl endRefreshing];
         [self.tableView reloadData];
@@ -345,7 +345,7 @@ static NSString *CellIdentifier = @"Cell";
 }
 
 - (void) userRecordsDataReceived {
-    NSData *currentUserRecordsData = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants KSanitizedCurrentUserRecords]];
+    NSData *currentUserRecordsData = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants kSanitizedCurrentUserRecords]];
     self.recordsHistoryDictionary = [NSKeyedUnarchiver unarchiveObjectWithData:currentUserRecordsData];
 }
 
@@ -455,10 +455,10 @@ static NSString *CellIdentifier = @"Cell";
         [self.currentUserClientsArray removeObject:client];
     }
     NSData *currentUserClientListData = [NSKeyedArchiver archivedDataWithRootObject:self.currentUserClientsArray];
-    [[NSUserDefaults standardUserDefaults] setObject:currentUserClientListData forKey:[HConstants KCurrentUserClientList]];
+    [[NSUserDefaults standardUserDefaults] setObject:currentUserClientListData forKey:[HConstants kCurrentUserClientList]];
     [[NSUserDefaults standardUserDefaults]synchronize];
     
-    NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants KCurrentUser]];
+    NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants kCurrentUser]];
     __block NSString *uniqueAddress = nil;
     NSDictionary* rawMasterClientList = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants kRawMasterClientList]];
     if ([[rawMasterClientList objectForKey:client.clientName]objectForKey:project.projectName]) {
@@ -506,20 +506,20 @@ static NSString *CellIdentifier = @"Cell";
                 self.commentTextLabel.text = nil;
             }
             if ([[lastSavedRecord objectForKey:[HConstants kStatus]] isEqualToString:@"1"]) {
-                self.statusTextLabel.text = [HConstants KfullTimeEmployee];
+                self.statusTextLabel.text = [HConstants kFullTimeEmployee];
             }else {
-                self.statusTextLabel.text = [HConstants KpartTimeEmployee];
+                self.statusTextLabel.text = [HConstants kPartTimeEmployee];
             }
             if ([[lastSavedRecord objectForKey:[HConstants kType]] isEqualToString:@"1"]) {
-                self.typeTextLabel.text =  [HConstants KbillableHour];
+                self.typeTextLabel.text =  [HConstants kBillableHour];
             }else {
-                self.typeTextLabel.text =  [HConstants KunbillableHour];
+                self.typeTextLabel.text =  [HConstants kUnbillableHour];
             }
             self.hourOfServiceTextLabel.text = [lastSavedRecord objectForKey:[HConstants kHour]];
             
         }else{
-            self.statusTextLabel.text = [HConstants KfullTimeEmployee];
-            self.typeTextLabel.text = [HConstants KbillableHour];
+            self.statusTextLabel.text = [HConstants kFullTimeEmployee];
+            self.typeTextLabel.text = [HConstants kBillableHour];
             self.hourOfServiceTextLabel.text = @"8.0";
             if ([lastSavedRecord objectForKey:[HConstants kComment]]) {
                 self.commentTextLabel.text = [lastSavedRecord objectForKey:[HConstants kComment]];

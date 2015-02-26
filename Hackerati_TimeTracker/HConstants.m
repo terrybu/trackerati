@@ -7,20 +7,22 @@
 //
 
 #import "HConstants.h"
+NSString * const kIconDrawer = @"IconDrawer";
+NSString * const kCellReuseIdentifier = @"DrawerCell";
 
 static NSString * const kClientId = @"1074427376116-jjk9j3nbsgao64i8hne37fdrhf49bdqu.apps.googleusercontent.com";
 static NSString * const kFireBaseURL = @"https://blazing-torch-6772.firebaseio.com";
 static NSString * const kMasterClientList = @"MasterClientsList";
 static NSString * const kRawMasterClientList = @"RawMasterClientsList";
-static NSString * const KCurrentUser = @"currentUser";
-static NSString * const KCurrentUserRecords = @"currentUserRecords";
-static NSString * const KcurrentUserClientList = @"currentUserClientList";
-static NSString * const KlastSavedRecord = @"lastSavedRecord";
-static NSString * const KSanitizedCurrentUserRecords = @"SanitizedCurrentUserRecords";
-static NSString * const KfullTimeEmployee = @"Full-Time Employee";
-static NSString * const KpartTimeEmployee = @"Part-Time Employee";
-static NSString * const KbillableHour = @"Billable Hour";
-static NSString * const KunbillableHour = @"Unbillable Hour";
+static NSString * const kCurrentUser = @"currentUser";
+static NSString * const kCurrentUserRecords = @"currentUserRecords";
+static NSString * const kCurrentUserClientList = @"currentUserClientList";
+static NSString * const kLastSavedRecord = @"lastSavedRecord";
+static NSString * const kSanitizedCurrentUserRecords = @"SanitizedCurrentUserRecords";
+static NSString * const kFullTimeEmployee = @"Full-Time Employee";
+static NSString * const kPartTimeEmployee = @"Part-Time Employee";
+static NSString * const kBillableHour = @"Billable Hour";
+static NSString * const kUnbillableHour = @"Unbillable Hour";
 static NSString * const kClient = @"client";
 static NSString * const kProject = @"project";
 static NSString * const kDate = @"date";
@@ -43,44 +45,44 @@ static NSString * const kType = @"type";
     return kMasterClientList;
 }
 
-+(NSString*)KCurrentUser{
-    return KCurrentUser;
++(NSString*)kCurrentUser{
+    return kCurrentUser;
 }
 
-+(NSString*)KCurrentUserRecords{
-    return KCurrentUserRecords;
++(NSString*)kCurrentUserRecords{
+    return kCurrentUserRecords;
 }
 
-+(NSString*)KCurrentUserClientList{
-    return KcurrentUserClientList;
++(NSString*)kCurrentUserClientList{
+    return kCurrentUserClientList;
 }
 
-+(NSString*)KlastSavedRecord{
-    return KlastSavedRecord;
++(NSString*)kLastSavedRecord{
+    return kLastSavedRecord;
 }
 
 +(NSString*)kRawMasterClientList{
     return kRawMasterClientList;
 }
 
-+(NSString*)KSanitizedCurrentUserRecords{
-    return KSanitizedCurrentUserRecords;
++(NSString*)kSanitizedCurrentUserRecords{
+    return kSanitizedCurrentUserRecords;
 }
 
-+(NSString*)KfullTimeEmployee{
-    return KfullTimeEmployee;
++(NSString*)kFullTimeEmployee{
+    return kFullTimeEmployee;
 }
 
-+(NSString*)KpartTimeEmployee{
-    return KpartTimeEmployee;
++(NSString*)kPartTimeEmployee{
+    return kPartTimeEmployee;
 }
 
-+(NSString*)KbillableHour{
-    return KbillableHour;
++(NSString*)kBillableHour{
+    return kBillableHour;
 }
 
-+(NSString*)KunbillableHour{
-    return KunbillableHour;
++(NSString*)kUnbillableHour{
+    return kUnbillableHour;
 }
 
 +(NSString*)kClient{

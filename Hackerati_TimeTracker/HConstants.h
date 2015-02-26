@@ -8,23 +8,24 @@
 
 #import <Foundation/Foundation.h>
 
-
+extern NSString * const kIconDrawer;
+extern NSString * const kCellReuseIdentifier;
 
 @interface HConstants : NSObject
 
 +(NSString*)kClientId;
 +(NSString*)kFireBaseURL;
 +(NSString*)kMasterClientList;
-+(NSString*)KCurrentUser;
-+(NSString*)KCurrentUserRecords;
-+(NSString*)KCurrentUserClientList;
-+(NSString*)KlastSavedRecord;
++(NSString*)kCurrentUser;
++(NSString*)kCurrentUserRecords;
++(NSString*)kCurrentUserClientList;
++(NSString*)kLastSavedRecord;
 +(NSString*)kRawMasterClientList;
-+(NSString*)KSanitizedCurrentUserRecords;
-+(NSString*)KfullTimeEmployee;
-+(NSString*)KpartTimeEmployee;
-+(NSString*)KbillableHour;
-+(NSString*)KunbillableHour;
++(NSString*)kSanitizedCurrentUserRecords;
++(NSString*)kFullTimeEmployee;
++(NSString*)kPartTimeEmployee;
++(NSString*)kBillableHour;
++(NSString*)kUnbillableHour;
 +(NSString*)kClient;
 +(NSString*)kProject;
 +(NSString*)kDate;

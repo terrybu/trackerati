@@ -21,7 +21,7 @@
 }
 
 -(void)saveRecord:(NSDictionary*)record{
-    NSArray* lastSavedInfo =[[NSUserDefaults standardUserDefaults] objectForKey:[HConstants KlastSavedRecord]];
+    NSArray* lastSavedInfo =[[NSUserDefaults standardUserDefaults] objectForKey:[HConstants kLastSavedRecord]];
     NSMutableArray* mutableLastSavedInfo = [[NSMutableArray alloc]initWithArray:lastSavedInfo];
     if (!mutableLastSavedInfo || [mutableLastSavedInfo count] == 0) {
         mutableLastSavedInfo = [NSMutableArray new];
@@ -37,12 +37,12 @@
             }
         }];
     }
-    [[NSUserDefaults standardUserDefaults] setObject:mutableLastSavedInfo forKey:[HConstants KlastSavedRecord]];
+    [[NSUserDefaults standardUserDefaults] setObject:mutableLastSavedInfo forKey:[HConstants kLastSavedRecord]];
     [[NSUserDefaults standardUserDefaults]synchronize];
 }
 
 -(NSDictionary*)getRecordForClient:(NSString*)client withProject:(NSString*)project{
-    NSArray* lastSavedInfo =[[NSUserDefaults standardUserDefaults] objectForKey:[HConstants KlastSavedRecord]];
+    NSArray* lastSavedInfo =[[NSUserDefaults standardUserDefaults] objectForKey:[HConstants kLastSavedRecord]];
     __block NSDictionary*record = nil;
     [lastSavedInfo enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop){
         NSDictionary *tempRecord = (NSDictionary*)obj;

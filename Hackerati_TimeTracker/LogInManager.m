@@ -83,7 +83,7 @@ static BOOL loggedOut = YES;
             // We successfully obtained an OAuth token, authenticate on Firebase with it
             NSString *userEmail = [GPPSignIn sharedInstance].userEmail;
             NSString *username = [[userEmail componentsSeparatedByCharactersInSet:[[NSCharacterSet letterCharacterSet] invertedSet]] componentsJoinedByString:@""];
-            [[NSUserDefaults standardUserDefaults] setObject:username forKey:[HConstants KCurrentUser]];
+            [[NSUserDefaults standardUserDefaults] setObject:username forKey:[HConstants kCurrentUser]];
             [[NSUserDefaults standardUserDefaults]synchronize];
             
             [[FireBaseManager baseURLsharedFireBase] authWithOAuthProvider:@"google" token:auth.accessToken

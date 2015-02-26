@@ -101,17 +101,17 @@
     self.title = self.record.dateOfTheService;
     self.clientLabel.text = self.record.clientName;
     if (self.record.statusOfUser && [self.record.statusOfUser isEqualToString:@"1"] ) {
-        self.statusLabel.text = [HConstants KfullTimeEmployee];
+        self.statusLabel.text = [HConstants kFullTimeEmployee];
     }
     else{
-        self.statusLabel.text = [HConstants KpartTimeEmployee];
+        self.statusLabel.text = [HConstants kPartTimeEmployee];
     }
     
     if (self.record.typeOfService && [self.record.typeOfService isEqualToString:@"1"] ) {
-        self.typeLabel.text = [HConstants KbillableHour];
+        self.typeLabel.text = [HConstants kBillableHour];
     }
     else{
-        self.typeLabel.text = [HConstants KunbillableHour];
+        self.typeLabel.text = [HConstants kUnbillableHour];
     }
     
     self.projectLabel.text = self.record.projectName;
@@ -143,7 +143,7 @@
 }
 
 -(void)deleteRecord{
-    NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants KCurrentUser]];
+    NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants kCurrentUser]];
     NSString *uniqueAddress = self.record.uniqueFireBaseIdentifier;
     self.fireBase = [[Firebase alloc]initWithUrl:[NSString stringWithFormat:@"%@/Users/%@/records/%@",[HConstants kFireBaseURL],username,uniqueAddress]];
     [self.fireBase removeValue];

@@ -37,7 +37,7 @@ static NSString *cellIdentifier = @"RecordTableViewCell";
 
 -(void)updateNewRecords{
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-        NSData *currentUserRecordsData = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants KSanitizedCurrentUserRecords]];
+        NSData *currentUserRecordsData = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants kSanitizedCurrentUserRecords]];
         self.recordsHistoryDictionary = [NSKeyedUnarchiver unarchiveObjectWithData:currentUserRecordsData];
         if (self.recordsHistoryDictionary.count > 0)
             self.sortedDateKeys = [self returnSortedDateStringKeysArray:[self.recordsHistoryDictionary allKeys]];

@@ -67,7 +67,7 @@
                 else {
                     [[NSUserDefaults standardUserDefaults] removeObjectForKey:[HConstants kRawMasterClientList]];
                     [[NSUserDefaults standardUserDefaults] removeObjectForKey:[HConstants kMasterClientList]];
-                    [[NSUserDefaults standardUserDefaults] removeObjectForKey:[HConstants KCurrentUserClientList]];
+                    [[NSUserDefaults standardUserDefaults] removeObjectForKey:[HConstants kCurrentUserClientList]];
                     [[NSUserDefaults standardUserDefaults]synchronize];
                     
                     if ([self.delegate respondsToSelector:@selector(loadData)]) {
@@ -133,7 +133,7 @@
 }
 
 - (void) saveCurrentUserClientListInUserDefaults: (NSDictionary *) rawMasterClientList {
-    NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants KCurrentUser]];
+    NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants kCurrentUser]];
     __block NSMutableArray *currentUserClientList = [[NSMutableArray alloc]init];
     [rawMasterClientList enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop){
         __block Client *newClient = [[Client alloc]init];
@@ -172,7 +172,7 @@
     }];
     //Alphabetical sorting logic for clients within currentUserClients
     NSData *currentUserClientListData = [self getArchivedDataOfSortedArrayByDescriptor:currentUserClientList sortDescriptor:@"clientName"];
-    [[NSUserDefaults standardUserDefaults]setObject:currentUserClientListData forKey:[HConstants KCurrentUserClientList]];
+    [[NSUserDefaults standardUserDefaults]setObject:currentUserClientListData forKey:[HConstants kCurrentUserClientList]];
     [[NSUserDefaults standardUserDefaults]synchronize];
 }
 
@@ -239,12 +239,12 @@
                     }];
                     
                     NSData *currentUserRecordsData = [NSKeyedArchiver archivedDataWithRootObject:sanitizedCurrentUserRecords];
-                    [[NSUserDefaults standardUserDefaults] setObject:currentUserRecordsData forKey:[HConstants KSanitizedCurrentUserRecords]];
+                    [[NSUserDefaults standardUserDefaults] setObject:currentUserRecordsData forKey:[HConstants kSanitizedCurrentUserRecords]];
                     [[NSUserDefaults standardUserDefaults] synchronize];
                     [[NSNotificationCenter defaultCenter] postNotificationName:kStartGetUserRecordsProcessNotification object:nil];
                 }
                 else {
-                    [[NSUserDefaults standardUserDefaults] removeObjectForKey:[HConstants KSanitizedCurrentUserRecords]];
+                    [[NSUserDefaults standardUserDefaults] removeObjectForKey:[HConstants kSanitizedCurrentUserRecords]];
                     [[NSUserDefaults standardUserDefaults]synchronize];
                     [[NSNotificationCenter defaultCenter] postNotificationName:kStartGetUserRecordsProcessNotification object:nil];
                 }
