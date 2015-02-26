@@ -63,7 +63,7 @@
                     
                     if ([self.delegate respondsToSelector:@selector(loadData)]) {
                         dispatch_async(dispatch_get_main_queue(), ^{
-                            [self.delegate loadData];
+//                            [self.delegate loadData];
                             DrawerTableViewController *dtvc = (DrawerTableViewController *) [AppDelegate globalDelegate].drawerViewController.leftViewController;
                             [dtvc loginRefresh];
                         });
@@ -77,7 +77,9 @@
                     
                     if ([self.delegate respondsToSelector:@selector(loadData)]) {
                         dispatch_async(dispatch_get_main_queue(), ^{
-                            [self.delegate loadData];
+//                            [self.delegate loadData];
+                            DrawerTableViewController *dtvc = (DrawerTableViewController *) [AppDelegate globalDelegate].drawerViewController.leftViewController;
+                            [dtvc loginRefresh];
                         });
                     }
                 }

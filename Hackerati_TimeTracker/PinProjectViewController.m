@@ -91,7 +91,6 @@ static NSString *CellIdentifier = @"Cell";
     
     NSArray *masterClientNames = [self.masterClientsArray valueForKey:@"clientName"];
     addClientProjectVC.clientNames = [masterClientNames mutableCopy];
-    addClientProjectVC.setOfCurrentUserProjectNames = self.setOfCurrentUserProjectNames;
     
     [self.navigationItem setBackBarButtonItem:[[UIBarButtonItem alloc]
                                                initWithTitle:@"Back" style:UIBarButtonItemStyleBordered target:nil action:nil]];
@@ -162,13 +161,13 @@ static NSString *CellIdentifier = @"Cell";
     Client *masterSelectedClient = [self.masterClientsArray objectAtIndex:indexPath.section];
     Project *masterSelectedProject = [masterSelectedClient projectAtIndex:indexPath.row];
     
-    if ([self.setOfCurrentUserProjectNames containsObject:masterSelectedProject.projectName]) {
+    if ([self.setOfCurrentUserClientNames containsObject:masterSelectedClient.clientName] && [self.setOfCurrentUserProjectNames containsObject:masterSelectedProject.projectName]) {
         //this is pin REMOVING logic
         [self removeUserPinFromSelectedProject:masterSelectedClient project:masterSelectedProject];
         cell.accessoryView = nil;
+
 //        UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"Removed Project" message:[NSString stringWithFormat:@"%@ was unpinned from your projects", masterSelectedProject.projectName] delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
 //        [alertView show];
-        
         return;
     }
     else {
@@ -195,10 +194,6 @@ static NSString *CellIdentifier = @"Cell";
         [self pinUserToProjectOnFireBase: masterSelectedClient.clientName project:masterSelectedProject.projectName];
         cell.accessoryView =[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"CheckMark.png"]];
     }
-    //2.19.2015 without refreshing data here, we have a bug that doesn't allow you to delete right after you add something
-    //By hitting DataParseManager here, we can make sure data gets refreshed when we add, so delete works properly
-    [[DataParseManager sharedManager] getAllDataFromFireBaseAfterLoginSuccess];
-//    [self.tableView reloadData];
 }
 
 
@@ -224,16 +219,16 @@ static NSString *CellIdentifier = @"Cell";
     Project *project = [self findCorrespondingProjectFromCorrespondingClient:client masterProject:masterProject];
     if (project != nil) {
         [client.projects removeObject:project];
-        [self.setOfCurrentUserProjectNames removeObject:project.projectName];
     }
     if (client != nil && [client.projects count]== 0) {
         [self.currentUserClientsArray removeObject:client];
-        [self.setOfCurrentUserClientNames removeObject:client.clientName];
+        [self.setOfCurrentUserClientNames removeObject:masterClient.clientName];
     }
     [self cacheCurrentUserClients];
+    [self.setOfCurrentUserProjectNames removeObject:masterProject.projectName];
+    
     
     [self removePinFromFireBase:project client:client];
-    
     [self.tableView reloadData];
 }
 

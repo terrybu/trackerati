@@ -11,6 +11,5 @@
 @interface AddClientProjectViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate>
 
 @property (strong, nonatomic)  NSMutableArray *clientNames;
-@property (strong, nonatomic) NSMutableSet *setOfCurrentUserProjectNames;
 
 @end
