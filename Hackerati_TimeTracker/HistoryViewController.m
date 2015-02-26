@@ -13,6 +13,7 @@
 #import "RecordDetailViewController.h"
 #import "Record.h"
 #import "DataParseManager.h"
+#import "AppDelegate.h"
 
 @interface HistoryViewController ()<RecordTableViewCellProtocol>
 
@@ -30,9 +31,15 @@ static NSString *cellIdentifier = @"RecordTableViewCell";
     // Do any additional setup after loading the view from its nib.
     self.title = @"History";
     
+    UIImage *drawerButtonImage = [UIImage imageNamed:kIconDrawer];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:drawerButtonImage style:UIBarButtonItemStylePlain target:self action:@selector(actionToggleLeftDrawer:)];
+    
     [self.tableView registerNib:[UINib nibWithNibName:@"RecordTableViewCell" bundle:nil] forCellReuseIdentifier:cellIdentifier];
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Log Out" style:UIBarButtonItemStylePlain target:self action:@selector(logOutAction)];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateNewRecords) name:kStartGetUserRecordsProcessNotification object:nil];
+}
+
+- (IBAction)actionToggleLeftDrawer:(id)sender {
+    [[AppDelegate globalDelegate] toggleLeftDrawer:self animated:YES];
 }
 
 -(void)updateNewRecords{
@@ -60,7 +67,7 @@ static NSString *cellIdentifier = @"RecordTableViewCell";
             });
         });
     }
-    else { //if logged out don't do anything, hide logout button
+    else { //if logged out, don't do anything, hide logout button
         self.navigationItem.rightBarButtonItem = nil;
         [self.tableView reloadData];
     }

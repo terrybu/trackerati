@@ -10,6 +10,9 @@
 
 extern NSString * const kIconDrawer;
 extern NSString * const kCellReuseIdentifier;
+extern NSString * const kCellNibName;
+extern NSString * const kHomeNavControllerKey;
+extern NSString * const kHistoryNavControllerKey;
 
 @interface HConstants : NSObject
 

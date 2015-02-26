@@ -7,9 +7,15 @@
 //
 
 #import "HConstants.h"
+
+//For Drawer Effect purposes
 NSString * const kIconDrawer = @"IconDrawer";
 NSString * const kCellReuseIdentifier = @"DrawerCell";
+NSString * const kHomeNavControllerKey = @"HomeNav";
+NSString * const kHistoryNavControllerKey = @"HistoryNav";
+NSString * const kCellNibName = @"DrawerCell";
 
+//For FireBase
 static NSString * const kClientId = @"1074427376116-jjk9j3nbsgao64i8hne37fdrhf49bdqu.apps.googleusercontent.com";
 static NSString * const kFireBaseURL = @"https://blazing-torch-6772.firebaseio.com";
 static NSString * const kMasterClientList = @"MasterClientsList";

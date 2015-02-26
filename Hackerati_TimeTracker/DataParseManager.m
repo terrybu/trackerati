@@ -45,7 +45,7 @@
     //We convert them into Client, Project, User objects
     
     //this is to let LoginViewController know in case we want to do some things on completion
-    [self.delegate loginSuccessful];
+//    [self.delegate loginSuccessful];
 
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         // Get all existing clients and projects
@@ -258,11 +258,11 @@
 #pragma mark Login-Related
 
 
--(void) loginSuccessful {
-    if ([self.delegate respondsToSelector:@selector(loginSuccessful)]) {
-        [self.delegate loginSuccessful];
-    }
-}
+//-(void) loginSuccessful {
+//    if ([self.delegate respondsToSelector:@selector(loginSuccessful)]) {
+//        [self.delegate loginSuccessful];
+//    }
+//}
 
 -(void) loginUnsuccessful{
     if ([self.delegate respondsToSelector:@selector(loginUnsuccessful)]) {

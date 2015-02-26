@@ -102,8 +102,8 @@
     UINavigationController *historyViewNavController = [[UINavigationController alloc]initWithRootViewController:[[HistoryViewController alloc]initWithNibName:@"HistoryViewController" bundle:nil]];
     
     self.controllersDictionary = [[NSMutableDictionary alloc]init];
-    [self.controllersDictionary setObject:homeViewNavController forKey:@"HomeViewNav"];
-    [self.controllersDictionary setObject:historyViewNavController forKey:@"HistoryViewNav"];
+    [self.controllersDictionary setObject:homeViewNavController forKey:kHomeNavControllerKey];
+    [self.controllersDictionary setObject:historyViewNavController forKey:kHistoryNavControllerKey];
     
     self.drawerViewController.centerViewController = homeViewNavController;
     self.drawerViewController.leftViewController = [[DrawerTableViewController alloc]initWithNibName:@"DrawerTableViewController" bundle:nil];

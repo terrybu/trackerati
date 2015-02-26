@@ -32,7 +32,7 @@ static const CGFloat kJVTableViewTopInset = 80.0;
     self.tableView.backgroundColor = [UIColor clearColor];
     self.tableView.contentInset = UIEdgeInsetsMake(kJVTableViewTopInset, 0.0, 0.0, 0.0);
     self.clearsSelectionOnViewWillAppear = NO;
-    [self.tableView registerNib:[UINib nibWithNibName:@"DrawerCell" bundle:nil] forCellReuseIdentifier:kCellReuseIdentifier];
+    [self.tableView registerNib:[UINib nibWithNibName:kCellNibName bundle:nil] forCellReuseIdentifier:kCellReuseIdentifier];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -55,7 +55,7 @@ static const CGFloat kJVTableViewTopInset = 80.0;
     cell = [tableView dequeueReusableCellWithIdentifier:kCellReuseIdentifier forIndexPath:indexPath];
     
     if (cell == nil) {
-        NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"DrawerCell" owner:self options:nil];
+        NSArray *nib = [[NSBundle mainBundle] loadNibNamed:kCellNibName owner:self options:nil];
         cell = (DrawerCell *)[nib objectAtIndex:0];
     }
     
@@ -86,11 +86,11 @@ static const CGFloat kJVTableViewTopInset = 80.0;
     UINavigationController *destinationNavController = nil;
     
     if(indexPath.row == CellIndexTypeHome) {
-        destinationNavController = [[AppDelegate globalDelegate].controllersDictionary objectForKey:@"HomeViewNav"];
+        destinationNavController = [[AppDelegate globalDelegate].controllersDictionary objectForKey:kHomeNavControllerKey];
         [[[AppDelegate globalDelegate] drawerViewController] setCenterViewController:destinationNavController];
     }
     else if (indexPath.row == CellIndexTypeHistory) {
-        destinationNavController = [[AppDelegate globalDelegate].controllersDictionary objectForKey:@"HistoryViewNav"];
+        destinationNavController = [[AppDelegate globalDelegate].controllersDictionary objectForKey:kHistoryNavControllerKey];
         [[[AppDelegate globalDelegate] drawerViewController] setCenterViewController:destinationNavController];
     }
     else if (indexPath.row == CellIndexTypeLogout) {

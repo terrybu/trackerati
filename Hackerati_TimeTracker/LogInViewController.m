@@ -22,6 +22,7 @@
 #import "Project.h"
 #import "User.h"
 #import "Record.h"
+#import "AppDelegate.h"
 
 
 @interface LogInViewController ()<CustomMCSwipeTableViewCellDelegate>
@@ -31,7 +32,6 @@
 @property (strong, nonatomic) NSMutableDictionary* recordsHistoryDictionary;
 
 @property (strong, nonatomic) GPPSignIn *googleSignIn;
-@property (strong, nonatomic) HistoryViewController *historyViewController;
 @property (strong, nonatomic) Firebase *fireBase;
 
 @property (strong, nonatomic) UIRefreshControl *refreshControl;
@@ -70,16 +70,38 @@
 
 static NSString *CellIdentifier = @"Cell";
 
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     self.title = @"Your Projects";
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"History" style:UIBarButtonItemStyleBordered target:self action:@selector(historyAction:)];
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"Pin More" style:UIBarButtonItemStyleBordered target:self action:@selector(addNewProjects)];
+    [self setUpNavbarButtonItems];
 
+    [self configureTableView];
+    [self setUpRefreshControl];
+    [self setUpPullToRefreshMessageLabel];
+    [self setUpDateFormatter];
+}
+
+
+
+
+
+
+#pragma mark Initial View Setup Related
+- (void)setUpNavbarButtonItems {
+    UIImage *drawerButtonImage = [UIImage imageNamed:kIconDrawer];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:drawerButtonImage style:UIBarButtonItemStylePlain target:self action:@selector(actionToggleLeftDrawer:)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"Pin More" style:UIBarButtonItemStyleBordered target:self action:@selector(addNewProjects)];
+}
+
+- (void)configureTableView {
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     [self.tableView registerClass:[CustomMCSwipeTableViewCell class] forCellReuseIdentifier:CellIdentifier];
-    
+}
+
+
+- (void)setUpRefreshControl {
     self.refreshControl = [[UIRefreshControl alloc] init];
     self.refreshControl.backgroundColor = [UIColor whiteColor];
     self.refreshControl.tintColor = [UIColor grayColor];
@@ -87,7 +109,9 @@ static NSString *CellIdentifier = @"Cell";
                             action:@selector(refreshControlAction)
                   forControlEvents:UIControlEventValueChanged];
     [self.tableView addSubview:self.refreshControl];
-    
+}
+
+- (void)setUpPullToRefreshMessageLabel {
     UILabel *messageLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)];
     messageLabel.text = @"Pull to refresh or log back in";
     messageLabel.textColor = [UIColor blackColor];
@@ -96,23 +120,20 @@ static NSString *CellIdentifier = @"Cell";
     messageLabel.font = [UIFont fontWithName:@"Palatino-Italic" size:20];
     [messageLabel sizeToFit];
     self.tableView.backgroundView = messageLabel;
-    
+}
+
+- (void)setUpDateFormatter {
     self.formatter = [[NSDateFormatter alloc] init];
     [self.formatter setDateFormat:@"MM/dd/yyyy"];
-    
-    
-    //Some of this nav bar button items disable/enabling logic was a way to disallow users to access History/Projects if they are not logged in
-    //But it causes a bit of lag on launch. Since logout won't be prevalent among almost all users, I don't think is necessary
-    //Will comment out for now (2/25/2015)
-//    self.navigationItem.leftBarButtonItem.enabled = NO;
-//    self.navigationItem.rightBarButtonItem.enabled = NO;
-//    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(disableButtonsOnLogOut) name:kStartLogOutProcessNotification object:nil];
+}
+
+- (IBAction)actionToggleLeftDrawer:(id)sender {
+    [[AppDelegate globalDelegate] toggleLeftDrawer:self animated:YES];
 }
 
 - (void)viewWillLayoutSubviews{
     
     [super viewWillLayoutSubviews];
-    
     [self createFormViewForSlideOutEffectOnSwipe];
     
     //without this line, iPhone 6+ has a weird way of making the tableview smaller than screen width/height?
@@ -124,6 +145,8 @@ static NSString *CellIdentifier = @"Cell";
     [self loadData];
 }
 
+
+#pragma mark Slide Out Form Effect
 -(void)createFormViewForSlideOutEffectOnSwipe {
     
     self.formView = [[UIView alloc]initWithFrame:CGRectMake(-self.view.frame.size.width-30, 0, self.view.frame.size.width-20, 500)];
@@ -293,11 +316,6 @@ static NSString *CellIdentifier = @"Cell";
     
 }
 
-- (void) historyAction:(UIBarButtonItem*)barButton{
-    self.historyViewController = [[HistoryViewController alloc]initWithNibName:@"HistoryViewController" bundle:nil];
-    self.historyViewController.recordsHistoryDictionary = self.recordsHistoryDictionary;
-    [self.navigationController pushViewController:self.historyViewController animated:YES];
-}
 
 - (void)addNewProjects{
     PinProjectViewController *pinProjectViewController = [[PinProjectViewController alloc]initWithNibName:@"PinProjectViewController" bundle:nil];
@@ -312,12 +330,7 @@ static NSString *CellIdentifier = @"Cell";
     // Dispose of any resources that can be recreated.
 }
 
-#pragma mark - Data Parser Delegate Methods and Login-Related
-
-- (void) loginSuccessful {
-//    self.navigationItem.leftBarButtonItem.enabled = YES;
-//    self.navigationItem.rightBarButtonItem.enabled = YES;
-}
+#pragma mark - Data Parser Delegate Methods
 
 - (void) loginUnsuccessful{
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -327,13 +340,6 @@ static NSString *CellIdentifier = @"Cell";
         [alertView show];
     });
 }
-
-
-//- (void) disableButtonsOnLogOut {
-//    self.navigationItem.leftBarButtonItem.enabled = NO;
-//    self.navigationItem.rightBarButtonItem.enabled = NO;
-//}
-
 
 -(void) loadData{
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -347,10 +353,14 @@ static NSString *CellIdentifier = @"Cell";
 - (void) userRecordsDataReceived {
     NSData *currentUserRecordsData = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants kSanitizedCurrentUserRecords]];
     self.recordsHistoryDictionary = [NSKeyedUnarchiver unarchiveObjectWithData:currentUserRecordsData];
+    
+    UINavigationController *historyNav = [[AppDelegate globalDelegate].controllersDictionary objectForKey:kHistoryNavControllerKey];
+    HistoryViewController *hvc = historyNav.viewControllers[0];
+    hvc.recordsHistoryDictionary = self.recordsHistoryDictionary;
 }
 
 
-#pragma mark - Form Methods
+#pragma mark - Slide Form Methods
 -(void)slideForm{
     self.formView.frame = CGRectMake(-self.view.frame.size.width-30, 0, self.view.frame.size.width-20, 500);
     CGRect frame = self.view.bounds;
@@ -533,8 +543,5 @@ static NSString *CellIdentifier = @"Cell";
     }
 }
 
-- (void)dealloc {
-//    [[NSNotificationCenter defaultCenter]removeObserver:self];
-}
 
 @end
