@@ -88,24 +88,29 @@ static const CGFloat kJVTableViewTopInset = 80.0;
     if(indexPath.row == CellIndexTypeHome) {
         destinationNavController = [[AppDelegate globalDelegate].controllersDictionary objectForKey:kHomeNavControllerKey];
         [[[AppDelegate globalDelegate] drawerViewController] setCenterViewController:destinationNavController];
-        [[AppDelegate globalDelegate] toggleLeftDrawer:self animated:YES];
     }
     else if (indexPath.row == CellIndexTypeHistory) {
         destinationNavController = [[AppDelegate globalDelegate].controllersDictionary objectForKey:kHistoryNavControllerKey];
         [[[AppDelegate globalDelegate] drawerViewController] setCenterViewController:destinationNavController];
-        [[AppDelegate globalDelegate] toggleLeftDrawer:self animated:YES];
     }
     else if (indexPath.row == CellIndexTypeLogout) {
         [self logOutAction];
+        //we redirect them to home
+        destinationNavController = [[AppDelegate globalDelegate].controllersDictionary objectForKey:kHomeNavControllerKey];
+        [[[AppDelegate globalDelegate] drawerViewController] setCenterViewController:destinationNavController];
     }
-    
+    [[AppDelegate globalDelegate] toggleLeftDrawer:self animated:YES];
 }
 
 - (void)logOutAction{
     [[LoginManager sharedManager]logOut];
     [LoginManager setLoggedOut:YES];
     [DataParseManager sharedManager].records = nil;
-    [[AppDelegate globalDelegate] toggleLeftDrawer:self animated:YES];
+    
+    //this reloading is needed because without it, when we log out from home screen, old projects still show up on the tableview of login vc
+    UINavigationController *nav = [[AppDelegate globalDelegate].controllersDictionary objectForKey:kHomeNavControllerKey];
+    LoginViewController *lvc = (LoginViewController *) nav.topViewController;
+    [lvc reloadLocalCacheData];
 }
 
 - (void)didReceiveMemoryWarning {
