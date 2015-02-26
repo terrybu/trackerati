@@ -155,26 +155,26 @@ static NSString *CellIdentifier = @"Cell";
 
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    [tableView deselectRowAtIndexPath:indexPath animated:YES]; //this is to never let the gray cell background stay
+    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
     MCSwipeTableViewCell *cell = (MCSwipeTableViewCell*)[tableView cellForRowAtIndexPath:indexPath];
     
     Client *masterSelectedClient = [self.masterClientsArray objectAtIndex:indexPath.section];
     Project *masterSelectedProject = [masterSelectedClient projectAtIndex:indexPath.row];
     
-    if (cell.accessoryView != nil) {
-        //this is project/checkmark REMOVING logic
-        //if project already had a checkmark, then we get rid of project and delete it from firebase
-        cell.accessoryView = nil;
+    if ([self.setOfCurrentUserProjectNames containsObject:masterSelectedProject.projectName]) {
+        //this is pin REMOVING logic
         [self removeUserPinFromSelectedProject:masterSelectedClient project:masterSelectedProject];
-        UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"Removed Project" message:[NSString stringWithFormat:@"Project %@ was removed", masterSelectedProject.projectName] delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
-        [alertView show];
+        cell.accessoryView = nil;
+//        UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"Removed Project" message:[NSString stringWithFormat:@"%@ was unpinned from your projects", masterSelectedProject.projectName] delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+//        [alertView show];
         
         return;
     }
     else {
-        //this is project/checkmark ADDING logic
-        //if, in our local cache, we've never had the current user select this client name, then we save it on user defaults AND send to firebase
-        if (![self.currentUserClientsArray containsObject:masterSelectedProject]) {
+        //this is pin ADDING logic
+        //if, in our local cache, we've never had the current user pin this client name before, then we pin the whole client, and the project
+        if (![self.setOfCurrentUserClientNames containsObject:masterSelectedClient.clientName]) {
             Client *newClient = [[Client alloc]init];
             newClient.clientName = masterSelectedClient.clientName;
             [newClient.projects addObject: masterSelectedProject];
@@ -183,12 +183,11 @@ static NSString *CellIdentifier = @"Cell";
             [self.setOfCurrentUserProjectNames addObject:masterSelectedProject.projectName];
         }
         else {
-            //On the contrary, if we already had the current user select this client name for a project before, check to see if particular PROJECT was selected before too and is in local cache
-            Client *selectedCurrentUserClient = [self.currentUserClientsArray objectAtIndex:indexPath.section];
-            if (![selectedCurrentUserClient.projects containsObject:masterSelectedProject]) {
+            //On the contrary, if we already had the current user pin this client name for a project before, check to see if particular PROJECT was pinned
+            Client *selectedCurrentUserClient = [self findCorrespondingClientInCurrentUserClientList:masterSelectedClient];
+            if (![self.setOfCurrentUserProjectNames containsObject:masterSelectedProject.projectName]) {
                 //our client didn't have the particular project, then we add it to local cache AND send to Firebase
                 [selectedCurrentUserClient.projects addObject:masterSelectedProject];
-                [self.setOfCurrentUserClientNames addObject:selectedCurrentUserClient.clientName];
                 [self.setOfCurrentUserProjectNames addObject:masterSelectedProject.projectName];
             }
         }
@@ -199,24 +198,24 @@ static NSString *CellIdentifier = @"Cell";
     //2.19.2015 without refreshing data here, we have a bug that doesn't allow you to delete right after you add something
     //By hitting DataParseManager here, we can make sure data gets refreshed when we add, so delete works properly
     [[DataParseManager sharedManager] getAllDataFromFireBaseAfterLoginSuccess];
-    [self.tableView reloadData];
+//    [self.tableView reloadData];
 }
 
+
+
+#pragma mark Custom Logic For Pinning/Removing user from project based on Cell Selection
 - (void)cacheCurrentUserClients {
     NSData *currentUserClientListData = [NSKeyedArchiver archivedDataWithRootObject:self.currentUserClientsArray];
     [[NSUserDefaults standardUserDefaults] setObject:currentUserClientListData forKey:[HConstants kCurrentUserClientList]];
     [[NSUserDefaults standardUserDefaults]synchronize];
 }
 
-
-#pragma mark Custom Logic For Pinning/Removing user from project based on Cell Selection
-
 - (void) pinUserToProjectOnFireBase: (NSString *) client project: (NSString *) project{
     self.fireBase = [[Firebase alloc]initWithUrl:[NSString stringWithFormat:@"%@/Projects/%@/%@",[HConstants kFireBaseURL],client,project]];
     NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants kCurrentUser]];
     [[self.fireBase childByAutoId] setValue:@{@"name":username}];
-    UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"New Project" message:[NSString stringWithFormat:@"%@ Added",project] delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
-    [alertView show];
+//    UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"New Project" message:[NSString stringWithFormat:@"%@ Added",project] delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+//    [alertView show];
 }
 
 
@@ -227,7 +226,7 @@ static NSString *CellIdentifier = @"Cell";
         [client.projects removeObject:project];
         [self.setOfCurrentUserProjectNames removeObject:project.projectName];
     }
-    if ([client.projects count]== 0) {
+    if (client != nil && [client.projects count]== 0) {
         [self.currentUserClientsArray removeObject:client];
         [self.setOfCurrentUserClientNames removeObject:client.clientName];
     }

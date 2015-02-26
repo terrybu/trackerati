@@ -151,7 +151,7 @@ static NSString *CellIdentifier = @"Cell";
 
 - (void)setUpPullToRefreshMessageLabel {
     UILabel *messageLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)];
-    messageLabel.text = @"Pull to refresh or log back in";
+    messageLabel.text = @"Pull down to refresh or log back in";
     messageLabel.textColor = [UIColor blackColor];
     messageLabel.numberOfLines = 0;
     messageLabel.textAlignment = NSTextAlignmentCenter;
