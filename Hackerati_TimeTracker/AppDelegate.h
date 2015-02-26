@@ -13,7 +13,7 @@
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
-@property (strong, nonatomic) LoginViewController *logInViewController;
+@property (strong, nonatomic) LoginViewController *loginViewController;
 @property (strong, nonatomic) UINavigationController *naviController;
 
 @property (nonatomic, strong) JVFloatingDrawerViewController *drawerViewController;

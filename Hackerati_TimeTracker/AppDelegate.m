@@ -34,10 +34,10 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appDelegatestartLoginProcess) name:kStartLoginProcessNotification object:nil];
     [LoginManager setLoggedOut:YES];
 
-    self.logInViewController = [[LoginViewController alloc]initWithNibName:@"LoginViewController" bundle:nil];
+    self.loginViewController = [[LoginViewController alloc]initWithNibName:@"LoginViewController" bundle:nil];
     
     [[LoginManager sharedManager] manuallySetDelegate:[DataParseManager sharedManager]];
-    [[DataParseManager sharedManager] manuallySetDelegate:self.logInViewController];
+    [[DataParseManager sharedManager] manuallySetDelegate:self.loginViewController];
     [self appDelegatestartLoginProcess];
     
     self.window = [[UIWindow alloc]initWithFrame:[UIScreen mainScreen].bounds];

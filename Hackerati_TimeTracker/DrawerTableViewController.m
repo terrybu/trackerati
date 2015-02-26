@@ -88,24 +88,24 @@ static const CGFloat kJVTableViewTopInset = 80.0;
     if(indexPath.row == CellIndexTypeHome) {
         destinationNavController = [[AppDelegate globalDelegate].controllersDictionary objectForKey:kHomeNavControllerKey];
         [[[AppDelegate globalDelegate] drawerViewController] setCenterViewController:destinationNavController];
+        [[AppDelegate globalDelegate] toggleLeftDrawer:self animated:YES];
     }
     else if (indexPath.row == CellIndexTypeHistory) {
         destinationNavController = [[AppDelegate globalDelegate].controllersDictionary objectForKey:kHistoryNavControllerKey];
         [[[AppDelegate globalDelegate] drawerViewController] setCenterViewController:destinationNavController];
+        [[AppDelegate globalDelegate] toggleLeftDrawer:self animated:YES];
     }
     else if (indexPath.row == CellIndexTypeLogout) {
         [self logOutAction];
     }
     
-    [[AppDelegate globalDelegate] toggleLeftDrawer:self animated:YES];
-
-    
 }
 
 - (void)logOutAction{
-    [[NSNotificationCenter defaultCenter] postNotificationName:kStartLogOutProcessNotification object:nil];
+    [[LoginManager sharedManager]logOut];
     [LoginManager setLoggedOut:YES];
     [DataParseManager sharedManager].records = nil;
+    [[AppDelegate globalDelegate] toggleLeftDrawer:self animated:YES];
 }
 
 - (void)didReceiveMemoryWarning {

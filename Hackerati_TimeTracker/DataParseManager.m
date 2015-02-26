@@ -57,7 +57,7 @@
                     [[NSUserDefaults standardUserDefaults]synchronize];
                     [self saveMasterClientListInUserDefaults:rawMasterClientList];
                     [self saveCurrentUserClientListInUserDefaults:rawMasterClientList];
-                
+                    
                     if ([self.delegate respondsToSelector:@selector(loadData)]) {
                         dispatch_async(dispatch_get_main_queue(), ^{
                             [self.delegate loadData];

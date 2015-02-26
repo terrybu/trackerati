@@ -76,7 +76,7 @@ static NSString *CellIdentifier = @"Cell";
     // Do any additional setup after loading the view from its nib.
     self.title = @"Your Projects";
     [self setUpNavbarButtonItems];
-
+    
     [self configureTableView];
     [self setUpRefreshControl];
     [self setUpPullToRefreshMessageLabel];
@@ -85,7 +85,6 @@ static NSString *CellIdentifier = @"Cell";
 
 
 - (void)viewWillLayoutSubviews{
-    
     [super viewWillLayoutSubviews];
     [self createFormViewForSlideOutEffectOnSwipe];
     
@@ -95,8 +94,14 @@ static NSString *CellIdentifier = @"Cell";
 
 -(void) viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    
-    [self loadData];
+    [self reloadLocalCacheData];
+}
+
+- (void) reloadLocalCacheData {
+    NSData *data = [[NSUserDefaults standardUserDefaults]objectForKey:[HConstants kCurrentUserClientList]];
+    self.currentUserClientsArray = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+    [self.refreshControl endRefreshing];
+    [self.tableView reloadData];
 }
 
 
@@ -122,6 +127,26 @@ static NSString *CellIdentifier = @"Cell";
                             action:@selector(refreshControlAction)
                   forControlEvents:UIControlEventValueChanged];
     [self.tableView addSubview:self.refreshControl];
+}
+
+-(void)refreshControlAction{
+    Reachability* curReach = [Reachability reachabilityForInternetConnection];
+    NetworkStatus internetStatus = [curReach currentReachabilityStatus];
+    if (internetStatus != NotReachable) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [[FireBaseManager connectivityURLsharedFireBase] observeEventType:FEventTypeValue withBlock:^(FDataSnapshot *snapshot){
+                if([snapshot.value boolValue] && [[NSUserDefaults standardUserDefaults]objectForKey:[HConstants kCurrentUser]]) {
+                    [[DataParseManager sharedManager] getAllDataFromFireBaseAfterLoginSuccess];
+                } else {
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kStartLoginProcessNotification object:nil];
+                }
+            }];
+        });
+    } else {
+        [self loginUnsuccessful];
+    }
+    [self.refreshControl endRefreshing];
+    
 }
 
 - (void)setUpPullToRefreshMessageLabel {
@@ -254,27 +279,6 @@ static NSString *CellIdentifier = @"Cell";
     [self.view addSubview:self.formView];
 }
 
--(void)refreshControlAction{
-    
-    Reachability* curReach = [Reachability reachabilityForInternetConnection];
-    NetworkStatus internetStatus = [curReach currentReachabilityStatus];
-    
-    if (internetStatus != NotReachable) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [[FireBaseManager connectivityURLsharedFireBase] observeEventType:FEventTypeValue withBlock:^(FDataSnapshot *snapshot){
-                if([snapshot.value boolValue] && [[NSUserDefaults standardUserDefaults]objectForKey:[HConstants kCurrentUser]]) {
-                    [[DataParseManager sharedManager] getAllDataFromFireBaseAfterLoginSuccess];
-                } else {
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kStartLoginProcessNotification object:nil];
-                }
-            }];
-        });
-    } else {
-        [self loginUnsuccessful];
-    }
-    
-}
-
 -(void)sendForm{
     NSData *data = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants kSanitizedCurrentUserRecords]];
     self.recordsHistoryDictionary = [NSKeyedUnarchiver unarchiveObjectWithData:data];
@@ -334,7 +338,7 @@ static NSString *CellIdentifier = @"Cell";
 #pragma mark - Data Parser Delegate Methods
 - (void) loginUnsuccessful{
     dispatch_async(dispatch_get_main_queue(), ^{
-        [self loadData];
+        [self reloadLocalCacheData];
         [self.refreshControl endRefreshing];
         UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"Error" message:@"Could not login. Please try later" delegate:self cancelButtonTitle:@"cancel" otherButtonTitles: nil];
         [alertView show];
@@ -342,12 +346,7 @@ static NSString *CellIdentifier = @"Cell";
 }
 
 -(void) loadData{
-    dispatch_async(dispatch_get_main_queue(), ^{
-        NSData *data = [[NSUserDefaults standardUserDefaults]objectForKey:[HConstants kCurrentUserClientList]];        
-        self.currentUserClientsArray = [NSKeyedUnarchiver unarchiveObjectWithData:data];
-        [self.refreshControl endRefreshing];
-        [self.tableView reloadData];
-    });
+    [self reloadLocalCacheData];
 }
 
 - (void) userRecordsDataReceived {
@@ -450,7 +449,7 @@ static NSString *CellIdentifier = @"Cell";
         //Swipe Left To Remove User From Selected Project
         [self removeUserFromSelectedProject: client project:project];
     }];
-
+    
     cell.textLabel.text = project.projectName;
     cell.project = project.projectName;
     cell.client = client.clientName;
