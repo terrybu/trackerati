@@ -97,8 +97,8 @@
 - (void)encodeWithCoder:(NSCoder *)aCoder{
     [aCoder encodeObject:self.clientName forKey:@"clientName"];
     [aCoder encodeObject:self.projects forKey:@"projects"];
-    
 }
+
 - (id)initWithCoder:(NSCoder *)aDecoder{
     NSString* clientName = [aDecoder decodeObjectForKey:@"clientName"];
     NSMutableArray* tProjects = [aDecoder decodeObjectForKey:@"projects"];

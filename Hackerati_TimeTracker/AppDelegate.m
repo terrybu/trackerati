@@ -10,12 +10,13 @@
 #import <GooglePlus/GooglePlus.h>
 #import "LoginManager.h"
 #import "DataParseManager.h"
-#import "WeeklyNotificationManager.h"
+#import "DailyNotificationManager.h"
 #import <HockeySDK/HockeySDK.h>
 #import "FireBaseManager.h"
 #import "HConstants.h"
 #import "HistoryViewController.h"
 #import "JVFloatingDrawerSpringAnimator.h"
+#import "SettingsViewController.h"
 
 #define SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(v) ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedAscending)
 
@@ -34,7 +35,6 @@
     [LoginManager setLoggedOut:YES];
 
     self.loginViewController = [[LoginViewController alloc]initWithNibName:@"LoginViewController" bundle:nil];
-    
     [[LoginManager sharedManager] manuallySetDelegate:[DataParseManager sharedManager]];
     [[DataParseManager sharedManager] manuallySetDelegate:self.loginViewController];
     [self appDelegatestartLoginProcess];
@@ -67,8 +67,7 @@
         [[UIApplication sharedApplication] registerForRemoteNotificationTypes:
          (UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert)];
     }
-    [WeeklyNotificationManager sharedManager];
-    
+    [DailyNotificationManager sharedManager];
 }
 
 - (BOOL)application: (UIApplication *)application
@@ -100,11 +99,13 @@
     
     UINavigationController *loginHomeViewNavController = [[UINavigationController alloc]initWithRootViewController:[[LoginViewController alloc]initWithNibName:@"LoginViewController" bundle:nil]];
     UINavigationController *historyViewNavController = [[UINavigationController alloc]initWithRootViewController:[[HistoryViewController alloc]initWithNibName:@"HistoryViewController" bundle:nil]];
+    UINavigationController *settingsViewNavcontroller = [[UINavigationController alloc]initWithRootViewController:[[SettingsViewController alloc]initWithNibName:@"SettingsViewController" bundle:nil]];
     
     //could have used an array here but this data structure is needed to bounce back and forth freely when the left drawer table vc is selected and we gotta jump between these controllers. Dictionary seemed fine.
     self.controllersDictionary = [[NSMutableDictionary alloc]init];
     [self.controllersDictionary setObject:loginHomeViewNavController forKey:kHomeNavControllerKey];
     [self.controllersDictionary setObject:historyViewNavController forKey:kHistoryNavControllerKey];
+    [self.controllersDictionary setObject:settingsViewNavcontroller forKey:kSettingsNavControllerKey];
     
     self.drawerViewController.centerViewController = loginHomeViewNavController;
     self.drawerViewController.leftViewController = [[DrawerTableViewController alloc]initWithNibName:@"DrawerTableViewController" bundle:nil];

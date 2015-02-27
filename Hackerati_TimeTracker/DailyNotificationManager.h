@@ -1,5 +1,5 @@
 //
-//  WeeklyNotificationManager.h
+//  DailyNotificationManager.h
 //  trackerati-ios
 //
 //  Created by Ethan on 1/8/15.
@@ -9,8 +9,11 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
-@interface WeeklyNotificationManager : NSObject
+@interface DailyNotificationManager : NSObject
 
-+ (WeeklyNotificationManager*)sharedManager;
++ (DailyNotificationManager*)sharedManager;
+
+@property (nonatomic, strong) UILocalNotification *localNotif;
+@property (nonatomic, strong) NSDateComponents *dateComponents;
 
 @end

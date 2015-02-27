@@ -47,7 +47,7 @@
 		CE07C0AD1A5D771500A3B961 /* THDatePickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE07C0A81A5D771500A3B961 /* THDatePickerViewController.xib */; };
 		CE07C0B11A5DA83800A3B961 /* PinProjectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE07C0AF1A5DA83800A3B961 /* PinProjectViewController.m */; };
 		CE07C0B21A5DA83800A3B961 /* PinProjectViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE07C0B01A5DA83800A3B961 /* PinProjectViewController.xib */; };
-		CE07C0B51A5EBFDD00A3B961 /* WeeklyNotificationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CE07C0B41A5EBFDD00A3B961 /* WeeklyNotificationManager.m */; };
+		CE07C0B51A5EBFDD00A3B961 /* DailyNotificationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CE07C0B41A5EBFDD00A3B961 /* DailyNotificationManager.m */; };
 		CE07C0B81A5ED6FB00A3B961 /* LastSavedManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CE07C0B71A5ED6FB00A3B961 /* LastSavedManager.m */; };
 		CE07C0BB1A5F29AF00A3B961 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE07C0BA1A5F29AF00A3B961 /* MobileCoreServices.framework */; };
 		CE07C0BD1A5F29B700A3B961 /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE07C0BC1A5F29B700A3B961 /* QuickLook.framework */; };
@@ -70,6 +70,8 @@
 		CED58C281A5ADAB3001C343B /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CED58C271A5ADAB3001C343B /* Images.xcassets */; };
 		CED58C371A5ADAB3001C343B /* Hackerati_TimeTrackerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CED58C361A5ADAB3001C343B /* Hackerati_TimeTrackerTests.m */; };
 		D937CB6F1AA0D2C9007B8297 /* GMDCircleLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = D937CB6E1AA0D2C9007B8297 /* GMDCircleLoader.m */; };
+		D937CB741AA0F58E007B8297 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D937CB721AA0F58E007B8297 /* SettingsViewController.m */; };
+		D937CB751AA0F58E007B8297 /* SettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D937CB731AA0F58E007B8297 /* SettingsViewController.xib */; };
 		D944F2BE1A96A9CC0046A91B /* AddClientProjectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D944F2BC1A96A9CC0046A91B /* AddClientProjectViewController.m */; };
 		D944F2BF1A96A9CC0046A91B /* AddClientProjectViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D944F2BD1A96A9CC0046A91B /* AddClientProjectViewController.xib */; };
 		D9CA83AD1A9F99B5009B6424 /* DrawerCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D9CA83A81A9F99B5009B6424 /* DrawerCell.m */; };
@@ -141,8 +143,8 @@
 		CE07C0AE1A5DA83800A3B961 /* PinProjectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PinProjectViewController.h; sourceTree = "<group>"; };
 		CE07C0AF1A5DA83800A3B961 /* PinProjectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PinProjectViewController.m; sourceTree = "<group>"; };
 		CE07C0B01A5DA83800A3B961 /* PinProjectViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PinProjectViewController.xib; sourceTree = "<group>"; };
-		CE07C0B31A5EBFDD00A3B961 /* WeeklyNotificationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WeeklyNotificationManager.h; sourceTree = "<group>"; };
-		CE07C0B41A5EBFDD00A3B961 /* WeeklyNotificationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WeeklyNotificationManager.m; sourceTree = "<group>"; };
+		CE07C0B31A5EBFDD00A3B961 /* DailyNotificationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DailyNotificationManager.h; sourceTree = "<group>"; };
+		CE07C0B41A5EBFDD00A3B961 /* DailyNotificationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DailyNotificationManager.m; sourceTree = "<group>"; };
 		CE07C0B61A5ED6FA00A3B961 /* LastSavedManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LastSavedManager.h; sourceTree = "<group>"; };
 		CE07C0B71A5ED6FB00A3B961 /* LastSavedManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LastSavedManager.m; sourceTree = "<group>"; };
 		CE07C0BA1A5F29AF00A3B961 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
@@ -184,6 +186,9 @@
 		D7FA9458296C53CD81653168 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		D937CB6D1AA0D2C9007B8297 /* GMDCircleLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GMDCircleLoader.h; path = Hackerati_TimeTracker/GMDCircleLoader/GMDCircleLoader.h; sourceTree = "<group>"; };
 		D937CB6E1AA0D2C9007B8297 /* GMDCircleLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GMDCircleLoader.m; path = Hackerati_TimeTracker/GMDCircleLoader/GMDCircleLoader.m; sourceTree = "<group>"; };
+		D937CB711AA0F58E007B8297 /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
+		D937CB721AA0F58E007B8297 /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
+		D937CB731AA0F58E007B8297 /* SettingsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingsViewController.xib; sourceTree = "<group>"; };
 		D944F2BB1A96A9CC0046A91B /* AddClientProjectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddClientProjectViewController.h; sourceTree = "<group>"; };
 		D944F2BC1A96A9CC0046A91B /* AddClientProjectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddClientProjectViewController.m; sourceTree = "<group>"; };
 		D944F2BD1A96A9CC0046A91B /* AddClientProjectViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddClientProjectViewController.xib; sourceTree = "<group>"; };
@@ -278,8 +283,8 @@
 				CE07C0641A5B966100A3B961 /* FireBaseManager.m */,
 				CE872C7C1A74C525002C9930 /* DataParseManager.h */,
 				CE872C7D1A74C525002C9930 /* DataParseManager.m */,
-				CE07C0B31A5EBFDD00A3B961 /* WeeklyNotificationManager.h */,
-				CE07C0B41A5EBFDD00A3B961 /* WeeklyNotificationManager.m */,
+				CE07C0B31A5EBFDD00A3B961 /* DailyNotificationManager.h */,
+				CE07C0B41A5EBFDD00A3B961 /* DailyNotificationManager.m */,
 				CE07C0B61A5ED6FA00A3B961 /* LastSavedManager.h */,
 				CE07C0B71A5ED6FB00A3B961 /* LastSavedManager.m */,
 			);
@@ -307,6 +312,9 @@
 				CE07C09C1A5CF22E00A3B961 /* RecordFormViewController.h */,
 				CE07C09D1A5CF22E00A3B961 /* RecordFormViewController.m */,
 				CE07C09E1A5CF22E00A3B961 /* RecordFormViewController.xib */,
+				D937CB711AA0F58E007B8297 /* SettingsViewController.h */,
+				D937CB721AA0F58E007B8297 /* SettingsViewController.m */,
+				D937CB731AA0F58E007B8297 /* SettingsViewController.xib */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -586,6 +594,7 @@
 				CE07C0A01A5CF22E00A3B961 /* RecordFormViewController.xib in Resources */,
 				CE07C0991A5C9A5700A3B961 /* Erase@2x.png in Resources */,
 				D9CA83AE1A9F99B5009B6424 /* DrawerCell.xib in Resources */,
+				D937CB751AA0F58E007B8297 /* SettingsViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -657,7 +666,7 @@
 				CE07C0551A5B132700A3B961 /* HConstants.m in Sources */,
 				D937CB6F1AA0D2C9007B8297 /* GMDCircleLoader.m in Sources */,
 				CED58C201A5ADAB3001C343B /* AppDelegate.m in Sources */,
-				CE07C0B51A5EBFDD00A3B961 /* WeeklyNotificationManager.m in Sources */,
+				CE07C0B51A5EBFDD00A3B961 /* DailyNotificationManager.m in Sources */,
 				CE07C0621A5B87D100A3B961 /* LoginManager.m in Sources */,
 				CE872C7B1A74BDDC002C9930 /* User.m in Sources */,
 				CE07C0AA1A5D771500A3B961 /* THDateDay.m in Sources */,
@@ -676,6 +685,7 @@
 				CE872C781A74BDCF002C9930 /* Project.m in Sources */,
 				CE07C0B81A5ED6FB00A3B961 /* LastSavedManager.m in Sources */,
 				CE872C751A74BD93002C9930 /* Client.m in Sources */,
+				D937CB741AA0F58E007B8297 /* SettingsViewController.m in Sources */,
 				D9CA83AD1A9F99B5009B6424 /* DrawerCell.m in Sources */,
 				CE3BC5691A6064C4006340F7 /* CustomMCSwipeTableViewCell.m in Sources */,
 			);

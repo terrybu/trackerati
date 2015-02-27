@@ -16,6 +16,7 @@
 typedef NS_ENUM(NSInteger, CellIndexType) {
     CellIndexTypeHome,
     CellIndexTypeHistory,
+    CellIndexTypeSettings,
     CellIndexTypeLogout
 };
 
@@ -47,7 +48,7 @@ static const CGFloat kJVTableViewTopInset = 80.0;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 3;
+    return 4;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -70,6 +71,11 @@ static const CGFloat kJVTableViewTopInset = 80.0;
             cell.iconImageView.image = [[UIImage imageNamed:@"IconCalendar"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
             break;
         }
+        case CellIndexTypeSettings: {
+            cell.titleLabel.text = @"Settings";
+            cell.iconImageView.image = [[UIImage imageNamed:@"IconSettings"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+            break;
+        }
         case CellIndexTypeLogout: {
             cell.titleLabel.text = @"Log Out";
             cell.iconImageView.image = [[UIImage imageNamed:@"IconLogoutPerson"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
@@ -84,21 +90,29 @@ static const CGFloat kJVTableViewTopInset = 80.0;
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     UINavigationController *destinationNavController = nil;
-    
-    if(indexPath.row == CellIndexTypeHome) {
-        destinationNavController = [[AppDelegate globalDelegate].controllersDictionary objectForKey:kHomeNavControllerKey];
-        [[[AppDelegate globalDelegate] drawerViewController] setCenterViewController:destinationNavController];
+    switch (indexPath.row) {
+        case CellIndexTypeHome:
+            destinationNavController = [[AppDelegate globalDelegate].controllersDictionary objectForKey:kHomeNavControllerKey];
+            [[[AppDelegate globalDelegate] drawerViewController] setCenterViewController:destinationNavController];
+            break;
+        case CellIndexTypeHistory:
+            destinationNavController = [[AppDelegate globalDelegate].controllersDictionary objectForKey:kHistoryNavControllerKey];
+            [[[AppDelegate globalDelegate] drawerViewController] setCenterViewController:destinationNavController];
+            break;
+        case CellIndexTypeSettings:
+            destinationNavController = [[AppDelegate globalDelegate].controllersDictionary objectForKey:kSettingsNavControllerKey];
+            [[[AppDelegate globalDelegate] drawerViewController] setCenterViewController:destinationNavController];
+            break;
+        case CellIndexTypeLogout:
+            [self logOutAction];
+            //we redirect them to home
+            destinationNavController = [[AppDelegate globalDelegate].controllersDictionary objectForKey:kHomeNavControllerKey];
+            [[[AppDelegate globalDelegate] drawerViewController] setCenterViewController:destinationNavController];
+            break;
+        default:
+            break;
     }
-    else if (indexPath.row == CellIndexTypeHistory) {
-        destinationNavController = [[AppDelegate globalDelegate].controllersDictionary objectForKey:kHistoryNavControllerKey];
-        [[[AppDelegate globalDelegate] drawerViewController] setCenterViewController:destinationNavController];
-    }
-    else if (indexPath.row == CellIndexTypeLogout) {
-        [self logOutAction];
-        //we redirect them to home
-        destinationNavController = [[AppDelegate globalDelegate].controllersDictionary objectForKey:kHomeNavControllerKey];
-        [[[AppDelegate globalDelegate] drawerViewController] setCenterViewController:destinationNavController];
-    }
+
     [[AppDelegate globalDelegate] toggleLeftDrawer:self animated:YES];
 }
 

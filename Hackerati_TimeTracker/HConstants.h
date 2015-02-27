@@ -13,6 +13,8 @@ extern NSString * const kCellReuseIdentifier;
 extern NSString * const kCellNibName;
 extern NSString * const kHomeNavControllerKey;
 extern NSString * const kHistoryNavControllerKey;
+extern NSString * const kSettingsNavControllerKey;
+extern NSString * const kNotificationTimeSettings;
 
 @interface HConstants : NSObject
 

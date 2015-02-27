@@ -90,7 +90,7 @@ static NSString *CellIdentifier = @"Cell";
 }
 
 - (void) removeMessageLabelandRunLoader {
-    self.tableView.backgroundView = nil;
+    self.tableView.backgroundView.hidden = YES;
     [GMDCircleLoader setOnView:self.view withTitle:@"Loading" animated:YES];
 }
 

@@ -7,6 +7,8 @@
 //
 
 #import "SettingsViewController.h"
+#import "HConstants.h"
+#import "AppDelegate.h"
 
 @interface SettingsViewController ()
 
@@ -17,6 +19,16 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    
+    self.title = @"Settings";
+    
+    UIImage *drawerButtonImage = [UIImage imageNamed:kIconDrawer];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:drawerButtonImage style:UIBarButtonItemStylePlain target:self action:@selector(actionToggleLeftDrawer)];
+}
+
+
+- (void)actionToggleLeftDrawer {
+    [[AppDelegate globalDelegate] toggleLeftDrawer:self animated:YES];
 }
 
 - (void)didReceiveMemoryWarning {

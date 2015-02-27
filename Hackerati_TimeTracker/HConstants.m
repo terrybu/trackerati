@@ -13,6 +13,7 @@ NSString * const kIconDrawer = @"IconDrawer";
 NSString * const kCellReuseIdentifier = @"DrawerCell";
 NSString * const kHomeNavControllerKey = @"HomeNav";
 NSString * const kHistoryNavControllerKey = @"HistoryNav";
+NSString * const kSettingsNavControllerKey = @"SettingsViewController";
 NSString * const kCellNibName = @"DrawerCell";
 
 //For FireBase
@@ -36,6 +37,10 @@ static NSString * const kHour = @"hour";
 static NSString * const kComment = @"comment";
 static NSString * const kStatus = @"status";
 static NSString * const kType = @"type";
+
+//For Daily Notifications
+NSString * const kNotificationTimeSettings = @"DailyNotificationTime";
+
 
 @implementation HConstants
 
