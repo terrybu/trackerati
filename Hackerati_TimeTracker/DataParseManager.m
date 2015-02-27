@@ -67,28 +67,20 @@
                     //Completion Notification
                     [[NSNotificationCenter defaultCenter] postNotificationName:@"clientsProjectsSynched"
                                                                         object:nil];
-                    if ([self.delegate respondsToSelector:@selector(loadData)]) {
-                        dispatch_async(dispatch_get_main_queue(), ^{
-                            [self.delegate loadData];
-                            DrawerTableViewController *dtvc = (DrawerTableViewController *) [AppDelegate globalDelegate].drawerViewController.leftViewController;
-                            [dtvc loginRefresh];
-                            //this makes sure that when you login, LoginViewController updates its tableview with firebase data ... with the implementation of DrawerTableViewController, there was a problem with [self.delegate loadData] not doing the job
-                        });
-                    }
                 }
                 else {
                     [[NSUserDefaults standardUserDefaults] removeObjectForKey:[HConstants kRawMasterClientList]];
                     [[NSUserDefaults standardUserDefaults] removeObjectForKey:[HConstants kMasterClientList]];
                     [[NSUserDefaults standardUserDefaults] removeObjectForKey:[HConstants kCurrentUserClientList]];
                     [[NSUserDefaults standardUserDefaults]synchronize];
-                    
-                    if ([self.delegate respondsToSelector:@selector(loadData)]) {
-                        dispatch_async(dispatch_get_main_queue(), ^{
-                            [self.delegate loadData];
-                            DrawerTableViewController *dtvc = (DrawerTableViewController *) [AppDelegate globalDelegate].drawerViewController.leftViewController;
-                            [dtvc loginRefresh];
-                        });
-                    }
+                }
+                if ([self.delegate respondsToSelector:@selector(loadData)]) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [self.delegate loadData];
+                        DrawerTableViewController *dtvc = (DrawerTableViewController *) [AppDelegate globalDelegate].drawerViewController.leftViewController;
+                        [dtvc loginRefresh];
+                        //this makes sure that when you login, LoginViewController updates its tableview with firebase data ... with the implementation of DrawerTableViewController, there was a problem with [self.delegate loadData] not doing the job
+                    });
                 }
             });
         }];
@@ -144,14 +136,12 @@
                     
                     NSData *currentUserRecordsData = [NSKeyedArchiver archivedDataWithRootObject:sanitizedCurrentUserRecords];
                     [[NSUserDefaults standardUserDefaults] setObject:currentUserRecordsData forKey:[HConstants kSanitizedCurrentUserRecords]];
-                    [[NSUserDefaults standardUserDefaults] synchronize];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kStartGetUserRecordsProcessNotification object:nil];
                 }
                 else {
                     [[NSUserDefaults standardUserDefaults] removeObjectForKey:[HConstants kSanitizedCurrentUserRecords]];
-                    [[NSUserDefaults standardUserDefaults]synchronize];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kStartGetUserRecordsProcessNotification object:nil];
                 }
+                [[NSUserDefaults standardUserDefaults] synchronize];
+                [[NSNotificationCenter defaultCenter] postNotificationName:kStartGetUserRecordsProcessNotification object:nil];
             });
             [self.delegate userRecordsDataReceived];
         }];
