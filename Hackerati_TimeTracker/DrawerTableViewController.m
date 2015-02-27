@@ -107,7 +107,7 @@ static const CGFloat kJVTableViewTopInset = 80.0;
     [LoginManager setLoggedOut:YES];
     [DataParseManager sharedManager].records = nil;
     
-    //this reloading is needed because without it, when we log out from home screen, old projects still show up on the tableview of home screen
+    //this reloading is needed because without it, when we log out from home screen, old projects still show up on the tableview of login View Controller
     [self loginRefresh];
 }
 

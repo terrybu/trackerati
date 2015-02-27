@@ -16,7 +16,6 @@
 #import "HConstants.h"
 #import "HistoryViewController.h"
 #import "JVFloatingDrawerSpringAnimator.h"
-#import "DrawerTableViewController.h"
 
 #define SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(v) ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedAscending)
 
@@ -118,6 +117,10 @@
     animator.animationDelay = 0;
     animator.initialSpringVelocity = 10;
     animator.springDamping = 1.8;
+}
+
+- (DrawerTableViewController *) drawerTableViewController {
+    return (DrawerTableViewController *) self.drawerViewController.leftViewController;
 }
 
 

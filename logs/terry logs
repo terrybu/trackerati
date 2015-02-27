@@ -1,11 +1,19 @@
 
 
-2.24.2015 Tuesday
-By Terry
 
+2.27.2015 Friday
+After implementing JVFloatingDrawer, a strange but happens when you are trying to reload tableview data from login view controller and it doesn’t let you do that, so data never gets refreshed.
+
+Instead, when you talk to the DrawerTableViewController and use our global delegate system to access the Login View Controller, we can circumvent this problem and refresh data properly in the login view controller.
+
+Does that mean our DataParseManager delegate should be our DrawerTableViewController and not the LoginViewController as original? Slightly confusing, but might not need complete restructure until we find more bugs around this. Right now, it seems to work fine. 
+
+
+
+2.24.2015 Tuesday
 Auto-Layout is not used across the app, but just in certain places for now, a lot of things are done in code.
 
-Screen compability across devices mostly seem fine, except for iPhone 6 Plus on the simulator. Screen gets horribly cut off in the simulator. This might be a simulator error, and might not be a problem on a real physical device.
+Screen compatibility across devices mostly seem fine, except for iPhone 6 Plus on the simulator. Screen gets horribly cut off in the simulator. This might be a simulator error, and might not be a problem on a real physical device.
 
 
 

@@ -71,7 +71,8 @@
                         dispatch_async(dispatch_get_main_queue(), ^{
                             [self.delegate loadData];
                             DrawerTableViewController *dtvc = (DrawerTableViewController *) [AppDelegate globalDelegate].drawerViewController.leftViewController;
-                            [dtvc loginRefresh]; //this makes sure that when you login, LoginViewController updates its tableview with firebase data
+                            [dtvc loginRefresh];
+                            //this makes sure that when you login, LoginViewController updates its tableview with firebase data ... with the implementation of DrawerTableViewController, there was a problem with [self.delegate loadData] not doing the job
                         });
                     }
                 }
@@ -270,6 +271,9 @@
 }
 
 -(void) loginUnsuccessful{
+    //Refer to logs - this is needed because direct tableview loading from login view controller doesn't refresh the data while communiating the drawerTableViewcontroller does work.
+    [[AppDelegate globalDelegate].drawerTableViewController logOutAction];
+
     if ([self.delegate respondsToSelector:@selector(loginUnsuccessful)]) {
         [self.delegate loginUnsuccessful];
     }

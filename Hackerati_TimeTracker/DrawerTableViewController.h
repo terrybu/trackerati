@@ -11,5 +11,6 @@
 @interface DrawerTableViewController : UITableViewController
 
 - (void) loginRefresh;
+- (void) logOutAction;
 
 @end

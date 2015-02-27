@@ -9,17 +9,18 @@
 #import <UIKit/UIKit.h>
 #import "LoginViewController.h"
 #import "JVFloatingDrawerViewController.h"
+#import "DrawerTableViewController.h"
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
 @property (strong, nonatomic) LoginViewController *loginViewController;
 @property (strong, nonatomic) UINavigationController *naviController;
-
 @property (nonatomic, strong) JVFloatingDrawerViewController *drawerViewController;
 @property (nonatomic, strong) NSMutableDictionary *controllersDictionary;
 
 + (AppDelegate *)globalDelegate;
+- (DrawerTableViewController *) drawerTableViewController;
 - (void)toggleLeftDrawer:(id)sender animated:(BOOL)animated;
 
 @end

@@ -108,7 +108,6 @@ static NSString *CellIdentifier = @"Cell";
 }
 
 
-
 #pragma mark Initial View Setup Related
 - (void)setUpNavbarButtonItems {
     UIImage *drawerButtonImage = [UIImage imageNamed:kIconDrawer];
@@ -147,6 +146,7 @@ static NSString *CellIdentifier = @"Cell";
         });
     }
     else {
+        //if not reachable
         [self loginUnsuccessful];
     }
 }
@@ -174,7 +174,7 @@ static NSString *CellIdentifier = @"Cell";
 
 
 
-#pragma mark Slide Out Form Effect
+#pragma mark SlideOut-Form Effect
 -(void)createFormViewForSlideOutEffectOnSwipe {
     
     self.formView = [[UIView alloc]initWithFrame:CGRectMake(-self.view.frame.size.width-30, 0, self.view.frame.size.width-20, 500)];
@@ -346,11 +346,8 @@ static NSString *CellIdentifier = @"Cell";
 }
 
 - (void) loginUnsuccessful{
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self reloadLocalCacheData];
-        UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"Error" message:@"Could not login. Please try later" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
-        [alertView show];
-    });
+    UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"Error" message:@"Could not login. Please try later" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+    [alertView show];
 }
 
 -(void) loadData{
@@ -366,36 +363,6 @@ static NSString *CellIdentifier = @"Cell";
     hvc.recordsHistoryDictionary = self.recordsHistoryDictionary;
 }
 
-
-#pragma mark - Slide Form Methods
--(void)slideForm{
-    self.formView.frame = CGRectMake(-self.view.frame.size.width-30, 0, self.view.frame.size.width-20, 500);
-    CGRect frame = self.view.bounds;
-    self.dynamicAnimator = [[UIDynamicAnimator alloc]initWithReferenceView:self.view];
-    UICollisionBehavior *collisionBehavior = [[UICollisionBehavior alloc] initWithItems:@[self.formView]];
-    [collisionBehavior setTranslatesReferenceBoundsIntoBoundaryWithInsets:UIEdgeInsetsMake(0, frame.size.width-10, 0, 0)];
-    [self.dynamicAnimator addBehavior:collisionBehavior];
-    
-    self.gravityBehavior = [[UIGravityBehavior alloc] initWithItems:@[self.formView]];
-    self.gravityBehavior.gravityDirection = CGVectorMake(1.0f, 0.0f);
-    [self.dynamicAnimator addBehavior:_gravityBehavior];
-    
-    self.navigationItem.leftBarButtonItem.enabled = NO;
-    self.navigationItem.rightBarButtonItem.enabled = NO;
-}
-
--(void)slideOutForm{
-    [self.dynamicAnimator removeBehavior:self.gravityBehavior];
-    self.snapBehavior = [[UISnapBehavior alloc]initWithItem:self.formView snapToPoint:CGPointMake(-self.view.frame.size.width-30, 0)];
-    [self.dynamicAnimator addBehavior:self.snapBehavior];
-    self.navigationItem.leftBarButtonItem.enabled = YES;
-    self.navigationItem.rightBarButtonItem.enabled = YES;
-}
-
--(void)cancelForm{
-    self.tableView.userInteractionEnabled = YES;
-    [self slideOutForm];
-}
 
 #pragma mark - Record Table Cell Delegate
 
@@ -425,17 +392,6 @@ static NSString *CellIdentifier = @"Cell";
     return client.clientName;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return 50.0f;
-}
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
-    return 40.0f;
-}
-
-- (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath{
-    return NO;
-}
-
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     Client *client = [self.currentUserClientsArray objectAtIndex:section];
     return [client numberOfProjects];
@@ -443,7 +399,7 @@ static NSString *CellIdentifier = @"Cell";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     CustomMCSwipeTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    cell.delegate =self;
+    cell.delegate = self;
     Client *client = [self.currentUserClientsArray objectAtIndex:indexPath.section];
     Project *project = [client projectAtIndex:indexPath.row];
     
@@ -463,6 +419,17 @@ static NSString *CellIdentifier = @"Cell";
     cell.client = client.clientName;
     cell.customButton.indexPath = indexPath;
     return cell;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return 50.0f;
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+    return 40.0f;
+}
+
+- (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath{
+    return NO;
 }
 
 -(void)removeUserFromSelectedProject: (Client *) client project: (Project *) project {
@@ -548,8 +515,34 @@ static NSString *CellIdentifier = @"Cell";
 
 
 
-- (void) endRefreshing {
-    [self.refreshControl endRefreshing];
+#pragma mark - Slide Form Methods
+-(void)slideForm{
+    self.formView.frame = CGRectMake(-self.view.frame.size.width-30, 0, self.view.frame.size.width-20, 500);
+    CGRect frame = self.view.bounds;
+    self.dynamicAnimator = [[UIDynamicAnimator alloc]initWithReferenceView:self.view];
+    UICollisionBehavior *collisionBehavior = [[UICollisionBehavior alloc] initWithItems:@[self.formView]];
+    [collisionBehavior setTranslatesReferenceBoundsIntoBoundaryWithInsets:UIEdgeInsetsMake(0, frame.size.width-10, 0, 0)];
+    [self.dynamicAnimator addBehavior:collisionBehavior];
+    
+    self.gravityBehavior = [[UIGravityBehavior alloc] initWithItems:@[self.formView]];
+    self.gravityBehavior.gravityDirection = CGVectorMake(1.0f, 0.0f);
+    [self.dynamicAnimator addBehavior:_gravityBehavior];
+    
+    self.navigationItem.leftBarButtonItem.enabled = NO;
+    self.navigationItem.rightBarButtonItem.enabled = NO;
+}
+
+-(void)slideOutForm{
+    [self.dynamicAnimator removeBehavior:self.gravityBehavior];
+    self.snapBehavior = [[UISnapBehavior alloc]initWithItem:self.formView snapToPoint:CGPointMake(-self.view.frame.size.width-30, 0)];
+    [self.dynamicAnimator addBehavior:self.snapBehavior];
+    self.navigationItem.leftBarButtonItem.enabled = YES;
+    self.navigationItem.rightBarButtonItem.enabled = YES;
+}
+
+-(void)cancelForm{
+    self.tableView.userInteractionEnabled = YES;
+    [self slideOutForm];
 }
 
 @end
