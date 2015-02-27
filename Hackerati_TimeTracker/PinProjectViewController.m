@@ -213,6 +213,7 @@ static NSString *CellIdentifier = @"Cell";
         [self pinUserToProjectOnFireBase: masterSelectedClient.clientName project:masterSelectedProject.projectName];
         cell.accessoryView =[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"CheckMark.png"]];
     }
+    [[DataParseManager sharedManager]getAllDataFromFireBase];
 }
 
 

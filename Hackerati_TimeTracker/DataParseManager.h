@@ -25,7 +25,7 @@
 @property (nonatomic, strong) Firebase *records;
 
 + (DataParseManager*) sharedManager;
-- (void) getAllDataFromFireBaseAfterLoginSuccess;
+- (void) getAllDataFromFireBase;
 - (void) getAllClientsAndProjectsDataFromFireBaseAndSynchronize;
 - (void) manuallySetDelegate:(id<DataParseManagerProtocol>)delegate;
 - (void) getUserRecords;

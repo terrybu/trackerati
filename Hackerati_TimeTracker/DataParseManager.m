@@ -43,7 +43,7 @@
 
 
 
-- (void) getAllDataFromFireBaseAfterLoginSuccess{
+- (void) getAllDataFromFireBase{
     //this is where all the main action of getting clients/projects from FireBase happens after login is successful
     //We convert them into Client, Project, User objects
     
@@ -63,7 +63,7 @@
                     
                     if ([self.delegate respondsToSelector:@selector(loadData)]) {
                         dispatch_async(dispatch_get_main_queue(), ^{
-//                            [self.delegate loadData];
+                            [self.delegate loadData];
                             DrawerTableViewController *dtvc = (DrawerTableViewController *) [AppDelegate globalDelegate].drawerViewController.leftViewController;
                             [dtvc loginRefresh];
                         });
@@ -77,7 +77,7 @@
                     
                     if ([self.delegate respondsToSelector:@selector(loadData)]) {
                         dispatch_async(dispatch_get_main_queue(), ^{
-//                            [self.delegate loadData];
+                            [self.delegate loadData];
                             DrawerTableViewController *dtvc = (DrawerTableViewController *) [AppDelegate globalDelegate].drawerViewController.leftViewController;
                             [dtvc loginRefresh];
                         });

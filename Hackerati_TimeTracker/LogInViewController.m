@@ -136,7 +136,7 @@ static NSString *CellIdentifier = @"Cell";
         dispatch_async(dispatch_get_main_queue(), ^{
             [[FireBaseManager connectivityURLsharedFireBase] observeEventType:FEventTypeValue withBlock:^(FDataSnapshot *snapshot){
                 if([snapshot.value boolValue] && [[NSUserDefaults standardUserDefaults]objectForKey:[HConstants kCurrentUser]]) {
-                    [[DataParseManager sharedManager] getAllDataFromFireBaseAfterLoginSuccess];
+                    [[DataParseManager sharedManager] getAllDataFromFireBase];
                 } else {
                     [[NSNotificationCenter defaultCenter] postNotificationName:kStartLoginProcessNotification object:nil];
                 }
@@ -482,11 +482,7 @@ static NSString *CellIdentifier = @"Cell";
         weakSelf.fireBase = [[Firebase alloc]initWithUrl:[NSString stringWithFormat:@"%@/Projects/%@/%@/%@",[HConstants kFireBaseURL],client.clientName, project.projectName, uniqueAddress]];
         [weakSelf.fireBase removeValue];
     }
-    
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [weakSelf.tableView reloadData];
-    });
-    
+    [self.tableView reloadData];
 }
 
 
