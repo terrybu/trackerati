@@ -11,6 +11,7 @@
                 <outlet property="notifLabel" destination="sFw-ov-OfB" id="Snj-dj-bAo"/>
                 <outlet property="notifSwitch" destination="LdC-xf-rRC" id="0y7-xg-jbg"/>
                 <outlet property="notificationsSwitchCell" destination="nFI-j3-kPZ" id="ZWi-Hh-LVc"/>
+                <outlet property="reminderExactTimeLabel" destination="F7x-Xe-M3S" id="rV4-48-cgi"/>
                 <outlet property="reminderLabel" destination="dGS-RB-Cg4" id="u2V-la-aEO"/>
                 <outlet property="reminderTimeCell" destination="ebP-8Q-YLC" id="10n-4A-PX7"/>
                 <outlet property="reminderTimePicker" destination="D4I-eT-s9T" id="cB5-as-x4g"/>
@@ -49,8 +50,8 @@
                     <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="LdC-xf-rRC">
                         <rect key="frame" x="258" y="6" width="51" height="31"/>
                     </switch>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Daily Reminders On" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sFw-ov-OfB">
-                        <rect key="frame" x="14" y="11" width="162" height="21"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Daily Reminders On" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sFw-ov-OfB">
+                        <rect key="frame" x="14" y="11" width="153" height="21"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
@@ -85,13 +86,13 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Reminder Time" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dGS-RB-Cg4">
-                        <rect key="frame" x="14" y="70" width="117" height="21"/>
+                        <rect key="frame" x="14" y="69" width="117" height="23"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="time" minuteInterval="30" translatesAutoresizingMaskIntoConstraints="NO" id="D4I-eT-s9T">
-                        <rect key="frame" x="142" y="0.0" width="178" height="160"/>
+                    <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="time" minuteInterval="5" translatesAutoresizingMaskIntoConstraints="NO" id="D4I-eT-s9T">
+                        <rect key="frame" x="142" y="-1" width="178" height="162"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="178" id="s4v-i8-2QE"/>
                         </constraints>
@@ -99,15 +100,28 @@
                             <!--2015-02-27 21:20:15 +0000-->
                         </date>
                     </datePicker>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="18:00" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="F7x-Xe-M3S">
+                        <rect key="frame" x="14" y="100" width="117" height="21"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="21" id="dIa-eQ-Zeg"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
+                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                 </subviews>
                 <constraints>
+                    <constraint firstItem="F7x-Xe-M3S" firstAttribute="trailing" secondItem="dGS-RB-Cg4" secondAttribute="trailing" id="7TL-4j-f0q"/>
+                    <constraint firstItem="F7x-Xe-M3S" firstAttribute="leading" secondItem="dGS-RB-Cg4" secondAttribute="leading" id="D9W-Fr-zHx"/>
+                    <constraint firstAttribute="bottomMargin" secondItem="F7x-Xe-M3S" secondAttribute="bottom" constant="32" id="M35-Ef-aKF"/>
                     <constraint firstItem="D4I-eT-s9T" firstAttribute="centerY" secondItem="dGS-RB-Cg4" secondAttribute="centerY" id="PJG-ub-o4c"/>
                     <constraint firstItem="dGS-RB-Cg4" firstAttribute="leading" secondItem="BpR-dW-rxZ" secondAttribute="leadingMargin" constant="6" id="oWe-rd-S98"/>
+                    <constraint firstItem="F7x-Xe-M3S" firstAttribute="top" secondItem="dGS-RB-Cg4" secondAttribute="bottom" constant="8" symbolic="YES" id="ovb-3W-bUu"/>
                     <constraint firstAttribute="trailing" secondItem="D4I-eT-s9T" secondAttribute="trailing" id="ugI-H0-jVI"/>
                     <constraint firstAttribute="centerY" secondItem="dGS-RB-Cg4" secondAttribute="centerY" id="wDw-As-jxl"/>
                 </constraints>
             </tableViewCellContentView>
-            <point key="canvasLocation" x="163" y="-141"/>
+            <point key="canvasLocation" x="163" y="-142"/>
         </tableViewCell>
     </objects>
 </document>

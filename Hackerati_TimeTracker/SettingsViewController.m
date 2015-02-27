@@ -9,6 +9,7 @@
 #import "SettingsViewController.h"
 #import "HConstants.h"
 #import "AppDelegate.h"
+#import "DailyNotificationManager.h"
 
 @interface SettingsViewController ()
 
@@ -29,10 +30,58 @@
     self.navigationItem.rightBarButtonItem = saveButton;
 }
 
+- (void) viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:YES];
+    
+    self.notifSwitch.on = [[NSUserDefaults standardUserDefaults] boolForKey:kRemindersOn];
+    if (self.notifSwitch.on) {
+        NSInteger hour = [[NSUserDefaults standardUserDefaults]integerForKey:kReminderHourSaved];
+        NSInteger mins = [[NSUserDefaults standardUserDefaults]integerForKey:kReminderMinutesSaved];
+        if (hour && mins) {
+            NSLog(@"%ld %ld", hour, mins);
+            NSCalendar *calendar = [NSCalendar currentCalendar];
+            NSDateComponents *components = [[NSDateComponents alloc]init];
+            [components setHour:hour];
+            [components setMinute:mins];
+            self.reminderTimePicker.date = [calendar dateFromComponents:components];
+            NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+            [formatter setDateFormat:@"hh:mm a"];
+            NSString *date = [formatter stringFromDate:self.reminderTimePicker.date];
+            self.reminderExactTimeLabel.text = [NSString stringWithFormat:@"Currently Set: %@", date];
+        }
+        else {
+            self.reminderExactTimeLabel.text = @"Currently Set: 06:00 PM";
+        }
+    }
+    else {
+        self.reminderExactTimeLabel.text = [NSString stringWithFormat:@"Currently Disabled"];
+    }
+}
+
 - (void) saveSettings {
     bool notificationSwitchIsOn = self.notifSwitch.on;
     NSDate *notificationTimeChosen = self.reminderTimePicker.date;
-    NSLog(@"%d %@", notificationSwitchIsOn, notificationTimeChosen.description);
+    NSCalendar *calendar = [NSCalendar currentCalendar];
+    NSDateComponents *components = [calendar components:(NSHourCalendarUnit | NSMinuteCalendarUnit) fromDate:notificationTimeChosen];
+    NSInteger hour = [components hour];
+    NSInteger minutes = [components minute];
+    
+    [[NSUserDefaults standardUserDefaults]setBool:notificationSwitchIsOn forKey:kRemindersOn];
+    if (notificationSwitchIsOn) {
+        [[NSUserDefaults standardUserDefaults]setInteger:hour forKey:kReminderHourSaved];
+        [[NSUserDefaults standardUserDefaults]setInteger:minutes forKey:kReminderMinutesSaved];
+        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+        [formatter setDateFormat:@"hh:mm a"];
+        NSString *date = [formatter stringFromDate:self.reminderTimePicker.date];
+        self.reminderExactTimeLabel.text = [NSString stringWithFormat:@"Currently Set: %@", date];
+    }
+    else {
+        self.reminderExactTimeLabel.text = [NSString stringWithFormat:@"Currently Disabled"];
+    }
+    
+    [[[UIAlertView alloc] initWithTitle:@"Saved" message:@"Your daily reminder settings have been saved" delegate:self cancelButtonTitle:nil otherButtonTitles:@"OK", nil] show];
+    
+    [[DailyNotificationManager sharedManager] refreshNotificationsSettings];
 }
 
 
@@ -89,17 +138,8 @@
     return cell;
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
-    
-    if (indexPath.row == 1) {
-        UIDatePicker *datePicker = [[UIDatePicker alloc]init];
-        datePicker.datePickerMode = UIDatePickerModeTime;
-        [datePicker setCenter:CGPointMake(150, 500)]; // place the pickerView outside the screen boundaries
-        [UIView beginAnimations:@"slideIn" context:nil];
-        [datePicker setCenter:CGPointMake(150, 250)];
-        [UIView commitAnimations];
-    }
+- (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath {
+    return NO;
 }
 
 

@@ -14,6 +14,7 @@
 + (DailyNotificationManager*)sharedManager;
 
 @property (nonatomic, strong) UILocalNotification *localNotif;
-@property (nonatomic, strong) NSDateComponents *dateComponents;
+
+- (void) refreshNotificationsSettings;
 
 @end

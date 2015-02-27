@@ -20,5 +20,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *reminderLabel;
 @property (weak, nonatomic) IBOutlet UIDatePicker *reminderTimePicker;
 
+@property (weak, nonatomic) IBOutlet UILabel *reminderExactTimeLabel;
 
 @end

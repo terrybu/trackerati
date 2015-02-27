@@ -14,7 +14,10 @@ extern NSString * const kCellNibName;
 extern NSString * const kHomeNavControllerKey;
 extern NSString * const kHistoryNavControllerKey;
 extern NSString * const kSettingsNavControllerKey;
-extern NSString * const kNotificationTimeSettings;
+extern NSString * const kRemindersOn;
+extern NSString * const kReminderHourSaved;
+extern NSString * const kReminderMinutesSaved;
+extern NSString * const kRanAppBeforeCheck;
 
 @interface HConstants : NSObject
 

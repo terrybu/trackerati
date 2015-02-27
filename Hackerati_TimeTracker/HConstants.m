@@ -38,9 +38,11 @@ static NSString * const kComment = @"comment";
 static NSString * const kStatus = @"status";
 static NSString * const kType = @"type";
 
-//For Daily Notifications
-NSString * const kNotificationTimeSettings = @"DailyNotificationTime";
-
+//For Daily Reminders
+NSString * const kRemindersOn = @"remindersOn";
+NSString * const kReminderHourSaved = @"reminderHourSaved";
+NSString * const kReminderMinutesSaved = @"reminderMinutesSaved";
+NSString * const kRanAppBeforeCheck = @"kRanAppBeforeCheck";
 
 @implementation HConstants
 
