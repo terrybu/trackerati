@@ -68,6 +68,7 @@
          (UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert)];
     }
     [WeeklyNotificationManager sharedManager];
+    
 }
 
 - (BOOL)application: (UIApplication *)application
