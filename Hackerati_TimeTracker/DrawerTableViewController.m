@@ -72,7 +72,7 @@ static const CGFloat kJVTableViewTopInset = 80.0;
         }
         case CellIndexTypeLogout: {
             cell.titleLabel.text = @"Log Out";
-            cell.iconImageView.image = [[UIImage imageNamed:@"IconSettings"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+            cell.iconImageView.image = [[UIImage imageNamed:@"IconLogoutPerson"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
             break;
         }
         default:
@@ -107,10 +107,8 @@ static const CGFloat kJVTableViewTopInset = 80.0;
     [LoginManager setLoggedOut:YES];
     [DataParseManager sharedManager].records = nil;
     
-    //this reloading is needed because without it, when we log out from home screen, old projects still show up on the tableview of login vc
-    UINavigationController *homeNav = [[AppDelegate globalDelegate].controllersDictionary objectForKey:kHomeNavControllerKey];
-    LoginViewController *lvc = (LoginViewController *) homeNav.viewControllers[0];
-    [lvc reloadLocalCacheData];
+    //this reloading is needed because without it, when we log out from home screen, old projects still show up on the tableview of home screen
+    [self loginRefresh];
 }
 
 - (void) loginRefresh {

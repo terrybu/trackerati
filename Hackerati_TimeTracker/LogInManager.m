@@ -73,9 +73,7 @@ static BOOL loggedOut = YES;
             NetworkStatus internetStatus = [curReach currentReachabilityStatus];
             if (internetStatus != NotReachable) {
                 if ([weakSelf.delegate respondsToSelector:@selector(loginUnsuccessful)]) {
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        [weakSelf.delegate loginUnsuccessful];
-                    });
+                    [weakSelf.delegate loginUnsuccessful];
                 }
             }
             
@@ -93,11 +91,11 @@ static BOOL loggedOut = YES;
                                                                
                                                            } else {
                                                                // User is now logged in!
-                                                               if ([weakSelf.delegate respondsToSelector:@selector(getAllDataFromFireBaseAfterLoginSuccess)]) {
+                                                               if ([weakSelf.delegate respondsToSelector:@selector(getAllDataFromFireBase)]) {
                                                                    [LoginManager setLoggedOut:NO];
                                                                    [[NSNotificationCenter defaultCenter] postNotificationName:@"loginSuccess" object:nil];
 
-                                                                   [weakSelf.delegate getAllDataFromFireBaseAfterLoginSuccess];
+                                                                   [weakSelf.delegate getAllDataFromFireBase];
                                                                }
                                                            }
                                                        }];
@@ -133,8 +131,9 @@ static BOOL loggedOut = YES;
         [defs removeObjectForKey:key];
     }
     [defs synchronize];
-    NSLog(@"login manager calling logout");
 }
+
+
 
 - (void)dealloc{
     [[NSNotificationCenter defaultCenter]removeObserver:self];

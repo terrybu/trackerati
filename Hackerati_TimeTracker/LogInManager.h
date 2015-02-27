@@ -15,7 +15,7 @@ static NSString *kStartGetUserRecordsProcessNotification = @"kStartGetUserRecord
 
 @protocol LoginManagerProtocol <NSObject>
 
--(void) getAllDataFromFireBaseAfterLoginSuccess;
+-(void) getAllDataFromFireBase;
 -(void) loginUnsuccessful;
 
 @end

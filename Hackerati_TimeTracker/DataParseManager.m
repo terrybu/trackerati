@@ -47,8 +47,11 @@
     //this is where all the main action of getting clients/projects from FireBase happens after login is successful
     //We convert them into Client, Project, User objects
     
-    //this is to let LoginViewController know in case we want to do some things on completion
-//    [self.delegate loginSuccessful];
+    [self getAllClientsAndProjectsDataFromFireBaseAndSynchronize];
+    [self getUserRecords];
+}
+
+- (void) getAllClientsAndProjectsDataFromFireBaseAndSynchronize {
 
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         // Get all existing clients and projects
@@ -61,11 +64,14 @@
                     [self saveMasterClientListInUserDefaults:rawMasterClientList];
                     [self saveCurrentUserClientListInUserDefaults:rawMasterClientList];
                     
+                    //Completion Notification
+                    [[NSNotificationCenter defaultCenter] postNotificationName:@"clientsProjectsSynched"
+                                                                        object:nil];
                     if ([self.delegate respondsToSelector:@selector(loadData)]) {
                         dispatch_async(dispatch_get_main_queue(), ^{
                             [self.delegate loadData];
                             DrawerTableViewController *dtvc = (DrawerTableViewController *) [AppDelegate globalDelegate].drawerViewController.leftViewController;
-                            [dtvc loginRefresh];
+                            [dtvc loginRefresh]; //this makes sure that when you login, LoginViewController updates its tableview with firebase data
                         });
                     }
                 }
@@ -85,24 +91,78 @@
                 }
             });
         }];
-        [self getUserRecords];
     });
 }
 
-- (void) getAllClientsAndProjectsDataFromFireBaseAndSynchronize {
-        // Get all existing clients and projects
-        [self.projects observeSingleEventOfType:FEventTypeValue withBlock:^(FDataSnapshot *snapshot) {
+- (void) getUserRecords{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+        
+        // Get last 50 records by date
+        [[[self.records queryOrderedByChild:[HConstants kDate]] queryLimitedToLast:50] observeEventType:FEventTypeValue withBlock:^(FDataSnapshot *snapshot) {
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
                 if (snapshot.value && [snapshot.value isKindOfClass:[NSDictionary class]]) {
-                    NSDictionary *rawMasterClientList = snapshot.value;
-                    [[NSUserDefaults standardUserDefaults] setObject:rawMasterClientList forKey:[HConstants kRawMasterClientList]];
-                    [[NSUserDefaults standardUserDefaults]synchronize];
-                    [self saveMasterClientListInUserDefaults:rawMasterClientList];
-                    [self saveCurrentUserClientListInUserDefaults:rawMasterClientList];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:@"clientsProjectsSynched"
-                                                                        object:nil];
+                    NSDictionary *records = snapshot.value;
+                    __block NSMutableDictionary *sanitizedCurrentUserRecords = [[NSMutableDictionary alloc]init];
+                    [records enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop){
+                        if ([obj isKindOfClass:[NSDictionary class]]) {
+                            Record *newRecord = [[Record alloc]init];
+                            newRecord.uniqueFireBaseIdentifier = (NSString*)key;
+                            if ([obj objectForKey:[HConstants kClient]]) {
+                                newRecord.clientName = (NSString*)[obj objectForKey:[HConstants kClient]];
+                            }
+                            if ([obj objectForKey:[HConstants kProject]]) {
+                                newRecord.projectName = (NSString*)[obj objectForKey:[HConstants kProject]];
+                            }
+                            if ([obj objectForKey:[HConstants kHour]]) {
+                                newRecord.hourOfTheService = (NSString*)[obj objectForKey:[HConstants kHour]];
+                            }
+                            if ([obj objectForKey:[HConstants kStatus]]) {
+                                newRecord.statusOfUser = (NSString*)[obj objectForKey:[HConstants kStatus]];
+                            }
+                            
+                            if ([obj objectForKey:[HConstants kType]]) {
+                                newRecord.typeOfService = (NSString*)[obj objectForKey:[HConstants kType]];
+                            }
+                            
+                            if ([obj objectForKey:[HConstants kComment]]) {
+                                newRecord.commentOnService = (NSString*)[obj objectForKey:[HConstants kComment]];
+                            }
+                            if ([obj objectForKey:[HConstants kDate]]) {
+                                newRecord.dateOfTheService = (NSString*)[obj objectForKey:[HConstants kDate]];
+                                if ([sanitizedCurrentUserRecords objectForKey:newRecord.dateOfTheService]) {
+                                    NSMutableArray *records = (NSMutableArray*)[sanitizedCurrentUserRecords objectForKey:newRecord.dateOfTheService];
+                                    [records addObject:newRecord];
+                                } else{
+                                    NSMutableArray *records = [[NSMutableArray alloc]init];
+                                    [records addObject:newRecord];
+                                    [sanitizedCurrentUserRecords setObject:records forKey:newRecord.dateOfTheService];
+                                }
+                            }
+                        }
+                    }];
+                    
+                    NSData *currentUserRecordsData = [NSKeyedArchiver archivedDataWithRootObject:sanitizedCurrentUserRecords];
+                    [[NSUserDefaults standardUserDefaults] setObject:currentUserRecordsData forKey:[HConstants kSanitizedCurrentUserRecords]];
+                    [[NSUserDefaults standardUserDefaults] synchronize];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kStartGetUserRecordsProcessNotification object:nil];
                 }
+                else {
+                    [[NSUserDefaults standardUserDefaults] removeObjectForKey:[HConstants kSanitizedCurrentUserRecords]];
+                    [[NSUserDefaults standardUserDefaults]synchronize];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kStartGetUserRecordsProcessNotification object:nil];
+                }
+            });
+            [self.delegate userRecordsDataReceived];
         }];
+    });
 }
+
+
+
+
+
+#pragma mark Refactored Methods - Custom Logic
+
 
 - (void) saveMasterClientListInUserDefaults: (NSDictionary *) rawMasterClientList {
     __block NSMutableArray *masterClientList = [[NSMutableArray alloc]init];
@@ -198,78 +258,16 @@
     return archivedArray;
 }
 
-- (void) getUserRecords{
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-        
-        // Get last 50 records by date
-        [[[self.records queryOrderedByChild:[HConstants kDate]] queryLimitedToLast:50] observeEventType:FEventTypeValue withBlock:^(FDataSnapshot *snapshot) {
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-                if (snapshot.value && [snapshot.value isKindOfClass:[NSDictionary class]]) {
-                    NSDictionary *records = snapshot.value;
-                    __block NSMutableDictionary *sanitizedCurrentUserRecords = [[NSMutableDictionary alloc]init];
-                    [records enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop){
-                        if ([obj isKindOfClass:[NSDictionary class]]) {
-                            Record *newRecord = [[Record alloc]init];
-                            newRecord.uniqueFireBaseIdentifier = (NSString*)key;
-                            if ([obj objectForKey:[HConstants kClient]]) {
-                                newRecord.clientName = (NSString*)[obj objectForKey:[HConstants kClient]];
-                            }
-                            if ([obj objectForKey:[HConstants kProject]]) {
-                                newRecord.projectName = (NSString*)[obj objectForKey:[HConstants kProject]];
-                            }
-                            if ([obj objectForKey:[HConstants kHour]]) {
-                                newRecord.hourOfTheService = (NSString*)[obj objectForKey:[HConstants kHour]];
-                            }
-                            if ([obj objectForKey:[HConstants kStatus]]) {
-                                newRecord.statusOfUser = (NSString*)[obj objectForKey:[HConstants kStatus]];
-                            }
-                            
-                            if ([obj objectForKey:[HConstants kType]]) {
-                                newRecord.typeOfService = (NSString*)[obj objectForKey:[HConstants kType]];
-                            }
-                            
-                            if ([obj objectForKey:[HConstants kComment]]) {
-                                newRecord.commentOnService = (NSString*)[obj objectForKey:[HConstants kComment]];
-                            }
-                            if ([obj objectForKey:[HConstants kDate]]) {
-                                newRecord.dateOfTheService = (NSString*)[obj objectForKey:[HConstants kDate]];
-                                if ([sanitizedCurrentUserRecords objectForKey:newRecord.dateOfTheService]) {
-                                    NSMutableArray *records = (NSMutableArray*)[sanitizedCurrentUserRecords objectForKey:newRecord.dateOfTheService];
-                                    [records addObject:newRecord];
-                                } else{
-                                    NSMutableArray *records = [[NSMutableArray alloc]init];
-                                    [records addObject:newRecord];
-                                    [sanitizedCurrentUserRecords setObject:records forKey:newRecord.dateOfTheService];
-                                }
-                            }
-                        }
-                    }];
-                    
-                    NSData *currentUserRecordsData = [NSKeyedArchiver archivedDataWithRootObject:sanitizedCurrentUserRecords];
-                    [[NSUserDefaults standardUserDefaults] setObject:currentUserRecordsData forKey:[HConstants kSanitizedCurrentUserRecords]];
-                    [[NSUserDefaults standardUserDefaults] synchronize];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kStartGetUserRecordsProcessNotification object:nil];
-                }
-                else {
-                    [[NSUserDefaults standardUserDefaults] removeObjectForKey:[HConstants kSanitizedCurrentUserRecords]];
-                    [[NSUserDefaults standardUserDefaults]synchronize];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kStartGetUserRecordsProcessNotification object:nil];
-                }
-            });
-            [self.delegate userRecordsDataReceived];
-        }];
-    });
-}
+
+
 
 
 #pragma mark Login-Related
 
 
-//-(void) loginSuccessful {
-//    if ([self.delegate respondsToSelector:@selector(loginSuccessful)]) {
-//        [self.delegate loginSuccessful];
-//    }
-//}
+-(void) loginSuccessful {
+    [self.delegate loginSuccessful];
+}
 
 -(void) loginUnsuccessful{
     if ([self.delegate respondsToSelector:@selector(loginUnsuccessful)]) {

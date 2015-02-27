@@ -18,5 +18,6 @@
 
 
 - (void) reloadLocalCacheData;
+- (void) endRefreshing;
 
 @end

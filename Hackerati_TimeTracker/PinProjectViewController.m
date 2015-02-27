@@ -90,9 +90,7 @@ static NSString *CellIdentifier = @"Cell";
             NSMutableArray *mutableArrayOfProjectNames = [arrayOfProjectNames mutableCopy];
             [self.pinnedDictionary setObject:mutableArrayOfProjectNames forKey:client.clientName];
         }
-        
-        NSLog(self.pinnedDictionary.description);
-        
+                
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.tableView reloadData];
         });

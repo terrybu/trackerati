@@ -25,7 +25,9 @@
 #import "AppDelegate.h"
 
 
-@interface LoginViewController ()<CustomMCSwipeTableViewCellDelegate>
+@interface LoginViewController ()<CustomMCSwipeTableViewCellDelegate> {
+    UIRefreshControl *refreshSub;
+}
 
 // Data Source
 @property (strong, nonatomic) NSMutableArray* currentUserClientsArray;
@@ -82,6 +84,7 @@ static NSString *CellIdentifier = @"Cell";
     [self setUpPullToRefreshMessageLabel];
     [self setUpDateFormatter];
 }
+
 
 
 - (void)viewWillLayoutSubviews{
@@ -142,11 +145,10 @@ static NSString *CellIdentifier = @"Cell";
                 }
             }];
         });
-    } else {
+    }
+    else {
         [self loginUnsuccessful];
     }
-    [self.refreshControl endRefreshing];
-    
 }
 
 - (void)setUpPullToRefreshMessageLabel {
@@ -293,10 +295,12 @@ static NSString *CellIdentifier = @"Cell";
     if ([buttonTitle isEqualToString:@"Send"]) {
         [self submitRecord];
     }
-    else{
+    else if ([buttonTitle isEqualToString:@"Cancel"] && [LoginManager loggedOut] == FALSE) {
         self.tableView.userInteractionEnabled = YES;
         [self slideOutForm];
     }
+    //We need to watch out for using "else" statement here. There was a bug where pressing "cancel" on login unsuccessful message of an error alert was triggering this [self slideOutForm] block above.
+    
 }
 
 -(void)submitRecord{
@@ -336,11 +340,15 @@ static NSString *CellIdentifier = @"Cell";
 }
 
 #pragma mark - Data Parser Delegate Methods
+
+- (void) loginSuccessful {
+    //nothing
+}
+
 - (void) loginUnsuccessful{
     dispatch_async(dispatch_get_main_queue(), ^{
         [self reloadLocalCacheData];
-        [self.refreshControl endRefreshing];
-        UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"Error" message:@"Could not login. Please try later" delegate:self cancelButtonTitle:@"cancel" otherButtonTitles: nil];
+        UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"Error" message:@"Could not login. Please try later" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
         [alertView show];
     });
 }
@@ -538,5 +546,10 @@ static NSString *CellIdentifier = @"Cell";
     }
 }
 
+
+
+- (void) endRefreshing {
+    [self.refreshControl endRefreshing];
+}
 
 @end
