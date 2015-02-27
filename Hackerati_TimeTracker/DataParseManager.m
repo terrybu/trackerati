@@ -46,7 +46,7 @@
 - (void) getAllDataFromFireBase{
     //this is where all the main action of getting clients/projects from FireBase happens after login is successful
     //We convert them into Client, Project, User objects
-    
+    [self.delegate loginSuccessful];
     [self getAllClientsAndProjectsDataFromFireBaseAndSynchronize];
     [self getUserRecords];
 }

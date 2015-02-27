@@ -69,6 +69,7 @@
 		CED58C201A5ADAB3001C343B /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CED58C1F1A5ADAB3001C343B /* AppDelegate.m */; };
 		CED58C281A5ADAB3001C343B /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CED58C271A5ADAB3001C343B /* Images.xcassets */; };
 		CED58C371A5ADAB3001C343B /* Hackerati_TimeTrackerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CED58C361A5ADAB3001C343B /* Hackerati_TimeTrackerTests.m */; };
+		D937CB6F1AA0D2C9007B8297 /* GMDCircleLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = D937CB6E1AA0D2C9007B8297 /* GMDCircleLoader.m */; };
 		D944F2BE1A96A9CC0046A91B /* AddClientProjectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D944F2BC1A96A9CC0046A91B /* AddClientProjectViewController.m */; };
 		D944F2BF1A96A9CC0046A91B /* AddClientProjectViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D944F2BD1A96A9CC0046A91B /* AddClientProjectViewController.xib */; };
 		D9CA83AD1A9F99B5009B6424 /* DrawerCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D9CA83A81A9F99B5009B6424 /* DrawerCell.m */; };
@@ -181,6 +182,8 @@
 		CED58C351A5ADAB3001C343B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CED58C361A5ADAB3001C343B /* Hackerati_TimeTrackerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Hackerati_TimeTrackerTests.m; sourceTree = "<group>"; };
 		D7FA9458296C53CD81653168 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		D937CB6D1AA0D2C9007B8297 /* GMDCircleLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GMDCircleLoader.h; path = Hackerati_TimeTracker/GMDCircleLoader/GMDCircleLoader.h; sourceTree = "<group>"; };
+		D937CB6E1AA0D2C9007B8297 /* GMDCircleLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GMDCircleLoader.m; path = Hackerati_TimeTracker/GMDCircleLoader/GMDCircleLoader.m; sourceTree = "<group>"; };
 		D944F2BB1A96A9CC0046A91B /* AddClientProjectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddClientProjectViewController.h; sourceTree = "<group>"; };
 		D944F2BC1A96A9CC0046A91B /* AddClientProjectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddClientProjectViewController.m; sourceTree = "<group>"; };
 		D944F2BD1A96A9CC0046A91B /* AddClientProjectViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddClientProjectViewController.xib; sourceTree = "<group>"; };
@@ -241,7 +244,8 @@
 				CE07C0A71A5D771500A3B961 /* THDatePickerViewController.m */,
 				CE07C0A81A5D771500A3B961 /* THDatePickerViewController.xib */,
 			);
-			path = THCalendarDatePicker;
+			name = THCalendarDatePicker;
+			path = Hackerati_TimeTracker/THCalendarDatePicker;
 			sourceTree = "<group>";
 		};
 		CE07C0BE1A5F29DF00A3B961 /* HockeySDK.embeddedframework */ = {
@@ -380,7 +384,7 @@
 				CE0815801A645E77008ABECF /* CustomViews */,
 				D9CA83A61A9F9997009B6424 /* Drawer Effect Related */,
 				CE08157F1A645E54008ABECF /* ViewControllers */,
-				CE07C0A11A5D771500A3B961 /* THCalendarDatePicker */,
+				D937CB701AA0D2E1007B8297 /* Vendor */,
 				CED58C271A5ADAB3001C343B /* Images.xcassets */,
 				CE07C09A1A5C9A6100A3B961 /* CheckMark@2x.png */,
 				CE07C0981A5C9A5700A3B961 /* Erase@2x.png */,
@@ -427,6 +431,17 @@
 				A2368C21D2A903653271B4CA /* Pods.release.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		D937CB701AA0D2E1007B8297 /* Vendor */ = {
+			isa = PBXGroup;
+			children = (
+				CE07C0A11A5D771500A3B961 /* THCalendarDatePicker */,
+				D937CB6D1AA0D2C9007B8297 /* GMDCircleLoader.h */,
+				D937CB6E1AA0D2C9007B8297 /* GMDCircleLoader.m */,
+			);
+			name = Vendor;
+			path = ..;
 			sourceTree = "<group>";
 		};
 		D9CA83A61A9F9997009B6424 /* Drawer Effect Related */ = {
@@ -640,6 +655,7 @@
 				CE872C821A74C5BF002C9930 /* Record.m in Sources */,
 				CE07C0651A5B966100A3B961 /* FireBaseManager.m in Sources */,
 				CE07C0551A5B132700A3B961 /* HConstants.m in Sources */,
+				D937CB6F1AA0D2C9007B8297 /* GMDCircleLoader.m in Sources */,
 				CED58C201A5ADAB3001C343B /* AppDelegate.m in Sources */,
 				CE07C0B51A5EBFDD00A3B961 /* WeeklyNotificationManager.m in Sources */,
 				CE07C0621A5B87D100A3B961 /* LoginManager.m in Sources */,

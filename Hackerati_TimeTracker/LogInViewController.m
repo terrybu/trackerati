@@ -23,11 +23,10 @@
 #import "User.h"
 #import "Record.h"
 #import "AppDelegate.h"
+#import "GMDCircleLoader.h"
 
 
-@interface LoginViewController ()<CustomMCSwipeTableViewCellDelegate> {
-    UIRefreshControl *refreshSub;
-}
+@interface LoginViewController ()<CustomMCSwipeTableViewCellDelegate>
 
 // Data Source
 @property (strong, nonatomic) NSMutableArray* currentUserClientsArray;
@@ -83,8 +82,21 @@ static NSString *CellIdentifier = @"Cell";
     [self setUpRefreshControl];
     [self setUpPullToRefreshMessageLabel];
     [self setUpDateFormatter];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeMessageLabelandRunLoader) name:@"loginSuccess" object:nil];
+    
+    //For some reason, no view gets shown at all in viewDidLoad (whether its GMDCircleLoader or any custom view)
+    //Might be conflicting with self.formview?
 }
 
+- (void) removeMessageLabelandRunLoader {
+    self.tableView.backgroundView = nil;
+    [GMDCircleLoader setOnView:self.view withTitle:@"Loading" animated:YES];
+}
+
+- (void) hideGMDCircleLoader {
+    [GMDCircleLoader hideFromView:self.view animated:YES];
+}
 
 
 - (void)viewWillLayoutSubviews{
@@ -104,6 +116,7 @@ static NSString *CellIdentifier = @"Cell";
     NSData *data = [[NSUserDefaults standardUserDefaults]objectForKey:[HConstants kCurrentUserClientList]];
     self.currentUserClientsArray = [NSKeyedUnarchiver unarchiveObjectWithData:data];
     [self.refreshControl endRefreshing];
+    [GMDCircleLoader hideFromView:self.view animated:YES];
     [self.tableView reloadData];
 }
 
@@ -342,7 +355,6 @@ static NSString *CellIdentifier = @"Cell";
 #pragma mark - Data Parser Delegate Methods
 
 - (void) loginSuccessful {
-    //nothing
 }
 
 - (void) loginUnsuccessful{
@@ -543,6 +555,10 @@ static NSString *CellIdentifier = @"Cell";
 -(void)cancelForm{
     self.tableView.userInteractionEnabled = YES;
     [self slideOutForm];
+}
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 @end

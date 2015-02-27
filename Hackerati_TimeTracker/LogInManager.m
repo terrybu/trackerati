@@ -94,7 +94,6 @@ static BOOL loggedOut = YES;
                                                                if ([weakSelf.delegate respondsToSelector:@selector(getAllDataFromFireBase)]) {
                                                                    [LoginManager setLoggedOut:NO];
                                                                    [[NSNotificationCenter defaultCenter] postNotificationName:@"loginSuccess" object:nil];
-
                                                                    [weakSelf.delegate getAllDataFromFireBase];
                                                                }
                                                            }

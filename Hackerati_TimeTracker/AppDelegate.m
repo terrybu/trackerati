@@ -97,15 +97,15 @@
 - (void)setUpStructureForFloatingDrawer {
     self.drawerViewController = [[JVFloatingDrawerViewController alloc]init];
     
-    UINavigationController *homeViewNavController = [[UINavigationController alloc]initWithRootViewController:[[LoginViewController alloc]initWithNibName:@"LoginViewController" bundle:nil]];
+    UINavigationController *loginHomeViewNavController = [[UINavigationController alloc]initWithRootViewController:[[LoginViewController alloc]initWithNibName:@"LoginViewController" bundle:nil]];
     UINavigationController *historyViewNavController = [[UINavigationController alloc]initWithRootViewController:[[HistoryViewController alloc]initWithNibName:@"HistoryViewController" bundle:nil]];
     
     //could have used an array here but this data structure is needed to bounce back and forth freely when the left drawer table vc is selected and we gotta jump between these controllers. Dictionary seemed fine.
     self.controllersDictionary = [[NSMutableDictionary alloc]init];
-    [self.controllersDictionary setObject:homeViewNavController forKey:kHomeNavControllerKey];
+    [self.controllersDictionary setObject:loginHomeViewNavController forKey:kHomeNavControllerKey];
     [self.controllersDictionary setObject:historyViewNavController forKey:kHistoryNavControllerKey];
     
-    self.drawerViewController.centerViewController = homeViewNavController;
+    self.drawerViewController.centerViewController = loginHomeViewNavController;
     self.drawerViewController.leftViewController = [[DrawerTableViewController alloc]initWithNibName:@"DrawerTableViewController" bundle:nil];
     self.drawerViewController.backgroundImage = [UIImage imageNamed:@"hackworld"];
 }
