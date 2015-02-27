@@ -24,8 +24,9 @@
 @property (strong, nonatomic) Firebase *fireBase;
 @property (strong, nonatomic) NSMutableArray *masterClientsArray;
 @property (strong, nonatomic) NSMutableArray *currentUserClientsArray;
-@property (strong, nonatomic) NSMutableSet *setOfCurrentUserClientNames;
-@property (strong, nonatomic) NSMutableSet *setOfCurrentUserProjectNames;
+
+@property (strong, nonatomic) NSMutableDictionary *pinnedDictionary;
+
 
 @end
 
@@ -33,10 +34,19 @@
 
 static NSString *CellIdentifier = @"Cell";
 
+- (NSMutableDictionary *) pinnedDictionary {
+    if (_pinnedDictionary == nil)
+        _pinnedDictionary = [[NSMutableDictionary alloc]init];
+    
+    return _pinnedDictionary;
+}
+
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"Tap to pin/unpin";
     self.navigationItem.prompt = @"Swipe left to delete entirely from database";
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dataReceivedSafeToRefresh) name:@"clientsProjectsSynched" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(enableCreateButton) name:@"loginSuccess" object:nil];
     
@@ -59,7 +69,7 @@ static NSString *CellIdentifier = @"Cell";
 }
 
 - (void) enableCreateButton {
-    UIBarButtonItem *addClientProjectButton = [[UIBarButtonItem alloc]initWithTitle:@"Create" style:UIBarButtonItemStylePlain target:self action:@selector(pushAddClientProjectViewController)];
+    UIBarButtonItem *addClientProjectButton = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(pushAddClientProjectViewController)];
     self.navigationItem.rightBarButtonItem = addClientProjectButton;
 }
 
@@ -69,12 +79,20 @@ static NSString *CellIdentifier = @"Cell";
         self.masterClientsArray = [NSKeyedUnarchiver unarchiveObjectWithData:masterClientsData];
         NSData *currentUserClientsData = [[NSUserDefaults standardUserDefaults]objectForKey:[HConstants kCurrentUserClientList]];
         self.currentUserClientsArray = [NSKeyedUnarchiver unarchiveObjectWithData:currentUserClientsData];
-        self.setOfCurrentUserClientNames = [NSMutableSet setWithArray:[self.currentUserClientsArray valueForKey:@"clientName"]];
-        self.setOfCurrentUserProjectNames = [[NSMutableSet alloc]init];
+        
+        //I need a dictionary of current user clients and their projects
+        //key is client name in string
+        //value is a NSMutableArray of all the current pinned projects
+        //I don't want to use array because we will be doing too much iterating O(n)
+        
         for (Client *client in self.currentUserClientsArray) {
-            NSArray *arrayOfProjectNamesOfClient = [client.projects valueForKey:@"projectName"];
-            [self.setOfCurrentUserProjectNames addObjectsFromArray:arrayOfProjectNamesOfClient];
+            NSArray *arrayOfProjectNames = [client.projects valueForKey:@"projectName"];
+            NSMutableArray *mutableArrayOfProjectNames = [arrayOfProjectNames mutableCopy];
+            [self.pinnedDictionary setObject:mutableArrayOfProjectNames forKey:client.clientName];
         }
+        
+        NSLog(self.pinnedDictionary.description);
+        
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.tableView reloadData];
         });
@@ -127,8 +145,8 @@ static NSString *CellIdentifier = @"Cell";
     //Checkmark addition logic
     //we loop over these sets to find if this particular project was indeed selected by current user in the past
     cell.accessoryView = nil;
-    if ((self.setOfCurrentUserClientNames != nil) && ([self.setOfCurrentUserClientNames containsObject:masterClient.clientName])) {
-        if ((self.setOfCurrentUserProjectNames != nil) && ([self.setOfCurrentUserProjectNames containsObject:masterProject.projectName])) {
+    if ((self.pinnedDictionary != nil) && ([self.pinnedDictionary valueForKey:masterClient.clientName])) {
+        if ([[self.pinnedDictionary valueForKey:masterClient.clientName] containsObject:masterProject.projectName]) {
             cell.accessoryView =[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"CheckMark.png"]];
         }
     }
@@ -161,7 +179,7 @@ static NSString *CellIdentifier = @"Cell";
     Client *masterSelectedClient = [self.masterClientsArray objectAtIndex:indexPath.section];
     Project *masterSelectedProject = [masterSelectedClient projectAtIndex:indexPath.row];
     
-    if ([self.setOfCurrentUserClientNames containsObject:masterSelectedClient.clientName] && [self.setOfCurrentUserProjectNames containsObject:masterSelectedProject.projectName]) {
+    if ([self.pinnedDictionary objectForKey:masterSelectedClient.clientName] && [[self.pinnedDictionary valueForKey:masterSelectedClient.clientName] containsObject: masterSelectedProject.projectName]) {
         //this is pin REMOVING logic
         [self removeUserPinFromSelectedProject:masterSelectedClient project:masterSelectedProject];
         cell.accessoryView = nil;
@@ -173,21 +191,22 @@ static NSString *CellIdentifier = @"Cell";
     else {
         //this is pin ADDING logic
         //if, in our local cache, we've never had the current user pin this client name before, then we pin the whole client, and the project
-        if (![self.setOfCurrentUserClientNames containsObject:masterSelectedClient.clientName]) {
+        NSMutableArray *pinnedProjectNames = [self.pinnedDictionary objectForKey:masterSelectedClient.clientName];
+        if (pinnedProjectNames == nil) {
             Client *newClient = [[Client alloc]init];
             newClient.clientName = masterSelectedClient.clientName;
+            newClient.projects = [[NSMutableArray alloc]init];
             [newClient.projects addObject: masterSelectedProject];
             [self.currentUserClientsArray addObject:newClient];
-            [self.setOfCurrentUserClientNames addObject:newClient.clientName];
-            [self.setOfCurrentUserProjectNames addObject:masterSelectedProject.projectName];
+            [self.pinnedDictionary setValue:[[newClient.projects valueForKey:@"projectName"]mutableCopy] forKey:newClient.clientName];
         }
         else {
             //On the contrary, if we already had the current user pin this client name for a project before, check to see if particular PROJECT was pinned
             Client *selectedCurrentUserClient = [self findCorrespondingClientInCurrentUserClientList:masterSelectedClient];
-            if (![self.setOfCurrentUserProjectNames containsObject:masterSelectedProject.projectName]) {
-                //our client didn't have the particular project, then we add it to local cache AND send to Firebase
+            if (![pinnedProjectNames containsObject:masterSelectedProject.projectName]) {
+                //our client didn't have the particular project, then we add it to local cache
                 [selectedCurrentUserClient.projects addObject:masterSelectedProject];
-                [self.setOfCurrentUserProjectNames addObject:masterSelectedProject.projectName];
+                [pinnedProjectNames addObject:masterSelectedProject.projectName];
             }
         }
         [self cacheCurrentUserClients];
@@ -222,11 +241,10 @@ static NSString *CellIdentifier = @"Cell";
     }
     if (client != nil && [client.projects count]== 0) {
         [self.currentUserClientsArray removeObject:client];
-        [self.setOfCurrentUserClientNames removeObject:masterClient.clientName];
+        [self.pinnedDictionary removeObjectForKey:client.clientName];
     }
     [self cacheCurrentUserClients];
-    [self.setOfCurrentUserProjectNames removeObject:masterProject.projectName];
-    
+    [[self.pinnedDictionary objectForKey:client.clientName]removeObjectIdenticalTo:project.projectName];
     
     [self removePinFromFireBase:project client:client];
     [self.tableView reloadData];

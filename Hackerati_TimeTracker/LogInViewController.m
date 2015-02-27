@@ -110,7 +110,7 @@ static NSString *CellIdentifier = @"Cell";
 - (void)setUpNavbarButtonItems {
     UIImage *drawerButtonImage = [UIImage imageNamed:kIconDrawer];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:drawerButtonImage style:UIBarButtonItemStylePlain target:self action:@selector(actionToggleLeftDrawer:)];
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"Pin More" style:UIBarButtonItemStyleBordered target:self action:@selector(addNewProjects)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"pinCircle"] style:UIBarButtonItemStyleBordered target:self action:@selector(addNewProjects)];
 }
 
 - (void)configureTableView {
