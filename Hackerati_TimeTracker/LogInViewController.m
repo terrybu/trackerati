@@ -297,7 +297,7 @@ static NSString *CellIdentifier = @"Cell";
 -(void)sendForm{
     NSData *data = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants kSanitizedCurrentUserRecords]];
     self.recordsHistoryDictionary = [NSKeyedUnarchiver unarchiveObjectWithData:data];
-    if ([self.recordsHistoryDictionary objectForKey:self.dateOfServiceTextLabel.text]) {
+    if (self.recordsHistoryDictionary && [self.recordsHistoryDictionary objectForKey:self.dateOfServiceTextLabel.text]) {
         [[[UIAlertView alloc] initWithTitle:@"Warning" message:[NSString stringWithFormat: @"You already sent a record for %@. Do you still want to send this ?",self.dateOfServiceTextLabel.text] delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Send", nil] show];
     } else{
         [self submitRecord];

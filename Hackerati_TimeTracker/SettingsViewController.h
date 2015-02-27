@@ -8,6 +8,17 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SettingsViewController : UIViewController
+@interface SettingsViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
+
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
+
+@property (strong, nonatomic) IBOutlet UITableViewCell *notificationsSwitchCell;
+@property (weak, nonatomic) IBOutlet UILabel *notifLabel;
+@property (weak, nonatomic) IBOutlet UISwitch *notifSwitch;
+
+@property (strong, nonatomic) IBOutlet UITableViewCell *reminderTimeCell;
+@property (weak, nonatomic) IBOutlet UILabel *reminderLabel;
+@property (weak, nonatomic) IBOutlet UIDatePicker *reminderTimePicker;
+
 
 @end

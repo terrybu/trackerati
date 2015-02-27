@@ -24,6 +24,15 @@
     
     UIImage *drawerButtonImage = [UIImage imageNamed:kIconDrawer];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:drawerButtonImage style:UIBarButtonItemStylePlain target:self action:@selector(actionToggleLeftDrawer)];
+    
+    UIBarButtonItem *saveButton = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(saveSettings)];
+    self.navigationItem.rightBarButtonItem = saveButton;
+}
+
+- (void) saveSettings {
+    bool notificationSwitchIsOn = self.notifSwitch.on;
+    NSDate *notificationTimeChosen = self.reminderTimePicker.date;
+    NSLog(@"%d %@", notificationSwitchIsOn, notificationTimeChosen.description);
 }
 
 
@@ -36,14 +45,65 @@
     // Dispose of any resources that can be recreated.
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return 1;
 }
-*/
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    switch (section) {
+        case 0:
+            return @"Daily Notifications";
+            break;
+        default:
+            break;
+    }
+    return nil;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return 2;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.row == 1)
+        return 180;
+    
+    return 44;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    UITableViewCell *cell;
+    
+    if (indexPath.row == 0) {
+        cell = self.notificationsSwitchCell;
+        self.notifLabel.text = @"Daily Reminders On";
+    }
+    else if (indexPath.row == 1) {
+        cell = self.reminderTimeCell;
+        self.reminderLabel.text = @"Daily Reminder Time";
+    }
+    else if (cell == nil)
+        cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+    
+    return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+    if (indexPath.row == 1) {
+        UIDatePicker *datePicker = [[UIDatePicker alloc]init];
+        datePicker.datePickerMode = UIDatePickerModeTime;
+        [datePicker setCenter:CGPointMake(150, 500)]; // place the pickerView outside the screen boundaries
+        [UIView beginAnimations:@"slideIn" context:nil];
+        [datePicker setCenter:CGPointMake(150, 250)];
+        [UIView commitAnimations];
+    }
+}
+
+
+
+
 
 @end
