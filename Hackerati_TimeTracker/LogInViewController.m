@@ -355,6 +355,7 @@ static NSString *CellIdentifier = @"Cell";
 #pragma mark - Data Parser Delegate Methods
 
 - (void) loginSuccessful {
+    //
 }
 
 - (void) loginUnsuccessful{
@@ -423,7 +424,7 @@ static NSString *CellIdentifier = @"Cell";
     [cell setSwipeGestureWithView:eraseMark color:whiteColor mode:MCSwipeTableViewCellModeSwitch state:MCSwipeTableViewCellState3 completionBlock:nil];
     [cell setSwipeGestureWithView:eraseMark color:whiteColor mode:MCSwipeTableViewCellModeExit state:MCSwipeTableViewCellState4 completionBlock:^(MCSwipeTableViewCell *cell, MCSwipeTableViewCellState state, MCSwipeTableViewCellMode mode) {
         //Swipe Left To Remove User From Selected Project
-        [self removeUserFromSelectedProject: client project:project];
+        [self unpinUserFromSelectedProject: client project:project];
     }];
     
     cell.textLabel.text = project.projectName;
@@ -444,7 +445,7 @@ static NSString *CellIdentifier = @"Cell";
     return NO;
 }
 
--(void)removeUserFromSelectedProject: (Client *) client project: (Project *) project {
+-(void)unpinUserFromSelectedProject: (Client *) client project: (Project *) project {    
     __weak typeof(self) weakSelf = self;
     [client.projects removeObject:project];
     if ([client.projects count]== 0) {

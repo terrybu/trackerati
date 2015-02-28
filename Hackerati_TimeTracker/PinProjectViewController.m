@@ -49,7 +49,7 @@ static NSString *CellIdentifier = @"Cell";
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dataReceivedSafeToRefresh) name:@"clientsProjectsSynched" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(enableCreateButton) name:@"loginSuccess" object:nil];
-    
+
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     [self.tableView registerClass:[MCSwipeTableViewCell class] forCellReuseIdentifier:CellIdentifier];
     
@@ -61,11 +61,11 @@ static NSString *CellIdentifier = @"Cell";
 
 - (void) viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    [self getMasterClientsArrayAndCurrentUserClientsArrayAndRefresh];
+    [self getAllProjectsPinsAndRefresh];
 }
 
 - (void) dataReceivedSafeToRefresh {
-    [self getMasterClientsArrayAndCurrentUserClientsArrayAndRefresh];
+    [self getAllProjectsPinsAndRefresh];
 }
 
 - (void) enableCreateButton {
@@ -73,7 +73,7 @@ static NSString *CellIdentifier = @"Cell";
     self.navigationItem.rightBarButtonItem = addClientProjectButton;
 }
 
-- (void) getMasterClientsArrayAndCurrentUserClientsArrayAndRefresh {
+- (void) getAllProjectsPinsAndRefresh {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         NSData *masterClientsData = [[NSUserDefaults standardUserDefaults]objectForKey:[HConstants kMasterClientList]];
         self.masterClientsArray = [NSKeyedUnarchiver unarchiveObjectWithData:masterClientsData];
@@ -143,9 +143,10 @@ static NSString *CellIdentifier = @"Cell";
     //Checkmark addition logic
     //we loop over these sets to find if this particular project was indeed selected by current user in the past
     cell.accessoryView = nil;
-    if ((self.pinnedDictionary != nil) && ([self.pinnedDictionary valueForKey:masterClient.clientName])) {
-        if ([[self.pinnedDictionary valueForKey:masterClient.clientName] containsObject:masterProject.projectName]) {
+    if ((self.pinnedDictionary != nil) && ([self.pinnedDictionary objectForKey:masterClient.clientName])) {
+        if ([[self.pinnedDictionary objectForKey:masterClient.clientName] containsObject:masterProject.projectName]) {
             cell.accessoryView =[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"CheckMark.png"]];
+            [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
         }
     }
     
@@ -157,6 +158,9 @@ static NSString *CellIdentifier = @"Cell";
         projectToDelete = masterProject;
         [self removeProjectAfterConfirmationAlert:masterProject client: masterClient];
     }];
+    
+    //to make sure there's no gray highlighting when it's clicked - important
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
 }
 
@@ -169,46 +173,50 @@ static NSString *CellIdentifier = @"Cell";
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
-    
     MCSwipeTableViewCell *cell = (MCSwipeTableViewCell*)[tableView cellForRowAtIndexPath:indexPath];
-    
     Client *masterSelectedClient = [self.masterClientsArray objectAtIndex:indexPath.section];
     Project *masterSelectedProject = [masterSelectedClient projectAtIndex:indexPath.row];
     
+    //this is pin ADDING logic
+    //if, in our local cache, we've never had the current user pin this client name before, then we pin the whole client, and the project
+    NSMutableArray *pinnedProjectNames = [self.pinnedDictionary objectForKey:masterSelectedClient.clientName];
+    if (pinnedProjectNames == nil) {
+        //that means we've never pinned this client before
+        Client *newClient = [[Client alloc]init];
+        newClient.clientName = masterSelectedClient.clientName;
+        newClient.projects = [[NSMutableArray alloc]init];
+        [newClient.projects addObject: masterSelectedProject];
+        [self.currentUserClientsArray addObject:newClient];
+        [self.pinnedDictionary setValue:[[newClient.projects valueForKey:@"projectName"]mutableCopy] forKey:newClient.clientName];
+    }
+    else {
+        //On the contrary, if we already had the current user pin this client name for a project before, check to see if particular PROJECT was pinned
+        Client *selectedCurrentUserClient = [self findCorrespondingClientInCurrentUserClientList:masterSelectedClient];
+        if (![pinnedProjectNames containsObject:masterSelectedProject.projectName]) {
+            //our client didn't have the particular project, then we add it to local cache
+            [selectedCurrentUserClient.projects addObject:masterSelectedProject];
+            [pinnedProjectNames addObject:masterSelectedProject.projectName];
+        }
+    }
+    NSLog(@"from did select row: %@", self.pinnedDictionary.description);
+    [self cacheCurrentUserClients];
+    [self pinUserToProjectOnFireBase: masterSelectedClient.clientName project:masterSelectedProject.projectName];
+    cell.accessoryView =[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"CheckMark.png"]];
+    [[DataParseManager sharedManager]getAllDataFromFireBase];
+}
+
+- (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath {
+    MCSwipeTableViewCell *cell = (MCSwipeTableViewCell*)[tableView cellForRowAtIndexPath:indexPath];
+    Client *masterSelectedClient = [self.masterClientsArray objectAtIndex:indexPath.section];
+    Project *masterSelectedProject = [masterSelectedClient projectAtIndex:indexPath.row];
     if ([self.pinnedDictionary objectForKey:masterSelectedClient.clientName] && [[self.pinnedDictionary valueForKey:masterSelectedClient.clientName] containsObject: masterSelectedProject.projectName]) {
         //this is pin REMOVING logic
         [self removeUserPinFromSelectedProject:masterSelectedClient project:masterSelectedProject];
         cell.accessoryView = nil;
-
-//        UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"Removed Project" message:[NSString stringWithFormat:@"%@ was unpinned from your projects", masterSelectedProject.projectName] delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
-//        [alertView show];
+        
+        //        UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"Removed Project" message:[NSString stringWithFormat:@"%@ was unpinned from your projects", masterSelectedProject.projectName] delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+        //        [alertView show];
         return;
-    }
-    else {
-        //this is pin ADDING logic
-        //if, in our local cache, we've never had the current user pin this client name before, then we pin the whole client, and the project
-        NSMutableArray *pinnedProjectNames = [self.pinnedDictionary objectForKey:masterSelectedClient.clientName];
-        if (pinnedProjectNames == nil) {
-            Client *newClient = [[Client alloc]init];
-            newClient.clientName = masterSelectedClient.clientName;
-            newClient.projects = [[NSMutableArray alloc]init];
-            [newClient.projects addObject: masterSelectedProject];
-            [self.currentUserClientsArray addObject:newClient];
-            [self.pinnedDictionary setValue:[[newClient.projects valueForKey:@"projectName"]mutableCopy] forKey:newClient.clientName];
-        }
-        else {
-            //On the contrary, if we already had the current user pin this client name for a project before, check to see if particular PROJECT was pinned
-            Client *selectedCurrentUserClient = [self findCorrespondingClientInCurrentUserClientList:masterSelectedClient];
-            if (![pinnedProjectNames containsObject:masterSelectedProject.projectName]) {
-                //our client didn't have the particular project, then we add it to local cache
-                [selectedCurrentUserClient.projects addObject:masterSelectedProject];
-                [pinnedProjectNames addObject:masterSelectedProject.projectName];
-            }
-        }
-        [self cacheCurrentUserClients];
-        [self pinUserToProjectOnFireBase: masterSelectedClient.clientName project:masterSelectedProject.projectName];
-        cell.accessoryView =[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"CheckMark.png"]];
     }
     [[DataParseManager sharedManager]getAllDataFromFireBase];
 }
@@ -232,6 +240,28 @@ static NSString *CellIdentifier = @"Cell";
 
 
 -(void)removeUserPinFromSelectedProject: (Client *) masterClient project: (Project *) masterProject {
+    Client *client = [self findCorrespondingClientInCurrentUserClientList:masterClient];
+    Project *project = [self findCorrespondingProjectFromCorrespondingClient:client masterProject:masterProject];
+    if (project != nil) {
+        [client.projects removeObject:project];
+    }
+    if (client != nil && [client.projects count]== 0) {
+        [self.currentUserClientsArray removeObject:client];
+        [self.pinnedDictionary removeObjectForKey:client.clientName];
+    }
+    [self cacheCurrentUserClients];
+    [[self.pinnedDictionary objectForKey:client.clientName]removeObjectIdenticalTo:project.projectName];
+    
+    [self removePinFromFireBase:project client:client];
+    [self.tableView reloadData];
+}
+
+//this one is needed for particular case of user unpinning from cell swipe effect in LoginViewController
+-(void)removeUserPinFromSelectedProject: (NSNotification *) notification {
+    NSLog(@"remove called from pin vc, login vc");
+    Client *masterClient = [notification.userInfo objectForKey:@"client"];
+    Project *masterProject = [notification.userInfo objectForKey:@"project"];
+    
     Client *client = [self findCorrespondingClientInCurrentUserClientList:masterClient];
     Project *project = [self findCorrespondingProjectFromCorrespondingClient:client masterProject:masterProject];
     if (project != nil) {
