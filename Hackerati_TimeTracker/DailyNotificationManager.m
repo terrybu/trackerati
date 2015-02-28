@@ -13,6 +13,14 @@
 
 @end
 
+typedef NS_ENUM(NSInteger, WeekDayType) {
+    Monday,
+    Tuesday,
+    Wednesday,
+    Thursday,
+    Friday
+};
+
 @implementation DailyNotificationManager
 
 + (DailyNotificationManager*)sharedManager{
@@ -31,9 +39,6 @@
     }
     return self;
 }
-
-
-
 
 
 - (void) refreshNotificationsSettings {
@@ -58,35 +63,84 @@
 }
 
 - (void) firstTimeRunSettings {
-    NSDate *today = [NSDate date];
-    NSDateComponents *dateComponents = [[NSCalendar currentCalendar] components:NSCalendarUnitDay | NSCalendarUnitMonth | NSCalendarUnitYear fromDate:today];
     NSLog(@"setting daily reminder at 6PM by default for first run");
-    [dateComponents setHour:18];
-    [dateComponents setMinute:0];
+    
+    [self fireNotificationsForAllWeekDays:18 minute:0];
+    
     [[NSUserDefaults standardUserDefaults]setInteger:18 forKey:kReminderHourSaved];
     [[NSUserDefaults standardUserDefaults]setInteger:0 forKey:kReminderMinutesSaved];
-    [self fireLocalNotifications:dateComponents];
 }
 
 - (void) scheduleNotificationsWithSavedSettings {
-    NSDate *today = [NSDate date];
-    NSDateComponents *dateComponents = [[NSCalendar currentCalendar] components:NSCalendarUnitDay | NSCalendarUnitMonth | NSCalendarUnitYear fromDate:today];
     NSInteger savedHour = [[NSUserDefaults standardUserDefaults]integerForKey:kReminderHourSaved];
     NSInteger savedMins = [[NSUserDefaults standardUserDefaults]integerForKey:kReminderMinutesSaved];
     
     if (savedHour && savedMins) {
-        [dateComponents setHour:savedHour];
-        [dateComponents setMinute:savedMins];
+        [[UIApplication sharedApplication] cancelAllLocalNotifications]; //just to be sure, we are not firing multiple
+        [self fireNotificationsForAllWeekDays:savedHour minute:savedMins];
     }
-    [[UIApplication sharedApplication] cancelAllLocalNotifications]; //just to be sure, we are not firing multiple
-    [self fireLocalNotifications:dateComponents];
 }
 
-- (void) fireLocalNotifications:(NSDateComponents *)dateComponents {
+- (void) fireNotificationsForAllWeekDays: (NSInteger) hour minute: (NSInteger) minute {
+    [self fireNotificationForDay:Monday hour:hour minute:minute];
+    [self fireNotificationForDay:Tuesday hour:hour minute:minute];
+    [self fireNotificationForDay:Wednesday hour:hour minute:minute];
+    [self fireNotificationForDay:Thursday hour:hour minute:minute];
+    [self fireNotificationForDay:Friday hour:hour minute:minute];
+}
+
+
+
+
+
+
+#pragma mark Refactored Methods
+- (void) fireNotificationForDay: (WeekDayType) day hour: (NSInteger) hour minute: (NSInteger) minute {
+    NSDateComponents *dateComponents = [[NSDateComponents alloc]init];
+
+    switch (day) {
+        //dates below are arbitrary. They just need to be some point in the past that corresponds to that weekday.
+        //when we repeat by weekly interval, it will hit us in the right times in the future
+        case Monday: {
+            [self setDateComponents:dateComponents year:2015 month:2 day:23 hour:hour minute:minute];
+            break;
+        }
+        case Tuesday: {
+            [self setDateComponents:dateComponents year:2015 month:2 day:24 hour:hour minute:minute];
+            break;
+        }
+        case Wednesday: {
+            [self setDateComponents:dateComponents year:2015 month:2 day:25 hour:hour minute:minute];
+            break;
+        }
+        case Thursday: {
+            [self setDateComponents:dateComponents year:2015 month:2 day:26 hour:hour minute:minute];
+            break;
+        }
+        case Friday: {
+            [self setDateComponents:dateComponents year:2015 month:2 day:27 hour:hour minute:minute];
+            break;
+        }
+        default:
+            break;
+    }
+    [self fireThisNotificationWeekly:dateComponents];
+}
+
+- (void) setDateComponents: (NSDateComponents *) dateComponents year: (NSInteger) year month:(NSInteger) month day:(NSInteger) day hour:(NSInteger) hour minute:(NSInteger) minute {
+    [dateComponents setYear:year];
+    [dateComponents setMonth:month];
+    [dateComponents setDay:day];
+    [dateComponents setHour:hour];
+    [dateComponents setMinute:minute];
+}
+
+
+- (void) fireThisNotificationWeekly:(NSDateComponents *)dateComponents {
     self.localNotif.timeZone = [[NSCalendar currentCalendar] timeZone];
     self.localNotif.fireDate = [[NSCalendar currentCalendar] dateFromComponents:dateComponents];
     self.localNotif.soundName = UILocalNotificationDefaultSoundName;
-    self.localNotif.repeatInterval = NSWeekdayCalendarUnit;
+    self.localNotif.repeatInterval = NSWeekCalendarUnit;
     self.localNotif.alertBody = @"Did you remember to enter your timesheet today?";
     self.localNotif.alertAction = NSLocalizedString(@"Trackerati", nil);
     self.localNotif.applicationIconBadgeNumber = [UIApplication sharedApplication].applicationIconBadgeNumber + 1;
