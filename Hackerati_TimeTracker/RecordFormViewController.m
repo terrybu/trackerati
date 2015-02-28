@@ -284,11 +284,14 @@
                           toDate:dateFromString options:0];
     
     if ([cutOffDate compare:[NSDate date]] == NSOrderedAscending) {
-        NSLog(@"date1 is earlier than date2");
-        [[[UIAlertView alloc]initWithTitle:@"Error" message:@"Can not send record older than 7 days" delegate:self cancelButtonTitle:@"cancel" otherButtonTitles: nil]show];
+//        NSLog(@"date1 is earlier than date2");
+//        [[[UIAlertView alloc]initWithTitle:@"Error" message:@"Can not send record older than 7 days" delegate:self cancelButtonTitle:@"cancel" otherButtonTitles: nil]show];
+        //another prevention logic for not allowing users to post record that's older than 7 day
+
+        [self submitRecord];
     } else if ([dateFromString compare:[NSDate date]] == NSOrderedDescending){
         NSLog(@"date1 is later than date2");
-        [[[UIAlertView alloc]initWithTitle:@"Warning" message:@"Entered future date. Do you still want to submit ?" delegate:self cancelButtonTitle:@"cancel" otherButtonTitles:@"Send Anyway" ,nil]show];
+        [[[UIAlertView alloc]initWithTitle:@"Warning" message:@"Entered future date. Do you still want to submit ?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Send Anyway" ,nil]show];
     } else {
         [self submitRecord];
     }

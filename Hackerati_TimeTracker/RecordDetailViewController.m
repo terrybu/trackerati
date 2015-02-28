@@ -71,23 +71,26 @@
     [super viewWillAppear:animated];
     [self setElements];
 
-    if (self.record.dateOfTheService) {
-        NSString *dateString = self.record.dateOfTheService;
-        NSDate *dateFromString = [self.formatter dateFromString:dateString];
-        int addDaysCount = 8;
-        NSDateComponents *dateComponents = [[NSDateComponents alloc] init];
-        [dateComponents setDay:addDaysCount];
-        NSDate *cutOffDate = [[NSCalendar currentCalendar]
-                           dateByAddingComponents:dateComponents
-                           toDate:dateFromString options:0];
-        if ([cutOffDate compare:[NSDate date]] == NSOrderedAscending) {
-            self.deletButton.enabled = NO;
-            self.editButton.enabled = NO;
-        } else {
-            self.deletButton.enabled = YES;
-            self.editButton.enabled = YES;
-        }
-    }
+    
+    //Disabling logic for preventing user from editing/deleting records more than 7 days old
+    //We scrapped the need to do this prevention so commenting it out for now
+//    if (self.record.dateOfTheService) {
+//        NSString *dateString = self.record.dateOfTheService;
+//        NSDate *dateFromString = [self.formatter dateFromString:dateString];
+//        int addDaysCount = 8;
+//        NSDateComponents *dateComponents = [[NSDateComponents alloc] init];
+//        [dateComponents setDay:addDaysCount];
+//        NSDate *cutOffDate = [[NSCalendar currentCalendar]
+//                           dateByAddingComponents:dateComponents
+//                           toDate:dateFromString options:0];
+//        if ([cutOffDate compare:[NSDate date]] == NSOrderedAscending) {
+//            self.deletButton.enabled = NO;
+//            self.editButton.enabled = NO;
+//        } else {
+//            self.deletButton.enabled = YES;
+//            self.editButton.enabled = YES;
+//        }
+//    }
     
 }
 
@@ -131,7 +134,7 @@
 }
 
 - (IBAction)deleteButtonAction:(id)sender {
-    [[[UIAlertView alloc]initWithTitle:@"Delete" message:@"Are you sure you want to delete this record ?" delegate:self cancelButtonTitle:@"cancel" otherButtonTitles:@"delete", nil] show];
+    [[[UIAlertView alloc]initWithTitle:@"Delete" message:@"Are you sure you want to delete this record ?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"delete", nil] show];
 }
 
 - (void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
