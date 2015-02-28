@@ -50,6 +50,7 @@
             self.reminderExactTimeLabel.text = [NSString stringWithFormat:@"Currently Set: %@", date];
         }
         else {
+            //just set default placeholder
             self.reminderExactTimeLabel.text = @"Currently Set: 06:00 PM";
         }
     }

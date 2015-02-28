@@ -39,16 +39,18 @@
 - (void) refreshNotificationsSettings {
     bool remindersOn = [[NSUserDefaults standardUserDefaults]boolForKey:kRemindersOn];
     if (remindersOn) {
+        self.localNotif = [[UILocalNotification alloc] init];
         [self scheduleNotificationsWithSavedSettings];
     }
     else if (remindersOn == NO){
         bool ranAppBefore = [[NSUserDefaults standardUserDefaults]boolForKey:kRanAppBeforeCheck];
         if (ranAppBefore) {
-            NSLog(@"didn't want reminders - turning it off");
-            [[UIApplication sharedApplication] cancelAllLocalNotifications];
+            NSLog(@"User had reminders turned off in settings");
+            [[UIApplication sharedApplication] cancelAllLocalNotifications]; //clear out all just in case
         }
         else {
             NSLog(@"this is first time we are running the app - turn on daily reminder by default");
+            self.localNotif = [[UILocalNotification alloc] init];
             [[NSUserDefaults standardUserDefaults]setBool:YES forKey:kRemindersOn];
             [self firstTimeRunSettings];
         }
@@ -56,10 +58,9 @@
 }
 
 - (void) firstTimeRunSettings {
-    self.localNotif = [[UILocalNotification alloc] init];
     NSDate *today = [NSDate date];
     NSDateComponents *dateComponents = [[NSCalendar currentCalendar] components:NSCalendarUnitDay | NSCalendarUnitMonth | NSCalendarUnitYear fromDate:today];
-    NSLog(@"setting default value at 6PM");
+    NSLog(@"setting daily reminder at 6PM by default for first run");
     [dateComponents setHour:18];
     [dateComponents setMinute:0];
     [[NSUserDefaults standardUserDefaults]setInteger:18 forKey:kReminderHourSaved];
@@ -68,8 +69,6 @@
 }
 
 - (void) scheduleNotificationsWithSavedSettings {
-    self.localNotif = [[UILocalNotification alloc] init];
-    
     NSDate *today = [NSDate date];
     NSDateComponents *dateComponents = [[NSCalendar currentCalendar] components:NSCalendarUnitDay | NSCalendarUnitMonth | NSCalendarUnitYear fromDate:today];
     NSInteger savedHour = [[NSUserDefaults standardUserDefaults]integerForKey:kReminderHourSaved];
@@ -87,7 +86,7 @@
     self.localNotif.timeZone = [[NSCalendar currentCalendar] timeZone];
     self.localNotif.fireDate = [[NSCalendar currentCalendar] dateFromComponents:dateComponents];
     self.localNotif.soundName = UILocalNotificationDefaultSoundName;
-    self.localNotif.repeatInterval = NSDayCalendarUnit;
+    self.localNotif.repeatInterval = NSWeekdayCalendarUnit;
     self.localNotif.alertBody = @"Did you remember to enter your timesheet today?";
     self.localNotif.alertAction = NSLocalizedString(@"Trackerati", nil);
     self.localNotif.applicationIconBadgeNumber = [UIApplication sharedApplication].applicationIconBadgeNumber + 1;

@@ -68,7 +68,10 @@
          (UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert)];
     }
     [DailyNotificationManager sharedManager];
-    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kRanAppBeforeCheck];
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:kRanAppBeforeCheck] == NO) {
+        NSLog(@"first time we are running the app - set the bool");
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kRanAppBeforeCheck];
+    }
 }
 
 - (BOOL)application: (UIApplication *)application
