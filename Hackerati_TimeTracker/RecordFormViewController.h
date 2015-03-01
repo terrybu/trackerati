@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "Record.h"
 
-@interface RecordFormViewController : UIViewController
+@interface RecordFormViewController : UIViewController <UITextViewDelegate>
 
 @property (copy, nonatomic) NSString *clientName;
 @property (copy, nonatomic) NSString *projectName;

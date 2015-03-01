@@ -43,9 +43,11 @@
 
 -(NSDictionary*)getRecordForClient:(NSString*)client withProject:(NSString*)project{
     NSArray* lastSavedInfo =[[NSUserDefaults standardUserDefaults] objectForKey:[HConstants kLastSavedRecord]];
+    NSLog(lastSavedInfo.description);
     __block NSDictionary*record = nil;
     [lastSavedInfo enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop){
         NSDictionary *tempRecord = (NSDictionary*)obj;
+        NSLog(tempRecord.description);
         if ([[tempRecord objectForKey:[HConstants kClient]]isEqualToString:client] && [[tempRecord objectForKey:[HConstants kProject]]isEqualToString:project]) {
             record = tempRecord;
             *stop = YES;

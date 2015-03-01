@@ -16,8 +16,10 @@
 #import "IQDropDownTextField.h"
 #import "RecordDetailViewController.h"
 
+static NSString* const placeHolderForTextView =  @"Tap out while typing to scroll page back up";
 
 @interface RecordFormViewController ()<THDatePickerDelegate,UITextViewDelegate,IQDropDownTextFieldDelegate>
+
 
 @property (strong, nonatomic) THDatePickerViewController *datePicker;
 @property (nonatomic, strong) NSDate * curDate;
@@ -57,6 +59,9 @@
     self.commentTextView.clipsToBounds = YES;
     [self.commentTextView.layer setBorderWidth:0.5f];
     [self.commentTextView.layer setBorderColor:[UIColor grayColor].CGColor];
+    self.commentTextView.delegate = self;
+    self.commentTextView.text = placeHolderForTextView;
+    self.commentTextView.textColor = [UIColor lightGrayColor]; //optional
     
     self.submitRecordButton.layer.cornerRadius = 5.0f;
     self.submitRecordButton.clipsToBounds = YES;
@@ -80,30 +85,23 @@
     [toolbar sizeToFit];
     UIBarButtonItem *buttonflexible = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
     UIBarButtonItem *buttonDone = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneClicked:)];
+    buttonDone.tintColor = [UIColor whiteColor];
     
     [toolbar setItems:[NSArray arrayWithObjects:buttonflexible,buttonDone, nil]];
     self.hourTextField.inputAccessoryView = toolbar;
     
     self.hourTextField.isOptionalDropDown = NO;
-    [self.hourTextField setItemList:[NSArray arrayWithObjects:@"0.5",@"1.0",@"1.5",@"2.0",@"2.5",@"3.0",@"3.5",@"4.0",@"4.5",@"5.0",@"5.5",@"6.0",@"6.5",@"7.0",@"7.5",@"8.0",@"8.5",@"9.0",@"9.5",@"10.0", @"10.5",@"11.0",@"11.5",@"12.0",@"12.5",@"13.0",@"13.5",@"14.0",@"14.5",@"15.0",@"15.5",@"16.0",@"16.5",@"17.0",@"17.5",@"18.0",@"18.5",@"19.0",@"19.5",@"20.0",@"20.5",@"21.0",@"21.5",@"22.0",@"22.5",@"23.0",@"23.5",@"24.0",nil]];
+    NSArray *arrayOfHourOptions = [NSArray arrayWithObjects:@"0.5",@"1.0",@"1.5",@"2.0",@"2.5",@"3.0",@"3.5",@"4.0",@"4.5",@"5.0",@"5.5",@"6.0",@"6.5",@"7.0",@"7.5",@"8.0",@"8.5",@"9.0",@"9.5",@"10.0", @"10.5",@"11.0",@"11.5",@"12.0",@"12.5",@"13.0",@"13.5",@"14.0",@"14.5",@"15.0",@"15.5",@"16.0",@"16.5",@"17.0",@"17.5",@"18.0",@"18.5",@"19.0",@"19.5",@"20.0",@"20.5",@"21.0",@"21.5",@"22.0",@"22.5",@"23.0",@"23.5",@"24.0",nil];
+    [self.hourTextField setItemList:arrayOfHourOptions];
     
-}
-
--(void)doneClicked:(UIBarButtonItem*)button{
-    [self.view endEditing:YES];
-    self.navigationItem.leftBarButtonItem.enabled = YES;
-    self.isDatePickerShowing = NO;
-}
-
-- (void)textFieldDidBeginEditing:(UITextField *)textField{
-    self.navigationItem.leftBarButtonItem.enabled = NO;
-    self.isDatePickerShowing = YES;
-}
-
-- (void)textFieldDidEndEditing:(UITextField *)textField{
-    [self.view endEditing:YES];
-    self.navigationItem.leftBarButtonItem.enabled = YES;
-    self.isDatePickerShowing = NO;
+    NSDictionary *lastSavedRecord = [[LastSavedManager sharedManager]getRecordForClient:self.clientName withProject:self.projectName];
+    if (lastSavedRecord != nil && [lastSavedRecord objectForKey:[HConstants kHour]]) {
+        [self.hourTextField setSelectedRow:[arrayOfHourOptions indexOfObject:[lastSavedRecord objectForKey:[HConstants kHour]]]];
+    }
+    else {
+        [self.hourTextField setSelectedRow:[arrayOfHourOptions indexOfObject:@"8.0"]];
+    }
+    
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -115,18 +113,39 @@
         self.projectLabel.text = self.projectName;
         self.clientLabel.text = self.clientName;
         [self.dateButton setTitle:[self.formatter stringFromDate:[NSDate date]] forState:UIControlStateNormal];
-        self.hourTextField.text = @"8.0";
         [self.statusButton setTitle:[HConstants kFullTimeEmployee] forState:UIControlStateNormal];
         [self.typeButton setTitle:[HConstants kBillableHour] forState:UIControlStateNormal];
+        self.hourTextField.text = @"8.0";
         
-        NSDictionary *lastSavedRecord = [[LastSavedManager sharedManager]getRecordForClient:self.clientLabel.text withProject:self.self.projectLabel.text];
-        if ([lastSavedRecord objectForKey:[HConstants kComment]]) {
-            self.commentTextView.text = [lastSavedRecord objectForKey:[HConstants kComment]];
-        } else{
-            self.commentTextView.text = nil;
+        NSDictionary *lastSavedRecord = [[LastSavedManager sharedManager]getRecordForClient:self.clientName withProject:self.projectName];
+        
+        if (lastSavedRecord != nil) {
+            if ([lastSavedRecord objectForKey:[HConstants kStatus]]) {
+                if ([[lastSavedRecord objectForKey:[HConstants kStatus]] isEqualToString:@"1"])
+                    [self.statusButton setTitle:[HConstants kFullTimeEmployee] forState:UIControlStateNormal];
+                else
+                    [self.statusButton setTitle:[HConstants kPartTimeEmployee] forState:UIControlStateNormal];
+
+            }
+            if ([lastSavedRecord objectForKey:[HConstants kType]]) {
+                if ([[lastSavedRecord objectForKey:[HConstants kType]] isEqualToString:@"1"])
+                    [self.typeButton setTitle:[HConstants kBillableHour] forState:UIControlStateNormal];
+                else
+                    [self.typeButton setTitle:[HConstants kUnbillableHour] forState:UIControlStateNormal];
+            }
+            if ([lastSavedRecord objectForKey:[HConstants kHour]]) {
+                self.hourTextField.text = [lastSavedRecord objectForKey:[HConstants kHour]];
+            }
+            
+            if ([lastSavedRecord objectForKey:[HConstants kComment]]) {
+                self.commentTextView.text = [lastSavedRecord objectForKey:[HConstants kComment]];
+            }
+            else{
+                self.commentTextView.text = placeHolderForTextView;
+            }
         }
-        
-    } else{
+    }
+    else{
         self.projectLabel.text = self.projectName = self.existingRecord.projectName;
         self.clientLabel.text = self.clientName = self.existingRecord.clientName;
         [self.dateButton setTitle:self.existingRecord.dateOfTheService forState:UIControlStateNormal];
@@ -148,6 +167,62 @@
         }
     }
 }
+
+-(void)doneClicked:(UIBarButtonItem*)button{
+    [self.view endEditing:YES];
+    self.navigationItem.leftBarButtonItem.enabled = YES;
+    self.isDatePickerShowing = NO;
+}
+
+- (void)textFieldDidBeginEditing:(UITextField *)textField{
+    self.navigationItem.leftBarButtonItem.enabled = NO;
+    self.isDatePickerShowing = YES;
+}
+
+- (void)textFieldDidEndEditing:(UITextField *)textField{
+    [self.view endEditing:YES];
+    self.navigationItem.leftBarButtonItem.enabled = YES;
+    self.isDatePickerShowing = NO;
+}
+
+
+
+#pragma mark TextView Delegate Methods
+
+- (BOOL)textViewShouldBeginEditing:(UITextView *)textView{
+    
+    [self.mainScrollView setContentOffset:CGPointMake(0, 150) animated:YES];
+    return YES;
+}
+
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text{
+    
+    BOOL reachedLimit = true;
+    
+    if ([[textView text] length] - range.length + text.length > 300)
+        reachedLimit = false;
+    return reachedLimit;
+}
+
+- (void)textViewDidBeginEditing:(UITextView *)textView
+{
+    if ([textView.text isEqualToString:placeHolderForTextView]) {
+        textView.text = @"";
+        textView.textColor = [UIColor blackColor]; //optional
+    }
+    [textView becomeFirstResponder];
+}
+
+- (void)textViewDidEndEditing:(UITextView *)textView
+{
+    if ([textView.text isEqualToString:@""]) {
+        textView.text = placeHolderForTextView;
+        textView.textColor = [UIColor lightGrayColor]; //optional
+    }
+    [textView resignFirstResponder];
+}
+
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -233,8 +308,9 @@
         NSData *currentUserRecordsData = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants kSanitizedCurrentUserRecords]];
         NSDictionary* currentUserRecordsDictionary = [NSKeyedUnarchiver unarchiveObjectWithData:currentUserRecordsData];
         if ([currentUserRecordsDictionary objectForKey:self.dateButton.titleLabel.text]) {
-            [[[UIAlertView alloc] initWithTitle:@"Warning" message:[NSString stringWithFormat: @"You already sent a record for %@. Do you still want to send this ?",self.dateButton.titleLabel.text] delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Send", nil] show];
-        } else{
+            [[[UIAlertView alloc] initWithTitle:@"Warning" message:[NSString stringWithFormat: @"You already sent a record for %@. Do you still want to send this ?",self.dateButton.titleLabel.text] delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Send Anyway", nil] show];
+        }
+        else{
             [self checkDate];
         }
     }
@@ -253,20 +329,7 @@
     }
 }
 
-- (BOOL)textViewShouldBeginEditing:(UITextView *)textView{
 
-    [self.mainScrollView setContentOffset:CGPointMake(0, 150) animated:YES];
-    return YES;
-}
-
-- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text{
-    
-    BOOL reachedLimit = true;
-    
-    if ([[textView text] length] - range.length + text.length > 300)
-        reachedLimit = false;
-    return reachedLimit;
-}
 
 -(void)tapAction{
     [self.view endEditing:YES];
@@ -289,10 +352,12 @@
         //another prevention logic for not allowing users to post record that's older than 7 day
 
         [self submitRecord];
-    } else if ([dateFromString compare:[NSDate date]] == NSOrderedDescending){
+    }
+    else if ([dateFromString compare:[NSDate date]] == NSOrderedDescending){
         NSLog(@"date1 is later than date2");
         [[[UIAlertView alloc]initWithTitle:@"Warning" message:@"Entered future date. Do you still want to submit ?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Send Anyway" ,nil]show];
-    } else {
+    }
+    else {
         [self submitRecord];
     }
 
@@ -300,53 +365,67 @@
 
 -(void)submitRecord{
     
+    if ([self.commentTextView.text isEqualToString: placeHolderForTextView])
+        self.commentTextView.text = @"";
+    
     if ([self.hourTextField.text isEqualToString:@"0.0"]) {
         [[[UIAlertView alloc]initWithTitle:@"Error" message:@"You can not submit 0 hour" delegate:nil cancelButtonTitle:@"Cancel" otherButtonTitles: nil] show];
-    }else{
-        if (self.isNewRecord) {
-            self.fireBase = [FireBaseManager recordURLsharedFireBase];
-            if (self.commentTextView.text && ([self.commentTextView.text length] > 0)) {
-                [[self.fireBase childByAutoId] setValue:@{[HConstants kClient]:self.clientName,[HConstants kDate]:self.dateButton.titleLabel.text,[HConstants kHour]:self.hourTextField.text,[HConstants kProject]:self.projectName,[HConstants kComment]:self.commentTextView.text,[HConstants kStatus]:(([self.statusButton.titleLabel.text isEqualToString:[HConstants kFullTimeEmployee]])?@"1":@"0"),[HConstants kType]:(([self.typeButton.titleLabel.text isEqualToString:[HConstants kBillableHour]])?@"1":@"0")}];
-                [[LastSavedManager sharedManager] saveRecord:@{[HConstants kClient]:self.clientName,[HConstants kDate]:self.dateButton.titleLabel.text,[HConstants kHour]:self.hourTextField.text,[HConstants kProject]:self.projectName,[HConstants kStatus]:(([self.statusButton.titleLabel.text isEqualToString:[HConstants kFullTimeEmployee]])?@"1":@"0"),[HConstants kType]:(([self.typeButton.titleLabel.text isEqualToString:[HConstants kBillableHour]])?@"1":@"0"),[HConstants kComment]:self.commentTextView.text}];
-            } else{
-                [[self.fireBase childByAutoId] setValue:@{[HConstants kClient]:self.clientName,[HConstants kDate]:self.dateButton.titleLabel.text,[HConstants kHour]:self.hourTextField.text,[HConstants kProject]:self.projectName,[HConstants kStatus]:(([self.statusButton.titleLabel.text isEqualToString:[HConstants kFullTimeEmployee]])?@"1":@"0"),[HConstants kType]:(([self.typeButton.titleLabel.text isEqualToString:[HConstants kBillableHour]])?@"1":@"0")}];
-                [[LastSavedManager sharedManager] saveRecord:@{[HConstants kClient]:self.clientName,[HConstants kDate]:self.dateButton.titleLabel.text,[HConstants kHour]:self.hourTextField.text,[HConstants kProject]:self.projectName,[HConstants kStatus]:(([self.statusButton.titleLabel.text isEqualToString:[HConstants kFullTimeEmployee]])?@"1":@"0"),[HConstants kType]:(([self.typeButton.titleLabel.text isEqualToString:[HConstants kBillableHour]])?@"1":@"0")}];
-            }
-        } else{
-            NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants kCurrentUser]];
-            NSString *uniqueAddress = self.existingRecord.uniqueFireBaseIdentifier;
-            self.fireBase = [[Firebase alloc]initWithUrl:[NSString stringWithFormat:@"%@/Users/%@/records/%@",[HConstants kFireBaseURL],username,uniqueAddress]];
-            if (self.commentTextView.text && ([self.commentTextView.text length] > 0)) {
-                [self.fireBase updateChildValues:@{[HConstants kClient]:self.clientName,[HConstants kDate]:self.dateButton.titleLabel.text,[HConstants kHour]:self.hourTextField.text,[HConstants kProject]:self.projectName,[HConstants kComment]:self.commentTextView.text,[HConstants kStatus]:(([self.statusButton.titleLabel.text isEqualToString:[HConstants kFullTimeEmployee]])?@"1":@"0"),[HConstants kType]:(([self.typeButton.titleLabel.text isEqualToString:[HConstants kBillableHour]])?@"1":@"0")}];
-                [[LastSavedManager sharedManager] saveRecord:@{[HConstants kClient]:self.clientName,[HConstants kDate]:self.dateButton.titleLabel.text,[HConstants kHour]:self.hourTextField.text,[HConstants kProject]:self.projectName,[HConstants kStatus]:(([self.statusButton.titleLabel.text isEqualToString:[HConstants kFullTimeEmployee]])?@"1":@"0"),[HConstants kType]:(([self.typeButton.titleLabel.text isEqualToString:[HConstants kBillableHour]])?@"1":@"0"),[HConstants kComment]:self.commentTextView.text}];
-            } else{
-                [self.fireBase updateChildValues:@{[HConstants kClient]:self.clientName,[HConstants kDate]:self.dateButton.titleLabel.text,[HConstants kHour]:self.hourTextField.text,[HConstants kProject]:self.projectName,[HConstants kStatus]:(([self.statusButton.titleLabel.text isEqualToString:[HConstants kFullTimeEmployee]])?@"1":@"0"),[HConstants kType]:(([self.typeButton.titleLabel.text isEqualToString:[HConstants kBillableHour]])?@"1":@"0"),[HConstants kComment]:@""}];
-                [[LastSavedManager sharedManager] saveRecord:@{[HConstants kClient]:self.clientName,[HConstants kDate]:self.dateButton.titleLabel.text,[HConstants kHour]:self.hourTextField.text,[HConstants kProject]:self.projectName,[HConstants kStatus]:(([self.statusButton.titleLabel.text isEqualToString:[HConstants kFullTimeEmployee]])?@"1":@"0"),[HConstants kType]:(([self.typeButton.titleLabel.text isEqualToString:[HConstants kBillableHour]])?@"1":@"0"),[HConstants kComment]:@""}];
-            }
-        }
-        [[DataParseManager sharedManager] getUserRecords];
-        if (self.previousViewController && self.previousViewController.navigationController) {
-            if ([self.previousViewController isKindOfClass:[RecordDetailViewController class]]) {
-                //this needs to be updated later .. a temporary solution to show some Record detail information for previous view controller after EDIT
-                //Ethan originally used LastSavedManager to do this - but with Record model integration, some of that code needs to change there
-                RecordDetailViewController *recordDetailVC = (RecordDetailViewController *) self.previousViewController;
-                Record *tempRecordForRecordDetail = [[Record alloc]init];
-                tempRecordForRecordDetail.clientName = self.clientName;
-                tempRecordForRecordDetail.projectName = self.projectName;
-                tempRecordForRecordDetail.uniqueFireBaseIdentifier = self.existingRecord.uniqueFireBaseIdentifier;
-                tempRecordForRecordDetail.dateOfTheService = self.dateButton.titleLabel.text;
-                tempRecordForRecordDetail.hourOfTheService = self.hourTextField.text;
-                tempRecordForRecordDetail.commentOnService = self.commentTextView.text;
-                tempRecordForRecordDetail.statusOfUser = ([self.statusButton.titleLabel.text isEqualToString:[HConstants kFullTimeEmployee]])?@"1":@"0";
-                tempRecordForRecordDetail.typeOfService = ([self.typeButton.titleLabel.text isEqualToString:[HConstants kBillableHour]])?@"1":@"0";
-                recordDetailVC.record = tempRecordForRecordDetail;
-                [self.previousViewController.navigationController popViewControllerAnimated:YES];
-            }
-        }else {
-            [self.navigationController popViewControllerAnimated:YES];
-        }
-        
+        return;
     }
     
+    if (self.isNewRecord) {
+        self.fireBase = [FireBaseManager recordURLsharedFireBase];
+        if (self.commentTextView.text && ([self.commentTextView.text length] > 0)) {
+            [[self.fireBase childByAutoId] setValue:@{[HConstants kClient]:self.clientName,[HConstants kDate]:self.dateButton.titleLabel.text,[HConstants kHour]:self.hourTextField.text,[HConstants kProject]:self.projectName,[HConstants kComment]:self.commentTextView.text,[HConstants kStatus]:(([self.statusButton.titleLabel.text isEqualToString:[HConstants kFullTimeEmployee]])?@"1":@"0"),[HConstants kType]:(([self.typeButton.titleLabel.text isEqualToString:[HConstants kBillableHour]])?@"1":@"0")}];
+            NSDictionary *recordDictionary = @{[HConstants kClient]:self.clientName,[HConstants kDate]:self.dateButton.titleLabel.text,[HConstants kHour]:self.hourTextField.text,[HConstants kProject]:self.projectName,[HConstants kStatus]:(([self.statusButton.titleLabel.text isEqualToString:[HConstants kFullTimeEmployee]])?@"1":@"0"),[HConstants kType]:(([self.typeButton.titleLabel.text isEqualToString:[HConstants kBillableHour]])?@"1":@"0"),[HConstants kComment]:self.commentTextView.text};
+            [[LastSavedManager sharedManager] saveRecord:recordDictionary];
+        }
+        else{
+            [[self.fireBase childByAutoId] setValue:@{[HConstants kClient]:self.clientName,[HConstants kDate]:self.dateButton.titleLabel.text,[HConstants kHour]:self.hourTextField.text,[HConstants kProject]:self.projectName,[HConstants kStatus]:(([self.statusButton.titleLabel.text isEqualToString:[HConstants kFullTimeEmployee]])?@"1":@"0"),[HConstants kType]:(([self.typeButton.titleLabel.text isEqualToString:[HConstants kBillableHour]])?@"1":@"0")}];
+            NSDictionary *recordDictionary = @{[HConstants kClient]:self.clientName,[HConstants kDate]:self.dateButton.titleLabel.text,[HConstants kHour]:self.hourTextField.text,[HConstants kProject]:self.projectName,[HConstants kStatus]:(([self.statusButton.titleLabel.text isEqualToString:[HConstants kFullTimeEmployee]])?@"1":@"0"),[HConstants kType]:(([self.typeButton.titleLabel.text isEqualToString:[HConstants kBillableHour]])?@"1":@"0")};
+            [[LastSavedManager sharedManager] saveRecord:recordDictionary];
+        }
+    }
+    else{
+        NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants kCurrentUser]];
+        NSString *uniqueAddress = self.existingRecord.uniqueFireBaseIdentifier;
+        self.fireBase = [[Firebase alloc]initWithUrl:[NSString stringWithFormat:@"%@/Users/%@/records/%@",[HConstants kFireBaseURL],username,uniqueAddress]];
+        if (self.commentTextView.text && ([self.commentTextView.text length] > 0)) {
+            [self.fireBase updateChildValues:@{[HConstants kClient]:self.clientName,[HConstants kDate]:self.dateButton.titleLabel.text,[HConstants kHour]:self.hourTextField.text,[HConstants kProject]:self.projectName,[HConstants kComment]:self.commentTextView.text,[HConstants kStatus]:(([self.statusButton.titleLabel.text isEqualToString:[HConstants kFullTimeEmployee]])?@"1":@"0"),[HConstants kType]:(([self.typeButton.titleLabel.text isEqualToString:[HConstants kBillableHour]])?@"1":@"0")}];
+            [[LastSavedManager sharedManager] saveRecord:@{[HConstants kClient]:self.clientName,[HConstants kDate]:self.dateButton.titleLabel.text,[HConstants kHour]:self.hourTextField.text,[HConstants kProject]:self.projectName,[HConstants kStatus]:(([self.statusButton.titleLabel.text isEqualToString:[HConstants kFullTimeEmployee]])?@"1":@"0"),[HConstants kType]:(([self.typeButton.titleLabel.text isEqualToString:[HConstants kBillableHour]])?@"1":@"0"),[HConstants kComment]:self.commentTextView.text}];
+        }
+        else{
+            [self.fireBase updateChildValues:@{[HConstants kClient]:self.clientName,[HConstants kDate]:self.dateButton.titleLabel.text,[HConstants kHour]:self.hourTextField.text,[HConstants kProject]:self.projectName,[HConstants kStatus]:(([self.statusButton.titleLabel.text isEqualToString:[HConstants kFullTimeEmployee]])?@"1":@"0"),[HConstants kType]:(([self.typeButton.titleLabel.text isEqualToString:[HConstants kBillableHour]])?@"1":@"0"),[HConstants kComment]:@""}];
+            [[LastSavedManager sharedManager] saveRecord:@{[HConstants kClient]:self.clientName,[HConstants kDate]:self.dateButton.titleLabel.text,[HConstants kHour]:self.hourTextField.text,[HConstants kProject]:self.projectName,[HConstants kStatus]:(([self.statusButton.titleLabel.text isEqualToString:[HConstants kFullTimeEmployee]])?@"1":@"0"),[HConstants kType]:(([self.typeButton.titleLabel.text isEqualToString:[HConstants kBillableHour]])?@"1":@"0"),[HConstants kComment]:@""}];
+        }
+    }
+    [[DataParseManager sharedManager] getUserRecords];
+    if (self.previousViewController && self.previousViewController.navigationController) {
+        if ([self.previousViewController isKindOfClass:[RecordDetailViewController class]]) {
+            //a temporary solution to show some Record detail information for previous view controller after EDIT
+            //Ethan originally used LastSavedManager to do this - but with Record model integration, some of that code needed to change
+            RecordDetailViewController *recordDetailVC = (RecordDetailViewController *) self.previousViewController;
+            Record *tempRecordForRecordDetail = [[Record alloc]init];
+            tempRecordForRecordDetail.clientName = self.clientName;
+            tempRecordForRecordDetail.projectName = self.projectName;
+            tempRecordForRecordDetail.uniqueFireBaseIdentifier = self.existingRecord.uniqueFireBaseIdentifier;
+            tempRecordForRecordDetail.dateOfTheService = self.dateButton.titleLabel.text;
+            tempRecordForRecordDetail.hourOfTheService = self.hourTextField.text;
+            tempRecordForRecordDetail.commentOnService = self.commentTextView.text;
+            tempRecordForRecordDetail.statusOfUser = ([self.statusButton.titleLabel.text isEqualToString:[HConstants kFullTimeEmployee]])?@"1":@"0";
+            tempRecordForRecordDetail.typeOfService = ([self.typeButton.titleLabel.text isEqualToString:[HConstants kBillableHour]])?@"1":@"0";
+            recordDetailVC.record = tempRecordForRecordDetail;
+            [self.previousViewController.navigationController popViewControllerAnimated:YES];
+        }
+    }
+    else {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+
+//Reset placeHolder text
+    self.commentTextView.text = placeHolderForTextView;
 }
+
+
+
 @end
