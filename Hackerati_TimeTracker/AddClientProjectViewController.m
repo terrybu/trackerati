@@ -13,7 +13,6 @@
 
 @interface AddClientProjectViewController () {
     NSMutableArray *autoCompleteClientNamesArray;
-    UITableView *autocompleteTableView;
 }
 
 @property (weak, nonatomic) IBOutlet UITextField *clientTitleTextField;
@@ -32,13 +31,9 @@
     UIBarButtonItem *plusButton = [[UIBarButtonItem alloc]initWithTitle:@"Save" style:UIBarButtonItemStylePlain target:self action:@selector(saveNewClientProjectAndPopVC)];
     self.navigationItem.rightBarButtonItem = plusButton;
     
-    autocompleteTableView = [[UITableView alloc] initWithFrame:
-                             CGRectMake(0, 200, self.view.frame.size.width * 0.6, self.view.frame.size.height) style:UITableViewStylePlain];
-    autocompleteTableView.delegate = self;
-    autocompleteTableView.dataSource = self;
-    autocompleteTableView.scrollEnabled = YES;
-    autocompleteTableView.hidden = YES;
-    [self.view addSubview:autocompleteTableView];
+    self.autoCompleteTableview.scrollEnabled = YES;
+    self.autoCompleteTableview.hidden = YES;
+    [self.view addSubview:self.autoCompleteTableview];
     
     autoCompleteClientNamesArray = [[NSMutableArray alloc]init];
 }
@@ -46,7 +41,7 @@
 - (BOOL)textField:(UITextField *)textField
 shouldChangeCharactersInRange:(NSRange)range
 replacementString:(NSString *)string {
-    autocompleteTableView.hidden = NO;
+    self.autoCompleteTableview.hidden = NO;
     NSString *substring = [NSString stringWithString:textField.text];
     substring = [substring
                  stringByReplacingCharactersInRange:range withString:string];
@@ -65,7 +60,7 @@ replacementString:(NSString *)string {
             [autoCompleteClientNamesArray addObject:curString];
         }
     }
-    [autocompleteTableView reloadData];
+    [self.autoCompleteTableview reloadData];
 }
 
 

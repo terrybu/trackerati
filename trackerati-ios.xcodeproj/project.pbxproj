@@ -30,7 +30,6 @@
 		CE07C0651A5B966100A3B961 /* FireBaseManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CE07C0641A5B966100A3B961 /* FireBaseManager.m */; };
 		CE07C0681A5B9D3E00A3B961 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = CE07C0671A5B9D3E00A3B961 /* Reachability.m */; };
 		CE07C06B1A5BAA9B00A3B961 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE07C0691A5BAA9B00A3B961 /* CFNetwork.framework */; };
-		CE07C06C1A5BAA9B00A3B961 /* NetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE07C06A1A5BAA9B00A3B961 /* NetworkExtension.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		CE07C06D1A5BAE9A00A3B961 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE07C04A1A5B05F600A3B961 /* SystemConfiguration.framework */; };
 		CE07C08F1A5C6C4200A3B961 /* HistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE07C08D1A5C6C4100A3B961 /* HistoryViewController.m */; };
 		CE07C0901A5C6C4200A3B961 /* HistoryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE07C08E1A5C6C4100A3B961 /* HistoryViewController.xib */; };
@@ -121,7 +120,6 @@
 		CE07C0661A5B9D3E00A3B961 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
 		CE07C0671A5B9D3E00A3B961 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		CE07C0691A5BAA9B00A3B961 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
-		CE07C06A1A5BAA9B00A3B961 /* NetworkExtension.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NetworkExtension.framework; path = System/Library/Frameworks/NetworkExtension.framework; sourceTree = SDKROOT; };
 		CE07C08C1A5C6C4100A3B961 /* HistoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HistoryViewController.h; sourceTree = "<group>"; };
 		CE07C08D1A5C6C4100A3B961 /* HistoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HistoryViewController.m; sourceTree = "<group>"; };
 		CE07C08E1A5C6C4100A3B961 /* HistoryViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HistoryViewController.xib; sourceTree = "<group>"; };
@@ -192,7 +190,6 @@
 		D944F2BB1A96A9CC0046A91B /* AddClientProjectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddClientProjectViewController.h; sourceTree = "<group>"; };
 		D944F2BC1A96A9CC0046A91B /* AddClientProjectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddClientProjectViewController.m; sourceTree = "<group>"; };
 		D944F2BD1A96A9CC0046A91B /* AddClientProjectViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddClientProjectViewController.xib; sourceTree = "<group>"; };
-		D973CEC51AA4C68400256A72 /* trackerati-ios.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "trackerati-ios.entitlements"; sourceTree = "<group>"; };
 		D9CA83A71A9F99B5009B6424 /* DrawerCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawerCell.h; sourceTree = "<group>"; };
 		D9CA83A81A9F99B5009B6424 /* DrawerCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DrawerCell.m; sourceTree = "<group>"; };
 		D9CA83A91A9F99B5009B6424 /* DrawerCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DrawerCell.xib; sourceTree = "<group>"; };
@@ -210,7 +207,6 @@
 				CE07C0BB1A5F29AF00A3B961 /* MobileCoreServices.framework in Frameworks */,
 				CE07C06D1A5BAE9A00A3B961 /* SystemConfiguration.framework in Frameworks */,
 				CE07C06B1A5BAA9B00A3B961 /* CFNetwork.framework in Frameworks */,
-				CE07C06C1A5BAA9B00A3B961 /* NetworkExtension.framework in Frameworks */,
 				CE07C05F1A5B74F400A3B961 /* CoreData.framework in Frameworks */,
 				CE07C04D1A5B05FB00A3B961 /* UIKit.framework in Frameworks */,
 				CE07C0491A5B05EA00A3B961 /* Security.framework in Frameworks */,
@@ -365,7 +361,6 @@
 		CED58C0E1A5ADAB3001C343B = {
 			isa = PBXGroup;
 			children = (
-				D973CEC51AA4C68400256A72 /* trackerati-ios.entitlements */,
 				CED58C191A5ADAB3001C343B /* Hackerati_TimeTracker */,
 				CED58C331A5ADAB3001C343B /* Hackerati_TimeTrackerTests */,
 				CED58C181A5ADAB3001C343B /* Products */,
@@ -474,7 +469,6 @@
 				CE07C0BC1A5F29B700A3B961 /* QuickLook.framework */,
 				CE07C0BA1A5F29AF00A3B961 /* MobileCoreServices.framework */,
 				CE07C0691A5BAA9B00A3B961 /* CFNetwork.framework */,
-				CE07C06A1A5BAA9B00A3B961 /* NetworkExtension.framework */,
 				CE07C05E1A5B74F400A3B961 /* CoreData.framework */,
 				CE07C04C1A5B05FB00A3B961 /* UIKit.framework */,
 				CE07C04A1A5B05F600A3B961 /* SystemConfiguration.framework */,
@@ -545,6 +539,11 @@
 					CED58C161A5ADAB3001C343B = {
 						CreatedOnToolsVersion = 6.1.1;
 						DevelopmentTeam = JJ62WG39RU;
+						SystemCapabilities = {
+							com.apple.VPNLite = {
+								enabled = 0;
+							};
+						};
 					};
 					CED58C2F1A5ADAB3001C343B = {
 						CreatedOnToolsVersion = 6.1.1;
@@ -807,7 +806,6 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_ENTITLEMENTS = "trackerati-ios.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -820,7 +818,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "trackerati-ios";
 				PROVISIONING_PROFILE = "";
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -830,7 +828,6 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_ENTITLEMENTS = "trackerati-ios.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -844,7 +841,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "trackerati-ios";
 				PROVISIONING_PROFILE = "";
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};

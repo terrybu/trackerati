@@ -12,4 +12,6 @@
 
 @property (strong, nonatomic)  NSMutableArray *clientNames;
 
+@property (weak, nonatomic) IBOutlet UITableView *autoCompleteTableview;
+
 @end

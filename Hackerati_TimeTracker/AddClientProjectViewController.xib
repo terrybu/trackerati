@@ -7,6 +7,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AddClientProjectViewController">
             <connections>
+                <outlet property="autoCompleteTableview" destination="QI7-29-GMa" id="HjP-GD-20d"/>
                 <outlet property="clientTitleTextField" destination="Ceh-7w-7bR" id="feH-yW-RFU"/>
                 <outlet property="projectTitleTextField" destination="Zc9-z1-92T" id="AA7-ao-JLG"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -48,13 +49,24 @@
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                 </label>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="QI7-29-GMa">
+                    <rect key="frame" x="0.0" y="201" width="600" height="399"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="f7r-mZ-fK4"/>
+                        <outlet property="delegate" destination="-1" id="Kbl-PS-YHC"/>
+                    </connections>
+                </tableView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstItem="Ceh-7w-7bR" firstAttribute="trailing" secondItem="Zc9-z1-92T" secondAttribute="trailing" id="2Db-vK-HC8"/>
+                <constraint firstAttribute="bottom" secondItem="QI7-29-GMa" secondAttribute="bottom" id="557-mJ-aCp"/>
                 <constraint firstAttribute="trailing" secondItem="Zc9-z1-92T" secondAttribute="trailing" constant="247" id="EUW-Jl-SYt"/>
                 <constraint firstItem="HpC-7R-rJO" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="96" id="LXx-lO-qme"/>
                 <constraint firstItem="HpC-7R-rJO" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="10" id="M3J-4O-eLY"/>
+                <constraint firstAttribute="trailing" secondItem="QI7-29-GMa" secondAttribute="trailing" id="Obf-f4-msg"/>
+                <constraint firstItem="QI7-29-GMa" firstAttribute="top" secondItem="Zc9-z1-92T" secondAttribute="bottom" constant="21" id="S6y-Aw-xw9"/>
                 <constraint firstItem="Sqy-dw-u12" firstAttribute="top" secondItem="HpC-7R-rJO" secondAttribute="bottom" constant="37" id="ZWT-rf-mwC"/>
                 <constraint firstItem="Zc9-z1-92T" firstAttribute="leading" secondItem="Sqy-dw-u12" secondAttribute="trailing" constant="8" symbolic="YES" id="dda-ye-hvY"/>
                 <constraint firstItem="Ceh-7w-7bR" firstAttribute="leading" secondItem="HpC-7R-rJO" secondAttribute="trailing" constant="18" id="mLb-fV-VTA"/>
@@ -63,6 +75,7 @@
                 <constraint firstItem="Zc9-z1-92T" firstAttribute="top" secondItem="Ceh-7w-7bR" secondAttribute="bottom" constant="28" id="tz7-4x-cGO"/>
                 <constraint firstAttribute="trailing" secondItem="Ceh-7w-7bR" secondAttribute="trailing" constant="20" id="vrb-3k-8vJ"/>
                 <constraint firstItem="Ceh-7w-7bR" firstAttribute="leading" secondItem="Zc9-z1-92T" secondAttribute="leading" id="wIE-Ze-a7x"/>
+                <constraint firstItem="QI7-29-GMa" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="wzX-oJ-Wn8"/>
             </constraints>
             <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
             <variation key="default">
