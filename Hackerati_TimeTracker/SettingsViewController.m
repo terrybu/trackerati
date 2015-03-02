@@ -38,7 +38,6 @@
         NSInteger hour = [[NSUserDefaults standardUserDefaults]integerForKey:kReminderHourSaved];
         NSInteger mins = [[NSUserDefaults standardUserDefaults]integerForKey:kReminderMinutesSaved];
         if (hour && mins) {
-            NSLog(@"%ld %ld", hour, mins);
             NSCalendar *calendar = [NSCalendar currentCalendar];
             NSDateComponents *components = [[NSDateComponents alloc]init];
             [components setHour:hour];

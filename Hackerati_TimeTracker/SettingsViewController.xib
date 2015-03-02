@@ -91,37 +91,57 @@
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="time" minuteInterval="5" translatesAutoresizingMaskIntoConstraints="NO" id="D4I-eT-s9T">
-                        <rect key="frame" x="142" y="-1" width="178" height="162"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="timeStatusLabel" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="F7x-Xe-M3S">
+                        <rect key="frame" x="14" y="100" width="117" height="21"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="91" id="9xu-X3-FeK"/>
+                            <constraint firstAttribute="height" constant="21" id="dIa-eQ-Zeg"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
+                        <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                        <nil key="highlightedColor"/>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="9xu-X3-FeK"/>
+                            </mask>
+                        </variation>
+                    </label>
+                    <datePicker contentMode="scaleToFill" horizontalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="time" minuteInterval="5" translatesAutoresizingMaskIntoConstraints="NO" id="D4I-eT-s9T">
+                        <rect key="frame" x="146" y="-1" width="174" height="162"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="178" id="s4v-i8-2QE"/>
                         </constraints>
                         <date key="date" timeIntervalSinceReferenceDate="446764815.830365">
                             <!--2015-02-27 21:20:15 +0000-->
                         </date>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="s4v-i8-2QE"/>
+                            </mask>
+                        </variation>
                     </datePicker>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="18:00" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="F7x-Xe-M3S">
-                        <rect key="frame" x="14" y="100" width="117" height="21"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="21" id="dIa-eQ-Zeg"/>
-                        </constraints>
-                        <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
-                        <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                        <nil key="highlightedColor"/>
-                    </label>
                 </subviews>
                 <constraints>
                     <constraint firstItem="F7x-Xe-M3S" firstAttribute="trailing" secondItem="dGS-RB-Cg4" secondAttribute="trailing" id="7TL-4j-f0q"/>
                     <constraint firstItem="F7x-Xe-M3S" firstAttribute="leading" secondItem="dGS-RB-Cg4" secondAttribute="leading" id="D9W-Fr-zHx"/>
                     <constraint firstAttribute="bottomMargin" secondItem="F7x-Xe-M3S" secondAttribute="bottom" constant="32" id="M35-Ef-aKF"/>
                     <constraint firstItem="D4I-eT-s9T" firstAttribute="centerY" secondItem="dGS-RB-Cg4" secondAttribute="centerY" id="PJG-ub-o4c"/>
+                    <constraint firstItem="D4I-eT-s9T" firstAttribute="leading" secondItem="dGS-RB-Cg4" secondAttribute="trailing" constant="15" id="kgE-aw-grN"/>
                     <constraint firstItem="dGS-RB-Cg4" firstAttribute="leading" secondItem="BpR-dW-rxZ" secondAttribute="leadingMargin" constant="6" id="oWe-rd-S98"/>
                     <constraint firstItem="F7x-Xe-M3S" firstAttribute="top" secondItem="dGS-RB-Cg4" secondAttribute="bottom" constant="8" symbolic="YES" id="ovb-3W-bUu"/>
+                    <constraint firstItem="D4I-eT-s9T" firstAttribute="leading" secondItem="F7x-Xe-M3S" secondAttribute="trailing" constant="15" id="pzd-xY-5mR"/>
+                    <constraint firstItem="D4I-eT-s9T" firstAttribute="leading" secondItem="F7x-Xe-M3S" secondAttribute="trailing" constant="30" id="t5x-xZ-7dK"/>
                     <constraint firstAttribute="trailing" secondItem="D4I-eT-s9T" secondAttribute="trailing" id="ugI-H0-jVI"/>
                     <constraint firstAttribute="centerY" secondItem="dGS-RB-Cg4" secondAttribute="centerY" id="wDw-As-jxl"/>
                 </constraints>
+                <variation key="default">
+                    <mask key="constraints">
+                        <exclude reference="7TL-4j-f0q"/>
+                        <exclude reference="t5x-xZ-7dK"/>
+                    </mask>
+                </variation>
             </tableViewCellContentView>
-            <point key="canvasLocation" x="163" y="-142"/>
+            <point key="canvasLocation" x="163" y="-162"/>
         </tableViewCell>
     </objects>
 </document>
