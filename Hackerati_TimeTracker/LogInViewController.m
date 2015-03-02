@@ -296,7 +296,8 @@ static NSString *CellIdentifier = @"Cell";
 
 -(void)sendForm{
     NSData *data = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants kSanitizedCurrentUserRecords]];
-    self.recordsHistoryDictionary = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+    if (data)
+        self.recordsHistoryDictionary = [NSKeyedUnarchiver unarchiveObjectWithData:data];
     if (self.recordsHistoryDictionary && [self.recordsHistoryDictionary objectForKey:self.dateOfServiceTextLabel.text]) {
         [[[UIAlertView alloc] initWithTitle:@"Warning" message:[NSString stringWithFormat: @"You already sent a record for %@. Do you still want to send this ?",self.dateOfServiceTextLabel.text] delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Send", nil] show];
     } else{
@@ -365,11 +366,14 @@ static NSString *CellIdentifier = @"Cell";
 
 - (void) userRecordsDataReceived {
     NSData *currentUserRecordsData = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants kSanitizedCurrentUserRecords]];
-    self.recordsHistoryDictionary = [NSKeyedUnarchiver unarchiveObjectWithData:currentUserRecordsData];
+    if (currentUserRecordsData)
+        self.recordsHistoryDictionary = [NSKeyedUnarchiver unarchiveObjectWithData:currentUserRecordsData];
     
-    UINavigationController *historyNav = [[AppDelegate globalDelegate].controllersDictionary objectForKey:kHistoryNavControllerKey];
-    HistoryViewController *hvc = historyNav.viewControllers[0];
-    hvc.recordsHistoryDictionary = self.recordsHistoryDictionary;
+    if (self.recordsHistoryDictionary) {
+        UINavigationController *historyNav = [[AppDelegate globalDelegate].controllersDictionary objectForKey:kHistoryNavControllerKey];
+        HistoryViewController *hvc = historyNav.viewControllers[0];
+        hvc.recordsHistoryDictionary = self.recordsHistoryDictionary;
+    }
 }
 
 

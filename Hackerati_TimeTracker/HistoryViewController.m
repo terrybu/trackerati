@@ -128,19 +128,25 @@ static NSString *cellIdentifier = @"RecordTableViewCell";
 - (NSMutableArray *) returnSortedDateStringKeysArray: (NSArray *) unsortedDateStringsArray {
     NSMutableArray *unsortedDateObjectsArray = [[NSMutableArray alloc]init];
     NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
-    for (NSString *dateStr in unsortedDateStringsArray) {
-        // Convert string to date object
-        [dateFormat setDateFormat:@"MM/dd/yyyy"];
-        NSDate *date = [dateFormat dateFromString:dateStr];
-        [unsortedDateObjectsArray addObject:date];
-    }
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"self" ascending:FALSE];
-    [unsortedDateObjectsArray sortUsingDescriptors:[NSArray arrayWithObject:sortDescriptor]];
-    NSMutableArray *sortedDateStringsArray = [[NSMutableArray alloc]init];
-    for (NSDate *date in unsortedDateObjectsArray) {
-        // Convert date object to desired output format
-        [dateFormat setDateFormat:@"MM/dd/yyyy"];
-        [sortedDateStringsArray addObject:[dateFormat stringFromDate:date]];
+    NSMutableArray *sortedDateStringsArray;
+    
+    if (unsortedDateStringsArray) {
+        for (NSString *dateStr in unsortedDateStringsArray) {
+            // Convert string to date object
+            [dateFormat setDateFormat:@"MM/dd/yyyy"];
+            NSDate *date = [dateFormat dateFromString:dateStr];
+            [unsortedDateObjectsArray addObject:date];
+        }
+        NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"self" ascending:FALSE];
+        [unsortedDateObjectsArray sortUsingDescriptors:[NSArray arrayWithObject:sortDescriptor]];
+        sortedDateStringsArray = [[NSMutableArray alloc]init];
+        if (unsortedDateObjectsArray) {
+            for (NSDate *date in unsortedDateObjectsArray) {
+                // Convert date object to desired output format
+                [dateFormat setDateFormat:@"MM/dd/yyyy"];
+                [sortedDateStringsArray addObject:[dateFormat stringFromDate:date]];
+            }
+        }
     }
     return sortedDateStringsArray;
 }
