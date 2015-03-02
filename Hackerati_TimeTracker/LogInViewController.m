@@ -326,14 +326,10 @@ static NSString *CellIdentifier = @"Cell";
     
     if (self.commentTextLabel.text && [self.commentTextLabel.text length] > 0) {
         [[self.fireBase childByAutoId] setValue:@{[HConstants kClient]:self.clientNameTextLabel.text,[HConstants kDate]:self.dateOfServiceTextLabel.text,[HConstants kHour]:self.hourOfServiceTextLabel.text,[HConstants kProject]:self.projectTextLabel.text,[HConstants kStatus]:(([self.statusTextLabel.text isEqualToString:[HConstants kFullTimeEmployee]])?@"1":@"0"),[HConstants kType]:(([self.typeTextLabel.text isEqualToString:[HConstants kBillableHour]])?@"1":@"0"),[HConstants kComment]:self.commentTextLabel.text}];
-        
-        [[LastSavedManager sharedManager] saveRecord:@{[HConstants kClient]:self.clientNameTextLabel.text,[HConstants kDate]:self.dateOfServiceTextLabel.text,[HConstants kHour]:self.hourOfServiceTextLabel.text,[HConstants kProject]:self.projectTextLabel.text,[HConstants kStatus]:(([self.statusTextLabel.text isEqualToString:[HConstants kFullTimeEmployee]])?@"1":@"0"),[HConstants kType]:(([self.typeTextLabel.text isEqualToString:[HConstants kBillableHour]])?@"1":@"0"),[HConstants kComment]:self.commentTextLabel.text}];
     } else{
         [[self.fireBase childByAutoId] setValue:@{[HConstants kClient]:self.clientNameTextLabel.text,[HConstants kDate]:self.dateOfServiceTextLabel.text,[HConstants kHour]:self.hourOfServiceTextLabel.text,[HConstants kProject]:self.projectTextLabel.text,[HConstants kStatus]:(([self.statusTextLabel.text isEqualToString:[HConstants kFullTimeEmployee]])?@"1":@"0"),[HConstants kType]:(([self.typeTextLabel.text isEqualToString:[HConstants kBillableHour]])?@"1":@"0")}];
-        
-        [[LastSavedManager sharedManager] saveRecord:@{[HConstants kClient]:self.clientNameTextLabel.text,[HConstants kDate]:self.dateOfServiceTextLabel.text,[HConstants kHour]:self.hourOfServiceTextLabel.text,[HConstants kProject]:self.projectTextLabel.text,[HConstants kStatus]:(([self.statusTextLabel.text isEqualToString:[HConstants kFullTimeEmployee]])?@"1":@"0"),[HConstants kType]:(([self.typeTextLabel.text isEqualToString:[HConstants kBillableHour]])?@"1":@"0")}];
     }
-    
+    [self saveLastRecord];
     [self slideOutForm];
     
 }
@@ -384,8 +380,8 @@ static NSString *CellIdentifier = @"Cell";
     recordFormViewController.isNewRecord = YES;
     
     Client *client = [self.currentUserClientsArray objectAtIndex:indexPath.section];
-    recordFormViewController.clientName = [client clientName];
-    recordFormViewController.projectName = [client projectAtIndex:indexPath.row].projectName;
+    recordFormViewController.client = client;
+    recordFormViewController.project = [client.projects objectAtIndex:indexPath.row];
     [self.navigationController pushViewController:recordFormViewController animated:YES];
 }
 
@@ -491,38 +487,40 @@ static NSString *CellIdentifier = @"Cell";
         self.dateOfServiceTextLabel.text = [self.formatter stringFromDate:[NSDate date]];
         [self.dateOfServiceTextLabel sizeToFit];
         
-        NSDictionary *lastSavedRecord = [[LastSavedManager sharedManager]getRecordForClient:self.clientNameTextLabel.text withProject:self.projectTextLabel.text];
-        if (lastSavedRecord && [lastSavedRecord objectForKey:[HConstants kStatus]] && [lastSavedRecord objectForKey:[HConstants kType]] && [lastSavedRecord objectForKey:[HConstants kHour]]) {
-            if ([lastSavedRecord objectForKey:[HConstants kComment]]) {
-                self.commentTextLabel.text = [lastSavedRecord objectForKey:[HConstants kComment]];
-            } else{
-                self.commentTextLabel.text = nil;
+        Client *tempClient = [[Client alloc]init];
+        tempClient.clientName = self.clientNameTextLabel.text;
+        Project *tempProject = [[Project alloc]init];
+        tempProject.projectName = self.projectTextLabel.text;
+        
+        Record *lastSavedRecord = [[LastSavedManager sharedManager]getRecordForClient:tempClient withProject:tempProject];
+        if (lastSavedRecord) {
+            if (lastSavedRecord.statusOfUser && lastSavedRecord.typeOfService && lastSavedRecord.hourOfTheService) {
+                //if all the last saved data exists for this pinned project, then display
+                if ([lastSavedRecord.statusOfUser isEqualToString:@"1"]) {
+                    self.statusTextLabel.text = [HConstants kFullTimeEmployee];
+                }else {
+                    self.statusTextLabel.text = [HConstants kPartTimeEmployee];
+                }
+                if ([lastSavedRecord.typeOfService isEqualToString:@"1"]) {
+                    self.typeTextLabel.text =  [HConstants kBillableHour];
+                }else {
+                    self.typeTextLabel.text =  [HConstants kUnbillableHour];
+                }
+                self.hourOfServiceTextLabel.text = lastSavedRecord.hourOfTheService;
+                if (lastSavedRecord.commentOnService) {
+                    self.commentTextLabel.text = lastSavedRecord.commentOnService;
+                } else{
+                    self.commentTextLabel.text = nil;
+                }
             }
-            if ([[lastSavedRecord objectForKey:[HConstants kStatus]] isEqualToString:@"1"]) {
-                self.statusTextLabel.text = [HConstants kFullTimeEmployee];
-            }else {
-                self.statusTextLabel.text = [HConstants kPartTimeEmployee];
-            }
-            if ([[lastSavedRecord objectForKey:[HConstants kType]] isEqualToString:@"1"]) {
-                self.typeTextLabel.text =  [HConstants kBillableHour];
-            }else {
-                self.typeTextLabel.text =  [HConstants kUnbillableHour];
-            }
-            self.hourOfServiceTextLabel.text = [lastSavedRecord objectForKey:[HConstants kHour]];
-            
-        }else{
+        }
+        else{
+            //if no, just display default values
             self.statusTextLabel.text = [HConstants kFullTimeEmployee];
             self.typeTextLabel.text = [HConstants kBillableHour];
             self.hourOfServiceTextLabel.text = @"8.0";
-            if ([lastSavedRecord objectForKey:[HConstants kComment]]) {
-                self.commentTextLabel.text = [lastSavedRecord objectForKey:[HConstants kComment]];
-            } else{
-                self.commentTextLabel.text = nil;
-            }
         }
-        
         [self slideForm];
-        
     }
 }
 
@@ -560,6 +558,18 @@ static NSString *CellIdentifier = @"Cell";
 
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void)saveLastRecord {
+    Record *newRecord = [[Record alloc]init];
+    newRecord.clientName = self.clientNameTextLabel.text;
+    newRecord.projectName = self.projectTextLabel.text;
+    newRecord.dateOfTheService = self.dateOfServiceTextLabel.text;
+    newRecord.hourOfTheService = self.hourOfServiceTextLabel.text;
+    newRecord.statusOfUser = ([self.statusTextLabel.text isEqualToString:[HConstants kFullTimeEmployee]])?@"1":@"0";
+    newRecord.typeOfService = ([self.typeTextLabel.text isEqualToString:[HConstants kBillableHour]])?@"1":@"0";
+    newRecord.commentOnService = self.commentTextLabel.text ? self.commentTextLabel.text : nil;
+    [[LastSavedManager sharedManager] saveRecord:newRecord];
 }
 
 @end

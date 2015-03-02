@@ -8,13 +8,15 @@
 
 #import <UIKit/UIKit.h>
 #import "Record.h"
+#import "Client.h"
+#import "Project.h"
 
 @interface RecordFormViewController : UIViewController <UITextViewDelegate>
 
-@property (copy, nonatomic) NSString *clientName;
-@property (copy, nonatomic) NSString *projectName;
-@property (nonatomic) BOOL isNewRecord;
 @property (nonatomic, strong) Record *existingRecord;
 @property (nonatomic, weak) UIViewController *previousViewController;
+@property (nonatomic) BOOL isNewRecord;
+@property (nonatomic, strong) Client *client;
+@property (nonatomic, strong) Project *project;
 
 @end

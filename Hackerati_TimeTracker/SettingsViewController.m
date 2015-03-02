@@ -102,7 +102,7 @@
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     switch (section) {
         case 0:
-            return @"Daily Notifications";
+            return @"Daily Reminders (M-F)";
             break;
         default:
             break;
@@ -127,11 +127,11 @@
     
     if (indexPath.row == 0) {
         cell = self.notificationsSwitchCell;
-        self.notifLabel.text = @"Daily Reminders On";
+        self.notifLabel.text = @"Turn Reminders On/Off";
     }
     else if (indexPath.row == 1) {
         cell = self.reminderTimeCell;
-        self.reminderLabel.text = @"Daily Reminder Time";
+        self.reminderLabel.text = @"Reminder Time";
     }
     else if (cell == nil)
         cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];

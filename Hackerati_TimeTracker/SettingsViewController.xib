@@ -106,7 +106,7 @@
                             <constraint firstAttribute="height" constant="21" id="dIa-eQ-Zeg"/>
                         </constraints>
                         <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
-                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>

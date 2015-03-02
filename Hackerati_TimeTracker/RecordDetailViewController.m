@@ -129,6 +129,12 @@
 - (IBAction)editButtonAction:(id)sender {
     RecordFormViewController *formViewController = [[RecordFormViewController alloc]initWithNibName:@"RecordFormViewController" bundle:nil];
     formViewController.existingRecord = self.record;
+    Client *tempClient = [[Client alloc]init];
+    tempClient.clientName = self.clientLabel.text;
+    Project *tempProject = [[Project alloc]init];
+    tempProject.projectName = self.projectLabel.text;
+    formViewController.client = tempClient;
+    formViewController.project = tempProject;
     formViewController.previousViewController = self;
     [self.navigationController pushViewController:formViewController animated:YES];
 }

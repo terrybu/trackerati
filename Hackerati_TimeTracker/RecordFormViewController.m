@@ -15,6 +15,7 @@
 #import "DataParseManager.h"
 #import "IQDropDownTextField.h"
 #import "RecordDetailViewController.h"
+#import "Record.h"
 
 static NSString* const placeHolderForTextView =  @"Tap out while typing to scroll page back up";
 
@@ -80,28 +81,29 @@ static NSString* const placeHolderForTextView =  @"Tap out while typing to scrol
         self.title = @"Edit Record";
     }
     
+    [self setUpDropDownToolbarForHoursOnRecord];
+}
+
+- (void)setUpDropDownToolbarForHoursOnRecord {
     UIToolbar *toolbar = [[UIToolbar alloc] init];
     [toolbar setBarStyle:UIBarStyleBlackTranslucent];
     [toolbar sizeToFit];
     UIBarButtonItem *buttonflexible = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
     UIBarButtonItem *buttonDone = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneClicked:)];
     buttonDone.tintColor = [UIColor whiteColor];
-    
     [toolbar setItems:[NSArray arrayWithObjects:buttonflexible,buttonDone, nil]];
     self.hourTextField.inputAccessoryView = toolbar;
-    
     self.hourTextField.isOptionalDropDown = NO;
     NSArray *arrayOfHourOptions = [NSArray arrayWithObjects:@"0.5",@"1.0",@"1.5",@"2.0",@"2.5",@"3.0",@"3.5",@"4.0",@"4.5",@"5.0",@"5.5",@"6.0",@"6.5",@"7.0",@"7.5",@"8.0",@"8.5",@"9.0",@"9.5",@"10.0", @"10.5",@"11.0",@"11.5",@"12.0",@"12.5",@"13.0",@"13.5",@"14.0",@"14.5",@"15.0",@"15.5",@"16.0",@"16.5",@"17.0",@"17.5",@"18.0",@"18.5",@"19.0",@"19.5",@"20.0",@"20.5",@"21.0",@"21.5",@"22.0",@"22.5",@"23.0",@"23.5",@"24.0",nil];
     [self.hourTextField setItemList:arrayOfHourOptions];
-    
-    NSDictionary *lastSavedRecord = [[LastSavedManager sharedManager]getRecordForClient:self.clientName withProject:self.projectName];
-    if (lastSavedRecord != nil && [lastSavedRecord objectForKey:[HConstants kHour]]) {
-        [self.hourTextField setSelectedRow:[arrayOfHourOptions indexOfObject:[lastSavedRecord objectForKey:[HConstants kHour]]]];
+    //Set hour of service dropdown default to last saved
+    Record *lastSavedRecord = [[LastSavedManager sharedManager]getRecordForClient:self.client withProject:self.project];
+    if (lastSavedRecord != nil && lastSavedRecord.hourOfTheService) {
+        [self.hourTextField setSelectedRow:[arrayOfHourOptions indexOfObject:lastSavedRecord.hourOfTheService]];
     }
     else {
         [self.hourTextField setSelectedRow:[arrayOfHourOptions indexOfObject:@"8.0"]];
     }
-    
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -110,44 +112,18 @@ static NSString* const placeHolderForTextView =  @"Tap out while typing to scrol
     self.isDatePickerShowing = NO;
     
     if (self.isNewRecord) {
-        self.projectLabel.text = self.projectName;
-        self.clientLabel.text = self.clientName;
+        self.clientLabel.text = self.client.clientName;
+        self.projectLabel.text = self.project.projectName;
         [self.dateButton setTitle:[self.formatter stringFromDate:[NSDate date]] forState:UIControlStateNormal];
         [self.statusButton setTitle:[HConstants kFullTimeEmployee] forState:UIControlStateNormal];
         [self.typeButton setTitle:[HConstants kBillableHour] forState:UIControlStateNormal];
         self.hourTextField.text = @"8.0";
-        
-        NSDictionary *lastSavedRecord = [[LastSavedManager sharedManager]getRecordForClient:self.clientName withProject:self.projectName];
-        
-        if (lastSavedRecord != nil) {
-            if ([lastSavedRecord objectForKey:[HConstants kStatus]]) {
-                if ([[lastSavedRecord objectForKey:[HConstants kStatus]] isEqualToString:@"1"])
-                    [self.statusButton setTitle:[HConstants kFullTimeEmployee] forState:UIControlStateNormal];
-                else
-                    [self.statusButton setTitle:[HConstants kPartTimeEmployee] forState:UIControlStateNormal];
-
-            }
-            if ([lastSavedRecord objectForKey:[HConstants kType]]) {
-                if ([[lastSavedRecord objectForKey:[HConstants kType]] isEqualToString:@"1"])
-                    [self.typeButton setTitle:[HConstants kBillableHour] forState:UIControlStateNormal];
-                else
-                    [self.typeButton setTitle:[HConstants kUnbillableHour] forState:UIControlStateNormal];
-            }
-            if ([lastSavedRecord objectForKey:[HConstants kHour]]) {
-                self.hourTextField.text = [lastSavedRecord objectForKey:[HConstants kHour]];
-            }
-            
-            if ([lastSavedRecord objectForKey:[HConstants kComment]]) {
-                self.commentTextView.text = [lastSavedRecord objectForKey:[HConstants kComment]];
-            }
-            else{
-                self.commentTextView.text = placeHolderForTextView;
-            }
-        }
+        [self displayUserInterfaceBasedOnLastSavedRecord];
     }
     else{
-        self.projectLabel.text = self.projectName = self.existingRecord.projectName;
-        self.clientLabel.text = self.clientName = self.existingRecord.clientName;
+        //if it's an existing record for Edit screen
+        self.projectLabel.text = self.existingRecord.projectName;
+        self.clientLabel.text = self.existingRecord.clientName;
         [self.dateButton setTitle:self.existingRecord.dateOfTheService forState:UIControlStateNormal];
         self.hourTextField.text = self.existingRecord.hourOfTheService;
         if (self.existingRecord.statusOfUser && [self.existingRecord.statusOfUser isEqualToString:@"1"] ) {
@@ -167,6 +143,36 @@ static NSString* const placeHolderForTextView =  @"Tap out while typing to scrol
         }
     }
 }
+
+- (void) displayUserInterfaceBasedOnLastSavedRecord {
+    Record *lastSavedRecord = [[LastSavedManager sharedManager]getRecordForClient:self.client withProject:self.project];
+    if (lastSavedRecord) {
+        if (lastSavedRecord.statusOfUser) {
+            if ([lastSavedRecord.statusOfUser isEqualToString:@"1"])
+                [self.statusButton setTitle:[HConstants kFullTimeEmployee] forState:UIControlStateNormal];
+            else
+                [self.statusButton setTitle:[HConstants kPartTimeEmployee] forState:UIControlStateNormal];
+            
+        }
+        if (lastSavedRecord.typeOfService) {
+            if ([lastSavedRecord.typeOfService isEqualToString:@"1"])
+                [self.typeButton setTitle:[HConstants kBillableHour] forState:UIControlStateNormal];
+            else
+                [self.typeButton setTitle:[HConstants kUnbillableHour] forState:UIControlStateNormal];
+        }
+        if (lastSavedRecord.hourOfTheService) {
+            self.hourTextField.text = lastSavedRecord.hourOfTheService;
+        }
+        
+        if (lastSavedRecord.commentOnService && ![lastSavedRecord.commentOnService isEqualToString:@""]) {
+            self.commentTextView.text = lastSavedRecord.commentOnService;
+        }
+        else{
+            self.commentTextView.text = placeHolderForTextView;
+        }
+    }
+}
+
 
 -(void)doneClicked:(UIBarButtonItem*)button{
     [self.view endEditing:YES];
@@ -190,7 +196,6 @@ static NSString* const placeHolderForTextView =  @"Tap out while typing to scrol
 #pragma mark TextView Delegate Methods
 
 - (BOOL)textViewShouldBeginEditing:(UITextView *)textView{
-    
     [self.mainScrollView setContentOffset:CGPointMake(0, 150) animated:YES];
     return YES;
 }
@@ -228,16 +233,6 @@ static NSString* const placeHolderForTextView =  @"Tap out while typing to scrol
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 
 - (IBAction)typeButtonAction:(id)sender {
@@ -308,7 +303,7 @@ static NSString* const placeHolderForTextView =  @"Tap out while typing to scrol
         NSData *currentUserRecordsData = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants kSanitizedCurrentUserRecords]];
         NSDictionary* currentUserRecordsDictionary = [NSKeyedUnarchiver unarchiveObjectWithData:currentUserRecordsData];
         if ([currentUserRecordsDictionary objectForKey:self.dateButton.titleLabel.text]) {
-            [[[UIAlertView alloc] initWithTitle:@"Warning" message:[NSString stringWithFormat: @"You already sent a record for %@. Do you still want to send this ?",self.dateButton.titleLabel.text] delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Send Anyway", nil] show];
+            [[[UIAlertView alloc] initWithTitle:@"Warning" message:[NSString stringWithFormat: @"You already sent a record for %@. Do you still want to send this?",self.dateButton.titleLabel.text] delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Send Anyway", nil] show];
         }
         else{
             [self checkDate];
@@ -363,10 +358,21 @@ static NSString* const placeHolderForTextView =  @"Tap out while typing to scrol
 
 }
 
+- (void)saveLastRecord {
+    Record *newRecord = [[Record alloc]init];
+    newRecord.clientName = self.client.clientName;
+    newRecord.projectName = self.project.projectName;
+    newRecord.dateOfTheService = self.dateButton.titleLabel.text;
+    newRecord.hourOfTheService = self.hourTextField.text;
+    newRecord.statusOfUser = ([self.statusButton.titleLabel.text isEqualToString:[HConstants kFullTimeEmployee]])?@"1":@"0";
+    newRecord.typeOfService = ([self.typeButton.titleLabel.text isEqualToString:[HConstants kBillableHour]])?@"1":@"0";
+    newRecord.commentOnService = self.commentTextView.text ? self.commentTextView.text : nil;
+    [[LastSavedManager sharedManager] saveRecord:newRecord];
+}
+
 -(void)submitRecord{
-    
     if ([self.commentTextView.text isEqualToString: placeHolderForTextView])
-        self.commentTextView.text = @"";
+        self.commentTextView.text = nil;
     
     if ([self.hourTextField.text isEqualToString:@"0.0"]) {
         [[[UIAlertView alloc]initWithTitle:@"Error" message:@"You can not submit 0 hour" delegate:nil cancelButtonTitle:@"Cancel" otherButtonTitles: nil] show];
@@ -376,38 +382,41 @@ static NSString* const placeHolderForTextView =  @"Tap out while typing to scrol
     if (self.isNewRecord) {
         self.fireBase = [FireBaseManager recordURLsharedFireBase];
         if (self.commentTextView.text && ([self.commentTextView.text length] > 0)) {
-            [[self.fireBase childByAutoId] setValue:@{[HConstants kClient]:self.clientName,[HConstants kDate]:self.dateButton.titleLabel.text,[HConstants kHour]:self.hourTextField.text,[HConstants kProject]:self.projectName,[HConstants kComment]:self.commentTextView.text,[HConstants kStatus]:(([self.statusButton.titleLabel.text isEqualToString:[HConstants kFullTimeEmployee]])?@"1":@"0"),[HConstants kType]:(([self.typeButton.titleLabel.text isEqualToString:[HConstants kBillableHour]])?@"1":@"0")}];
-            NSDictionary *recordDictionary = @{[HConstants kClient]:self.clientName,[HConstants kDate]:self.dateButton.titleLabel.text,[HConstants kHour]:self.hourTextField.text,[HConstants kProject]:self.projectName,[HConstants kStatus]:(([self.statusButton.titleLabel.text isEqualToString:[HConstants kFullTimeEmployee]])?@"1":@"0"),[HConstants kType]:(([self.typeButton.titleLabel.text isEqualToString:[HConstants kBillableHour]])?@"1":@"0"),[HConstants kComment]:self.commentTextView.text};
-            [[LastSavedManager sharedManager] saveRecord:recordDictionary];
+            [[self.fireBase childByAutoId] setValue:@{[HConstants kClient]:self.client.clientName,[HConstants kDate]:self.dateButton.titleLabel.text,[HConstants kHour]:self.hourTextField.text,[HConstants kProject]:self.project.projectName,[HConstants kComment]:self.commentTextView.text,[HConstants kStatus]:(([self.statusButton.titleLabel.text isEqualToString:[HConstants kFullTimeEmployee]])?@"1":@"0"),[HConstants kType]:(([self.typeButton.titleLabel.text isEqualToString:[HConstants kBillableHour]])?@"1":@"0")}];
         }
         else{
-            [[self.fireBase childByAutoId] setValue:@{[HConstants kClient]:self.clientName,[HConstants kDate]:self.dateButton.titleLabel.text,[HConstants kHour]:self.hourTextField.text,[HConstants kProject]:self.projectName,[HConstants kStatus]:(([self.statusButton.titleLabel.text isEqualToString:[HConstants kFullTimeEmployee]])?@"1":@"0"),[HConstants kType]:(([self.typeButton.titleLabel.text isEqualToString:[HConstants kBillableHour]])?@"1":@"0")}];
-            NSDictionary *recordDictionary = @{[HConstants kClient]:self.clientName,[HConstants kDate]:self.dateButton.titleLabel.text,[HConstants kHour]:self.hourTextField.text,[HConstants kProject]:self.projectName,[HConstants kStatus]:(([self.statusButton.titleLabel.text isEqualToString:[HConstants kFullTimeEmployee]])?@"1":@"0"),[HConstants kType]:(([self.typeButton.titleLabel.text isEqualToString:[HConstants kBillableHour]])?@"1":@"0")};
-            [[LastSavedManager sharedManager] saveRecord:recordDictionary];
+            //if we didn't have any comments, we send to Firebase a little differently without comments key
+            [[self.fireBase childByAutoId] setValue:@{[HConstants kClient]:self.client.clientName,[HConstants kDate]:self.dateButton.titleLabel.text,[HConstants kHour]:self.hourTextField.text,[HConstants kProject]:self.project.projectName,[HConstants kStatus]:(([self.statusButton.titleLabel.text isEqualToString:[HConstants kFullTimeEmployee]])?@"1":@"0"),[HConstants kType]:(([self.typeButton.titleLabel.text isEqualToString:[HConstants kBillableHour]])?@"1":@"0")}];
         }
     }
     else{
+        //it's not new record, we are submitting edits
         NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants kCurrentUser]];
         NSString *uniqueAddress = self.existingRecord.uniqueFireBaseIdentifier;
         self.fireBase = [[Firebase alloc]initWithUrl:[NSString stringWithFormat:@"%@/Users/%@/records/%@",[HConstants kFireBaseURL],username,uniqueAddress]];
         if (self.commentTextView.text && ([self.commentTextView.text length] > 0)) {
-            [self.fireBase updateChildValues:@{[HConstants kClient]:self.clientName,[HConstants kDate]:self.dateButton.titleLabel.text,[HConstants kHour]:self.hourTextField.text,[HConstants kProject]:self.projectName,[HConstants kComment]:self.commentTextView.text,[HConstants kStatus]:(([self.statusButton.titleLabel.text isEqualToString:[HConstants kFullTimeEmployee]])?@"1":@"0"),[HConstants kType]:(([self.typeButton.titleLabel.text isEqualToString:[HConstants kBillableHour]])?@"1":@"0")}];
-            [[LastSavedManager sharedManager] saveRecord:@{[HConstants kClient]:self.clientName,[HConstants kDate]:self.dateButton.titleLabel.text,[HConstants kHour]:self.hourTextField.text,[HConstants kProject]:self.projectName,[HConstants kStatus]:(([self.statusButton.titleLabel.text isEqualToString:[HConstants kFullTimeEmployee]])?@"1":@"0"),[HConstants kType]:(([self.typeButton.titleLabel.text isEqualToString:[HConstants kBillableHour]])?@"1":@"0"),[HConstants kComment]:self.commentTextView.text}];
+            [self.fireBase updateChildValues:@{[HConstants kClient]:self.client.clientName,[HConstants kDate]:self.dateButton.titleLabel.text,[HConstants kHour]:self.hourTextField.text,[HConstants kProject]:self.project.projectName,[HConstants kComment]:self.commentTextView.text,[HConstants kStatus]:(([self.statusButton.titleLabel.text isEqualToString:[HConstants kFullTimeEmployee]])?@"1":@"0"),[HConstants kType]:(([self.typeButton.titleLabel.text isEqualToString:[HConstants kBillableHour]])?@"1":@"0")}];
         }
         else{
-            [self.fireBase updateChildValues:@{[HConstants kClient]:self.clientName,[HConstants kDate]:self.dateButton.titleLabel.text,[HConstants kHour]:self.hourTextField.text,[HConstants kProject]:self.projectName,[HConstants kStatus]:(([self.statusButton.titleLabel.text isEqualToString:[HConstants kFullTimeEmployee]])?@"1":@"0"),[HConstants kType]:(([self.typeButton.titleLabel.text isEqualToString:[HConstants kBillableHour]])?@"1":@"0"),[HConstants kComment]:@""}];
-            [[LastSavedManager sharedManager] saveRecord:@{[HConstants kClient]:self.clientName,[HConstants kDate]:self.dateButton.titleLabel.text,[HConstants kHour]:self.hourTextField.text,[HConstants kProject]:self.projectName,[HConstants kStatus]:(([self.statusButton.titleLabel.text isEqualToString:[HConstants kFullTimeEmployee]])?@"1":@"0"),[HConstants kType]:(([self.typeButton.titleLabel.text isEqualToString:[HConstants kBillableHour]])?@"1":@"0"),[HConstants kComment]:@""}];
+            //no comments, handle differently by clearing out key under comments
+            [self.fireBase updateChildValues:@{[HConstants kClient]:self.client.clientName,[HConstants kDate]:self.dateButton.titleLabel.text,[HConstants kHour]:self.hourTextField.text,[HConstants kProject]:self.project.projectName,[HConstants kStatus]:(([self.statusButton.titleLabel.text isEqualToString:[HConstants kFullTimeEmployee]])?@"1":@"0"),[HConstants kType]:(([self.typeButton.titleLabel.text isEqualToString:[HConstants kBillableHour]])?@"1":@"0"),[HConstants kComment]:@""}];
         }
     }
+    [self saveLastRecord];
     [[DataParseManager sharedManager] getUserRecords];
+    
+    [self resetUI];
+}
+
+- (void) resetUI {
     if (self.previousViewController && self.previousViewController.navigationController) {
         if ([self.previousViewController isKindOfClass:[RecordDetailViewController class]]) {
             //a temporary solution to show some Record detail information for previous view controller after EDIT
             //Ethan originally used LastSavedManager to do this - but with Record model integration, some of that code needed to change
             RecordDetailViewController *recordDetailVC = (RecordDetailViewController *) self.previousViewController;
             Record *tempRecordForRecordDetail = [[Record alloc]init];
-            tempRecordForRecordDetail.clientName = self.clientName;
-            tempRecordForRecordDetail.projectName = self.projectName;
+            tempRecordForRecordDetail.clientName = self.client.clientName;
+            tempRecordForRecordDetail.projectName = self.project.projectName;
             tempRecordForRecordDetail.uniqueFireBaseIdentifier = self.existingRecord.uniqueFireBaseIdentifier;
             tempRecordForRecordDetail.dateOfTheService = self.dateButton.titleLabel.text;
             tempRecordForRecordDetail.hourOfTheService = self.hourTextField.text;
@@ -421,11 +430,11 @@ static NSString* const placeHolderForTextView =  @"Tap out while typing to scrol
     else {
         [self.navigationController popViewControllerAnimated:YES];
     }
-
-//Reset placeHolder text
+    
+    //Reset placeHolder text
     self.commentTextView.text = placeHolderForTextView;
-}
 
+}
 
 
 @end

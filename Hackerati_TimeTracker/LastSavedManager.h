@@ -7,11 +7,18 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "Record.h"
+#import "Client.h"
+#import "Project.h"
 
 @interface LastSavedManager : NSObject
 
 + (LastSavedManager*)sharedManager;
--(void)saveRecord:(NSDictionary*)record;
--(NSDictionary*)getRecordForClient:(NSString*)client withProject:(NSString*)project;
+
+
+//-(void)saveRecord:(NSDictionary*)record;
+- (void)saveRecord:(Record *) record;
+
+-(Record*)getRecordForClient:(Client*)client withProject:(Project*)project;
 
 @end

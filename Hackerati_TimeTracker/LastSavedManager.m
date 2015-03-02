@@ -9,6 +9,7 @@
 #import "LastSavedManager.h"
 #import "HConstants.h"
 
+
 @implementation LastSavedManager
 
 + (LastSavedManager*)sharedManager{
@@ -20,40 +21,58 @@
     return shareManager;
 }
 
--(void)saveRecord:(NSDictionary*)record{
-    NSArray* lastSavedInfo =[[NSUserDefaults standardUserDefaults] objectForKey:[HConstants kLastSavedRecord]];
-    NSMutableArray* mutableLastSavedInfo = [[NSMutableArray alloc]initWithArray:lastSavedInfo];
-    if (!mutableLastSavedInfo || [mutableLastSavedInfo count] == 0) {
-        mutableLastSavedInfo = [NSMutableArray new];
-        [mutableLastSavedInfo addObject:record];
+-(void)saveRecord:(Record*)record{
+    NSData *archivedDataOfLastSavedRecordsArray = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants kLastSavedRecord]];
+    NSMutableArray *mutableLastSavedInfoArray;
+    bool recordWithSameClientExistsAlready = FALSE;
+    
+    if (archivedDataOfLastSavedRecordsArray != nil) {
+        mutableLastSavedInfoArray = [[NSKeyedUnarchiver unarchiveObjectWithData:archivedDataOfLastSavedRecordsArray] mutableCopy];
+    }
+
+    if (!mutableLastSavedInfoArray || [mutableLastSavedInfoArray count] == 0) {
+        mutableLastSavedInfoArray = [NSMutableArray new];
+        [mutableLastSavedInfoArray addObject:record];
     }
     else {
-        [mutableLastSavedInfo enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop){
-            NSDictionary *tempRecord = (NSDictionary*)obj;
-            if ([[tempRecord objectForKey:[HConstants kClient]]isEqualToString:(NSString*)[record objectForKey:[HConstants kClient]]] && [[tempRecord objectForKey:[HConstants kProject]]isEqualToString:(NSString*)[record objectForKey:[HConstants kProject]]]) {
-                [mutableLastSavedInfo removeObjectAtIndex:idx];
-                [mutableLastSavedInfo addObject:record];
-                *stop = YES;
+        //if the saved info array already had Records, check each record's client names and project names Ex) Hackerati, Internal. If matched, we remove that record and replace it with a new record last saved information
+        for (Record *oldRecord in mutableLastSavedInfoArray) {
+            if ([oldRecord.clientName isEqualToString:record.clientName] && [oldRecord.projectName isEqualToString:record.projectName]) {
+                [mutableLastSavedInfoArray removeObject:oldRecord];
+                [mutableLastSavedInfoArray addObject:record];
+                recordWithSameClientExistsAlready = TRUE;
             }
-        }];
+        };
+        if (recordWithSameClientExistsAlready == FALSE)
+            [mutableLastSavedInfoArray addObject:record];
     }
-    [[NSUserDefaults standardUserDefaults] setObject:mutableLastSavedInfo forKey:[HConstants kLastSavedRecord]];
+
+    NSData *lastSavedRecordsArrayData = [NSKeyedArchiver archivedDataWithRootObject:mutableLastSavedInfoArray];
+    [[NSUserDefaults standardUserDefaults] setObject:lastSavedRecordsArrayData forKey:[HConstants kLastSavedRecord]];
     [[NSUserDefaults standardUserDefaults]synchronize];
 }
 
--(NSDictionary*)getRecordForClient:(NSString*)client withProject:(NSString*)project{
-    NSArray* lastSavedInfo =[[NSUserDefaults standardUserDefaults] objectForKey:[HConstants kLastSavedRecord]];
-    NSLog(lastSavedInfo.description);
-    __block NSDictionary*record = nil;
-    [lastSavedInfo enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop){
-        NSDictionary *tempRecord = (NSDictionary*)obj;
-        NSLog(tempRecord.description);
-        if ([[tempRecord objectForKey:[HConstants kClient]]isEqualToString:client] && [[tempRecord objectForKey:[HConstants kProject]]isEqualToString:project]) {
-            record = tempRecord;
-            *stop = YES;
+-(Record*)getRecordForClient:(Client*)client withProject:(Project*)project{
+    NSData *dataLastSavedRecords = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants kLastSavedRecord]];
+    __block Record* record = nil;
+    NSArray* lastSavedInfo;
+    
+    if (dataLastSavedRecords) {
+        lastSavedInfo = [NSKeyedUnarchiver unarchiveObjectWithData:dataLastSavedRecords];
+        if (lastSavedInfo) {
+            [lastSavedInfo enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop){
+                Record *tempRecord = (Record *)obj;
+                if ([tempRecord.clientName isEqualToString:client.clientName] && [tempRecord.projectName isEqualToString:project.projectName]) {
+                    record = tempRecord;
+                    *stop = YES;
+                }
+            }];
         }
-    }];
+        
+    }
     return record;
 }
+
+
 
 @end
