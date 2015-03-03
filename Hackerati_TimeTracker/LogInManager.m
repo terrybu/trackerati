@@ -123,13 +123,16 @@ static BOOL loggedOut = YES;
     [[FireBaseManager baseURLsharedFireBase]unauth];
     [[FireBaseManager projectURLsharedFireBase]unauth];
     [[FireBaseManager recordURLsharedFireBase]unauth];
-    if ([LoginManager loggedOut] == FALSE)
-        [LoginManager setLoggedOut:TRUE];
+    if ([LoginManager loggedOut] == NO)
+        [LoginManager setLoggedOut:YES];
     
     NSUserDefaults * defs = [NSUserDefaults standardUserDefaults];
     NSDictionary * dict = [defs dictionaryRepresentation];
+    NSArray *dontDeleteThese = @[kRanAppBeforeCheck, kReminderHourSaved, kReminderMinutesSaved, kRemindersOn];
+    //daily reminder settings don't have to be cleared out on logout.
     for (id key in dict) {
-        [defs removeObjectForKey:key];
+        if (![dontDeleteThese containsObject:key])
+            [defs removeObjectForKey:key];
     }
     [defs synchronize];
 }

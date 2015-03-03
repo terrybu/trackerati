@@ -52,7 +52,7 @@
 }
 
 - (void) getAllClientsAndProjectsDataFromFireBaseAndSynchronize {
-
+    __weak typeof(self) weakSelf = self;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         // Get all existing clients and projects
         [self.projects observeSingleEventOfType:FEventTypeValue withBlock:^(FDataSnapshot *snapshot) {
@@ -61,8 +61,8 @@
                     NSDictionary *rawMasterClientList = snapshot.value;
                     [[NSUserDefaults standardUserDefaults] setObject:rawMasterClientList forKey:[HConstants kRawMasterClientList]];
                     [[NSUserDefaults standardUserDefaults]synchronize];
-                    [self saveMasterClientListInUserDefaults:rawMasterClientList];
-                    [self saveCurrentUserClientListInUserDefaults:rawMasterClientList];
+                    [weakSelf saveMasterClientListInUserDefaults:rawMasterClientList];
+                    [weakSelf saveCurrentUserClientListInUserDefaults:rawMasterClientList];
                     
                     //Completion Notification
                     [[NSNotificationCenter defaultCenter] postNotificationName:@"clientsProjectsSynched"
@@ -74,22 +74,20 @@
                     [[NSUserDefaults standardUserDefaults] removeObjectForKey:[HConstants kCurrentUserClientList]];
                     [[NSUserDefaults standardUserDefaults]synchronize];
                 }
-                if ([self.delegate respondsToSelector:@selector(loadData)]) {
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        [self.delegate loadData];
-                        DrawerTableViewController *dtvc = (DrawerTableViewController *) [AppDelegate globalDelegate].drawerViewController.leftViewController;
-                        [dtvc loginRefresh];
-                        //this makes sure that when you login, LoginViewController updates its tableview with firebase data ... with the implementation of DrawerTableViewController, there was a problem with [self.delegate loadData] not doing the job
-                    });
-                }
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    DrawerTableViewController *dtvc = (DrawerTableViewController *) [AppDelegate globalDelegate].drawerViewController.leftViewController;
+                    [dtvc loginRefresh];
+                    //this makes sure that when you login, LoginViewController updates its tableview with firebase data ... with the implementation of DrawerTableViewController, there was a problem with [self.delegate loadData] not doing the job when we tried to do UI-related things on login vc through delegation
+                });
             });
         }];
     });
 }
 
 - (void) getUserRecords{
+    __weak typeof(self) weakSelf = self;
+
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-        
         // Get last 50 records by date
         [[[self.records queryOrderedByChild:[HConstants kDate]] queryLimitedToLast:50] observeEventType:FEventTypeValue withBlock:^(FDataSnapshot *snapshot) {
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
@@ -143,7 +141,7 @@
                 [[NSUserDefaults standardUserDefaults] synchronize];
                 [[NSNotificationCenter defaultCenter] postNotificationName:kStartGetUserRecordsProcessNotification object:nil];
             });
-            [self.delegate userRecordsDataReceived];
+            [weakSelf.delegate userRecordsDataReceived];
         }];
     });
 }
@@ -191,6 +189,8 @@
 }
 
 - (void) saveCurrentUserClientListInUserDefaults: (NSDictionary *) rawMasterClientList {
+    __weak typeof(self) weakSelf = self;
+
     NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants kCurrentUser]];
     __block NSMutableArray *currentUserClientList = [[NSMutableArray alloc]init];
     [rawMasterClientList enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop){
@@ -222,7 +222,7 @@
                 }
             }];
             //Alphabetical sorting logic for user's projects within a currenclient
-            [self sortProjectsForClientByDescriptor:newClient sortDescriptor:@"projectName"];
+            [weakSelf sortProjectsForClientByDescriptor:newClient sortDescriptor:@"projectName"];
         }
         if (![newClient isProjectsEmpty]) {
             [currentUserClientList addObject:newClient];

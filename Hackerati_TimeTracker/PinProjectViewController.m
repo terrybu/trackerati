@@ -192,7 +192,6 @@ static NSString *CellIdentifier = @"Cell";
             [pinnedProjectNames addObject:masterSelectedProject.projectName];
         }
     }
-    NSLog(@"from did select row: %@", self.pinnedDictionary.description);
     [self cacheCurrentUserClients];
     [self pinUserToProjectOnFireBase: masterSelectedClient.clientName project:masterSelectedProject.projectName];
     cell.accessoryView =[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"CheckMark.png"]];

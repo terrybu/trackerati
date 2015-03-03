@@ -109,10 +109,13 @@ static NSString *CellIdentifier = @"Cell";
 
 -(void) viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    if (![LoginManager loggedOut])
+    if (![LoginManager loggedOut]) {
         [self reloadLocalCacheData];
+        self.navigationItem.rightBarButtonItem.enabled = TRUE;
+    }
     else {
         self.currentUserClientsArray = nil;
+        self.navigationItem.rightBarButtonItem.enabled = FALSE;
         [self.tableView reloadData];
     }
 }
@@ -124,6 +127,8 @@ static NSString *CellIdentifier = @"Cell";
     }
     [self.refreshControl endRefreshing];
     [GMDCircleLoader hideFromView:self.view animated:YES];
+    self.navigationItem.rightBarButtonItem.enabled = [LoginManager loggedOut] ? FALSE : TRUE;
+    
     [self.tableView reloadData];
 }
 
@@ -133,6 +138,8 @@ static NSString *CellIdentifier = @"Cell";
     UIImage *drawerButtonImage = [UIImage imageNamed:kIconDrawer];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:drawerButtonImage style:UIBarButtonItemStylePlain target:self action:@selector(actionToggleLeftDrawer:)];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"pinCircle"] style:UIBarButtonItemStyleBordered target:self action:@selector(addNewProjects)];
+    if ([LoginManager loggedOut])
+        self.navigationItem.rightBarButtonItem.enabled = FALSE;
 }
 
 - (void)configureTableView {
@@ -376,11 +383,6 @@ static NSString *CellIdentifier = @"Cell";
     UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"Error" message:@"Could not login due to no network connectivity. Please try later" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
     [alertView show];
     [self.refreshControl endRefreshing];
-}
-
-
--(void) loadData{
-    [self reloadLocalCacheData];
 }
 
 - (void) userRecordsDataReceived {

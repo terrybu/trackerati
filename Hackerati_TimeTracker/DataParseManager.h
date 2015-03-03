@@ -12,7 +12,6 @@
 
 @protocol DataParseManagerProtocol <NSObject>
 
--(void) loadData;
 -(void) loginSuccessful;
 -(void) loginUnsuccessful;
 -(void) userRecordsDataReceived;
