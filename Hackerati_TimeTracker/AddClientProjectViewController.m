@@ -10,7 +10,6 @@
 #import "FireBaseManager.h"
 #import "HConstants.h"
 #import "DataParseManager.h"
-#import "Reachability.h"
 
 @interface AddClientProjectViewController () {
     NSMutableArray *autoCompleteClientNamesArray;

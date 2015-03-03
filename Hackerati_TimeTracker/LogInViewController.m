@@ -109,7 +109,12 @@ static NSString *CellIdentifier = @"Cell";
 
 -(void) viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    [self reloadLocalCacheData];
+    if (![LoginManager loggedOut])
+        [self reloadLocalCacheData];
+    else {
+        self.currentUserClientsArray = nil;
+        [self.tableView reloadData];
+    }
 }
 
 - (void) reloadLocalCacheData {

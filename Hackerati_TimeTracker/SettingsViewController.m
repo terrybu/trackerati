@@ -10,6 +10,7 @@
 #import "HConstants.h"
 #import "AppDelegate.h"
 #import "DailyNotificationManager.h"
+#import "LoginManager.h"
 
 @interface SettingsViewController ()
 
@@ -94,6 +95,8 @@
     // Dispose of any resources that can be recreated.
 }
 
+
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;
 }
@@ -103,6 +106,9 @@
         case 0:
             return @"Daily Reminders (M-F)";
             break;
+//        case 1:
+//            return @"Clear Data";
+//            break;
         default:
             break;
     }
@@ -110,7 +116,12 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 2;
+    if (section == 0)
+        return 2;
+//    else if (section == 1)
+//        return 1;
+    
+    return 1;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -124,14 +135,20 @@
     
     UITableViewCell *cell;
     
-    if (indexPath.row == 0) {
-        cell = self.notificationsSwitchCell;
-        self.notifLabel.text = @"Turn Reminders On/Off";
+    if (indexPath.section == 0) {
+        if (indexPath.row == 0) {
+            cell = self.notificationsSwitchCell;
+            self.notifLabel.text = @"Turn Reminders On/Off";
+        }
+        else if (indexPath.row == 1) {
+            cell = self.reminderTimeCell;
+            self.reminderLabel.text = @"Reminder Time";
+        }
     }
-    else if (indexPath.row == 1) {
-        cell = self.reminderTimeCell;
-        self.reminderLabel.text = @"Reminder Time";
-    }
+//    else if (indexPath.section == 1) {
+//        if (indexPath.row == 0)
+//            cell = self.clearDataCell;
+//    }
     else if (cell == nil)
         cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
     
@@ -144,6 +161,28 @@
 
 
 
+
+
+- (IBAction)clearDataButton:(id)sender {
+    UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"Confirmation" message:@"This will delete all default settings and on-device trackerati data. You will need internet access and login again from Home screen to regain all data from Firebase server. Are you sure?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Confirm", nil];
+    [alertView show];
+}
+
+- (void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    NSString *buttonTitle = [alertView buttonTitleAtIndex:buttonIndex];
+    if ([buttonTitle isEqualToString:@"Confirm"])
+        [self deleteAllCache];
+}
+
+- (void) deleteAllCache {
+    NSUserDefaults * defs = [NSUserDefaults standardUserDefaults];
+    NSDictionary * dict = [defs dictionaryRepresentation];
+    for (id key in dict) {
+        [defs removeObjectForKey:key];
+    }
+    [defs synchronize];
+    [self.tableView reloadData];
+}
 
 
 @end

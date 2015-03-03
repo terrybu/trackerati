@@ -61,7 +61,8 @@ static NSString *CellIdentifier = @"Cell";
 
 - (void) viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    [self getAllProjectsPinsAndRefresh];
+    if (![LoginManager loggedOut])
+        [self getAllProjectsPinsAndRefresh];
 }
 
 - (void) dataReceivedSafeToRefresh {
@@ -79,18 +80,11 @@ static NSString *CellIdentifier = @"Cell";
         self.masterClientsArray = [NSKeyedUnarchiver unarchiveObjectWithData:masterClientsData];
         NSData *currentUserClientsData = [[NSUserDefaults standardUserDefaults]objectForKey:[HConstants kCurrentUserClientList]];
         self.currentUserClientsArray = [NSKeyedUnarchiver unarchiveObjectWithData:currentUserClientsData];
-        
-        //I need a dictionary of current user clients and their projects
-        //key is client name in string
-        //value is a NSMutableArray of all the current pinned projects
-        //I don't want to use array because we will be doing too much iterating O(n)
-        
         for (Client *client in self.currentUserClientsArray) {
             NSArray *arrayOfProjectNames = [client.projects valueForKey:@"projectName"];
             NSMutableArray *mutableArrayOfProjectNames = [arrayOfProjectNames mutableCopy];
             [self.pinnedDictionary setObject:mutableArrayOfProjectNames forKey:client.clientName];
         }
-                
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.tableView reloadData];
         });

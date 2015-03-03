@@ -92,7 +92,7 @@ static BOOL loggedOut = YES;
                                                            } else {
                                                                // User is now logged in!
                                                                if ([weakSelf.delegate respondsToSelector:@selector(getAllDataFromFireBase)]) {
-                                                                   [LoginManager setLoggedOut:NO];
+                                                                   [LoginManager setLoggedOut:FALSE];
                                                                    [[NSNotificationCenter defaultCenter] postNotificationName:@"loginSuccess" object:nil];
                                                                    [weakSelf.delegate getAllDataFromFireBase];
                                                                }
@@ -123,6 +123,8 @@ static BOOL loggedOut = YES;
     [[FireBaseManager baseURLsharedFireBase]unauth];
     [[FireBaseManager projectURLsharedFireBase]unauth];
     [[FireBaseManager recordURLsharedFireBase]unauth];
+    if ([LoginManager loggedOut] == FALSE)
+        [LoginManager setLoggedOut:TRUE];
     
     NSUserDefaults * defs = [NSUserDefaults standardUserDefaults];
     NSDictionary * dict = [defs dictionaryRepresentation];

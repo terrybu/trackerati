@@ -308,29 +308,22 @@ static NSString* const placeHolderForTextView =  @"Tap out while typing to scrol
     [self.dateButton setTitle:[self.formatter stringFromDate:selectedDate] forState:UIControlStateNormal];
 }
 
+
+
 - (IBAction)submitRecordAction:(id)sender {
-    
-    Reachability* curReach = [Reachability reachabilityForInternetConnection];
-    NetworkStatus internetStatus = [curReach currentReachabilityStatus];
-    if (internetStatus != NotReachable) {
-        if (self.isNewRecord) {
-            NSData *currentUserRecordsData = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants kSanitizedCurrentUserRecords]];
-            NSDictionary* currentUserRecordsDictionary = [NSKeyedUnarchiver unarchiveObjectWithData:currentUserRecordsData];
-            if ([currentUserRecordsDictionary objectForKey:self.dateButton.titleLabel.text]) {
-                [[[UIAlertView alloc] initWithTitle:@"Warning" message:[NSString stringWithFormat: @"You already sent a record for %@. Do you still want to send this?",self.dateButton.titleLabel.text] delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Send Anyway", nil] show];
-            }
-            else{
-                [self checkDate];
-            }
+    if (self.isNewRecord) {
+        NSData *currentUserRecordsData = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants kSanitizedCurrentUserRecords]];
+        NSDictionary* currentUserRecordsDictionary = [NSKeyedUnarchiver unarchiveObjectWithData:currentUserRecordsData];
+        if ([currentUserRecordsDictionary objectForKey:self.dateButton.titleLabel.text]) {
+            [[[UIAlertView alloc] initWithTitle:@"Warning" message:[NSString stringWithFormat: @"You already sent a record for %@. Do you still want to send this?",self.dateButton.titleLabel.text] delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Send Anyway", nil] show];
         }
-        else {
+        else{
             [self checkDate];
         }
     }
     else {
-        [self alertForNoInternet];
+        [self checkDate];
     }
-    
 }
 
 - (void) alertForNoInternet {

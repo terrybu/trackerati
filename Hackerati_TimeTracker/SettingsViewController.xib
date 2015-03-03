@@ -8,6 +8,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SettingsViewController">
             <connections>
+                <outlet property="clearDataCell" destination="KXE-cU-8gW" id="xFL-XK-hO8"/>
                 <outlet property="notifLabel" destination="sFw-ov-OfB" id="Snj-dj-bAo"/>
                 <outlet property="notifSwitch" destination="LdC-xf-rRC" id="0y7-xg-jbg"/>
                 <outlet property="notificationsSwitchCell" destination="nFI-j3-kPZ" id="ZWi-Hh-LVc"/>
@@ -77,7 +78,7 @@
                     </mask>
                 </variation>
             </tableViewCellContentView>
-            <point key="canvasLocation" x="163" y="-297"/>
+            <point key="canvasLocation" x="130" y="-431"/>
         </tableViewCell>
         <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ReminderTimeCell" id="ebP-8Q-YLC">
             <rect key="frame" x="0.0" y="0.0" width="320" height="162"/>
@@ -141,7 +142,30 @@
                     </mask>
                 </variation>
             </tableViewCellContentView>
-            <point key="canvasLocation" x="163" y="-162"/>
+            <point key="canvasLocation" x="130" y="-287"/>
+        </tableViewCell>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ClearDataCell" id="KXE-cU-8gW">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KXE-cU-8gW" id="KwL-cV-qlc">
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6T0-Zw-b0j">
+                        <rect key="frame" x="48" y="7" width="224" height="30"/>
+                        <state key="normal" title="Clear All Cached Data on Device">
+                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        </state>
+                        <connections>
+                            <action selector="clearDataButton:" destination="-1" eventType="touchUpInside" id="JIG-oi-gTw"/>
+                        </connections>
+                    </button>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="centerY" secondItem="6T0-Zw-b0j" secondAttribute="centerY" id="EBu-N3-IBA"/>
+                    <constraint firstAttribute="centerX" secondItem="6T0-Zw-b0j" secondAttribute="centerX" id="qEv-rm-gHz"/>
+                </constraints>
+            </tableViewCellContentView>
+            <point key="canvasLocation" x="130" y="-136"/>
         </tableViewCell>
     </objects>
 </document>

@@ -22,4 +22,10 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *reminderExactTimeLabel;
 
+
+
+@property (strong, nonatomic) IBOutlet UITableViewCell *clearDataCell;
+
+- (IBAction)clearDataButton:(id)sender;
+
 @end
