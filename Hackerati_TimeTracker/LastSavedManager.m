@@ -24,7 +24,6 @@
 -(void)saveRecord:(Record*)record{
     NSData *archivedDataOfLastSavedRecordsArray = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants kLastSavedRecord]];
     NSMutableArray *mutableLastSavedInfoArray;
-    bool recordWithSameClientExistsAlready = FALSE;
     
     if (archivedDataOfLastSavedRecordsArray != nil) {
         mutableLastSavedInfoArray = [[NSKeyedUnarchiver unarchiveObjectWithData:archivedDataOfLastSavedRecordsArray] mutableCopy];
@@ -36,15 +35,17 @@
     }
     else {
         //if the saved info array already had Records, check each record's client names and project names Ex) Hackerati, Internal. If matched, we remove that record and replace it with a new record last saved information
+        NSMutableArray *recordsToDelete = [NSMutableArray array];
         for (Record *oldRecord in mutableLastSavedInfoArray) {
             if ([oldRecord.clientName isEqualToString:record.clientName] && [oldRecord.projectName isEqualToString:record.projectName]) {
-                [mutableLastSavedInfoArray removeObject:oldRecord];
-                [mutableLastSavedInfoArray addObject:record];
-                recordWithSameClientExistsAlready = TRUE;
+                [recordsToDelete addObject:oldRecord];
             }
         };
-        if (recordWithSameClientExistsAlready == FALSE)
-            [mutableLastSavedInfoArray addObject:record];
+        if (recordsToDelete.count > 0) {
+            [mutableLastSavedInfoArray removeObjectsInArray:recordsToDelete];
+            //this recordsToDelete logic is needed because we can't remove objects frmo mutableLastSavedArray while iterating
+        }
+        [mutableLastSavedInfoArray addObject:record];
     }
 
     NSData *lastSavedRecordsArrayData = [NSKeyedArchiver archivedDataWithRootObject:mutableLastSavedInfoArray];
