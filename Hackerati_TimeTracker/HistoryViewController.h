@@ -12,5 +12,6 @@
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (nonatomic, strong) NSMutableDictionary *recordsHistoryDictionary;
+@property (nonatomic, strong) NSMutableArray* sortedDateKeys;
 
 @end

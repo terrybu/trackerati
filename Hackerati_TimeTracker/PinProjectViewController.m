@@ -308,7 +308,7 @@ static NSString *CellIdentifier = @"Cell";
 - (void) removeProjectAfterConfirmationAlert: (Project *) project client: (Client *) client {
     UIAlertView *alertView;
     if (client.projects.count == 1) {
-        alertView = [[UIAlertView alloc]initWithTitle:@"Warning" message:[NSString stringWithFormat:@"Are you sure you want to delete project named %@ permanently from the database? This will also delete client named %@.", project.projectName, client.clientName] delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles: @"Yes", nil];
+        alertView = [[UIAlertView alloc]initWithTitle:@"Warning" message:[NSString stringWithFormat:@"Are you sure you want to delete project named %@ permanently from the database? This will also delete client named %@ and affect all other users listed on the project.", project.projectName, client.clientName] delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles: @"Yes", nil];
     }
     else {
         alertView = [[UIAlertView alloc]initWithTitle:@"Warning" message:[NSString stringWithFormat:@"Are you sure you want to delete project named %@ permanently from the database? This will also affect other users listed on the project.", project.projectName] delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles: @"Yes", nil];

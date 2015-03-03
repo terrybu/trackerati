@@ -140,14 +140,16 @@
 }
 
 - (IBAction)deleteButtonAction:(id)sender {
-    [[[UIAlertView alloc]initWithTitle:@"Delete" message:@"Are you sure you want to delete this record ?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"delete", nil] show];
+    [[[UIAlertView alloc]initWithTitle:@"Delete" message:@"Are you sure you want to delete this record?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"delete", nil] show];
 }
 
 - (void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     NSString *buttonTitle = [alertView buttonTitleAtIndex:buttonIndex];
     if ([buttonTitle isEqualToString:@"delete"]) {
-        [self deleteRecord];
-        [self.navigationController popViewControllerAnimated:YES];
+        [self didFinishDeletingRecordFromFirebase:^{
+            __weak typeof(self) weakSelf = self;
+            [weakSelf.navigationController popViewControllerAnimated:YES];
+        }];
     }
 }
 
@@ -156,6 +158,23 @@
     NSString *uniqueAddress = self.record.uniqueFireBaseIdentifier;
     self.fireBase = [[Firebase alloc]initWithUrl:[NSString stringWithFormat:@"%@/Users/%@/records/%@",[HConstants kFireBaseURL],username,uniqueAddress]];
     [self.fireBase removeValue];
+}
+
+- (void)didFinishDeletingRecordFromFirebase:(dispatch_block_t)block
+{
+    __weak typeof(self) weakSelf = self;
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [weakSelf deleteRecord];
+        NSMutableArray *records = [self.historyViewController.recordsHistoryDictionary objectForKey:[self.historyViewController.sortedDateKeys objectAtIndex:self.indexPath.section]];
+        if (records) {
+            [records removeObject:self.record];
+            if (records.count == 0) {
+                [self.historyViewController.sortedDateKeys removeObjectAtIndex:self.indexPath.section];
+            }
+        }
+        // Call your block back on the main queue now that previous process finished
+        dispatch_async(dispatch_get_main_queue(), block);
+    });
 }
 
 

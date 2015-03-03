@@ -17,7 +17,6 @@
 
 @interface HistoryViewController ()<RecordTableViewCellProtocol>
 
-@property (nonatomic, strong) NSMutableArray* sortedDateKeys;
 @property (nonatomic, strong) RecordDetailViewController *recordDetailViewController;
 
 @end
@@ -60,11 +59,6 @@ static NSString *cellIdentifier = @"RecordTableViewCell";
     if (![LoginManager loggedOut]) {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
             [[DataParseManager sharedManager] getUserRecords];
-            if (self.recordsHistoryDictionary.count > 0)
-                self.sortedDateKeys = [self returnSortedDateStringKeysArray:[self.recordsHistoryDictionary allKeys]];
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self.tableView reloadData];
-            });
         });
     }
     else {
@@ -80,6 +74,8 @@ static NSString *cellIdentifier = @"RecordTableViewCell";
 -(void)didClickDetailButton:(NSIndexPath*)indexPath{
     self.recordDetailViewController =[[RecordDetailViewController alloc]initWithNibName:@"RecordDetailViewController" bundle:nil];
     self.recordDetailViewController.record = [((NSArray*)[self.recordsHistoryDictionary objectForKey:[self.sortedDateKeys objectAtIndex:indexPath.section]])objectAtIndex:indexPath.row];
+    self.recordDetailViewController.historyViewController = self;
+    self.recordDetailViewController.indexPath = indexPath;
     [self.navigationController pushViewController:self.recordDetailViewController animated:YES];
 }
 
@@ -104,18 +100,18 @@ static NSString *cellIdentifier = @"RecordTableViewCell";
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    
     RecordTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-    
-    NSMutableArray *records = [self.recordsHistoryDictionary objectForKey:[self.sortedDateKeys objectAtIndex:indexPath.section]];
-    
-    Record *record = [records objectAtIndex:indexPath.row];
-    [cell setclientNameLabelString:record.clientName];
-    [cell setprojectNameLabelString:record.projectName];
-    [cell sethourLabelString:record.hourOfTheService];
+    if (self.recordsHistoryDictionary && [self.recordsHistoryDictionary objectForKey:[self.sortedDateKeys objectAtIndex:indexPath.section]]) {
+        NSMutableArray *records = [self.recordsHistoryDictionary objectForKey:[self.sortedDateKeys objectAtIndex:indexPath.section]];
+        if (records) {
+            Record *record = [records objectAtIndex:indexPath.row];
+            [cell setclientNameLabelString:record.clientName];
+            [cell setprojectNameLabelString:record.projectName];
+            [cell sethourLabelString:record.hourOfTheService];
+        }
+    }
     cell.indexPath = indexPath;
     cell.delegate = self;
-    
     return cell;
 }
 
