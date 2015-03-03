@@ -114,7 +114,9 @@ static NSString *CellIdentifier = @"Cell";
 
 - (void) reloadLocalCacheData {
     NSData *data = [[NSUserDefaults standardUserDefaults]objectForKey:[HConstants kCurrentUserClientList]];
-    self.currentUserClientsArray = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+    if (data) {
+        self.currentUserClientsArray = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+    }
     [self.refreshControl endRefreshing];
     [GMDCircleLoader hideFromView:self.view animated:YES];
     [self.tableView reloadData];
@@ -183,8 +185,6 @@ static NSString *CellIdentifier = @"Cell";
 - (IBAction)actionToggleLeftDrawer:(id)sender {
     [[AppDelegate globalDelegate] toggleLeftDrawer:self animated:YES];
 }
-
-
 
 
 #pragma mark SlideOut-Form Effect
@@ -296,14 +296,23 @@ static NSString *CellIdentifier = @"Cell";
 
 -(void)sendForm{
     NSData *data = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants kSanitizedCurrentUserRecords]];
-    if (data)
+    if (data) {
         self.recordsHistoryDictionary = [NSKeyedUnarchiver unarchiveObjectWithData:data];
-    if (self.recordsHistoryDictionary && [self.recordsHistoryDictionary objectForKey:self.dateOfServiceTextLabel.text]) {
-        [[[UIAlertView alloc] initWithTitle:@"Warning" message:[NSString stringWithFormat: @"You already sent a record for %@. Do you still want to send this ?",self.dateOfServiceTextLabel.text] delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Send", nil] show];
-    } else{
-        [self submitRecord];
+        if (self.recordsHistoryDictionary && [self.recordsHistoryDictionary objectForKey:self.dateOfServiceTextLabel.text]) {
+            [[[UIAlertView alloc] initWithTitle:@"Warning" message:[NSString stringWithFormat: @"You already sent a record for %@. Do you still want to send this ?",self.dateOfServiceTextLabel.text] delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Send", nil] show];
+        }
+        else{
+            [self submitRecord];
+        }
     }
 }
+
+
+- (void) alertForNoInternet {
+    UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"Error" message:@"Could not complete action due to no network connectivity. Please try later" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+    [alertView show];
+}
+
 - (void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     NSString *buttonTitle = [alertView buttonTitleAtIndex:buttonIndex];
     if ([buttonTitle isEqualToString:@"Send"]) {
@@ -349,6 +358,9 @@ static NSString *CellIdentifier = @"Cell";
     // Dispose of any resources that can be recreated.
 }
 
+
+
+
 #pragma mark - Data Parser Delegate Methods
 
 - (void) loginSuccessful {
@@ -356,9 +368,11 @@ static NSString *CellIdentifier = @"Cell";
 }
 
 - (void) loginUnsuccessful{
-    UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"Error" message:@"Could not login. Please try later" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+    UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"Error" message:@"Could not login due to no network connectivity. Please try later" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
     [alertView show];
+    [self.refreshControl endRefreshing];
 }
+
 
 -(void) loadData{
     [self reloadLocalCacheData];
