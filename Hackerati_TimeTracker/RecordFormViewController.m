@@ -16,6 +16,7 @@
 #import "IQDropDownTextField.h"
 #import "RecordDetailViewController.h"
 #import "Record.h"
+#import "Reachability.h"
 
 static NSString* const placeHolderForTextView =  @"Tap out while typing to scroll page back up";
 
@@ -308,20 +309,33 @@ static NSString* const placeHolderForTextView =  @"Tap out while typing to scrol
 }
 
 - (IBAction)submitRecordAction:(id)sender {
-    if (self.isNewRecord) {
-        NSData *currentUserRecordsData = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants kSanitizedCurrentUserRecords]];
-        NSDictionary* currentUserRecordsDictionary = [NSKeyedUnarchiver unarchiveObjectWithData:currentUserRecordsData];
-        if ([currentUserRecordsDictionary objectForKey:self.dateButton.titleLabel.text]) {
-            [[[UIAlertView alloc] initWithTitle:@"Warning" message:[NSString stringWithFormat: @"You already sent a record for %@. Do you still want to send this?",self.dateButton.titleLabel.text] delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Send Anyway", nil] show];
+    
+    Reachability* curReach = [Reachability reachabilityForInternetConnection];
+    NetworkStatus internetStatus = [curReach currentReachabilityStatus];
+    if (internetStatus != NotReachable) {
+        if (self.isNewRecord) {
+            NSData *currentUserRecordsData = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants kSanitizedCurrentUserRecords]];
+            NSDictionary* currentUserRecordsDictionary = [NSKeyedUnarchiver unarchiveObjectWithData:currentUserRecordsData];
+            if ([currentUserRecordsDictionary objectForKey:self.dateButton.titleLabel.text]) {
+                [[[UIAlertView alloc] initWithTitle:@"Warning" message:[NSString stringWithFormat: @"You already sent a record for %@. Do you still want to send this?",self.dateButton.titleLabel.text] delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Send Anyway", nil] show];
+            }
+            else{
+                [self checkDate];
+            }
         }
-        else{
+        else {
             [self checkDate];
         }
     }
     else {
-        [self checkDate];
+        [self alertForNoInternet];
     }
     
+}
+
+- (void) alertForNoInternet {
+    UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"Error" message:@"Could not complete action due to no network connectivity. Please try later" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+    [alertView show];
 }
 
 - (void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
