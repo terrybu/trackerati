@@ -114,7 +114,9 @@ static NSString *CellIdentifier = @"Cell";
 
 - (void) reloadLocalCacheData {
     NSData *data = [[NSUserDefaults standardUserDefaults]objectForKey:[HConstants kCurrentUserClientList]];
-    self.currentUserClientsArray = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+    if (data) {
+        self.currentUserClientsArray = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+    }
     [self.refreshControl endRefreshing];
     [GMDCircleLoader hideFromView:self.view animated:YES];
     [self.tableView reloadData];
@@ -183,8 +185,6 @@ static NSString *CellIdentifier = @"Cell";
 - (IBAction)actionToggleLeftDrawer:(id)sender {
     [[AppDelegate globalDelegate] toggleLeftDrawer:self animated:YES];
 }
-
-
 
 
 #pragma mark SlideOut-Form Effect
@@ -295,26 +295,18 @@ static NSString *CellIdentifier = @"Cell";
 }
 
 -(void)sendForm{
-    Reachability* curReach = [Reachability reachabilityForInternetConnection];
-    NetworkStatus internetStatus = [curReach currentReachabilityStatus];
-    if (internetStatus != NotReachable) {
-        NSData *data = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants kSanitizedCurrentUserRecords]];
-        if (data) {
-            self.recordsHistoryDictionary = [NSKeyedUnarchiver unarchiveObjectWithData:data];
-            if (self.recordsHistoryDictionary && [self.recordsHistoryDictionary objectForKey:self.dateOfServiceTextLabel.text]) {
-                [[[UIAlertView alloc] initWithTitle:@"Warning" message:[NSString stringWithFormat: @"You already sent a record for %@. Do you still want to send this ?",self.dateOfServiceTextLabel.text] delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Send", nil] show];
-            }
-            else{
-                [self submitRecord];
-            }
+    NSData *data = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants kSanitizedCurrentUserRecords]];
+    if (data) {
+        self.recordsHistoryDictionary = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+        if (self.recordsHistoryDictionary && [self.recordsHistoryDictionary objectForKey:self.dateOfServiceTextLabel.text]) {
+            [[[UIAlertView alloc] initWithTitle:@"Warning" message:[NSString stringWithFormat: @"You already sent a record for %@. Do you still want to send this ?",self.dateOfServiceTextLabel.text] delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Send", nil] show];
+        }
+        else{
+            [self submitRecord];
         }
     }
-    else {
-        //Internet is not reachable - don't send anything to firebase
-        [self alertForNoInternet];
-        return;
-    }
 }
+
 
 - (void) alertForNoInternet {
     UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"Error" message:@"Could not complete action due to no network connectivity. Please try later" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];

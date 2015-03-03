@@ -10,6 +10,7 @@
 #import "FireBaseManager.h"
 #import "HConstants.h"
 #import "DataParseManager.h"
+#import "Reachability.h"
 
 @interface AddClientProjectViewController () {
     NSMutableArray *autoCompleteClientNamesArray;
@@ -72,12 +73,17 @@ replacementString:(NSString *)string {
         [[[UIAlertView alloc]initWithTitle:@"Please fill both fields" message:@"Either field can't be blank" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
         return;
     }
-    
+
     self.fireBase = [[Firebase alloc]initWithUrl:[NSString stringWithFormat:@"%@/Projects/%@/%@/",[HConstants kFireBaseURL], clientName, projectName]];
-    
     [self runDataValidationAndSend];
 
 }
+
+- (void) alertForNoInternet {
+    UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"Error" message:@"Could not complete action due to no network connectivity. Please try later" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+    [alertView show];
+}
+
 
 - (void) runDataValidationAndSend {
     //we can do this validation in a different way without making a network call.
