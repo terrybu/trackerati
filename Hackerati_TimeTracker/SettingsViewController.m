@@ -33,12 +33,18 @@
 
 - (void) viewWillAppear:(BOOL)animated {
     [super viewWillAppear:YES];
+//    NSArray *eventArray = [[UIApplication sharedApplication] scheduledLocalNotifications];
+//    NSLog(eventArray.description);
     
     self.notifSwitch.on = [[NSUserDefaults standardUserDefaults] boolForKey:kRemindersOn];
     if (self.notifSwitch.on) {
         NSInteger hour = [[NSUserDefaults standardUserDefaults]integerForKey:kReminderHourSaved];
         NSInteger mins = [[NSUserDefaults standardUserDefaults]integerForKey:kReminderMinutesSaved];
-        if (hour && mins) {
+        if (hour == 0 && mins == 8){
+            //set default placeholder text at 6PM because at initial launch, that's our default notification time
+            self.reminderExactTimeLabel.text = @"Currently Set: 06:00 PM";
+        }
+        else {
             NSCalendar *calendar = [NSCalendar currentCalendar];
             NSDateComponents *components = [[NSDateComponents alloc]init];
             [components setHour:hour];
@@ -48,10 +54,6 @@
             [formatter setDateFormat:@"hh:mm a"];
             NSString *date = [formatter stringFromDate:self.reminderTimePicker.date];
             self.reminderExactTimeLabel.text = [NSString stringWithFormat:@"Currently Set: %@", date];
-        }
-        else {
-            //just set default placeholder
-            self.reminderExactTimeLabel.text = @"Currently Set: 06:00 PM";
         }
     }
     else {

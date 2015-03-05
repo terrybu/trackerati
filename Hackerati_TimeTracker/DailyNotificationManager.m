@@ -42,6 +42,10 @@ typedef NS_ENUM(NSInteger, WeekDayType) {
 
 
 - (void) refreshNotificationsSettings {
+    [[UIApplication sharedApplication] cancelAllLocalNotifications];
+    //clear out all and startover from scratch every time.
+    //if you are not careful about clearing out between saves, you will have multiple notifs firing on top of each other
+
     bool remindersOn = [[NSUserDefaults standardUserDefaults]boolForKey:kRemindersOn];
     if (remindersOn) {
         self.localNotif = [[UILocalNotification alloc] init];
@@ -51,7 +55,6 @@ typedef NS_ENUM(NSInteger, WeekDayType) {
         bool ranAppBefore = [[NSUserDefaults standardUserDefaults]boolForKey:kRanAppBeforeCheck];
         if (ranAppBefore) {
             NSLog(@"User had reminders turned off in settings");
-            [[UIApplication sharedApplication] cancelAllLocalNotifications]; //clear out all just in case
         }
         else {
             NSLog(@"this is first time we are running the app - turn on daily reminder by default");
@@ -64,9 +67,7 @@ typedef NS_ENUM(NSInteger, WeekDayType) {
 
 - (void) firstTimeRunSettings {
     NSLog(@"setting daily reminder at 6PM by default for first run");
-    
     [self fireNotificationsForAllWeekDays:18 minute:0];
-    
     [[NSUserDefaults standardUserDefaults]setInteger:18 forKey:kReminderHourSaved];
     [[NSUserDefaults standardUserDefaults]setInteger:0 forKey:kReminderMinutesSaved];
 }
@@ -74,11 +75,8 @@ typedef NS_ENUM(NSInteger, WeekDayType) {
 - (void) scheduleNotificationsWithSavedSettings {
     NSInteger savedHour = [[NSUserDefaults standardUserDefaults]integerForKey:kReminderHourSaved];
     NSInteger savedMins = [[NSUserDefaults standardUserDefaults]integerForKey:kReminderMinutesSaved];
-    
-    if (savedHour && savedMins) {
-        [[UIApplication sharedApplication] cancelAllLocalNotifications]; //just to be sure, we are not firing multiple
-        [self fireNotificationsForAllWeekDays:savedHour minute:savedMins];
-    }
+    [[UIApplication sharedApplication] cancelAllLocalNotifications];         //just to be sure, we are not firing multiple
+    [self fireNotificationsForAllWeekDays:savedHour minute:savedMins];
 }
 
 - (void) fireNotificationsForAllWeekDays: (NSInteger) hour minute: (NSInteger) minute {
@@ -88,9 +86,6 @@ typedef NS_ENUM(NSInteger, WeekDayType) {
     [self fireNotificationForDay:Thursday hour:hour minute:minute];
     [self fireNotificationForDay:Friday hour:hour minute:minute];
 }
-
-
-
 
 
 
