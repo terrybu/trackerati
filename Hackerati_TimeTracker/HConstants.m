@@ -15,6 +15,7 @@ NSString * const kHomeNavControllerKey = @"HomeNav";
 NSString * const kHistoryNavControllerKey = @"HistoryNav";
 NSString * const kSettingsNavControllerKey = @"SettingsViewController";
 NSString * const kCellNibName = @"DrawerCell";
+NSString * const kOldDataClearDoneForNewVersion = @"OldDataClearWasDoneOnceAlready";
 
 //For FireBase
 static NSString * const kClientId = @"1074427376116-jjk9j3nbsgao64i8hne37fdrhf49bdqu.apps.googleusercontent.com";

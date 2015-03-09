@@ -28,6 +28,8 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+
+    [self checkNeedForOldDataClear];
     [self configureHockey];
     [self configureNotifications:application];
     
@@ -46,6 +48,43 @@
     self.window.rootViewController = self.drawerViewController;
     [self.window makeKeyAndVisible];
     return YES;
+}
+
+- (void) checkNeedForOldDataClear {
+    if ([self isNewerVersion] && [[NSUserDefaults standardUserDefaults] objectForKey:kOldDataClearDoneForNewVersion] == nil) {
+        //this check is needed because on older devices, if we have old defaults data lying around, the data types seem to clash and crash the program
+        [self clearOldDefaults];
+        //we need a "clear" flag so that we don't clear again. We only clear the first time user launches the new version
+    }
+    else if ([[NSUserDefaults standardUserDefaults] objectForKey:kOldDataClearDoneForNewVersion]) {
+        NSLog(@"don't do any clearing - we already cleared at first run");
+    }
+}
+
+- (bool) isNewerVersion {
+    NSDictionary *infoDict = [[NSBundle mainBundle] infoDictionary];
+    NSString *appVersion = [infoDict objectForKey:@"CFBundleShortVersionString"];
+    NSNumberFormatter *f = [[NSNumberFormatter alloc] init];
+    f.numberStyle = NSNumberFormatterDecimalStyle;
+    NSNumber *versionNum = [f numberFromString:appVersion];
+    if ([versionNum doubleValue] > 1.0) {
+//        NSLog(@"version Num: %f --> returning true", [versionNum doubleValue]);
+        return true;
+    }
+    return false;
+}
+
+- (void) clearOldDefaults {
+    NSLog(@"clear old defaults!");
+    NSString *domainName = [[NSBundle mainBundle] bundleIdentifier];
+    [[NSUserDefaults standardUserDefaults] removePersistentDomainForName:domainName];
+    NSUserDefaults * defs = [NSUserDefaults standardUserDefaults];
+    NSDictionary * dict = [defs dictionaryRepresentation];
+//    NSLog(@"current defaults dict: %@", dict);
+    if ([[NSUserDefaults standardUserDefaults] objectForKey:kOldDataClearDoneForNewVersion] == nil) {
+        NSLog(@"flag was set so that we don't do anymore clearing");
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kOldDataClearDoneForNewVersion];
+    }
 }
 
 - (void)configureHockey {
@@ -68,7 +107,7 @@
          (UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert)];
     }
     [DailyNotificationManager sharedManager];
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:kRanAppBeforeCheck] == NO) {
+    if ([[NSUserDefaults standardUserDefaults] objectForKey:kRanAppBeforeCheck] == nil) {
         NSLog(@"first time we are running the app - set the bool");
         [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kRanAppBeforeCheck];
     }

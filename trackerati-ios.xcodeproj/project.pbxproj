@@ -496,9 +496,9 @@
 				231CB7052B8493CE65097DA5 /* Check Pods Manifest.lock */,
 				CED58C131A5ADAB3001C343B /* Sources */,
 				CED58C141A5ADAB3001C343B /* Frameworks */,
+				CE07C0B91A5F294E00A3B961 /* ShellScript */,
 				CED58C151A5ADAB3001C343B /* Resources */,
 				C5D60B6988F6646C0FA07593 /* Copy Pods Resources */,
-				CE07C0B91A5F294E00A3B961 /* ShellScript */,
 			);
 			buildRules = (
 			);

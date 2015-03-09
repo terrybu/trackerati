@@ -18,6 +18,7 @@ extern NSString * const kRemindersOn;
 extern NSString * const kReminderHourSaved;
 extern NSString * const kReminderMinutesSaved;
 extern NSString * const kRanAppBeforeCheck;
+extern NSString * const kOldDataClearDoneForNewVersion;
 
 @interface HConstants : NSObject
 
