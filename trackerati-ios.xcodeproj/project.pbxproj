@@ -538,7 +538,7 @@
 				TargetAttributes = {
 					CED58C161A5ADAB3001C343B = {
 						CreatedOnToolsVersion = 6.1.1;
-						DevelopmentTeam = JJ62WG39RU;
+						DevelopmentTeam = 63LVAGD552;
 						SystemCapabilities = {
 							com.apple.VPNLite = {
 								enabled = 0;
@@ -728,7 +728,8 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Ethan Moon (CGW3Z9WH83)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: The Hackerati, Inc. (63LVAGD552)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -752,7 +753,7 @@
 					"$(OTHER_LDFLAGS)",
 					"-ObjC",
 				);
-				PROVISIONING_PROFILE = "f613d4e9-1071-4dd7-bf0c-1e8bf9513c81";
+				PROVISIONING_PROFILE = "bd5c863c-849b-4672-a4bf-4256a317147a";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -775,7 +776,8 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Ethan Moon (CGW3Z9WH83)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: The Hackerati, Inc. (63LVAGD552)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -793,7 +795,7 @@
 					"$(OTHER_LDFLAGS)",
 					"-ObjC",
 				);
-				PROVISIONING_PROFILE = "f613d4e9-1071-4dd7-bf0c-1e8bf9513c81";
+				PROVISIONING_PROFILE = "bd5c863c-849b-4672-a4bf-4256a317147a";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -806,8 +808,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: The Hackerati, Inc. (63LVAGD552)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Hackerati_TimeTracker",
@@ -817,7 +819,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "trackerati-ios";
-				PROVISIONING_PROFILE = "3665f21c-680c-43fd-91a3-87db96cb6aef";
+				PROVISIONING_PROFILE = "bd5c863c-849b-4672-a4bf-4256a317147a";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -828,8 +830,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Terry Bu (JJ62WG39RU)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: The Hackerati, Inc. (63LVAGD552)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Hackerati_TimeTracker",
@@ -840,7 +842,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "trackerati-ios";
-				PROVISIONING_PROFILE = "3665f21c-680c-43fd-91a3-87db96cb6aef";
+				PROVISIONING_PROFILE = "bd5c863c-849b-4672-a4bf-4256a317147a";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
