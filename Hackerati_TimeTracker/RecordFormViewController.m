@@ -266,7 +266,7 @@ static NSString* const placeHolderForTextView =  @"Tap out while typing to scrol
 }
 
 - (IBAction)dateButtonAction:(id)sender {
-    if (self.isNewRecord && !self.isDatePickerShowing) {
+    if (!self.isDatePickerShowing) {
         if(!self.datePicker)
             self.datePicker = [THDatePickerViewController datePicker];
         self.datePicker.date = self.curDate;
