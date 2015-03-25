@@ -8,6 +8,9 @@
 
 #import "DailyNotificationManager.h"
 #import "HConstants.h"
+#import "AppDelegate.h"
+#import "HConstants.h"
+#import "LastSavedManager.h"
 
 @interface DailyNotificationManager ()
 
@@ -136,10 +139,22 @@ typedef NS_ENUM(NSInteger, WeekDayType) {
     self.localNotif.fireDate = [[NSCalendar currentCalendar] dateFromComponents:dateComponents];
     self.localNotif.soundName = UILocalNotificationDefaultSoundName;
     self.localNotif.repeatInterval = NSWeekCalendarUnit;
-    self.localNotif.alertBody = @"Did you remember to enter your timesheet today?";
-    self.localNotif.alertAction = NSLocalizedString(@"Trackerati", nil);
+    self.localNotif.alertBody = [self composeNotifMessage];
     self.localNotif.applicationIconBadgeNumber = [UIApplication sharedApplication].applicationIconBadgeNumber + 1;
+    if([AppDelegate.globalDelegate isOS8])
+        self.localNotif.category = [HConstants kNotificationCategory];
     [[UIApplication sharedApplication] scheduleLocalNotification:self.localNotif];
+}
+
+- (NSString*) composeNotifMessage{
+    NSString* message;
+    Record* record = [LastSavedManager.sharedManager getLastRecord];
+    if(record != nil && [AppDelegate.globalDelegate isOS8])
+        message = [NSString stringWithFormat:@"Did you work @ %@ on %@ project for %@ hours today?", record.clientName, record.projectName, record.hourOfTheService];
+    else {
+        message = @"Did you remember to log your time today?";
+    }
+    return message;
 }
 
 

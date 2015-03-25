@@ -42,5 +42,6 @@ extern NSString * const kOldDataClearDoneForNewVersion;
 +(NSString*)kComment;
 +(NSString*)kStatus;
 +(NSString*)kType;
++(NSString*)kNotificationCategory;
 
 @end

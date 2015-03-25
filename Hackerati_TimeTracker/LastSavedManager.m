@@ -74,6 +74,18 @@
     return record;
 }
 
+-(Record*)getLastRecord{
+    NSData *dataLastSavedRecords = [[NSUserDefaults standardUserDefaults] objectForKey:[HConstants kLastSavedRecord]];
+    
+    //just grabbing the last record
+    if (dataLastSavedRecords) {
+        NSArray* lastSavedInfo = [NSKeyedUnarchiver unarchiveObjectWithData:dataLastSavedRecords];
+        if(lastSavedInfo)
+            return lastSavedInfo.lastObject;
+    }
+    return nil;
+}
+
 
 
 @end

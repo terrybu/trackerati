@@ -21,4 +21,6 @@
 
 -(Record*)getRecordForClient:(Client*)client withProject:(Project*)project;
 
+-(Record*)getLastRecord;
+
 @end

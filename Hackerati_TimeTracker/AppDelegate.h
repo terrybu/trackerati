@@ -22,6 +22,7 @@
 + (AppDelegate *)globalDelegate;
 - (DrawerTableViewController *) drawerTableViewController;
 - (void)toggleLeftDrawer:(id)sender animated:(BOOL)animated;
+- (BOOL)isOS8;
 
 @end
 

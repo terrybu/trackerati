@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		343800581AC336220073C73F /* APIManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 343800571AC336220073C73F /* APIManager.m */; };
 		72CD17FC695EDE98A0D5C56D /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D7FA9458296C53CD81653168 /* libPods.a */; };
 		CE07C0351A5B057900A3B961 /* GoogleOpenSource.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE07C0321A5B057900A3B961 /* GoogleOpenSource.framework */; };
 		CE07C0361A5B057900A3B961 /* GooglePlus.bundle in Resources */ = {isa = PBXBuildFile; fileRef = CE07C0331A5B057900A3B961 /* GooglePlus.bundle */; };
@@ -91,6 +92,8 @@
 
 /* Begin PBXFileReference section */
 		2E8668B812BD9CA9DE22E458 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		343800561AC336220073C73F /* APIManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APIManager.h; sourceTree = "<group>"; };
+		343800571AC336220073C73F /* APIManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APIManager.m; sourceTree = "<group>"; };
 		A2368C21D2A903653271B4CA /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		CE07C0321A5B057900A3B961 /* GoogleOpenSource.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleOpenSource.framework; sourceTree = "<group>"; };
 		CE07C0331A5B057900A3B961 /* GooglePlus.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = GooglePlus.bundle; sourceTree = "<group>"; };
@@ -284,6 +287,8 @@
 				CE07C0B41A5EBFDD00A3B961 /* DailyNotificationManager.m */,
 				CE07C0B61A5ED6FA00A3B961 /* LastSavedManager.h */,
 				CE07C0B71A5ED6FB00A3B961 /* LastSavedManager.m */,
+				343800561AC336220073C73F /* APIManager.h */,
+				343800571AC336220073C73F /* APIManager.m */,
 			);
 			name = Managers;
 			sourceTree = "<group>";
@@ -686,6 +691,7 @@
 				CE872C781A74BDCF002C9930 /* Project.m in Sources */,
 				CE07C0B81A5ED6FB00A3B961 /* LastSavedManager.m in Sources */,
 				CE872C751A74BD93002C9930 /* Client.m in Sources */,
+				343800581AC336220073C73F /* APIManager.m in Sources */,
 				D937CB741AA0F58E007B8297 /* SettingsViewController.m in Sources */,
 				D9CA83AD1A9F99B5009B6424 /* DrawerCell.m in Sources */,
 				CE3BC5691A6064C4006340F7 /* CustomMCSwipeTableViewCell.m in Sources */,

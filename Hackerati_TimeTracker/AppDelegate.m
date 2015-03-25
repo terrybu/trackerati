@@ -17,6 +17,7 @@
 #import "HistoryViewController.h"
 #import "JVFloatingDrawerSpringAnimator.h"
 #import "SettingsViewController.h"
+#import "APIManager.h"
 
 #define SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(v) ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedAscending)
 
@@ -25,6 +26,8 @@
 @end
 
 @implementation AppDelegate
+
+NSString * const NotificationActionOneIdent = @"ACTION_SUBMIT_RECORD";
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
@@ -98,9 +101,8 @@
 
 - (void)configureNotifications:(UIApplication *)application {
     application.applicationIconBadgeNumber = 0;
-    if(SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"8.0")) {
-        [[UIApplication sharedApplication] registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:(UIUserNotificationTypeSound | UIUserNotificationTypeAlert | UIUserNotificationTypeBadge) categories:nil]];
-        [[UIApplication sharedApplication] registerForRemoteNotifications];
+    if([self isOS8]) {
+        [self registerForNotification];
     }
     else {
         [[UIApplication sharedApplication] registerForRemoteNotificationTypes:
@@ -126,6 +128,10 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         [[LoginManager sharedManager] startLoginProcess];
     });
+}
+
+- (BOOL)isOS8{
+    return SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"8.0");
 }
 
 #pragma mark - Helper Methods for Drawer
@@ -168,6 +174,46 @@
     return (DrawerTableViewController *) self.drawerViewController.leftViewController;
 }
 
+- (void)registerForNotification {
+    
+    UIMutableUserNotificationAction *submitAction;
+    submitAction = [[UIMutableUserNotificationAction alloc] init];
+    [submitAction setActivationMode:UIUserNotificationActivationModeBackground];
+    [submitAction setTitle:@"Yes, submit"];
+    [submitAction setIdentifier:NotificationActionOneIdent];
+    [submitAction setDestructive:NO];
+    [submitAction setAuthenticationRequired:NO];
+    
+    UIMutableUserNotificationCategory *actionCategory;
+    actionCategory = [[UIMutableUserNotificationCategory alloc] init];
+    [actionCategory setIdentifier:[HConstants kNotificationCategory]];
+    [actionCategory setActions:@[submitAction]
+                    forContext:UIUserNotificationActionContextDefault];
+    
+    NSSet *categories = [NSSet setWithObject:actionCategory];
+    UIUserNotificationType types = (UIUserNotificationTypeAlert|
+                                    UIUserNotificationTypeSound|
+                                    UIUserNotificationTypeBadge);
+    
+    UIUserNotificationSettings *settings;
+    settings = [UIUserNotificationSettings settingsForTypes:types
+                                                 categories:categories];
+    
+    [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
+}
+
+- (void)application:(UIApplication *)application handleActionWithIdentifier:(NSString *)identifier forLocalNotification:(NSDictionary *)userInfo completionHandler:(void (^)())completionHandler {
+    
+    //well execute completionHandler after the submittion is done
+    if ([identifier isEqualToString:NotificationActionOneIdent]) {
+        [APIManager.api submitDefaultRecord: completionHandler];
+        application.applicationIconBadgeNumber = 0;
+    }
+    else if (completionHandler) {
+        
+        completionHandler();
+    }
+}
 
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.

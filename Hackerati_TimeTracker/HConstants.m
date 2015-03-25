@@ -44,6 +44,7 @@ NSString * const kRemindersOn = @"remindersOn";
 NSString * const kReminderHourSaved = @"reminderHourSaved";
 NSString * const kReminderMinutesSaved = @"reminderMinutesSaved";
 NSString * const kRanAppBeforeCheck = @"kRanAppBeforeCheck";
+NSString * const kNotificationCategory = @"notificationCategory_Submit";
 
 @implementation HConstants
 
@@ -123,6 +124,10 @@ NSString * const kRanAppBeforeCheck = @"kRanAppBeforeCheck";
 }
 +(NSString*)kType{
     return kType;
+}
+
++(NSString*) kNotificationCategory{
+    return kNotificationCategory;
 }
 
 @end
