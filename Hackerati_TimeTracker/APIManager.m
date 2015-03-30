@@ -23,8 +23,13 @@
 
 -(void)submitDefaultRecord:(void (^)())completionHandler{
     Record * defaultRecord = [LastSavedManager.sharedManager getLastRecord];
-    if(defaultRecord!=nil)
-       [self submitRecord:defaultRecord completionHandler:completionHandler];
+    if(defaultRecord!=nil){
+        //setting date to today's date
+        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+        [formatter setDateFormat:@"MM/dd/yyyy"];
+        defaultRecord.dateOfTheService = [formatter stringFromDate:[NSDate date]];
+        [self submitRecord:defaultRecord completionHandler:completionHandler];
+    }
     else if(completionHandler)
         completionHandler();
 }
@@ -40,7 +45,12 @@
                     [HConstants kStatus]:record.statusOfUser,
                     [HConstants kType]:(record.typeOfService)}
      
-        withCompletionBlock:^(NSError *error, Firebase *ref) {completionHandler();}
+        withCompletionBlock:^(NSError *error, Firebase *ref) {
+            //updating local cache
+            if(error == nil)
+                [LastSavedManager.sharedManager saveRecord:(Record*)record];
+            completionHandler();
+        }
      ];
 }
 
