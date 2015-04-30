@@ -373,7 +373,7 @@ static NSString *CellIdentifier = @"Cell";
 
 
 
-#pragma mark - Data Parser Delegate Methods
+#pragma mark - DataParseManager Delegate Methods
 
 - (void) loginSuccessful {
     //

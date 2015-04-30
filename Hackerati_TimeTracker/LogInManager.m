@@ -77,27 +77,41 @@ static BOOL loggedOut = YES;
                 }
             }
             
-        } else {
+        }
+        else {
             // We successfully obtained an OAuth token, authenticate on Firebase with it
             NSString *userEmail = [GPPSignIn sharedInstance].userEmail;
-            NSString *username = [[userEmail componentsSeparatedByCharactersInSet:[[NSCharacterSet letterCharacterSet] invertedSet]] componentsJoinedByString:@""];
-            [[NSUserDefaults standardUserDefaults] setObject:username forKey:[HConstants kCurrentUser]];
-            [[NSUserDefaults standardUserDefaults]synchronize];
             
-            [[FireBaseManager baseURLsharedFireBase] authWithOAuthProvider:@"google" token:auth.accessToken
-                                                       withCompletionBlock:^(NSError *error, FAuthData *authData) {
-                                                           if (error) {
-                                                               // Error authenticating Firebase with Google OAuth token
-                                                               
-                                                           } else {
-                                                               // User is now logged in!
-                                                               if ([weakSelf.delegate respondsToSelector:@selector(getAllDataFromFireBase)]) {
-                                                                   [LoginManager setLoggedOut:FALSE];
-                                                                   [[NSNotificationCenter defaultCenter] postNotificationName:@"loginSuccess" object:nil];
-                                                                   [weakSelf.delegate getAllDataFromFireBase];
+            if ([userEmail rangeOfString:@"@thehackerati.com"].location == NSNotFound) {
+                UIViewController *rootCtrl = [[[[UIApplication sharedApplication] delegate] window] rootViewController];
+                UIAlertController* alertController = [UIAlertController alertControllerWithTitle:nil
+                                                                                         message:@"Non-Hackerati Gmail account was used. Please log out and log back in with your Hackerati Gmail account for reporting accuracy."
+                                                                                  preferredStyle:UIAlertControllerStyleAlert];
+                UIAlertAction *okayAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
+                [alertController addAction:okayAction];
+                [rootCtrl presentViewController:alertController animated:YES completion:nil];
+                return;
+            }
+            else {
+                NSString *username = [[userEmail componentsSeparatedByCharactersInSet:[[NSCharacterSet letterCharacterSet] invertedSet]] componentsJoinedByString:@""];
+                [[NSUserDefaults standardUserDefaults] setObject:username forKey:[HConstants kCurrentUser]];
+                [[NSUserDefaults standardUserDefaults]synchronize];
+                
+                [[FireBaseManager baseURLsharedFireBase] authWithOAuthProvider:@"google" token:auth.accessToken
+                                                           withCompletionBlock:^(NSError *error, FAuthData *authData) {
+                                                               if (error) {
+                                                                   // Error authenticating Firebase with Google OAuth token
+                                                                   
+                                                               } else {
+                                                                   // User is now logged in!
+                                                                   if ([weakSelf.delegate respondsToSelector:@selector(getAllDataFromFireBase)]) {
+                                                                       [LoginManager setLoggedOut:FALSE];
+                                                                       [[NSNotificationCenter defaultCenter] postNotificationName:@"loginSuccess" object:nil];
+                                                                       [weakSelf.delegate getAllDataFromFireBase];
+                                                                   }
                                                                }
-                                                           }
-                                                       }];
+                                                           }];
+            }
         }
     });
 }
