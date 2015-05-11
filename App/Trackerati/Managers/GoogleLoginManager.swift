@@ -8,7 +8,7 @@
 
 import Foundation
 
-class GoogleLoginManager : NSObject, GPPSignInDelegate
+class GoogleLoginManager : NSObject, GPPSignInDelegate, UIAlertViewDelegate
 {
     private let googlePlusIdentifier = "478294020811-80olfgevlg8q14vo74lmmiu3nu7q75m5.apps.googleusercontent.com"
     private let googlePlusScopeKeyProfile = "profile"
@@ -43,16 +43,12 @@ class GoogleLoginManager : NSObject, GPPSignInDelegate
                 googleSignInManager.authenticate()
             }
         case .NotReachable, .Unknown:
-            self.signout()
+            self.logout()
             self.login()
         }
-            
-//            return
-        
-//        reachabilityManager.startMonitoring()
     }
     
-    func signout()
+    func logout()
     {
         GPPSignIn.sharedInstance().signOut()
     }
@@ -65,12 +61,34 @@ class GoogleLoginManager : NSObject, GPPSignInDelegate
             // TODO: Signed in! Do something
             AFNetworkReachabilityManager.sharedManager().stopMonitoring()
             
-            let email = GPPSignIn.sharedInstance().userEmail
-            println(email)
+            let email = GPPSignIn.sharedInstance().userEmail as NSString
+            if !email.containsString("thehackerati.com") {
+                
+                let invalidEmailAlertView = UIAlertView(title: "Invalid Email Address", message: "Please use a Hackerati email address", delegate: self, cancelButtonTitle: "No thanks", otherButtonTitles: "Try Again")
+                invalidEmailAlertView.show()
+            }
+            else {
+                // TODO: Whatever you do when valid email and signed in successfully.
+            }
         }
         else {
-            // TODO: Handle correctly
+            // TODO: Handle when get error
             println(error.localizedDescription)
+        }
+    }
+    
+    // MARK: UIAlertView Delegate
+    
+    func alertView(alertView: UIAlertView, clickedButtonAtIndex buttonIndex: Int) {
+        println(buttonIndex)
+        switch buttonIndex {
+        case 0:
+            self.logout()
+        case 1:
+            self.logout()
+            self.login()
+        default:
+            break
         }
     }
     
