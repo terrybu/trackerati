@@ -25,6 +25,12 @@
 		01498B8C1B011BDA00C7C395 /* HockeySDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01498B881B011BDA00C7C395 /* HockeySDK.framework */; };
 		01498B8D1B011BDA00C7C395 /* HockeySDK.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 01498B8A1B011BDA00C7C395 /* HockeySDK.xcconfig */; };
 		01498B8E1B011BDA00C7C395 /* HockeySDKResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 01498B8B1B011BDA00C7C395 /* HockeySDKResources.bundle */; };
+		01498B911B011D4600C7C395 /* GoogleOpenSource.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01498B8F1B011D4600C7C395 /* GoogleOpenSource.framework */; };
+		01498B921B011D4700C7C395 /* GooglePlus.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01498B901B011D4600C7C395 /* GooglePlus.framework */; };
+		01498B941B011D5600C7C395 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01498B931B011D5600C7C395 /* AddressBook.framework */; };
+		01498B961B011D6100C7C395 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01498B951B011D6100C7C395 /* CoreLocation.framework */; };
+		01498B981B011D7000C7C395 /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01498B971B011D7000C7C395 /* CoreMotion.framework */; };
+		01498B9A1B011D7C00C7C395 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01498B991B011D7C00C7C395 /* MediaPlayer.framework */; };
 		9AC9A5ABC4BD45574226D7B3 /* libPods-Trackerati.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A1B38C69B4DD3AA7E0D1667A /* libPods-Trackerati.a */; };
 /* End PBXBuildFile section */
 
@@ -62,6 +68,12 @@
 		01498B881B011BDA00C7C395 /* HockeySDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = HockeySDK.framework; sourceTree = "<group>"; };
 		01498B8A1B011BDA00C7C395 /* HockeySDK.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = HockeySDK.xcconfig; sourceTree = "<group>"; };
 		01498B8B1B011BDA00C7C395 /* HockeySDKResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = HockeySDKResources.bundle; sourceTree = "<group>"; };
+		01498B8F1B011D4600C7C395 /* GoogleOpenSource.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleOpenSource.framework; sourceTree = "<group>"; };
+		01498B901B011D4600C7C395 /* GooglePlus.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GooglePlus.framework; sourceTree = "<group>"; };
+		01498B931B011D5600C7C395 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
+		01498B951B011D6100C7C395 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		01498B971B011D7000C7C395 /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
+		01498B991B011D7C00C7C395 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		3587A3B08253D04AD27B6510 /* Pods-Trackerati.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Trackerati.release.xcconfig"; path = "../Pods/Target Support Files/Pods-Trackerati/Pods-Trackerati.release.xcconfig"; sourceTree = "<group>"; };
 		A1B38C69B4DD3AA7E0D1667A /* libPods-Trackerati.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Trackerati.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FC4437DDCAA1EBF64F6F5D62 /* Pods-Trackerati.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Trackerati.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-Trackerati/Pods-Trackerati.debug.xcconfig"; sourceTree = "<group>"; };
@@ -72,14 +84,20 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				01498B9A1B011D7C00C7C395 /* MediaPlayer.framework in Frameworks */,
+				01498B981B011D7000C7C395 /* CoreMotion.framework in Frameworks */,
+				01498B961B011D6100C7C395 /* CoreLocation.framework in Frameworks */,
+				01498B941B011D5600C7C395 /* AddressBook.framework in Frameworks */,
 				01498B801B01183A00C7C395 /* UIKit.framework in Frameworks */,
 				01498B7E1B01183300C7C395 /* SystemConfiguration.framework in Frameworks */,
+				01498B911B011D4600C7C395 /* GoogleOpenSource.framework in Frameworks */,
 				01498B7C1B01182B00C7C395 /* Security.framework in Frameworks */,
 				01498B7A1B01182500C7C395 /* QuickLook.framework in Frameworks */,
 				01498B781B01182000C7C395 /* QuartzCore.framework in Frameworks */,
 				01498B761B01181900C7C395 /* MobileCoreServices.framework in Frameworks */,
 				01498B741B01181400C7C395 /* Foundation.framework in Frameworks */,
 				01498B721B01180A00C7C395 /* AssetsLibrary.framework in Frameworks */,
+				01498B921B011D4700C7C395 /* GooglePlus.framework in Frameworks */,
 				01498B8C1B011BDA00C7C395 /* HockeySDK.framework in Frameworks */,
 				01498B6F1B0117FF00C7C395 /* CoreGraphics.framework in Frameworks */,
 				01498B701B0117FF00C7C395 /* CoreText.framework in Frameworks */,
@@ -184,6 +202,8 @@
 			isa = PBXGroup;
 			children = (
 				01498B871B011BDA00C7C395 /* HockeySDK.embeddedframework */,
+				01498B8F1B011D4600C7C395 /* GoogleOpenSource.framework */,
+				01498B901B011D4600C7C395 /* GooglePlus.framework */,
 				01498B7F1B01183A00C7C395 /* UIKit.framework */,
 				01498B7D1B01183300C7C395 /* SystemConfiguration.framework */,
 				01498B7B1B01182B00C7C395 /* Security.framework */,
@@ -228,6 +248,10 @@
 		B656BDA259BF38E48D0BDABC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				01498B991B011D7C00C7C395 /* MediaPlayer.framework */,
+				01498B971B011D7000C7C395 /* CoreMotion.framework */,
+				01498B951B011D6100C7C395 /* CoreLocation.framework */,
+				01498B931B011D5600C7C395 /* AddressBook.framework */,
 				A1B38C69B4DD3AA7E0D1667A /* libPods-Trackerati.a */,
 			);
 			name = Frameworks;
@@ -503,6 +527,7 @@
 					"$(PROJECT_DIR)/Trackerati/HockeySDK-iOS/HockeySDKCrashOnly",
 					"$(PROJECT_DIR)/Trackerati/Frameworks/HockeySDK-iOS/HockeySDK.embeddedframework",
 					"$(PROJECT_DIR)/Trackerati/Frameworks/HockeySDK.embeddedframework",
+					"$(PROJECT_DIR)/Trackerati/Frameworks",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "";
@@ -525,6 +550,7 @@
 					"$(PROJECT_DIR)/Trackerati/HockeySDK-iOS/HockeySDKCrashOnly",
 					"$(PROJECT_DIR)/Trackerati/Frameworks/HockeySDK-iOS/HockeySDK.embeddedframework",
 					"$(PROJECT_DIR)/Trackerati/Frameworks/HockeySDK.embeddedframework",
+					"$(PROJECT_DIR)/Trackerati/Frameworks",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "";

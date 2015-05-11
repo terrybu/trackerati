@@ -13,6 +13,7 @@ import HockeySDK
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     let hockeySDKIdentifier = "3aa549db112abed50654d253ecec9aa7"
+    let googlePlusIdentifier = "1074427376116-jjk9j3nbsgao64i8hne37fdrhf49bdqu.apps.googleusercontent.com"
     
     var window: UIWindow!
 

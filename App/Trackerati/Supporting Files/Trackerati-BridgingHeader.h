@@ -10,5 +10,8 @@
 #define Trackerati_Trackerati_BridgingHeader_h
 
 // IMPORT OBJ-C CLASSES HERE
+#import <Firebase/Firebase.h>
+#import <GooglePlus/GooglePlus.h>
+#import <GoogleOpenSource/GoogleOpenSource.h>
 
 #endif
