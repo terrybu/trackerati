@@ -9,5 +9,6 @@
 #ifndef Trackerati_Trackerati_BridgingHeader_h
 #define Trackerati_Trackerati_BridgingHeader_h
 
+// IMPORT OBJ-C CLASSES HERE
 
 #endif
