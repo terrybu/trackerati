@@ -12,6 +12,19 @@
 		01498B211B01027E00C7C395 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 01498B201B01027E00C7C395 /* Images.xcassets */; };
 		01498B241B01027E00C7C395 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01498B221B01027E00C7C395 /* LaunchScreen.xib */; };
 		01498B301B01027E00C7C395 /* TrackeratiTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01498B2F1B01027E00C7C395 /* TrackeratiTests.swift */; };
+		01498B4C1B0114DB00C7C395 /* HockeySDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01498B421B0114DB00C7C395 /* HockeySDK.framework */; };
+		01498B4D1B0114DB00C7C395 /* HockeySDK.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 01498B441B0114DB00C7C395 /* HockeySDK.xcconfig */; };
+		01498B4E1B0114DB00C7C395 /* HockeySDKResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 01498B451B0114DB00C7C395 /* HockeySDKResources.bundle */; };
+		01498B6F1B0117FF00C7C395 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01498B6D1B0117FF00C7C395 /* CoreGraphics.framework */; };
+		01498B701B0117FF00C7C395 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01498B6E1B0117FF00C7C395 /* CoreText.framework */; };
+		01498B721B01180A00C7C395 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01498B711B01180A00C7C395 /* AssetsLibrary.framework */; };
+		01498B741B01181400C7C395 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01498B731B01181400C7C395 /* Foundation.framework */; };
+		01498B761B01181900C7C395 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01498B751B01181900C7C395 /* MobileCoreServices.framework */; };
+		01498B781B01182000C7C395 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01498B771B01182000C7C395 /* QuartzCore.framework */; };
+		01498B7A1B01182500C7C395 /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01498B791B01182500C7C395 /* QuickLook.framework */; };
+		01498B7C1B01182B00C7C395 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01498B7B1B01182B00C7C395 /* Security.framework */; };
+		01498B7E1B01183300C7C395 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01498B7D1B01183300C7C395 /* SystemConfiguration.framework */; };
+		01498B801B01183A00C7C395 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01498B7F1B01183A00C7C395 /* UIKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -35,6 +48,20 @@
 		01498B2E1B01027E00C7C395 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		01498B2F1B01027E00C7C395 /* TrackeratiTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackeratiTests.swift; sourceTree = "<group>"; };
 		01498B3C1B01052700C7C395 /* Trackerati-BridgingHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Trackerati-BridgingHeader.h"; sourceTree = "<group>"; };
+		01498B421B0114DB00C7C395 /* HockeySDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = HockeySDK.framework; sourceTree = "<group>"; };
+		01498B441B0114DB00C7C395 /* HockeySDK.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = HockeySDK.xcconfig; sourceTree = "<group>"; };
+		01498B451B0114DB00C7C395 /* HockeySDKResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = HockeySDKResources.bundle; sourceTree = "<group>"; };
+		01498B581B01158300C7C395 /* Trackerati-PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Trackerati-PrefixHeader.pch"; sourceTree = "<group>"; };
+		01498B6D1B0117FF00C7C395 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		01498B6E1B0117FF00C7C395 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
+		01498B711B01180A00C7C395 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
+		01498B731B01181400C7C395 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		01498B751B01181900C7C395 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
+		01498B771B01182000C7C395 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		01498B791B01182500C7C395 /* QuickLook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickLook.framework; path = System/Library/Frameworks/QuickLook.framework; sourceTree = SDKROOT; };
+		01498B7B1B01182B00C7C395 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		01498B7D1B01183300C7C395 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		01498B7F1B01183A00C7C395 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -42,6 +69,17 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				01498B801B01183A00C7C395 /* UIKit.framework in Frameworks */,
+				01498B7E1B01183300C7C395 /* SystemConfiguration.framework in Frameworks */,
+				01498B7C1B01182B00C7C395 /* Security.framework in Frameworks */,
+				01498B7A1B01182500C7C395 /* QuickLook.framework in Frameworks */,
+				01498B781B01182000C7C395 /* QuartzCore.framework in Frameworks */,
+				01498B761B01181900C7C395 /* MobileCoreServices.framework in Frameworks */,
+				01498B741B01181400C7C395 /* Foundation.framework in Frameworks */,
+				01498B721B01180A00C7C395 /* AssetsLibrary.framework in Frameworks */,
+				01498B6F1B0117FF00C7C395 /* CoreGraphics.framework in Frameworks */,
+				01498B701B0117FF00C7C395 /* CoreText.framework in Frameworks */,
+				01498B4C1B0114DB00C7C395 /* HockeySDK.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -77,6 +115,7 @@
 			isa = PBXGroup;
 			children = (
 				01498B3A1B0104CF00C7C395 /* Application */,
+				01498B3D1B0114C800C7C395 /* Frameworks */,
 				01498B3B1B0104DE00C7C395 /* Resources */,
 				01498B391B0104C400C7C395 /* View Controllers */,
 				01498B171B01027E00C7C395 /* Supporting Files */,
@@ -89,6 +128,7 @@
 			children = (
 				01498B3C1B01052700C7C395 /* Trackerati-BridgingHeader.h */,
 				01498B181B01027E00C7C395 /* Info.plist */,
+				01498B581B01158300C7C395 /* Trackerati-PrefixHeader.pch */,
 			);
 			path = "Supporting Files";
 			sourceTree = "<group>";
@@ -131,6 +171,50 @@
 			children = (
 				01498B221B01027E00C7C395 /* LaunchScreen.xib */,
 				01498B201B01027E00C7C395 /* Images.xcassets */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		01498B3D1B0114C800C7C395 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				01498B7F1B01183A00C7C395 /* UIKit.framework */,
+				01498B7D1B01183300C7C395 /* SystemConfiguration.framework */,
+				01498B7B1B01182B00C7C395 /* Security.framework */,
+				01498B791B01182500C7C395 /* QuickLook.framework */,
+				01498B771B01182000C7C395 /* QuartzCore.framework */,
+				01498B751B01181900C7C395 /* MobileCoreServices.framework */,
+				01498B731B01181400C7C395 /* Foundation.framework */,
+				01498B711B01180A00C7C395 /* AssetsLibrary.framework */,
+				01498B6D1B0117FF00C7C395 /* CoreGraphics.framework */,
+				01498B6E1B0117FF00C7C395 /* CoreText.framework */,
+				01498B3E1B0114DB00C7C395 /* HockeySDK-iOS */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		01498B3E1B0114DB00C7C395 /* HockeySDK-iOS */ = {
+			isa = PBXGroup;
+			children = (
+				01498B411B0114DB00C7C395 /* HockeySDK.embeddedframework */,
+			);
+			path = "HockeySDK-iOS";
+			sourceTree = "<group>";
+		};
+		01498B411B0114DB00C7C395 /* HockeySDK.embeddedframework */ = {
+			isa = PBXGroup;
+			children = (
+				01498B421B0114DB00C7C395 /* HockeySDK.framework */,
+				01498B431B0114DB00C7C395 /* Resources */,
+			);
+			path = HockeySDK.embeddedframework;
+			sourceTree = "<group>";
+		};
+		01498B431B0114DB00C7C395 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				01498B441B0114DB00C7C395 /* HockeySDK.xcconfig */,
+				01498B451B0114DB00C7C395 /* HockeySDKResources.bundle */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -216,7 +300,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				01498B241B01027E00C7C395 /* LaunchScreen.xib in Resources */,
+				01498B4D1B0114DB00C7C395 /* HockeySDK.xcconfig in Resources */,
 				01498B211B01027E00C7C395 /* Images.xcassets in Resources */,
+				01498B4E1B0114DB00C7C395 /* HockeySDKResources.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -295,6 +381,8 @@
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Trackerati/Supporting Files/Trackerati-PrefixHeader.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -339,6 +427,8 @@
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Trackerati/Supporting Files/Trackerati-PrefixHeader.pch";
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
@@ -357,6 +447,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Trackerati/HockeySDK-iOS/HockeySDK.embeddedframework",
+					"$(PROJECT_DIR)/Trackerati/HockeySDK-iOS/HockeySDKCrashOnly",
+				);
 				INFOPLIST_FILE = "Trackerati/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -369,6 +464,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Trackerati/HockeySDK-iOS/HockeySDK.embeddedframework",
+					"$(PROJECT_DIR)/Trackerati/HockeySDK-iOS/HockeySDKCrashOnly",
+				);
 				INFOPLIST_FILE = "Trackerati/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
