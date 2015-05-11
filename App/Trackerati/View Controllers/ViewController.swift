@@ -27,6 +27,21 @@ class ViewController: UIViewController {
         view.backgroundColor = UIColor.whiteColor()
         
         // Set up UI here
+        var signinButton = UIButton(frame: CGRect(x: 100.0, y: 250.0, width: 100.0, height: 40.0))
+        signinButton.center = view.center
+        signinButton.setTitle("Sign In", forState: .Normal)
+        signinButton.setTitleColor(UIColor.blueColor(), forState: .Normal)
+        signinButton.addTarget(self, action: "signIn", forControlEvents: .TouchUpInside)
+        view.addSubview(signinButton)
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+    }
+    
+    func signIn()
+    {
+        GoogleLoginManager.sharedManager.login()
     }
 }
 

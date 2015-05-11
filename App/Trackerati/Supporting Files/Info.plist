@@ -24,10 +24,10 @@
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 			<key>CFBundleURLName</key>
-			<string>com.trackerati-ios</string>
+			<string>com.TH.Trackerati</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>com.trackerati-ios</string>
+				<string>com.TH.Trackerati</string>
 			</array>
 		</dict>
 	</array>

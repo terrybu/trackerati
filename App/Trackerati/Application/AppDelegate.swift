@@ -13,12 +13,12 @@ import HockeySDK
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     let hockeySDKIdentifier = "3aa549db112abed50654d253ecec9aa7"
-    let googlePlusIdentifier = "1074427376116-jjk9j3nbsgao64i8hne37fdrhf49bdqu.apps.googleusercontent.com"
     
     var window: UIWindow!
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
+        AFNetworkReachabilityManager.sharedManager().startMonitoring()
         self.configureHockeySDK()
         
         window = UIWindow(frame: UIScreen.mainScreen().bounds)
@@ -34,6 +34,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         BITHockeyManager.sharedHockeyManager().configureWithIdentifier(hockeySDKIdentifier);
         BITHockeyManager.sharedHockeyManager().startManager();
         BITHockeyManager.sharedHockeyManager().authenticator.authenticateInstallation();
+    }
+    
+    func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject?) -> Bool {
+        return GPPURLHandler.handleURL(url, sourceApplication: sourceApplication, annotation: annotation)
     }
 }
 

@@ -4,6 +4,7 @@ xcodeproj 'App/Trackerati.xcodeproj/'
 platform :ios, '7.0'
 
 target 'Trackerati' do
+	pod 'AFNetworking'
 	pod 'Firebase', '>= 2.2.2'
 end
 
