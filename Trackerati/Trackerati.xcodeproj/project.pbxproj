@@ -51,7 +51,6 @@
 		01498B421B0114DB00C7C395 /* HockeySDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = HockeySDK.framework; sourceTree = "<group>"; };
 		01498B441B0114DB00C7C395 /* HockeySDK.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = HockeySDK.xcconfig; sourceTree = "<group>"; };
 		01498B451B0114DB00C7C395 /* HockeySDKResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = HockeySDKResources.bundle; sourceTree = "<group>"; };
-		01498B581B01158300C7C395 /* Trackerati-PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Trackerati-PrefixHeader.pch"; sourceTree = "<group>"; };
 		01498B6D1B0117FF00C7C395 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		01498B6E1B0117FF00C7C395 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		01498B711B01180A00C7C395 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
@@ -128,7 +127,6 @@
 			children = (
 				01498B3C1B01052700C7C395 /* Trackerati-BridgingHeader.h */,
 				01498B181B01027E00C7C395 /* Info.plist */,
-				01498B581B01158300C7C395 /* Trackerati-PrefixHeader.pch */,
 			);
 			path = "Supporting Files";
 			sourceTree = "<group>";
@@ -452,6 +450,8 @@
 					"$(PROJECT_DIR)/Trackerati/HockeySDK-iOS/HockeySDK.embeddedframework",
 					"$(PROJECT_DIR)/Trackerati/HockeySDK-iOS/HockeySDKCrashOnly",
 				);
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
 				INFOPLIST_FILE = "Trackerati/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -469,6 +469,8 @@
 					"$(PROJECT_DIR)/Trackerati/HockeySDK-iOS/HockeySDK.embeddedframework",
 					"$(PROJECT_DIR)/Trackerati/HockeySDK-iOS/HockeySDKCrashOnly",
 				);
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
 				INFOPLIST_FILE = "Trackerati/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
