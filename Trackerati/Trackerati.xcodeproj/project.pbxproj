@@ -34,6 +34,7 @@
 		01498B291B01027E00C7C395 /* TrackeratiTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TrackeratiTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		01498B2E1B01027E00C7C395 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		01498B2F1B01027E00C7C395 /* TrackeratiTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackeratiTests.swift; sourceTree = "<group>"; };
+		01498B3C1B01052700C7C395 /* Trackerati-BridgingHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Trackerati-BridgingHeader.h"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,10 +76,9 @@
 		01498B161B01027E00C7C395 /* Trackerati */ = {
 			isa = PBXGroup;
 			children = (
-				01498B191B01027E00C7C395 /* AppDelegate.swift */,
-				01498B1B1B01027E00C7C395 /* ViewController.swift */,
-				01498B201B01027E00C7C395 /* Images.xcassets */,
-				01498B221B01027E00C7C395 /* LaunchScreen.xib */,
+				01498B3A1B0104CF00C7C395 /* Application */,
+				01498B3B1B0104DE00C7C395 /* Resources */,
+				01498B391B0104C400C7C395 /* View Controllers */,
 				01498B171B01027E00C7C395 /* Supporting Files */,
 			);
 			path = Trackerati;
@@ -87,6 +87,7 @@
 		01498B171B01027E00C7C395 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				01498B3C1B01052700C7C395 /* Trackerati-BridgingHeader.h */,
 				01498B181B01027E00C7C395 /* Info.plist */,
 			);
 			name = "Supporting Files";
@@ -107,6 +108,31 @@
 				01498B2E1B01027E00C7C395 /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		01498B391B0104C400C7C395 /* View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				01498B1B1B01027E00C7C395 /* ViewController.swift */,
+			);
+			name = "View Controllers";
+			sourceTree = "<group>";
+		};
+		01498B3A1B0104CF00C7C395 /* Application */ = {
+			isa = PBXGroup;
+			children = (
+				01498B191B01027E00C7C395 /* AppDelegate.swift */,
+			);
+			name = Application;
+			sourceTree = "<group>";
+		};
+		01498B3B1B0104DE00C7C395 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				01498B221B01027E00C7C395 /* LaunchScreen.xib */,
+				01498B201B01027E00C7C395 /* Images.xcassets */,
+			);
+			name = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
