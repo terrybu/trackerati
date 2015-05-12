@@ -11,7 +11,6 @@
 		01498B1A1B01027E00C7C395 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01498B191B01027E00C7C395 /* AppDelegate.swift */; };
 		01498B1C1B01027E00C7C395 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01498B1B1B01027E00C7C395 /* ViewController.swift */; };
 		01498B211B01027E00C7C395 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 01498B201B01027E00C7C395 /* Images.xcassets */; };
-		01498B241B01027E00C7C395 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01498B221B01027E00C7C395 /* LaunchScreen.xib */; };
 		01498B301B01027E00C7C395 /* TrackeratiTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01498B2F1B01027E00C7C395 /* TrackeratiTests.swift */; };
 		01498B6F1B0117FF00C7C395 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01498B6D1B0117FF00C7C395 /* CoreGraphics.framework */; };
 		01498B701B0117FF00C7C395 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01498B6E1B0117FF00C7C395 /* CoreText.framework */; };
@@ -54,7 +53,6 @@
 		01498B191B01027E00C7C395 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		01498B1B1B01027E00C7C395 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		01498B201B01027E00C7C395 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		01498B231B01027E00C7C395 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		01498B291B01027E00C7C395 /* TrackeratiTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TrackeratiTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		01498B2E1B01027E00C7C395 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		01498B2F1B01027E00C7C395 /* TrackeratiTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackeratiTests.swift; sourceTree = "<group>"; };
@@ -210,7 +208,6 @@
 		01498B3B1B0104DE00C7C395 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				01498B221B01027E00C7C395 /* LaunchScreen.xib */,
 				01498B201B01027E00C7C395 /* Images.xcassets */,
 			);
 			path = Resources;
@@ -366,7 +363,6 @@
 			files = (
 				01498B8D1B011BDA00C7C395 /* HockeySDK.xcconfig in Resources */,
 				01498B8E1B011BDA00C7C395 /* HockeySDKResources.bundle in Resources */,
-				01498B241B01027E00C7C395 /* LaunchScreen.xib in Resources */,
 				01498B211B01027E00C7C395 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -443,18 +439,6 @@
 			targetProxy = 01498B2A1B01027E00C7C395 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
-
-/* Begin PBXVariantGroup section */
-		01498B221B01027E00C7C395 /* LaunchScreen.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				01498B231B01027E00C7C395 /* Base */,
-			);
-			name = LaunchScreen.xib;
-			path = .;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		01498B311B01027E00C7C395 /* Debug */ = {
@@ -549,6 +533,7 @@
 			baseConfigurationReference = FC4437DDCAA1EBF64F6F5D62 /* Pods-Trackerati.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Trackerati/HockeySDK-iOS/HockeySDK.embeddedframework",
@@ -573,6 +558,7 @@
 			baseConfigurationReference = 3587A3B08253D04AD27B6510 /* Pods-Trackerati.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Trackerati/HockeySDK-iOS/HockeySDK.embeddedframework",
