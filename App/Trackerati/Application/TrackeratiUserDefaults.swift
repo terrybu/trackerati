@@ -39,6 +39,12 @@ class TrackeratiUserDefaults : NSObject
         NSUserDefaults.standardUserDefaults().synchronize()
     }
     
+    func logOutUser()
+    {
+        NSUserDefaults.standardUserDefaults().setValue(nilValue, forKey: DefaultsKey.User.rawValue)
+        NSUserDefaults.standardUserDefaults().synchronize()
+    }
+    
     func setCurrentUser(user: String)
     {
         NSUserDefaults.standardUserDefaults().setValue(user, forKey: DefaultsKey.User.rawValue)

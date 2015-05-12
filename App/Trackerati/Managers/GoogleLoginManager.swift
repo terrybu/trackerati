@@ -52,6 +52,7 @@ class GoogleLoginManager : NSObject, GPPSignInDelegate, UIAlertViewDelegate
     func logout()
     {
         GPPSignIn.sharedInstance().signOut()
+        TrackeratiUserDefaults.standardDefaults.logOutUser()
     }
     
     // MARK: Google Plus Sign In Delegate
