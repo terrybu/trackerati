@@ -12,6 +12,7 @@ class GoogleLoginManager : NSObject, GPPSignInDelegate, UIAlertViewDelegate
 {
     private let googlePlusIdentifier = "478294020811-80olfgevlg8q14vo74lmmiu3nu7q75m5.apps.googleusercontent.com"
     private let googlePlusScopeKeyProfile = "profile"
+    private let hackeratiEmailDomain = "thehackerati.com"
     
     class var sharedManager : GoogleLoginManager {
     
@@ -56,31 +57,33 @@ class GoogleLoginManager : NSObject, GPPSignInDelegate, UIAlertViewDelegate
     // MARK: Google Plus Sign In Delegate
     
     func finishedWithAuth(auth: GTMOAuth2Authentication!, error: NSError!) {
-        println("authenticated")
         if error == nil {
             // TODO: Signed in! Do something
             AFNetworkReachabilityManager.sharedManager().stopMonitoring()
             
-            let email = GPPSignIn.sharedInstance().userEmail as NSString
-            if !email.containsString("thehackerati.com") {
+            let email = GPPSignIn.sharedInstance().userEmail
+            if !(email as NSString).containsString(hackeratiEmailDomain) {
                 
                 let invalidEmailAlertView = UIAlertView(title: "Invalid Email Address", message: "Please use a Hackerati email address", delegate: self, cancelButtonTitle: "No thanks", otherButtonTitles: "Try Again")
                 invalidEmailAlertView.show()
             }
             else {
                 // TODO: Whatever you do when valid email and signed in successfully.
+                if TrackeratiUserDefaults.standardDefaults.currentUser() != email {
+                    TrackeratiUserDefaults.standardDefaults.setCurrentUser(email)
+                }
             }
         }
         else {
             // TODO: Handle when get error
             println(error.localizedDescription)
+            self.logout()
         }
     }
     
     // MARK: UIAlertView Delegate
     
     func alertView(alertView: UIAlertView, clickedButtonAtIndex buttonIndex: Int) {
-        println(buttonIndex)
         switch buttonIndex {
         case 0:
             self.logout()

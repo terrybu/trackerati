@@ -32,6 +32,7 @@
 		01498B961B011D6100C7C395 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01498B951B011D6100C7C395 /* CoreLocation.framework */; };
 		01498B981B011D7000C7C395 /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01498B971B011D7000C7C395 /* CoreMotion.framework */; };
 		01498B9A1B011D7C00C7C395 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01498B991B011D7C00C7C395 /* MediaPlayer.framework */; };
+		0186511B1B024F1C00641B9B /* TrackeratiUserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0186511A1B024F1C00641B9B /* TrackeratiUserDefaults.swift */; };
 		9AC9A5ABC4BD45574226D7B3 /* libPods-Trackerati.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A1B38C69B4DD3AA7E0D1667A /* libPods-Trackerati.a */; };
 /* End PBXBuildFile section */
 
@@ -76,6 +77,7 @@
 		01498B951B011D6100C7C395 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		01498B971B011D7000C7C395 /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
 		01498B991B011D7C00C7C395 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
+		0186511A1B024F1C00641B9B /* TrackeratiUserDefaults.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TrackeratiUserDefaults.swift; path = ../TrackeratiUserDefaults.swift; sourceTree = "<group>"; };
 		3587A3B08253D04AD27B6510 /* Pods-Trackerati.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Trackerati.release.xcconfig"; path = "../Pods/Target Support Files/Pods-Trackerati/Pods-Trackerati.release.xcconfig"; sourceTree = "<group>"; };
 		A1B38C69B4DD3AA7E0D1667A /* libPods-Trackerati.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Trackerati.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FC4437DDCAA1EBF64F6F5D62 /* Pods-Trackerati.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Trackerati.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-Trackerati/Pods-Trackerati.debug.xcconfig"; sourceTree = "<group>"; };
@@ -153,6 +155,7 @@
 				013C5A111B012E06002C4020 /* Managers */,
 				01498B3B1B0104DE00C7C395 /* Resources */,
 				01498B391B0104C400C7C395 /* View Controllers */,
+				018651191B024EDD00641B9B /* Views */,
 				01498B171B01027E00C7C395 /* Supporting Files */,
 			);
 			path = Trackerati;
@@ -196,6 +199,7 @@
 			isa = PBXGroup;
 			children = (
 				01498B191B01027E00C7C395 /* AppDelegate.swift */,
+				0186511A1B024F1C00641B9B /* TrackeratiUserDefaults.swift */,
 			);
 			path = Application;
 			sourceTree = "<group>";
@@ -245,6 +249,13 @@
 				01498B8B1B011BDA00C7C395 /* HockeySDKResources.bundle */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		018651191B024EDD00641B9B /* Views */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Views;
 			sourceTree = "<group>";
 		};
 		3F88CD5D6D5D4B14DF4E0DA7 /* Pods */ = {
@@ -404,6 +415,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0186511B1B024F1C00641B9B /* TrackeratiUserDefaults.swift in Sources */,
 				01498B1C1B01027E00C7C395 /* ViewController.swift in Sources */,
 				01498B1A1B01027E00C7C395 /* AppDelegate.swift in Sources */,
 				013C5A131B012E06002C4020 /* GoogleLoginManager.swift in Sources */,
