@@ -10,6 +10,8 @@ import UIKit
 
 class ViewController: UIViewController {
 
+    private weak var signinButton: UIButton!
+    
     init()
     {
         super.init(nibName: nil, bundle: nil)
@@ -33,6 +35,9 @@ class ViewController: UIViewController {
         signinButton.setTitleColor(UIColor.blueColor(), forState: .Normal)
         signinButton.addTarget(self, action: "signIn", forControlEvents: .TouchUpInside)
         view.addSubview(signinButton)
+        self.signinButton = signinButton
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "setupInterfaceForLoggedInUser:", name: userDidAuthorizeNotification, object: nil)
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -42,6 +47,14 @@ class ViewController: UIViewController {
     func signIn()
     {
         GoogleLoginManager.sharedManager.login()
+    }
+    
+    func setupInterfaceForLoggedInUser(notification: NSNotification)
+    {
+        if let user = notification.object as? User {
+            println(user.email)
+        }
+        signinButton.hidden = true
     }
 }
 

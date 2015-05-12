@@ -13,6 +13,9 @@ class GoogleLoginManager : NSObject, GPPSignInDelegate, UIAlertViewDelegate
     private let googlePlusIdentifier = "478294020811-80olfgevlg8q14vo74lmmiu3nu7q75m5.apps.googleusercontent.com"
     private let googlePlusScopeKeyProfile = "profile"
     private let hackeratiEmailDomain = "thehackerati.com"
+    private let maxNumberOfLoginAttempts = 5
+    
+    private var numberOfAttempts = 0
     
     class var sharedManager : GoogleLoginManager {
     
@@ -37,15 +40,22 @@ class GoogleLoginManager : NSObject, GPPSignInDelegate, UIAlertViewDelegate
         googleSignInManager.clientID = googlePlusIdentifier
         googleSignInManager.scopes = [googlePlusScopeKeyProfile]
         googleSignInManager.delegate = self
-
+        
         switch AFNetworkReachabilityManager.sharedManager().networkReachabilityStatus {
         case .ReachableViaWiFi, .ReachableViaWWAN:
             if !googleSignInManager.trySilentAuthentication() {
                 googleSignInManager.authenticate()
             }
         case .NotReachable, .Unknown:
-            self.logout()
-            self.login()
+            numberOfAttempts += 1
+            if numberOfAttempts <= maxNumberOfLoginAttempts {
+                self.logout()
+                self.login()
+            }
+            else {
+                let badConnectionAlertView = UIAlertView(title: "No Internet Connection", message: "Please make sure you have a strong internet connection and try again", delegate: self, cancelButtonTitle: "OK")
+                badConnectionAlertView.show()
+            }
         }
     }
     
@@ -73,6 +83,10 @@ class GoogleLoginManager : NSObject, GPPSignInDelegate, UIAlertViewDelegate
                 if TrackeratiUserDefaults.standardDefaults.currentUser() != email { // add user to userdefaults
                     TrackeratiUserDefaults.standardDefaults.setCurrentUser(email)
                 }
+                
+                // TODO: Send User model and configure the UI accordingly in the receiving VC
+                let userModel = User(email: email)
+                NSNotificationCenter.defaultCenter().postNotificationName(userDidAuthorizeNotification, object: userModel)
             }
         }
         else {
