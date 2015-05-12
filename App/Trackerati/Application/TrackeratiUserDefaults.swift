@@ -29,10 +29,12 @@ class TrackeratiUserDefaults : NSObject
         return Static.instance!
     }
     
+    let nilValue = ""
+    
     override init()
     {
         super.init()
-        let initialDefaults = [DefaultsKey.User.rawValue: ""]
+        let initialDefaults = [DefaultsKey.User.rawValue: nilValue]
         NSUserDefaults.standardUserDefaults().registerDefaults(initialDefaults)
         NSUserDefaults.standardUserDefaults().synchronize()
     }

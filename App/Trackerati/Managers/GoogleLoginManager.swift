@@ -69,7 +69,7 @@ class GoogleLoginManager : NSObject, GPPSignInDelegate, UIAlertViewDelegate
             }
             else {
                 // TODO: Whatever you do when valid email and signed in successfully.
-                if TrackeratiUserDefaults.standardDefaults.currentUser() != email {
+                if TrackeratiUserDefaults.standardDefaults.currentUser() != email { // add user to userdefaults
                     TrackeratiUserDefaults.standardDefaults.setCurrentUser(email)
                 }
             }
