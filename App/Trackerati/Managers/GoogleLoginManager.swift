@@ -87,7 +87,6 @@ class GoogleLoginManager : NSObject, GPPSignInDelegate, UIAlertViewDelegate
     
     func finishedWithAuth(auth: GTMOAuth2Authentication!, error: NSError!) {
         if error == nil {
-            // TODO: Signed in! Do something
             AFNetworkReachabilityManager.sharedManager().stopMonitoring()
             
             let email = googleSignInManager.userEmail

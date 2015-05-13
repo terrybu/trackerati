@@ -10,7 +10,7 @@ import Foundation
 
 class FirebaseManager : NSObject
 {
-    let firebaseAbsoluteURL = "https://blazing-torch-6772.firebaseio.com"
+    private var firebaseDB = Firebase()
     
     class var sharedManager : FirebaseManager {
     
@@ -25,11 +25,10 @@ class FirebaseManager : NSObject
         
         return Static.instance!
     }
- 
-    let firebaseDB: Firebase
     
-    override init() {
-        firebaseDB = Firebase(url: firebaseAbsoluteURL)
-        super.init()
+    func configureWithDatabaseURL(url: String)
+    {
+        assert(url != "", "Must be a valid URL")
+        firebaseDB = Firebase(url: url)
     }
 }
