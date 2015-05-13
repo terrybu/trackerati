@@ -7,4 +7,4 @@
 //
 
 // MARK: Notification Constants
-let userDidAuthorizeNotification = "userDidAuthorizeNotification"
+let kUserDidAuthorizeNotification = "userDidAuthorizeNotification"

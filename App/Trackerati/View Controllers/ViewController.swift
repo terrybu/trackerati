@@ -37,7 +37,7 @@ class ViewController: UIViewController {
         view.addSubview(signinButton)
         self.signinButton = signinButton
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "setupInterfaceForLoggedInUser:", name: userDidAuthorizeNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "setupInterfaceForLoggedInUser:", name: kUserDidAuthorizeNotification, object: nil)
     }
     
     override func viewDidLoad() {

@@ -12,9 +12,9 @@ class GoogleLoginManager : NSObject, GPPSignInDelegate, UIAlertViewDelegate
 {
     private let googleSignInManager = GPPSignIn.sharedInstance()
     private var googlePlusIdentifier = "";
-    private let googlePlusScopeKeyProfile = "profile"
-    private let hackeratiEmailDomain = "thehackerati.com"
-    private let maxNumberOfLoginAttempts = 50
+    private let kGooglePlusScopeKeyProfile = "profile"
+    private let kHackeratiEmailDomain = "thehackerati.com"
+    private let kMaxNumberOfLoginAttempts = 50
     
     private var numberOfAttempts = 0
     
@@ -45,7 +45,7 @@ class GoogleLoginManager : NSObject, GPPSignInDelegate, UIAlertViewDelegate
         
         googleSignInManager.shouldFetchGoogleUserEmail = true
         googleSignInManager.clientID = googlePlusIdentifier
-        googleSignInManager.scopes = [googlePlusScopeKeyProfile]
+        googleSignInManager.scopes = [kGooglePlusScopeKeyProfile]
         googleSignInManager.delegate = self
     }
     
@@ -63,7 +63,7 @@ class GoogleLoginManager : NSObject, GPPSignInDelegate, UIAlertViewDelegate
             }
         case .NotReachable, .Unknown:
             numberOfAttempts += 1
-            if numberOfAttempts <= maxNumberOfLoginAttempts {
+            if numberOfAttempts <= kMaxNumberOfLoginAttempts {
                 self.logout()
                 self.login()
             }
@@ -90,7 +90,7 @@ class GoogleLoginManager : NSObject, GPPSignInDelegate, UIAlertViewDelegate
             AFNetworkReachabilityManager.sharedManager().stopMonitoring()
             
             let email = googleSignInManager.userEmail
-            if !(email as NSString).containsString(hackeratiEmailDomain) {
+            if !(email as NSString).containsString(kHackeratiEmailDomain) {
                 
                 let invalidEmailAlertView = UIAlertView(title: "Invalid Email Address", message: "Please use a Hackerati email address", delegate: self, cancelButtonTitle: "No thanks", otherButtonTitles: "Try Again")
                 invalidEmailAlertView.show()
@@ -103,7 +103,7 @@ class GoogleLoginManager : NSObject, GPPSignInDelegate, UIAlertViewDelegate
                 
                 // TODO: Send User model and configure the UI accordingly in the receiving VC
                 let userModel = User(email: email)
-                NSNotificationCenter.defaultCenter().postNotificationName(userDidAuthorizeNotification, object: userModel)
+                NSNotificationCenter.defaultCenter().postNotificationName(kUserDidAuthorizeNotification, object: userModel)
             }
         }
         else {

@@ -19,7 +19,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow!
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        // Override point for customization after application launch.
         AFNetworkReachabilityManager.sharedManager().startMonitoring()
         
         #if RELEASE
@@ -36,22 +35,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
     
-    func configureHockeySDK()
+    func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject?) -> Bool {
+        return GPPURLHandler.handleURL(url, sourceApplication: sourceApplication, annotation: annotation)
+    }
+    
+    private func configureHockeySDK()
     {
         BITHockeyManager.sharedHockeyManager().configureWithIdentifier(hockeySDKIdentifier);
         BITHockeyManager.sharedHockeyManager().startManager();
         BITHockeyManager.sharedHockeyManager().authenticator.authenticateInstallation();
     }
     
-    func configureSingletons()
+    private func configureSingletons()
     {
         TrackeratiUserDefaults.standardDefaults.registerDefaults()
         GoogleLoginManager.sharedManager.configureWithAPIKey(googleAPIKey)
         FirebaseManager.sharedManager.configureWithDatabaseURL(firebaseAbsoluteURL)
-    }
-    
-    func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject?) -> Bool {
-        return GPPURLHandler.handleURL(url, sourceApplication: sourceApplication, annotation: annotation)
     }
 }
 
