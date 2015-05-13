@@ -34,6 +34,11 @@ class GoogleLoginManager : NSObject, GPPSignInDelegate, UIAlertViewDelegate
     
     // MARK: Public
     
+    /**
+    Configures the manager for Google Plus sign in given an API key
+    
+    :param: key API key from the Google Developer Portal
+    */
     func configureWithAPIKey(key: String)
     {
         googlePlusIdentifier = key
@@ -44,6 +49,9 @@ class GoogleLoginManager : NSObject, GPPSignInDelegate, UIAlertViewDelegate
         googleSignInManager.delegate = self
     }
     
+    /**
+    Attempt to log the user in given previous configuration
+    */
     func login()
     {
         assert(googlePlusIdentifier != "", "API Key can not be empty. Configure the manager with 'configureWithAPIKey:")
@@ -66,6 +74,9 @@ class GoogleLoginManager : NSObject, GPPSignInDelegate, UIAlertViewDelegate
         }
     }
     
+    /**
+    Logs user out of app
+    */
     func logout()
     {
         googleSignInManager.signOut()
@@ -103,13 +114,14 @@ class GoogleLoginManager : NSObject, GPPSignInDelegate, UIAlertViewDelegate
         }
     }
     
+    /**
+    Silently attempt to log user back in if they've already authorized their account with the app
+    */
     func attemptPreAuthorizationLogin()
     {
-        googleSignInManager.shouldFetchGoogleUserEmail = true
-        googleSignInManager.clientID = googlePlusIdentifier
-        googleSignInManager.scopes = [googlePlusScopeKeyProfile]
-        googleSignInManager.delegate = self
-        googleSignInManager.trySilentAuthentication()
+        if googleSignInManager.clientID != "" {
+            googleSignInManager.trySilentAuthentication()
+        }
         // TODO: Force them to sign in
     }
     
