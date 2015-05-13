@@ -12,17 +12,20 @@ import HockeySDK
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
-    let hockeySDKIdentifier = "3aa549db112abed50654d253ecec9aa7"
+    private let googleAPIKey = "478294020811-80olfgevlg8q14vo74lmmiu3nu7q75m5.apps.googleusercontent.com"
+    private let hockeySDKIdentifier = "3aa549db112abed50654d253ecec9aa7"
     
     var window: UIWindow!
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
         AFNetworkReachabilityManager.sharedManager().startMonitoring()
-        TrackeratiUserDefaults.standardDefaults
+        
         #if RELEASE
         self.configureHockeySDK()
         #endif
+        
+        self.configureSingletons()
         
         window = UIWindow(frame: UIScreen.mainScreen().bounds)
         let rootViewController = ViewController()
@@ -37,6 +40,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         BITHockeyManager.sharedHockeyManager().configureWithIdentifier(hockeySDKIdentifier);
         BITHockeyManager.sharedHockeyManager().startManager();
         BITHockeyManager.sharedHockeyManager().authenticator.authenticateInstallation();
+    }
+    
+    func configureSingletons()
+    {
+        TrackeratiUserDefaults.standardDefaults.registerDefaults()
+        GoogleLoginManager.sharedManager.configureWithAPIKey(googleAPIKey)
     }
     
     func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject?) -> Bool {

@@ -10,10 +10,11 @@ import Foundation
 
 class GoogleLoginManager : NSObject, GPPSignInDelegate, UIAlertViewDelegate
 {
-    private let googlePlusIdentifier = "478294020811-80olfgevlg8q14vo74lmmiu3nu7q75m5.apps.googleusercontent.com"
+    private let googleSignInManager = GPPSignIn.sharedInstance()
+    private var googlePlusIdentifier = "";
     private let googlePlusScopeKeyProfile = "profile"
     private let hackeratiEmailDomain = "thehackerati.com"
-    private let maxNumberOfLoginAttempts = 5
+    private let maxNumberOfLoginAttempts = 50
     
     private var numberOfAttempts = 0
     
@@ -33,13 +34,19 @@ class GoogleLoginManager : NSObject, GPPSignInDelegate, UIAlertViewDelegate
     
     // MARK: Public
     
-    func login()
+    func configureWithAPIKey(key: String)
     {
-        let googleSignInManager = GPPSignIn.sharedInstance()
+        googlePlusIdentifier = key
+        
         googleSignInManager.shouldFetchGoogleUserEmail = true
         googleSignInManager.clientID = googlePlusIdentifier
         googleSignInManager.scopes = [googlePlusScopeKeyProfile]
         googleSignInManager.delegate = self
+    }
+    
+    func login()
+    {
+        assert(googlePlusIdentifier != "", "API Key can not be empty. Configure the manager with 'configureWithAPIKey:")
         
         switch AFNetworkReachabilityManager.sharedManager().networkReachabilityStatus {
         case .ReachableViaWiFi, .ReachableViaWWAN:
@@ -61,7 +68,7 @@ class GoogleLoginManager : NSObject, GPPSignInDelegate, UIAlertViewDelegate
     
     func logout()
     {
-        GPPSignIn.sharedInstance().signOut()
+        googleSignInManager.signOut()
         TrackeratiUserDefaults.standardDefaults.logOutUser()
     }
     
@@ -72,7 +79,7 @@ class GoogleLoginManager : NSObject, GPPSignInDelegate, UIAlertViewDelegate
             // TODO: Signed in! Do something
             AFNetworkReachabilityManager.sharedManager().stopMonitoring()
             
-            let email = GPPSignIn.sharedInstance().userEmail
+            let email = googleSignInManager.userEmail
             if !(email as NSString).containsString(hackeratiEmailDomain) {
                 
                 let invalidEmailAlertView = UIAlertView(title: "Invalid Email Address", message: "Please use a Hackerati email address", delegate: self, cancelButtonTitle: "No thanks", otherButtonTitles: "Try Again")
@@ -94,6 +101,16 @@ class GoogleLoginManager : NSObject, GPPSignInDelegate, UIAlertViewDelegate
             println(error.localizedDescription)
             self.logout()
         }
+    }
+    
+    func attemptPreAuthorizationLogin()
+    {
+        googleSignInManager.shouldFetchGoogleUserEmail = true
+        googleSignInManager.clientID = googlePlusIdentifier
+        googleSignInManager.scopes = [googlePlusScopeKeyProfile]
+        googleSignInManager.delegate = self
+        googleSignInManager.trySilentAuthentication()
+        // TODO: Force them to sign in
     }
     
     // MARK: UIAlertView Delegate

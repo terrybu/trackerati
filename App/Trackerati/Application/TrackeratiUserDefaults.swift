@@ -31,9 +31,8 @@ class TrackeratiUserDefaults : NSObject
     
     let nilValue = ""
     
-    override init()
+    func registerDefaults()
     {
-        super.init()
         let initialDefaults = [DefaultsKey.User.rawValue: nilValue]
         NSUserDefaults.standardUserDefaults().registerDefaults(initialDefaults)
         NSUserDefaults.standardUserDefaults().synchronize()

@@ -40,8 +40,9 @@ class ViewController: UIViewController {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "setupInterfaceForLoggedInUser:", name: userDidAuthorizeNotification, object: nil)
     }
     
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        GoogleLoginManager.sharedManager.attemptPreAuthorizationLogin()
     }
     
     func signIn()
