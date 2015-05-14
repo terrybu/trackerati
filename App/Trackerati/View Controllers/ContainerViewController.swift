@@ -18,12 +18,15 @@ enum MenuState
 class ContainerViewController : UIViewController, MainViewControllerDelegate
 {
     private let minimumSlideoutOffset: CGFloat = 60.0
+    private let beginPanGestureTouchableMaxX: CGFloat = 40.0
     private var currentMenuState = MenuState.NotShowing
     
     private var centerNavigationController: UINavigationController!
     private var centerViewController: MainViewController!
     private var sideMenuViewController: SideMenuViewController!
-    private weak var edgePanGesture: UIScreenEdgePanGestureRecognizer!
+    
+    private weak var edgePanGesture: UIPanGestureRecognizer!
+    private weak var tapToReturnGesture: UITapGestureRecognizer!
     
     init(centerViewController: MainViewController, sideMenuViewController: SideMenuViewController)
     {
@@ -49,11 +52,22 @@ class ContainerViewController : UIViewController, MainViewControllerDelegate
         addChildViewController(sideMenuViewController)
         sideMenuViewController.didMoveToParentViewController(self)
         
-        let edgePanGesture = UIScreenEdgePanGestureRecognizer(target: self, action: "translateTopView:")
-        edgePanGesture.edges = .Left
+        setupGestures()
+    }
+    
+    func setupGestures()
+    {
+        let edgePanGesture = UIPanGestureRecognizer(target: self, action: "translateTopView:")
         edgePanGesture.maximumNumberOfTouches = 1
         self.centerNavigationController.view.addGestureRecognizer(edgePanGesture)
         self.edgePanGesture = edgePanGesture
+        
+        let tapToReturnGesture = UITapGestureRecognizer(target: self, action: "returnToMainScreen:")
+        tapToReturnGesture.numberOfTapsRequired = 1
+        tapToReturnGesture.numberOfTouchesRequired = 1
+        tapToReturnGesture.enabled = false
+        self.centerNavigationController.view.addGestureRecognizer(tapToReturnGesture)
+        self.tapToReturnGesture = tapToReturnGesture
     }
     
     func animateToSideMenu(#animateIn: Bool)
@@ -70,6 +84,8 @@ class ContainerViewController : UIViewController, MainViewControllerDelegate
         UIView.animateWithDuration(0.3, delay: 0.0, options: .CurveEaseOut, animations: {
             self.centerNavigationController.view.transform = targetTransform
         }, completion: { finished in
+            self.tapToReturnGesture.enabled = animateIn
+            
             if animateIn == true {
                 self.currentMenuState = .Showing
             }
@@ -79,10 +95,18 @@ class ContainerViewController : UIViewController, MainViewControllerDelegate
         })
     }
     
-    func translateTopView(edgePanGesture: UIScreenEdgePanGestureRecognizer)
+    // MARK: Gesture Recognizer Selectors
+    
+    func translateTopView(edgePanGesture: UIPanGestureRecognizer)
     {
         switch edgePanGesture.state
         {
+        case .Began:
+            let xLocationInView = edgePanGesture.locationInView(view).x
+            if xLocationInView > centerNavigationController.view.frame.origin.x + beginPanGestureTouchableMaxX {
+                edgePanGesture.enabled = false
+                edgePanGesture.enabled = true
+            }
         case .Changed:
             let newXPosition = edgePanGesture.locationInView(view).x
             let translation = CGAffineTransformMakeTranslation(newXPosition, 0.0)
@@ -97,6 +121,13 @@ class ContainerViewController : UIViewController, MainViewControllerDelegate
             }
         default:
             break
+        }
+    }
+    
+    func returnToMainScreen(tapGesture: UITapGestureRecognizer)
+    {
+        if self.currentMenuState == .Showing {
+            animateToSideMenu(animateIn: false)
         }
     }
     
