@@ -9,15 +9,31 @@
 import Foundation
 import UIKit
 
+protocol SideMenuViewControllerDelegate: class {
+    
+    func didMakePageSelection(selection: SideMenuSelection)
+}
+
+enum SideMenuSelection: String {
+    case Home = "Home"
+    case History = "History"
+    case Settings = "Settings"
+    case LogOut = "Log Out"
+    
+    static let AllSelections = [Home, History, Settings, LogOut]
+}
+
 class SideMenuViewController : UIViewController, UITableViewDelegate, UITableViewDataSource
 {
     private let kCellReuseIdentifier = "cell"
     private let headerViewHeight: CGFloat = 50.0
     
     private weak var menuTableView: UITableView!
-    private let menuItems: Array<String>
+    private let menuItems: [SideMenuSelection]
     
-    init(items: Array<String>)
+    weak var delegate: SideMenuViewControllerDelegate?
+    
+    init(items: [SideMenuSelection])
     {
         menuItems = items
         super.init(nibName: nil, bundle: nil)
@@ -47,6 +63,11 @@ class SideMenuViewController : UIViewController, UITableViewDelegate, UITableVie
     
     // MARK: UITableView Delegate
     
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        delegate?.didMakePageSelection(menuItems[indexPath.row])
+    }
+    
     // MARK: UITableView DataSource
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -60,7 +81,7 @@ class SideMenuViewController : UIViewController, UITableViewDelegate, UITableVie
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(kCellReuseIdentifier, forIndexPath: indexPath) as! UITableViewCell
         let titleLabel = UILabel(frame: cell.contentView.frame)
-        titleLabel.text = menuItems[indexPath.row]
+        titleLabel.text = menuItems[indexPath.row].rawValue
         cell.contentView.addSubview(titleLabel)
         return cell
     }

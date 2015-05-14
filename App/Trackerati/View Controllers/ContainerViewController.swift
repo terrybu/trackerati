@@ -15,11 +15,12 @@ enum MenuState
     case Showing
 }
 
-class ContainerViewController : UIViewController, MainViewControllerDelegate
+class ContainerViewController : UIViewController, MainViewControllerDelegate, SideMenuViewControllerDelegate
 {
     private let minimumSlideoutOffset: CGFloat = 50.0
     private let maxXToBeginPanGesture: CGFloat = 30.0
     private var currentMenuState = MenuState.NotShowing
+    private var currentShowingPage = SideMenuSelection.Home
     
     private var centerNavigationController: UINavigationController!
     private var centerViewController: MainViewController!
@@ -34,6 +35,7 @@ class ContainerViewController : UIViewController, MainViewControllerDelegate
         self.centerViewController = centerViewController
         self.centerViewController.delegate = self
         self.sideMenuViewController = sideMenuViewController
+        self.sideMenuViewController.delegate = self
     }
 
     required init(coder aDecoder: NSCoder) {
@@ -81,7 +83,7 @@ class ContainerViewController : UIViewController, MainViewControllerDelegate
             targetTransform = CGAffineTransformIdentity
         }
         
-        UIView.animateWithDuration(0.3, delay: 0.0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.6, options: .CurveEaseInOut, animations: {
+        UIView.animateWithDuration(0.3, delay: 0.0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.6, options: .CurveEaseInOut, animations: {
                 self.centerNavigationController.view.transform = targetTransform
             
             }, completion: { finished in
@@ -138,6 +140,42 @@ class ContainerViewController : UIViewController, MainViewControllerDelegate
     
     func didPressMenuButton(button: UIBarButtonItem) {
         animateToSideMenu(animateIn: currentMenuState == .NotShowing)
+    }
+    
+    // MARK: SideMenuViewController Delegate
+    
+    func didMakePageSelection(selection: SideMenuSelection) {
+        if currentShowingPage != selection {
+            centerNavigationController.popViewControllerAnimated(false)
+            
+            var targetViewController: MainViewController?
+            switch selection
+            {
+            case .Home:
+                targetViewController = HomeViewController()
+                
+            case .History:
+                break
+                
+            case .Settings:
+                targetViewController = SettingsViewController()
+                
+            case .LogOut:
+                // TODO: Sign person out
+                break
+            }
+            
+            if let target = targetViewController {
+                target.title = selection.rawValue
+                target.delegate = self
+                centerNavigationController.pushViewController(target, animated: false)
+                centerViewController = target
+                
+                currentShowingPage = selection
+            }
+        }
+        
+        animateToSideMenu(animateIn: false)
     }
     
 }

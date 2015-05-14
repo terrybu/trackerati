@@ -32,6 +32,8 @@ class GoogleLoginManager : NSObject, GPPSignInDelegate, UIAlertViewDelegate
         return Static.instance!
     }
     
+    private(set) var authorized: Bool = false
+    
     // MARK: Public
     
     /**
@@ -96,6 +98,8 @@ class GoogleLoginManager : NSObject, GPPSignInDelegate, UIAlertViewDelegate
                 invalidEmailAlertView.show()
             }
             else {
+                authorized = true
+                
                 // TODO: Whatever you do when valid email and signed in successfully.
                 if TrackeratiUserDefaults.standardDefaults.currentUser() != email { // add user to userdefaults
                     TrackeratiUserDefaults.standardDefaults.setCurrentUser(email)
