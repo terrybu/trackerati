@@ -59,6 +59,8 @@ class MainViewController: UIViewController, LoginScreenDelegate {
         }
     }
     
+    // MARK: Button Selectors
+    
     func displayMenu(button: UIBarButtonItem)
     {
         delegate?.didPressMenuButton(button)

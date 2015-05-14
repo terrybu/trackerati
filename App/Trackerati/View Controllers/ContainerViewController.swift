@@ -17,8 +17,8 @@ enum MenuState
 
 class ContainerViewController : UIViewController, MainViewControllerDelegate
 {
-    private let minimumSlideoutOffset: CGFloat = 60.0
-    private let beginPanGestureTouchableMaxX: CGFloat = 40.0
+    private let minimumSlideoutOffset: CGFloat = 50.0
+    private let maxXToBeginPanGesture: CGFloat = 30.0
     private var currentMenuState = MenuState.NotShowing
     
     private var centerNavigationController: UINavigationController!
@@ -81,17 +81,18 @@ class ContainerViewController : UIViewController, MainViewControllerDelegate
             targetTransform = CGAffineTransformIdentity
         }
         
-        UIView.animateWithDuration(0.3, delay: 0.0, options: .CurveEaseOut, animations: {
-            self.centerNavigationController.view.transform = targetTransform
-        }, completion: { finished in
-            self.tapToReturnGesture.enabled = animateIn
+        UIView.animateWithDuration(0.3, delay: 0.0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.6, options: .CurveEaseInOut, animations: {
+                self.centerNavigationController.view.transform = targetTransform
             
-            if animateIn == true {
-                self.currentMenuState = .Showing
-            }
-            else {
-                self.currentMenuState = .NotShowing
-            }
+            }, completion: { finished in
+                self.tapToReturnGesture.enabled = animateIn
+                
+                if animateIn == true {
+                    self.currentMenuState = .Showing
+                }
+                else {
+                    self.currentMenuState = .NotShowing
+                }
         })
     }
     
@@ -103,7 +104,9 @@ class ContainerViewController : UIViewController, MainViewControllerDelegate
         {
         case .Began:
             let xLocationInView = edgePanGesture.locationInView(view).x
-            if xLocationInView > centerNavigationController.view.frame.origin.x + beginPanGestureTouchableMaxX {
+            let maxXTouchBoundary = centerNavigationController.view.frame.origin.x + maxXToBeginPanGesture
+            if xLocationInView > maxXTouchBoundary {
+                // Cancels gesture
                 edgePanGesture.enabled = false
                 edgePanGesture.enabled = true
             }
