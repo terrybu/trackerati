@@ -8,8 +8,14 @@
 
 import UIKit
 
+protocol MainViewControllerDelegate: class
+{
+    func didPressMenuButton(button: UIBarButtonItem)
+}
+
 class MainViewController: UIViewController, LoginScreenDelegate {
     
+    weak var delegate: MainViewControllerDelegate?
     private weak var loginScreen: LoginScreen?
     
     init()
@@ -27,6 +33,9 @@ class MainViewController: UIViewController, LoginScreenDelegate {
     {
         view = UIView(frame: UIScreen.mainScreen().bounds)
         view.backgroundColor = UIColor.whiteColor()
+        
+        let menuButton = UIBarButtonItem(image: UIImage(named: "MenuButton"), style: .Plain, target: self, action: "displayMenu:")
+        navigationItem.leftBarButtonItem = menuButton
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "setupInterfaceForLoggedInUser:", name: kUserDidAuthorizeNotification, object: nil)
     }
@@ -48,6 +57,11 @@ class MainViewController: UIViewController, LoginScreenDelegate {
         if let user = notification.object as? User {
             println(user.email)
         }
+    }
+    
+    func displayMenu(button: UIBarButtonItem)
+    {
+        delegate?.didPressMenuButton(button)
     }
     
     // MARK: LoginScreen Delegate

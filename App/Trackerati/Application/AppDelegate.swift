@@ -28,9 +28,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.configureSingletons()
         
         window = UIWindow(frame: UIScreen.mainScreen().bounds)
-        let rootViewController = MainViewController()
-        let navigationController = UINavigationController(rootViewController: rootViewController)
-        window.rootViewController = navigationController
+        let containerViewController = ContainerViewController(centerViewController: MainViewController(), sideMenuViewController: SideMenuViewController(items: ["Home", "History", "Settings", "Log Out"]))
+        window.rootViewController = containerViewController
         window.makeKeyAndVisible()
         return true
     }
