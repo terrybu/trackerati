@@ -20,7 +20,13 @@ class SettingsViewController : MainViewController, UITableViewDataSource
         super.loadView()
         view.backgroundColor = UIColor.blueColor()
         
+        settings = ["Notifications":["Date"]]
+        
         let settingsTableView = UITableView(frame: view.frame, style: .Grouped)
+        settingsTableView.dataSource = self
+        settingsTableView.allowsSelection = false
+        view.addSubview(settingsTableView)
+        self.settingsTableView = settingsTableView
     }
     
     // MARK: UITableView Datasource
@@ -34,10 +40,18 @@ class SettingsViewController : MainViewController, UITableViewDataSource
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+        // TODO: Make it the number of items for that setting
+        let currentGroup = settings.keys.array[section]
+        if let groupCells = settings[currentGroup] {
+            return groupCells.count
+        }
+        else {
+            return 0
+        }
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        return UITableViewCell()
+        let cell = SwitchDatePickerCell(style: .Default, reuseIdentifier: "cell")
+        return cell
     }
 }

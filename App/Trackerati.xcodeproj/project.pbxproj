@@ -35,11 +35,12 @@
 		0170E43E1B026D8000D593C3 /* FirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0170E43D1B026D8000D593C3 /* FirebaseManager.swift */; };
 		0170E4401B02962F00D593C3 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0170E43F1B02962F00D593C3 /* Constants.swift */; };
 		0170E4441B02985100D593C3 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0170E4431B02985100D593C3 /* User.swift */; };
-		0170E4461B03E37100D593C3 /* LoginScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0170E4451B03E37100D593C3 /* LoginScreen.swift */; };
 		0170E4481B04E37C00D593C3 /* SideMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0170E4471B04E37C00D593C3 /* SideMenuViewController.swift */; };
 		0170E44A1B04EDE800D593C3 /* ContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0170E4491B04EDE800D593C3 /* ContainerViewController.swift */; };
 		0170E44C1B0526CD00D593C3 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0170E44B1B0526CD00D593C3 /* SettingsViewController.swift */; };
 		0170E44E1B052A2200D593C3 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0170E44D1B052A2200D593C3 /* HomeViewController.swift */; };
+		0170E4541B0542A900D593C3 /* LoginScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0170E4521B0542A900D593C3 /* LoginScreen.swift */; };
+		0170E4551B0542A900D593C3 /* SwitchDatePickerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0170E4531B0542A900D593C3 /* SwitchDatePickerCell.swift */; };
 		9AC9A5ABC4BD45574226D7B3 /* libPods-Trackerati.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A1B38C69B4DD3AA7E0D1667A /* libPods-Trackerati.a */; };
 /* End PBXBuildFile section */
 
@@ -87,11 +88,12 @@
 		0170E43D1B026D8000D593C3 /* FirebaseManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseManager.swift; sourceTree = "<group>"; };
 		0170E43F1B02962F00D593C3 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		0170E4431B02985100D593C3 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
-		0170E4451B03E37100D593C3 /* LoginScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginScreen.swift; sourceTree = "<group>"; };
 		0170E4471B04E37C00D593C3 /* SideMenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SideMenuViewController.swift; sourceTree = "<group>"; };
 		0170E4491B04EDE800D593C3 /* ContainerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContainerViewController.swift; sourceTree = "<group>"; };
 		0170E44B1B0526CD00D593C3 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		0170E44D1B052A2200D593C3 /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		0170E4521B0542A900D593C3 /* LoginScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginScreen.swift; sourceTree = "<group>"; };
+		0170E4531B0542A900D593C3 /* SwitchDatePickerCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwitchDatePickerCell.swift; sourceTree = "<group>"; };
 		3587A3B08253D04AD27B6510 /* Pods-Trackerati.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Trackerati.release.xcconfig"; path = "../Pods/Target Support Files/Pods-Trackerati/Pods-Trackerati.release.xcconfig"; sourceTree = "<group>"; };
 		A1B38C69B4DD3AA7E0D1667A /* libPods-Trackerati.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Trackerati.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FC4437DDCAA1EBF64F6F5D62 /* Pods-Trackerati.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Trackerati.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-Trackerati/Pods-Trackerati.debug.xcconfig"; sourceTree = "<group>"; };
@@ -171,7 +173,7 @@
 				013C5A111B012E06002C4020 /* Managers */,
 				01498B3B1B0104DE00C7C395 /* Resources */,
 				01498B391B0104C400C7C395 /* View Controllers */,
-				018651191B024EDD00641B9B /* Views */,
+				0170E4511B0542A900D593C3 /* Views */,
 				01498B171B01027E00C7C395 /* Supporting Files */,
 			);
 			path = Trackerati;
@@ -279,12 +281,13 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
-		018651191B024EDD00641B9B /* Views */ = {
+		0170E4511B0542A900D593C3 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				0170E4451B03E37100D593C3 /* LoginScreen.swift */,
+				0170E4521B0542A900D593C3 /* LoginScreen.swift */,
+				0170E4531B0542A900D593C3 /* SwitchDatePickerCell.swift */,
 			);
-			name = Views;
+			path = Views;
 			sourceTree = "<group>";
 		};
 		3F88CD5D6D5D4B14DF4E0DA7 /* Pods */ = {
@@ -450,10 +453,11 @@
 				0170E43E1B026D8000D593C3 /* FirebaseManager.swift in Sources */,
 				013C5A131B012E06002C4020 /* GoogleLoginManager.swift in Sources */,
 				0170E43C1B0259C400D593C3 /* TrackeratiUserDefaults.swift in Sources */,
-				0170E4461B03E37100D593C3 /* LoginScreen.swift in Sources */,
 				0170E4401B02962F00D593C3 /* Constants.swift in Sources */,
 				0170E4481B04E37C00D593C3 /* SideMenuViewController.swift in Sources */,
+				0170E4541B0542A900D593C3 /* LoginScreen.swift in Sources */,
 				0170E4441B02985100D593C3 /* User.swift in Sources */,
+				0170E4551B0542A900D593C3 /* SwitchDatePickerCell.swift in Sources */,
 				0170E44E1B052A2200D593C3 /* HomeViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
