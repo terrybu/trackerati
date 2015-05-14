@@ -28,7 +28,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.configureSingletons()
         
         window = UIWindow(frame: UIScreen.mainScreen().bounds)
-        let rootViewController = ViewController()
+        let rootViewController = MainViewController()
         let navigationController = UINavigationController(rootViewController: rootViewController)
         window.rootViewController = navigationController
         window.makeKeyAndVisible()

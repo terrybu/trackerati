@@ -115,13 +115,15 @@ class GoogleLoginManager : NSObject, GPPSignInDelegate, UIAlertViewDelegate
     
     /**
     Silently attempt to log user back in if they've already authorized their account with the app
+    
+    :returns: Bool indicating whether or not the user already authorized
     */
-    func attemptPreAuthorizationLogin()
+    func attemptPreAuthorizationLogin() -> Bool
     {
         if googleSignInManager.clientID != "" {
-            googleSignInManager.trySilentAuthentication()
+            return googleSignInManager.trySilentAuthentication()
         }
-        // TODO: Force them to sign in
+        return false
     }
     
     // MARK: UIAlertView Delegate

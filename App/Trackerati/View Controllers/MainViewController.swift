@@ -8,9 +8,9 @@
 
 import UIKit
 
-class ViewController: UIViewController {
-
-    private weak var signinButton: UIButton!
+class MainViewController: UIViewController, LoginScreenDelegate {
+    
+    private weak var loginScreen: LoginScreen?
     
     init()
     {
@@ -28,34 +28,34 @@ class ViewController: UIViewController {
         view = UIView(frame: UIScreen.mainScreen().bounds)
         view.backgroundColor = UIColor.whiteColor()
         
-        // Set up UI here
-        var signinButton = UIButton(frame: CGRect(x: 100.0, y: 250.0, width: 100.0, height: 40.0))
-        signinButton.center = view.center
-        signinButton.setTitle("Sign In", forState: .Normal)
-        signinButton.setTitleColor(UIColor.blueColor(), forState: .Normal)
-        signinButton.addTarget(self, action: "signIn", forControlEvents: .TouchUpInside)
-        view.addSubview(signinButton)
-        self.signinButton = signinButton
-        
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "setupInterfaceForLoggedInUser:", name: kUserDidAuthorizeNotification, object: nil)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        GoogleLoginManager.sharedManager.attemptPreAuthorizationLogin()
-    }
-    
-    func signIn()
-    {
-        GoogleLoginManager.sharedManager.login()
+        
+        if !GoogleLoginManager.sharedManager.attemptPreAuthorizationLogin() {
+            var loginScreen = LoginScreen(delegate: self)
+            self.presentViewController(loginScreen, animated: false, completion: nil)
+            self.loginScreen = loginScreen
+        }
     }
     
     func setupInterfaceForLoggedInUser(notification: NSNotification)
     {
+        self.loginScreen?.dismissViewControllerAnimated(false, completion: nil)
+        
         if let user = notification.object as? User {
             println(user.email)
         }
-        signinButton.hidden = true
     }
+    
+    // MARK: LoginScreen Delegate
+    
+    func didPressLoginButton()
+    {
+        GoogleLoginManager.sharedManager.login()
+    }
+    
 }
 
