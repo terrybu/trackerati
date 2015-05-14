@@ -81,7 +81,6 @@ class ContainerViewController : UIViewController, MainViewControllerDelegate
     
     func translateTopView(edgePanGesture: UIScreenEdgePanGestureRecognizer)
     {
-        println("called")
         switch edgePanGesture.state
         {
         case .Changed:
