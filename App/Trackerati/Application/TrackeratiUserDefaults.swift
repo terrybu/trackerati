@@ -10,6 +10,7 @@ import Foundation
 
 enum DefaultsKey: String {
     case User = "user"
+    case Notifications = "notifications"
 }
 
 class TrackeratiUserDefaults : NSObject
@@ -33,7 +34,7 @@ class TrackeratiUserDefaults : NSObject
     
     func registerDefaults()
     {
-        let initialDefaults = [DefaultsKey.User.rawValue: nilValue]
+        let initialDefaults = [DefaultsKey.User.rawValue: nilValue, DefaultsKey.Notifications.rawValue: NSNumber(bool: false)]
         NSUserDefaults.standardUserDefaults().registerDefaults(initialDefaults)
         NSUserDefaults.standardUserDefaults().synchronize()
     }
@@ -53,5 +54,16 @@ class TrackeratiUserDefaults : NSObject
     func currentUser() -> String
     {
         return NSUserDefaults.standardUserDefaults().stringForKey(DefaultsKey.User.rawValue)!
+    }
+    
+    func setNotificationsOn(on: Bool)
+    {
+        NSUserDefaults.standardUserDefaults().setBool(on, forKey: DefaultsKey.Notifications.rawValue)
+        NSUserDefaults.standardUserDefaults().synchronize()
+    }
+    
+    func notificationsOn() -> Bool
+    {
+        return NSUserDefaults.standardUserDefaults().boolForKey(DefaultsKey.Notifications.rawValue)
     }
 }

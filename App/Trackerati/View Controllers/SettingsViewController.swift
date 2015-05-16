@@ -9,8 +9,14 @@
 import Foundation
 import UIKit
 
-class SettingsViewController : MainViewController, UITableViewDataSource
+enum SettingType: String {
+    case Date = "Date"
+}
+
+class SettingsViewController : MainViewController, UITableViewDelegate, UITableViewDataSource, SwitchDatePickerCellDelegate
 {
+    let defaultTableViewCellHeight: CGFloat = 44.0
+    
     private weak var settingsTableView: UITableView!
     private weak var datePicker: UIDatePicker!
     
@@ -20,13 +26,25 @@ class SettingsViewController : MainViewController, UITableViewDataSource
         super.loadView()
         view.backgroundColor = UIColor.blueColor()
         
-        settings = ["Notifications":["Date"]]
+        settings = ["Notifications":[SettingType.Date.rawValue]]
         
         let settingsTableView = UITableView(frame: view.frame, style: .Grouped)
+        settingsTableView.delegate = self
         settingsTableView.dataSource = self
         settingsTableView.allowsSelection = false
         view.addSubview(settingsTableView)
         self.settingsTableView = settingsTableView
+    }
+    
+    // MARK: UITableView Delegate
+
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        let sectionKey = settings.keys.array[indexPath.section]
+        let cellType = settings[sectionKey]?[indexPath.row]
+        if cellType == SettingType.Date.rawValue && TrackeratiUserDefaults.standardDefaults.notificationsOn() {
+            return defaultTableViewCellHeight * 6.0
+        }
+        return defaultTableViewCellHeight
     }
     
     // MARK: UITableView Datasource
@@ -51,7 +69,14 @@ class SettingsViewController : MainViewController, UITableViewDataSource
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = SwitchDatePickerCell(style: .Default, reuseIdentifier: "cell")
+        var cell = SwitchDatePickerCell(style: .Default, reuseIdentifier: "cell")
+        cell.onOffSwitch.setOn(TrackeratiUserDefaults.standardDefaults.notificationsOn(), animated: false)
+        cell.delegate = self
         return cell
     }
+
+    func switchValueDidChange(cell: SwitchDatePickerCell, on: Bool) {
+        TrackeratiUserDefaults.standardDefaults.setNotificationsOn(on)
+    }
+    
 }
