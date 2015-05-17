@@ -20,7 +20,7 @@ class SettingsViewController : MainViewController, UITableViewDelegate, UITableV
     private weak var settingsTableView: UITableView!
     private weak var datePicker: UIDatePicker!
     
-    private var settings = [String:Array<String>]()
+    private var settings = [String:[String]]()
     
     override func loadView() {
         super.loadView()
