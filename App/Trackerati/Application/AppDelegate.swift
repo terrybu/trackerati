@@ -16,7 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     private let firebaseAbsoluteURL = "https://blazing-torch-6772.firebaseio.com"
     private let hockeySDKIdentifier = "3aa549db112abed50654d253ecec9aa7"
     
-    var window: UIWindow!
+    var window: UIWindow?
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         AFNetworkReachabilityManager.sharedManager().startMonitoring()
@@ -30,8 +30,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         window = UIWindow(frame: UIScreen.mainScreen().bounds)
         let containerViewController = ContainerViewController(centerViewController: HomeViewController(), sideMenuViewController: SideMenuViewController(items: SideMenuSelection.AllSelections))
-        window.rootViewController = containerViewController
-        window.makeKeyAndVisible()
+        window?.rootViewController = containerViewController
+        window?.makeKeyAndVisible()
         return true
     }
     
