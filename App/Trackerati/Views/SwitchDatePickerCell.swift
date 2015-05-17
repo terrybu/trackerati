@@ -66,28 +66,14 @@ class SwitchDatePickerCell : UITableViewCell
         self.datePickerView = datePickerView
     }
     
-    func showTimePicker(show: Bool, animated: Bool)
-    {
-        let animationDuration: NSTimeInterval
-        let animatedHeight: CGFloat
-        if show {
-            animatedHeight = datePickerView.intrinsicContentSize().height
-        }
-        else {
-            animatedHeight = -datePickerView.intrinsicContentSize().height
-        }
+    func showTimePicker(show: Bool, animated: Bool) {
         
-        if animated {
-            animationDuration = 0.2
-        }
-        else {
-            animationDuration = 0.0
-        }
+        let animationDuration: NSTimeInterval = animated ? 0.2 : 0.0
+        let animationHeight = datePickerView.intrinsicContentSize().height
         
-        let currentFrame = self.frame
-        UIView.animateWithDuration(animationDuration, animations: {
-            self.frame = CGRect(x: currentFrame.origin.x, y: currentFrame.origin.y, width: self.frame.size.width, height: self.frame.size.height + animatedHeight)
-        })
+        UIView.animateWithDuration(animationDuration) {
+            self.frame.size.height += show ? animationHeight : -animationHeight
+        }
     }
     
     func switchValueChanged(onOffSwitch: UISwitch)
