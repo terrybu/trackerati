@@ -80,10 +80,8 @@ class SwitchDatePickerCell : UITableViewCell
             animationDuration = 0.0
         }
         
-        let accessoryFrame = onOffSwitch.frame
         let currentFrame = self.frame
         UIView.animateWithDuration(animationDuration, animations: {
-            self.onOffSwitch.frame = accessoryFrame
             self.frame = CGRect(x: currentFrame.origin.x, y: currentFrame.origin.y, width: self.frame.size.width, height: self.frame.size.height + animatedHeight)
         })
     }
