@@ -10,6 +10,7 @@ import UIKit
 
 protocol SwitchDatePickerCellDelegate: class {
     func switchValueDidChange(cell: SwitchDatePickerCell, on: Bool)
+    func dateValueDidChange(cell: SwitchDatePickerCell, date: NSDate)
 }
 
 class SwitchDatePickerCell : UITableViewCell
@@ -34,7 +35,9 @@ class SwitchDatePickerCell : UITableViewCell
     {
         let cellWidth = contentView.frame.size.width
         let cellHeight = contentView.frame.size.height
-        let titleLabel = UILabel(frame: contentView.frame)
+        let leftMargin = layoutMargins.left
+        let titleLabelRect = CGRect(x: leftMargin, y: 0.0, width: contentView.frame.size.width, height: contentView.frame.size.height)
+        let titleLabel = UILabel(frame: titleLabelRect)
         titleLabel.text = "Notifications"
         contentView.addSubview(titleLabel)
         self.titleLabel = titleLabel
@@ -58,6 +61,7 @@ class SwitchDatePickerCell : UITableViewCell
         let datePickerView = UIDatePicker(frame: datePickerFrame)
         datePickerView.sizeToFit()
         datePickerView.datePickerMode = .Time
+        datePickerView.addTarget(self, action: "dateValueChanged:", forControlEvents: .ValueChanged)
         contentView.addSubview(datePickerView)
         self.datePickerView = datePickerView
     }
@@ -90,6 +94,15 @@ class SwitchDatePickerCell : UITableViewCell
     {
         showTimePicker(onOffSwitch.on, animated: true)
         delegate?.switchValueDidChange(self, on: onOffSwitch.on)
+        
+        if onOffSwitch.on {
+            delegate?.dateValueDidChange(self, date: datePickerView.date) // save date as well when turning on
+        }
+    }
+    
+    func dateValueChanged(datePicker: UIDatePicker)
+    {
+        delegate?.dateValueDidChange(self, date: datePicker.date)
     }
     
 }

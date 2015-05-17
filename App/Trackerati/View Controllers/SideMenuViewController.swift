@@ -56,9 +56,19 @@ class SideMenuViewController : UIViewController, UITableViewDelegate, UITableVie
         menuTableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: kCellReuseIdentifier)
         menuTableView.delegate = self
         menuTableView.dataSource = self
+        menuTableView.separatorStyle = .None
+        menuTableView.scrollEnabled = false
         menuTableView.tableFooterView = UIView(frame: CGRectZero)
         view.addSubview(menuTableView)
         self.menuTableView = menuTableView
+    }
+    
+    func setupLabelOnCell(cell: UITableViewCell, indexPath: NSIndexPath)
+    {
+        let titleLabelFrame = CGRect(x: cell.layoutMargins.left, y: 0.0, width: cell.contentView.frame.size.width, height: cell.contentView.frame.size.height)
+        let titleLabel = UILabel(frame: titleLabelFrame)
+        titleLabel.text = menuItems[indexPath.row].rawValue
+        cell.contentView.addSubview(titleLabel)
     }
     
     // MARK: UITableView Delegate
@@ -80,9 +90,7 @@ class SideMenuViewController : UIViewController, UITableViewDelegate, UITableVie
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(kCellReuseIdentifier, forIndexPath: indexPath) as! UITableViewCell
-        let titleLabel = UILabel(frame: cell.contentView.frame)
-        titleLabel.text = menuItems[indexPath.row].rawValue
-        cell.contentView.addSubview(titleLabel)
+        setupLabelOnCell(cell, indexPath: indexPath)
         return cell
     }
     

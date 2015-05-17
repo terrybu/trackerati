@@ -22,10 +22,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         AFNetworkReachabilityManager.sharedManager().startMonitoring()
         
         #if RELEASE
-        self.configureHockeySDK()
+        configureHockeySDK()
         #endif
         
-        self.configureSingletons()
+        configureSingletons()
+        resetNotification()
         
         window = UIWindow(frame: UIScreen.mainScreen().bounds)
         let containerViewController = ContainerViewController(centerViewController: HomeViewController(), sideMenuViewController: SideMenuViewController(items: SideMenuSelection.AllSelections))
@@ -34,8 +35,44 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
     
+    func applicationWillEnterForeground(application: UIApplication) {
+        resetNotification()
+    }
+    
+    func applicationDidEnterBackground(application: UIApplication) {
+        configureLocalNotification()
+    }
+    
     func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject?) -> Bool {
         return GPPURLHandler.handleURL(url, sourceApplication: sourceApplication, annotation: annotation)
+    }
+    
+    func application(application: UIApplication, didReceiveLocalNotification notification: UILocalNotification) {
+        resetNotification()
+        // TODO: Bring them to new draft for default projects
+    }
+    
+    private func configureLocalNotification()
+    {
+        if TrackeratiUserDefaults.standardDefaults.notificationsOn() && UIApplication.sharedApplication().scheduledLocalNotifications.count < 1 {
+            if let fireTime = TrackeratiUserDefaults.standardDefaults.notificationTime() {
+                
+                let localNotification = UILocalNotification()
+                localNotification.repeatInterval = .CalendarUnitDay
+                localNotification.timeZone = NSTimeZone.defaultTimeZone()
+                localNotification.fireDate = fireTime
+                localNotification.alertTitle = "Did you remember to log your time?"
+                localNotification.alertBody = "Ain't nobody got time for that... except for you!"
+                localNotification.applicationIconBadgeNumber = 1
+                UIApplication.sharedApplication().scheduleLocalNotification(localNotification)
+            }
+        }
+    }
+    
+    private func resetNotification()
+    {
+        UIApplication.sharedApplication().applicationIconBadgeNumber = 0
+        UIApplication.sharedApplication().cancelAllLocalNotifications()
     }
     
     private func configureHockeySDK()

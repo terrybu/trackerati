@@ -71,12 +71,23 @@ class SettingsViewController : MainViewController, UITableViewDelegate, UITableV
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell = SwitchDatePickerCell(style: .Default, reuseIdentifier: "cell")
         cell.onOffSwitch.setOn(TrackeratiUserDefaults.standardDefaults.notificationsOn(), animated: false)
+        if cell.onOffSwitch.on {
+            if let savedTime = TrackeratiUserDefaults.standardDefaults.notificationTime() {
+                cell.datePickerView.setDate(savedTime, animated: false)
+            }
+        }
         cell.delegate = self
         return cell
     }
 
+    // MARK: SwitchDatePickerCell Delegate
+    
     func switchValueDidChange(cell: SwitchDatePickerCell, on: Bool) {
         TrackeratiUserDefaults.standardDefaults.setNotificationsOn(on)
+    }
+    
+    func dateValueDidChange(cell: SwitchDatePickerCell, date: NSDate) {
+        TrackeratiUserDefaults.standardDefaults.setNotificationDate(date)
     }
     
 }

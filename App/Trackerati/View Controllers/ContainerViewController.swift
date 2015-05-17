@@ -166,7 +166,9 @@ class ContainerViewController : UIViewController, MainViewControllerDelegate, Si
             }
             
             if let target = targetViewController {
-                target.title = selection.rawValue
+                if target.title == nil {
+                    target.title = selection.rawValue
+                }
                 target.delegate = self
                 centerNavigationController.pushViewController(target, animated: false)
                 centerViewController = target
