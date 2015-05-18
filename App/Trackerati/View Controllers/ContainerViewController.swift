@@ -91,13 +91,7 @@ class ContainerViewController : UIViewController, MainViewControllerDelegate, Si
             
             }, completion: { finished in
                 self.tapToReturnGesture.enabled = animateIn
-                
-                if animateIn {
-                    self.currentMenuState = .Showing
-                }
-                else {
-                    self.currentMenuState = .NotShowing
-                }
+                self.currentMenuState = animateIn ? .Showing : .NotShowing
         })
     }
     
