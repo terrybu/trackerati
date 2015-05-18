@@ -29,6 +29,9 @@ class ContainerViewController : UIViewController, MainViewControllerDelegate, Si
     private weak var edgePanGesture: UIPanGestureRecognizer!
     private weak var tapToReturnGesture: UITapGestureRecognizer!
     
+    private weak var snapshotView: UIView?
+    private var hideStatusBar = false
+    
     init(centerViewController: MainViewController, sideMenuViewController: SideMenuViewController)
     {
         super.init(nibName: nil, bundle: nil)
@@ -57,7 +60,7 @@ class ContainerViewController : UIViewController, MainViewControllerDelegate, Si
         setupGestures()
     }
     
-    func setupGestures()
+    private func setupGestures()
     {
         let edgePanGesture = UIPanGestureRecognizer(target: self, action: "translateTopView:")
         edgePanGesture.maximumNumberOfTouches = 1
@@ -72,7 +75,7 @@ class ContainerViewController : UIViewController, MainViewControllerDelegate, Si
         self.tapToReturnGesture = tapToReturnGesture
     }
     
-    func animateToSideMenu(#animateIn: Bool)
+    private func animateToSideMenu(animateIn: Bool)
     {
         let targetTransform: CGAffineTransform
         if animateIn {
@@ -89,7 +92,7 @@ class ContainerViewController : UIViewController, MainViewControllerDelegate, Si
             }, completion: { finished in
                 self.tapToReturnGesture.enabled = animateIn
                 
-                if animateIn == true {
+                if animateIn {
                     self.currentMenuState = .Showing
                 }
                 else {
@@ -98,13 +101,32 @@ class ContainerViewController : UIViewController, MainViewControllerDelegate, Si
         })
     }
     
+    private func displaySnapshotView()
+    {
+        snapshotView = UIScreen.mainScreen().snapshotViewAfterScreenUpdates(false)
+        centerNavigationController.view.addSubview(snapshotView!)
+        hideStatusBar = true
+        setNeedsStatusBarAppearanceUpdate()
+    }
+    
+    private func removeSnapshotView()
+    {
+        snapshotView?.removeFromSuperview()
+        self.hideStatusBar = false
+        self.setNeedsStatusBarAppearanceUpdate()
+    }
+    
     // MARK: Gesture Recognizer Selectors
     
-    func translateTopView(edgePanGesture: UIPanGestureRecognizer)
+    @objc
+    private func translateTopView(edgePanGesture: UIPanGestureRecognizer)
     {
         switch edgePanGesture.state
         {
         case .Began:
+            if centerNavigationController.view.frame.origin.x == 0.0 { // make sure to only display snapshot when trying to display side menu
+                displaySnapshotView()
+            }
             let xLocationInView = edgePanGesture.locationInView(view).x
             let maxXTouchBoundary = centerNavigationController.view.frame.origin.x + maxXToBeginPanGesture
             if xLocationInView > maxXTouchBoundary {
@@ -119,27 +141,39 @@ class ContainerViewController : UIViewController, MainViewControllerDelegate, Si
             
         case .Ended:
             if centerNavigationController.view.frame.origin.x < UIScreen.mainScreen().bounds.size.width / 2.0 {
-                animateToSideMenu(animateIn: false)
+                animateToSideMenu(false)
+                removeSnapshotView()
             }
             else {
-                animateToSideMenu(animateIn: true)
+                animateToSideMenu(true)
             }
         default:
+            removeSnapshotView()
             break
         }
     }
     
-    func returnToMainScreen(tapGesture: UITapGestureRecognizer)
+    @objc
+    private func returnToMainScreen(tapGesture: UITapGestureRecognizer)
     {
         if self.currentMenuState == .Showing {
-            animateToSideMenu(animateIn: false)
+            animateToSideMenu(false)
+            removeSnapshotView()
         }
     }
     
     // MARK: MainViewController Delegate
     
     func didPressMenuButton(button: UIBarButtonItem) {
-        animateToSideMenu(animateIn: currentMenuState == .NotShowing)
+        let sideMenuNotShowing = currentMenuState == .NotShowing
+        if sideMenuNotShowing {
+            displaySnapshotView()
+            animateToSideMenu(sideMenuNotShowing)
+        }
+        else {
+            animateToSideMenu(sideMenuNotShowing)
+            removeSnapshotView()
+        }
     }
     
     // MARK: SideMenuViewController Delegate
@@ -177,7 +211,12 @@ class ContainerViewController : UIViewController, MainViewControllerDelegate, Si
             }
         }
         
-        animateToSideMenu(animateIn: false)
+        animateToSideMenu(false)
+        removeSnapshotView()
+    }
+    
+    override func prefersStatusBarHidden() -> Bool {
+        return hideStatusBar
     }
     
 }

@@ -59,7 +59,6 @@ class SwitchDatePickerCell : UITableViewCell
         var datePickerFrame = CGRectZero
         datePickerFrame.origin = CGPoint(x: 0.0, y: titleLabel.frame.size.height)
         let datePickerView = UIDatePicker(frame: datePickerFrame)
-        datePickerView.sizeToFit()
         datePickerView.datePickerMode = .Time
         datePickerView.addTarget(self, action: "dateValueChanged:", forControlEvents: .ValueChanged)
         contentView.addSubview(datePickerView)

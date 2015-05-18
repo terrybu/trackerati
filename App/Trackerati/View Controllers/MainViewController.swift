@@ -23,8 +23,14 @@ class MainViewController: UIViewController {
         view = UIView(frame: UIScreen.mainScreen().bounds)
         view.backgroundColor = UIColor.whiteColor()
         
-        let menuButton = UIBarButtonItem(image: UIImage(named: "MenuButton"), style: .Plain, target: self, action: "displayMenu:")
-        navigationItem.leftBarButtonItem = menuButton
+        if let menuImage = UIImage(named: "MenuButton") {
+            let menuButton = UIButton(frame: CGRect(origin: CGPointZero, size: menuImage.size))
+            menuButton.showsTouchWhenHighlighted = false
+            menuButton.setBackgroundImage(UIImage(named: "MenuButton"), forState: .Normal)
+            menuButton.addTarget(self, action: "displayMenu:", forControlEvents: .TouchUpInside)
+            let customBarButtonItem = UIBarButtonItem(customView: menuButton)
+            navigationItem.leftBarButtonItem = customBarButtonItem
+        }
     }
     
     // MARK: Button Selectors
