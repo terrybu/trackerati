@@ -134,7 +134,9 @@ class ContainerViewController : UIViewController, MainViewControllerDelegate, Si
             centerNavigationController.view.transform = translation
             
         case .Ended:
-            if centerNavigationController.view.frame.origin.x < UIScreen.mainScreen().bounds.size.width / 2.0 {
+            let distanceNeededToAnimateFromLeft = UIScreen.mainScreen().bounds.size.width / 4.0
+            let distanceNeededToAnimateFromRight =  distanceNeededToAnimateFromLeft * 3.0
+            if centerNavigationController.view.frame.origin.x < distanceNeededToAnimateFromLeft || (centerNavigationController.view.frame.origin.x < distanceNeededToAnimateFromRight && currentMenuState == .Showing) {
                 animateToSideMenu(false)
                 removeSnapshotView()
             }
