@@ -84,6 +84,10 @@ class SettingsViewController : MainViewController, UITableViewDelegate, UITableV
     
     func switchValueDidChange(cell: SwitchDatePickerCell, on: Bool) {
         TrackeratiUserDefaults.standardDefaults.setNotificationsOn(on)
+        
+        if on && UIApplication.sharedApplication().currentUserNotificationSettings() != .None {
+            UIApplication.sharedApplication().registerUserNotificationSettings(UIUserNotificationSettings(forTypes: .Alert | .Badge , categories: nil))
+        }
     }
     
     func dateValueDidChange(cell: SwitchDatePickerCell, date: NSDate) {
