@@ -17,7 +17,6 @@ enum MenuState
 
 class ContainerViewController : UIViewController, LoginScreenDelegate, MainViewControllerDelegate, SideMenuViewControllerDelegate
 {
-    private let minimumSlideoutOffset: CGFloat = 50.0
     private let maxXToBeginPanGesture: CGFloat = 30.0
     private var currentMenuState = MenuState.NotShowing
     private var currentShowingPage = SideMenuSelection.Home
@@ -94,7 +93,7 @@ class ContainerViewController : UIViewController, LoginScreenDelegate, MainViewC
     {
         let targetTransform: CGAffineTransform
         if animateIn {
-            let newXPosition = centerViewController.view.frame.size.width - minimumSlideoutOffset
+            let newXPosition = centerViewController.view.frame.size.width - kMinimumSlideoutOffset
             targetTransform = CGAffineTransformMakeTranslation(newXPosition, 0.0)
         }
         else {

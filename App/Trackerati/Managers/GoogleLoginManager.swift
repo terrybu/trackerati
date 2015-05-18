@@ -32,6 +32,8 @@ class GoogleLoginManager : NSObject, GPPSignInDelegate, UIAlertViewDelegate
         return Static.instance!
     }
     
+    private(set) var profilePicture: UIImage?
+    private(set) var profileName: String?
     private(set) var authorized: Bool = false
     
     // MARK: Public
@@ -46,6 +48,7 @@ class GoogleLoginManager : NSObject, GPPSignInDelegate, UIAlertViewDelegate
         googlePlusIdentifier = key
         
         googleSignInManager.shouldFetchGoogleUserEmail = true
+        googleSignInManager.shouldFetchGooglePlusUser = true
         googleSignInManager.clientID = googlePlusIdentifier
         googleSignInManager.scopes = [kGooglePlusScopeKeyProfile]
         googleSignInManager.delegate = self
@@ -108,6 +111,8 @@ class GoogleLoginManager : NSObject, GPPSignInDelegate, UIAlertViewDelegate
                 // TODO: Send User model and configure the UI accordingly in the receiving VC
                 let userModel = User(email: email)
                 NSNotificationCenter.defaultCenter().postNotificationName(kUserDidAuthorizeNotification, object: userModel)
+                
+                getProfileInfo()
             }
         }
         else {
@@ -128,6 +133,27 @@ class GoogleLoginManager : NSObject, GPPSignInDelegate, UIAlertViewDelegate
             return googleSignInManager.trySilentAuthentication()
         }
         return false
+    }
+    
+    private func getProfileInfo()
+    {
+        profileName = googleSignInManager.googlePlusUser.displayName
+        
+        dispatch_async(dispatch_queue_create("profileImageDownloadQueue", nil), {
+            
+            if let imageURL = NSURL(string: self.googleSignInManager.googlePlusUser.image.url) {
+                
+                if let imageData = NSData(contentsOfURL: imageURL) {
+                    
+                    let profilePicture = UIImage(data: imageData)
+                    dispatch_async(dispatch_get_main_queue(), {
+                        self.profilePicture = profilePicture
+                        NSNotificationCenter.defaultCenter().postNotificationName(kUserProfilePictureDidFinishDownloading, object: nil)
+                    })
+                    
+                }
+            }
+        })
     }
     
     // MARK: UIAlertView Delegate

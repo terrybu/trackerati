@@ -41,6 +41,7 @@
 		0170E44E1B052A2200D593C3 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0170E44D1B052A2200D593C3 /* HomeViewController.swift */; };
 		0170E4541B0542A900D593C3 /* LoginScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0170E4521B0542A900D593C3 /* LoginScreen.swift */; };
 		0170E4551B0542A900D593C3 /* SwitchDatePickerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0170E4531B0542A900D593C3 /* SwitchDatePickerCell.swift */; };
+		01DD394B1B0A70FD000D925D /* UserHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01DD394A1B0A70FD000D925D /* UserHeaderView.swift */; };
 		9AC9A5ABC4BD45574226D7B3 /* libPods-Trackerati.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A1B38C69B4DD3AA7E0D1667A /* libPods-Trackerati.a */; };
 /* End PBXBuildFile section */
 
@@ -94,6 +95,7 @@
 		0170E44D1B052A2200D593C3 /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		0170E4521B0542A900D593C3 /* LoginScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginScreen.swift; sourceTree = "<group>"; };
 		0170E4531B0542A900D593C3 /* SwitchDatePickerCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwitchDatePickerCell.swift; sourceTree = "<group>"; };
+		01DD394A1B0A70FD000D925D /* UserHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserHeaderView.swift; sourceTree = "<group>"; };
 		3587A3B08253D04AD27B6510 /* Pods-Trackerati.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Trackerati.release.xcconfig"; path = "../Pods/Target Support Files/Pods-Trackerati/Pods-Trackerati.release.xcconfig"; sourceTree = "<group>"; };
 		A1B38C69B4DD3AA7E0D1667A /* libPods-Trackerati.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Trackerati.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FC4437DDCAA1EBF64F6F5D62 /* Pods-Trackerati.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Trackerati.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-Trackerati/Pods-Trackerati.debug.xcconfig"; sourceTree = "<group>"; };
@@ -286,6 +288,7 @@
 			children = (
 				0170E4521B0542A900D593C3 /* LoginScreen.swift */,
 				0170E4531B0542A900D593C3 /* SwitchDatePickerCell.swift */,
+				01DD394A1B0A70FD000D925D /* UserHeaderView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -446,6 +449,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				01DD394B1B0A70FD000D925D /* UserHeaderView.swift in Sources */,
 				01498B1C1B01027E00C7C395 /* MainViewController.swift in Sources */,
 				01498B1A1B01027E00C7C395 /* AppDelegate.swift in Sources */,
 				0170E44C1B0526CD00D593C3 /* SettingsViewController.swift in Sources */,

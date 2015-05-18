@@ -26,7 +26,7 @@ enum SideMenuSelection: String {
 class SideMenuViewController : UIViewController, UITableViewDelegate, UITableViewDataSource
 {
     private let kCellReuseIdentifier = "cell"
-    private let headerViewHeight: CGFloat = 50.0
+    private let kHeaderViewHeight: CGFloat = 50.0 + UIApplication.sharedApplication().statusBarFrame.size.height
     
     private weak var menuTableView: UITableView!
     private let menuItems: [SideMenuSelection]
@@ -72,16 +72,18 @@ class SideMenuViewController : UIViewController, UITableViewDelegate, UITableVie
         backgroundImageView.setTranslatesAutoresizingMaskIntoConstraints(false)
         view.addSubview(backgroundImageView)
         
-        let constraints = [NSLayoutConstraint(item: backgroundImageView, attribute: .Leading, relatedBy: .Equal, toItem: self.view, attribute: .Leading, multiplier: 1.0, constant: 0.0), NSLayoutConstraint(item: backgroundImageView, attribute: .Trailing, relatedBy: .Equal, toItem: self.view, attribute: .Trailing, multiplier: 1.0, constant: 0.0), NSLayoutConstraint(item: backgroundImageView, attribute: .Top, relatedBy: .Equal, toItem: self.view, attribute: .Top, multiplier: 1.0, constant: 0.0), NSLayoutConstraint(item: backgroundImageView, attribute: .Bottom, relatedBy: .Equal, toItem: self.view, attribute: .Bottom, multiplier: 1.0, constant: 0.0)]
+        let constraints = [
+            NSLayoutConstraint(item: backgroundImageView, attribute: .Leading, relatedBy: .Equal, toItem: self.view, attribute: .Leading, multiplier: 1.0, constant: 0.0),
+            NSLayoutConstraint(item: backgroundImageView, attribute: .Trailing, relatedBy: .Equal, toItem: self.view, attribute: .Trailing, multiplier: 1.0, constant: 0.0),
+            NSLayoutConstraint(item: backgroundImageView, attribute: .Top, relatedBy: .Equal, toItem: self.view, attribute: .Top, multiplier: 1.0, constant: 0.0),
+            NSLayoutConstraint(item: backgroundImageView, attribute: .Bottom, relatedBy: .Equal, toItem: self.view, attribute: .Bottom, multiplier: 1.0, constant: 0.0)
+        ]
         self.view.addConstraints(constraints)
     }
     
     private func customHeaderView() -> UIView
     {
-        // TODO: Set name of user and Gravatar
-        let headerView = UIView(frame: CGRect(origin: CGPointZero, size: CGSize(width: view.frame.size.width, height: headerViewHeight)))
-        headerView.backgroundColor = UIColor.clearColor()
-        return headerView
+        return UserHeaderView(frame: CGRect(origin: CGPointZero, size: CGSize(width: view.frame.size.width, height: kHeaderViewHeight)))
     }
     
     private func setupLabelOnCell(cell: UITableViewCell, indexPath: NSIndexPath)

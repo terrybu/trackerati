@@ -8,3 +8,7 @@
 
 // MARK: Notification Constants
 let kUserDidAuthorizeNotification = "userDidAuthorizeNotification"
+let kUserProfilePictureDidFinishDownloading = "userProfilePictureDidFinishDownloading"
+
+// MARK: Slide Out Menu Constants
+let kMinimumSlideoutOffset: CGFloat = 50.0
