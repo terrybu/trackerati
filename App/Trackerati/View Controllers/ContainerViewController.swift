@@ -15,7 +15,7 @@ enum MenuState
     case Showing
 }
 
-class ContainerViewController : UIViewController, MainViewControllerDelegate, SideMenuViewControllerDelegate
+class ContainerViewController : UIViewController, LoginScreenDelegate, MainViewControllerDelegate, SideMenuViewControllerDelegate
 {
     private let minimumSlideoutOffset: CGFloat = 50.0
     private let maxXToBeginPanGesture: CGFloat = 30.0
@@ -29,6 +29,7 @@ class ContainerViewController : UIViewController, MainViewControllerDelegate, Si
     private weak var edgePanGesture: UIPanGestureRecognizer!
     private weak var tapToReturnGesture: UITapGestureRecognizer!
     
+    private weak var loginScreen: LoginScreen?
     private weak var snapshotView: UIView?
     private var hideStatusBar = false
     
@@ -39,6 +40,8 @@ class ContainerViewController : UIViewController, MainViewControllerDelegate, Si
         self.centerViewController.delegate = self
         self.sideMenuViewController = sideMenuViewController
         self.sideMenuViewController.delegate = self
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "setupInterfaceForLoggedInUser:", name: kUserDidAuthorizeNotification, object: nil)
     }
 
     required init(coder aDecoder: NSCoder) {
@@ -58,6 +61,16 @@ class ContainerViewController : UIViewController, MainViewControllerDelegate, Si
         sideMenuViewController.didMoveToParentViewController(self)
         
         setupGestures()
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        if !GoogleLoginManager.sharedManager.authorized {
+            if !GoogleLoginManager.sharedManager.attemptPreAuthorizationLogin() {
+                displayLoginScreen()
+            }
+        }
     }
     
     private func setupGestures()
@@ -93,6 +106,24 @@ class ContainerViewController : UIViewController, MainViewControllerDelegate, Si
                 self.tapToReturnGesture.enabled = animateIn
                 self.currentMenuState = animateIn ? .Showing : .NotShowing
         })
+    }
+    
+    func setupInterfaceForLoggedInUser(notification: NSNotification)
+    {
+        centerNavigationController.popViewControllerAnimated(false)
+        centerNavigationController.setNavigationBarHidden(false, animated: true)
+        
+        if let user = notification.object as? User {
+            println(user.email)
+        }
+    }
+    
+    func displayLoginScreen()
+    {
+        var loginScreen = LoginScreen(delegate: self)
+        centerNavigationController.pushViewController(loginScreen, animated: false)
+        centerNavigationController.setNavigationBarHidden(true, animated: false)
+        self.loginScreen = loginScreen
     }
     
     private func displaySnapshotView()
@@ -158,6 +189,13 @@ class ContainerViewController : UIViewController, MainViewControllerDelegate, Si
         }
     }
     
+    // MARK: LoginScreen Delegate
+    
+    func didPressLoginButton()
+    {
+        GoogleLoginManager.sharedManager.login()
+    }
+    
     // MARK: MainViewController Delegate
     
     func didPressMenuButton(button: UIBarButtonItem) {
@@ -192,7 +230,8 @@ class ContainerViewController : UIViewController, MainViewControllerDelegate, Si
                 
             case .LogOut:
                 // TODO: Sign person out
-                break
+                targetViewController = HomeViewController()
+                GoogleLoginManager.sharedManager.logout()
             }
             
             if let target = targetViewController {
@@ -202,8 +241,11 @@ class ContainerViewController : UIViewController, MainViewControllerDelegate, Si
                 target.delegate = self
                 centerNavigationController.pushViewController(target, animated: false)
                 centerViewController = target
-                
                 currentShowingPage = selection
+                if currentShowingPage == .LogOut {
+                    displayLoginScreen()
+                    currentShowingPage = .Home
+                }
             }
         }
         

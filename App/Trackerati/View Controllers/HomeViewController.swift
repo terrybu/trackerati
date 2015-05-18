@@ -8,10 +8,8 @@
 
 import UIKit
 
-class HomeViewController : MainViewController, LoginScreenDelegate
+class HomeViewController : MainViewController
 {
-    private weak var loginScreen: LoginScreen?
-    
     init()
     {
         super.init(nibName: nil, bundle: nil)
@@ -25,35 +23,5 @@ class HomeViewController : MainViewController, LoginScreenDelegate
     override func loadView() {
         super.loadView()
         view.backgroundColor = UIColor.redColor()
-        
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "setupInterfaceForLoggedInUser:", name: kUserDidAuthorizeNotification, object: nil)
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        if !GoogleLoginManager.sharedManager.authorized {
-            if !GoogleLoginManager.sharedManager.attemptPreAuthorizationLogin() {
-                var loginScreen = LoginScreen(delegate: self)
-                self.presentViewController(loginScreen, animated: false, completion: nil)
-                self.loginScreen = loginScreen
-            }
-        }
-    }
-    
-    func setupInterfaceForLoggedInUser(notification: NSNotification)
-    {
-        self.loginScreen?.dismissViewControllerAnimated(false, completion: nil)
-        
-        if let user = notification.object as? User {
-            println(user.email)
-        }
-    }
-    
-    // MARK: LoginScreen Delegate
-    
-    func didPressLoginButton()
-    {
-        GoogleLoginManager.sharedManager.login()
     }
 }

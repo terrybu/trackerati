@@ -17,7 +17,6 @@ protocol LoginScreenDelegate : class
 class LoginScreen : UIViewController
 {
     private let buttonTitle = "Log In"
-    private let buttonFrame = CGRect(x: 0.0, y: 0.0, width: UIScreen.mainScreen().bounds.size.width - 10.0, height: 40.0)
     
     private weak var delegate: LoginScreenDelegate?
     private weak var loginButton: UIButton!
