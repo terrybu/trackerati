@@ -45,25 +45,46 @@ class SideMenuViewController : UIViewController, UITableViewDelegate, UITableVie
     
     override func loadView() {
         view = UIView(frame: UIScreen.mainScreen().bounds)
-        view.backgroundColor = UIColor.lightGrayColor()
         
-        let headerView = UIView(frame: CGRect(origin: CGPointZero, size: CGSize(width: view.frame.size.width, height: headerViewHeight)))
-        headerView.backgroundColor = UIColor.whiteColor()
-        view.addSubview(headerView)
-        
-        let menuTableViewFrame = CGRect(x: 0.0, y: headerViewHeight, width: view.frame.size.width, height: view.frame.size.height - headerViewHeight)
-        let menuTableView = UITableView(frame: menuTableViewFrame, style: .Plain)
+        setupMenuBackground()
+        setupMenu()
+    }
+    
+    private func setupMenu()
+    {
+        let menuTableView = UITableView(frame: view.frame, style: .Plain)
         menuTableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: kCellReuseIdentifier)
         menuTableView.delegate = self
         menuTableView.dataSource = self
+        menuTableView.backgroundColor = UIColor(red:0.93, green:0.94, blue:0.95, alpha:0.7)
         menuTableView.separatorStyle = .None
         menuTableView.scrollEnabled = false
+        menuTableView.tableHeaderView = customHeaderView()
         menuTableView.tableFooterView = UIView(frame: CGRectZero)
         view.addSubview(menuTableView)
         self.menuTableView = menuTableView
     }
     
-    func setupLabelOnCell(cell: UITableViewCell, indexPath: NSIndexPath)
+    private func setupMenuBackground()
+    {
+        let backgroundImageView = UIImageView(image: UIImage(named: "Hackerati")!)
+        backgroundImageView.contentMode = .ScaleAspectFill
+        backgroundImageView.setTranslatesAutoresizingMaskIntoConstraints(false)
+        view.addSubview(backgroundImageView)
+        
+        let constraints = [NSLayoutConstraint(item: backgroundImageView, attribute: .Leading, relatedBy: .Equal, toItem: self.view, attribute: .Leading, multiplier: 1.0, constant: 0.0), NSLayoutConstraint(item: backgroundImageView, attribute: .Trailing, relatedBy: .Equal, toItem: self.view, attribute: .Trailing, multiplier: 1.0, constant: 0.0), NSLayoutConstraint(item: backgroundImageView, attribute: .Top, relatedBy: .Equal, toItem: self.view, attribute: .Top, multiplier: 1.0, constant: 0.0), NSLayoutConstraint(item: backgroundImageView, attribute: .Bottom, relatedBy: .Equal, toItem: self.view, attribute: .Bottom, multiplier: 1.0, constant: 0.0)]
+        self.view.addConstraints(constraints)
+    }
+    
+    private func customHeaderView() -> UIView
+    {
+        // TODO: Set name of user and Gravatar
+        let headerView = UIView(frame: CGRect(origin: CGPointZero, size: CGSize(width: view.frame.size.width, height: headerViewHeight)))
+        headerView.backgroundColor = UIColor.clearColor()
+        return headerView
+    }
+    
+    private func setupLabelOnCell(cell: UITableViewCell, indexPath: NSIndexPath)
     {
         let titleLabelFrame = CGRect(x: cell.layoutMargins.left, y: 0.0, width: cell.contentView.frame.size.width, height: cell.contentView.frame.size.height)
         let titleLabel = UILabel(frame: titleLabelFrame)
@@ -90,6 +111,7 @@ class SideMenuViewController : UIViewController, UITableViewDelegate, UITableVie
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(kCellReuseIdentifier, forIndexPath: indexPath) as! UITableViewCell
+        cell.backgroundColor = UIColor.clearColor()
         setupLabelOnCell(cell, indexPath: indexPath)
         return cell
     }

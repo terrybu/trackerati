@@ -73,6 +73,8 @@ class ContainerViewController : UIViewController, LoginScreenDelegate, MainViewC
         }
     }
     
+    // MARK: Private
+    
     private func setupGestures()
     {
         let edgePanGesture = UIPanGestureRecognizer(target: self, action: "translateTopView:")
@@ -113,13 +115,19 @@ class ContainerViewController : UIViewController, LoginScreenDelegate, MainViewC
         centerNavigationController.popViewControllerAnimated(false)
         centerNavigationController.setNavigationBarHidden(false, animated: true)
         
+        tapToReturnGesture.enabled = true
+        edgePanGesture.enabled = true
+        
         if let user = notification.object as? User {
             println(user.email)
         }
     }
     
-    func displayLoginScreen()
+    private func displayLoginScreen()
     {
+        tapToReturnGesture.enabled =  false
+        edgePanGesture.enabled = false
+        
         var loginScreen = LoginScreen(delegate: self)
         centerNavigationController.pushViewController(loginScreen, animated: false)
         centerNavigationController.setNavigationBarHidden(true, animated: false)
