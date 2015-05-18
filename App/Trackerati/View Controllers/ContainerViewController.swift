@@ -229,7 +229,6 @@ class ContainerViewController : UIViewController, LoginScreenDelegate, MainViewC
                 targetViewController = SettingsViewController()
                 
             case .LogOut:
-                // TODO: Sign person out
                 targetViewController = HomeViewController()
                 GoogleLoginManager.sharedManager.logout()
             }
@@ -242,6 +241,7 @@ class ContainerViewController : UIViewController, LoginScreenDelegate, MainViewC
                 centerNavigationController.pushViewController(target, animated: false)
                 centerViewController = target
                 currentShowingPage = selection
+                
                 if currentShowingPage == .LogOut {
                     displayLoginScreen()
                     currentShowingPage = .Home
