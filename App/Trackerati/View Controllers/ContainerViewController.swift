@@ -119,6 +119,9 @@ class ContainerViewController : UIViewController, LoginScreenDelegate, MainViewC
         
         if let user = notification.object as? User {
             println(user.email)
+            
+            // TODO: Make Firebase Requests for User
+            FirebaseManager.sharedManager.getAllProjects()
         }
     }
     

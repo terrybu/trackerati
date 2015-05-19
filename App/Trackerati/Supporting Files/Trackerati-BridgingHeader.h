@@ -13,6 +13,5 @@
 #import <Firebase/Firebase.h>
 #import <GooglePlus/GooglePlus.h>
 #import <GoogleOpenSource/GoogleOpenSource.h>
-#import <AFNetworking/AFNetworking.h>
 
 #endif
