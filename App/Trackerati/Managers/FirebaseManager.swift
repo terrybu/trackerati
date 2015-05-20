@@ -58,27 +58,25 @@ class FirebaseManager : NSObject
     
     func getAllDataOfType(type: DataInfoType)
     {
-        dispatch_async(dispatch_queue_create("requestProjectsQueue", nil), {
+        self.firebaseDB.observeSingleEventOfType(.Value, withBlock: { snapshot in
             var notificationName = ""
             var downloadedData = []
             
-            self.firebaseDB.observeSingleEventOfType(.Value, withBlock: { snapshot in
-                switch type {
-                case .Projects:
-                    notificationName = kAllProjectsDownloadedNotificationName
-                    if self.allClientProjects == nil {
-                        self.allClientProjects = self.createClientArrayFromJSON(snapshot.value, sorted: true)
-                    }
-                    downloadedData = self.allClientProjects!
-                    
-                case .User:
-                    notificationName = kUserInfoDownloadedNotificationName
-                    if self.allUserRecords == nil {
-                        self.allUserRecords = self.getRecordsForUser(snapshot.value, name: TrackeratiUserDefaults.standardDefaults.currentUser())
-                    }
-                    downloadedData = self.allUserRecords!
+            switch type {
+            case .Projects:
+                notificationName = kAllProjectsDownloadedNotificationName
+                if self.allClientProjects == nil {
+                    self.allClientProjects = self.createClientArrayFromJSON(snapshot.value, sorted: true)
                 }
-            })
+                downloadedData = self.allClientProjects!
+                
+            case .User:
+                notificationName = kUserInfoDownloadedNotificationName
+                if self.allUserRecords == nil {
+                    self.allUserRecords = self.getRecordsForUser(snapshot.value, name: TrackeratiUserDefaults.standardDefaults.currentUser())
+                }
+                downloadedData = self.allUserRecords!
+            }
             
             dispatch_async(dispatch_get_main_queue(), {
                 let userInfo = [kNotificationDownloadedInfoKey: downloadedData]

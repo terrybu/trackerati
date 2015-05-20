@@ -43,6 +43,7 @@
 		0170E4551B0542A900D593C3 /* SwitchDatePickerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0170E4531B0542A900D593C3 /* SwitchDatePickerCell.swift */; };
 		0190BF321B0B899800E508CF /* Client.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0190BF311B0B899800E508CF /* Client.swift */; };
 		0190BF361B0CD53700E508CF /* Record.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0190BF351B0CD53700E508CF /* Record.swift */; };
+		0190BF381B0CFC3D00E508CF /* ProjectsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0190BF371B0CFC3D00E508CF /* ProjectsViewController.swift */; };
 		01DD394B1B0A70FD000D925D /* SideMenuUserHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01DD394A1B0A70FD000D925D /* SideMenuUserHeaderView.swift */; };
 		BFC762EDEA775168E0305151 /* libPods-Trackerati.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 049E7FC2BC2B1D9187CEFDEC /* libPods-Trackerati.a */; };
 /* End PBXBuildFile section */
@@ -99,6 +100,7 @@
 		0170E4531B0542A900D593C3 /* SwitchDatePickerCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwitchDatePickerCell.swift; sourceTree = "<group>"; };
 		0190BF311B0B899800E508CF /* Client.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Client.swift; sourceTree = "<group>"; };
 		0190BF351B0CD53700E508CF /* Record.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Record.swift; sourceTree = "<group>"; };
+		0190BF371B0CFC3D00E508CF /* ProjectsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectsViewController.swift; sourceTree = "<group>"; };
 		01DD394A1B0A70FD000D925D /* SideMenuUserHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SideMenuUserHeaderView.swift; sourceTree = "<group>"; };
 		049E7FC2BC2B1D9187CEFDEC /* libPods-Trackerati.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Trackerati.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3587A3B08253D04AD27B6510 /* Pods-Trackerati.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Trackerati.release.xcconfig"; path = "../Pods/Target Support Files/Pods-Trackerati/Pods-Trackerati.release.xcconfig"; sourceTree = "<group>"; };
@@ -219,6 +221,7 @@
 				0170E44B1B0526CD00D593C3 /* SettingsViewController.swift */,
 				0170E4471B04E37C00D593C3 /* SideMenuViewController.swift */,
 				0170E4491B04EDE800D593C3 /* ContainerViewController.swift */,
+				0190BF371B0CFC3D00E508CF /* ProjectsViewController.swift */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
@@ -456,6 +459,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				01DD394B1B0A70FD000D925D /* SideMenuUserHeaderView.swift in Sources */,
+				0190BF381B0CFC3D00E508CF /* ProjectsViewController.swift in Sources */,
 				01498B1C1B01027E00C7C395 /* MainViewController.swift in Sources */,
 				01498B1A1B01027E00C7C395 /* AppDelegate.swift in Sources */,
 				0170E44C1B0526CD00D593C3 /* SettingsViewController.swift in Sources */,
