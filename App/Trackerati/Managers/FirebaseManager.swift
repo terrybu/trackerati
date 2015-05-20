@@ -24,6 +24,7 @@ enum RecordKey: String
     case WorkType = "type"
 }
 
+let kAllDataDownloadedNotificationName = "allDataDownloaded"
 let kUserInfoDownloadedNotificationName = "userInfoDownloaded"
 let kAllProjectsDownloadedNotificationName = "allProjectsDownloaded"
 
@@ -75,14 +76,36 @@ class FirebaseManager : NSObject
                 if self.allUserRecords == nil {
                     self.allUserRecords = self.getRecordsForUser(snapshot.value, name: TrackeratiUserDefaults.standardDefaults.currentUser())
                 }
+                
                 downloadedData = self.allUserRecords!
             }
+
             
             dispatch_async(dispatch_get_main_queue(), {
                 let userInfo = [kNotificationDownloadedInfoKey: downloadedData]
                 NSNotificationCenter.defaultCenter().postNotificationName(notificationName, object: nil, userInfo: userInfo)
+                
+                if self.allUserRecords != nil && self.allClientProjects != nil {
+                    NSNotificationCenter.defaultCenter().postNotificationName(kAllDataDownloadedNotificationName, object: nil, userInfo: nil)
+                }
             })
         })
+    }
+    
+    func userRecordsSortedByDate() -> [String: [Record]]
+    {
+        var dateToRecordDictionary: [String: [Record]] = [:]
+        for record in allUserRecords! {
+            if let datedRecords = dateToRecordDictionary[record.date] {
+                var mutableDatedRecords = datedRecords
+                mutableDatedRecords.append(record)
+            }
+            else {
+                dateToRecordDictionary[record.date] = [record]
+            }
+        }
+        println(dateToRecordDictionary)
+        return dateToRecordDictionary
     }
     
     private func getRecordsForUser(json: AnyObject, name: String) -> [Record]

@@ -41,6 +41,7 @@ class ContainerViewController : UIViewController, LoginScreenDelegate, MainViewC
         self.sideMenuViewController.delegate = self
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "setupInterfaceForLoggedInUser:", name: kUserDidAuthorizeNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "removeLoginScreen", name: kAllDataDownloadedNotificationName, object: nil)
     }
 
     required init(coder aDecoder: NSCoder) {
@@ -109,19 +110,17 @@ class ContainerViewController : UIViewController, LoginScreenDelegate, MainViewC
         })
     }
     
-    func setupInterfaceForLoggedInUser(notification: NSNotification)
+    @objc
+    private func setupInterfaceForLoggedInUser(notification: NSNotification)
     {
-        // Get rid of login screen
-        centerNavigationController.popViewControllerAnimated(false)
-        centerNavigationController.setNavigationBarHidden(false, animated: true)
-        
-        tapToReturnGesture.enabled = true
-        edgePanGesture.enabled = true
-        
         if let user = notification.object as? User {
             println(user.email)
             
-            // TODO: Make Firebase Requests for User
+            if let loginViewController = loginScreen {
+                let loadingHUD = MBProgressHUD.showHUDAddedTo(loginViewController.view, animated: true)
+                loadingHUD.labelText = "Hang tight!"
+                loadingHUD.detailsLabelText = "Just fetching some goodies"
+            }
             FirebaseManager.sharedManager.getAllDataOfType(.Projects)
             FirebaseManager.sharedManager.getAllDataOfType(.User)
         }
@@ -136,6 +135,19 @@ class ContainerViewController : UIViewController, LoginScreenDelegate, MainViewC
         centerNavigationController.pushViewController(loginScreen, animated: false)
         centerNavigationController.setNavigationBarHidden(true, animated: false)
         self.loginScreen = loginScreen
+    }
+    
+    @objc
+    private func removeLoginScreen()
+    {
+        MBProgressHUD.hideAllHUDsForView(loginScreen?.view, animated: true)
+        
+        // Get rid of login screen
+        centerNavigationController.popViewControllerAnimated(false)
+        centerNavigationController.setNavigationBarHidden(false, animated: true)
+        
+        tapToReturnGesture.enabled = true
+        edgePanGesture.enabled = true
     }
     
     private func displaySnapshotView()
