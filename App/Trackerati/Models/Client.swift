@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct Client
+class Client : NSObject
 {
     let companyName: String
     let projectNames: [String]

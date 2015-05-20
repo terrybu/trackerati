@@ -8,7 +8,6 @@
 
 import UIKit
 import HockeySDK
-import AFNetworking
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {

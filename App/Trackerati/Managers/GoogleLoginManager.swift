@@ -7,7 +7,9 @@
 //
 
 import Foundation
-import AFNetworking
+
+let kUserDidAuthorizeNotification = "userDidAuthorizeNotification"
+let kUserProfilePictureDidFinishDownloadingNotification = "userProfilePictureDidFinishDownloading"
 
 class GoogleLoginManager : NSObject, GPPSignInDelegate, UIAlertViewDelegate
 {
@@ -149,7 +151,7 @@ class GoogleLoginManager : NSObject, GPPSignInDelegate, UIAlertViewDelegate
                     let profilePicture = UIImage(data: imageData)
                     dispatch_async(dispatch_get_main_queue(), {
                         self.profilePicture = profilePicture
-                        NSNotificationCenter.defaultCenter().postNotificationName(kUserProfilePictureDidFinishDownloading, object: nil)
+                        NSNotificationCenter.defaultCenter().postNotificationName(kUserProfilePictureDidFinishDownloadingNotification, object: nil)
                     })
                     
                 }

@@ -6,9 +6,5 @@
 //  Copyright (c) 2015 The Hackerati. All rights reserved.
 //
 
-// MARK: Notification Constants
-let kUserDidAuthorizeNotification = "userDidAuthorizeNotification"
-let kUserProfilePictureDidFinishDownloading = "userProfilePictureDidFinishDownloading"
-
 // MARK: Slide Out Menu Constants
 let kMinimumSlideoutOffset: CGFloat = 50.0

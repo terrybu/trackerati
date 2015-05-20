@@ -111,6 +111,7 @@ class ContainerViewController : UIViewController, LoginScreenDelegate, MainViewC
     
     func setupInterfaceForLoggedInUser(notification: NSNotification)
     {
+        // Get rid of login screen
         centerNavigationController.popViewControllerAnimated(false)
         centerNavigationController.setNavigationBarHidden(false, animated: true)
         
@@ -121,7 +122,8 @@ class ContainerViewController : UIViewController, LoginScreenDelegate, MainViewC
             println(user.email)
             
             // TODO: Make Firebase Requests for User
-            FirebaseManager.sharedManager.getAllProjects()
+            FirebaseManager.sharedManager.getAllDataOfType(.Projects)
+            FirebaseManager.sharedManager.getAllDataOfType(.User)
         }
     }
     

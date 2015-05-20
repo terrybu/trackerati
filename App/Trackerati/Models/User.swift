@@ -16,4 +16,5 @@ class User : NSObject
     {
         self.email = email
     }
+    
 }

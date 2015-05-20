@@ -42,7 +42,8 @@
 		0170E4541B0542A900D593C3 /* LoginScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0170E4521B0542A900D593C3 /* LoginScreen.swift */; };
 		0170E4551B0542A900D593C3 /* SwitchDatePickerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0170E4531B0542A900D593C3 /* SwitchDatePickerCell.swift */; };
 		0190BF321B0B899800E508CF /* Client.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0190BF311B0B899800E508CF /* Client.swift */; };
-		01DD394B1B0A70FD000D925D /* UserHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01DD394A1B0A70FD000D925D /* UserHeaderView.swift */; };
+		0190BF361B0CD53700E508CF /* Record.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0190BF351B0CD53700E508CF /* Record.swift */; };
+		01DD394B1B0A70FD000D925D /* SideMenuUserHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01DD394A1B0A70FD000D925D /* SideMenuUserHeaderView.swift */; };
 		BFC762EDEA775168E0305151 /* libPods-Trackerati.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 049E7FC2BC2B1D9187CEFDEC /* libPods-Trackerati.a */; };
 /* End PBXBuildFile section */
 
@@ -97,7 +98,8 @@
 		0170E4521B0542A900D593C3 /* LoginScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginScreen.swift; sourceTree = "<group>"; };
 		0170E4531B0542A900D593C3 /* SwitchDatePickerCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwitchDatePickerCell.swift; sourceTree = "<group>"; };
 		0190BF311B0B899800E508CF /* Client.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Client.swift; sourceTree = "<group>"; };
-		01DD394A1B0A70FD000D925D /* UserHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserHeaderView.swift; sourceTree = "<group>"; };
+		0190BF351B0CD53700E508CF /* Record.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Record.swift; sourceTree = "<group>"; };
+		01DD394A1B0A70FD000D925D /* SideMenuUserHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SideMenuUserHeaderView.swift; sourceTree = "<group>"; };
 		049E7FC2BC2B1D9187CEFDEC /* libPods-Trackerati.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Trackerati.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3587A3B08253D04AD27B6510 /* Pods-Trackerati.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Trackerati.release.xcconfig"; path = "../Pods/Target Support Files/Pods-Trackerati/Pods-Trackerati.release.xcconfig"; sourceTree = "<group>"; };
 		FC4437DDCAA1EBF64F6F5D62 /* Pods-Trackerati.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Trackerati.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-Trackerati/Pods-Trackerati.debug.xcconfig"; sourceTree = "<group>"; };
@@ -282,6 +284,7 @@
 			children = (
 				0170E4431B02985100D593C3 /* User.swift */,
 				0190BF311B0B899800E508CF /* Client.swift */,
+				0190BF351B0CD53700E508CF /* Record.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -291,7 +294,7 @@
 			children = (
 				0170E4521B0542A900D593C3 /* LoginScreen.swift */,
 				0170E4531B0542A900D593C3 /* SwitchDatePickerCell.swift */,
-				01DD394A1B0A70FD000D925D /* UserHeaderView.swift */,
+				01DD394A1B0A70FD000D925D /* SideMenuUserHeaderView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -452,12 +455,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				01DD394B1B0A70FD000D925D /* UserHeaderView.swift in Sources */,
+				01DD394B1B0A70FD000D925D /* SideMenuUserHeaderView.swift in Sources */,
 				01498B1C1B01027E00C7C395 /* MainViewController.swift in Sources */,
 				01498B1A1B01027E00C7C395 /* AppDelegate.swift in Sources */,
 				0170E44C1B0526CD00D593C3 /* SettingsViewController.swift in Sources */,
 				0170E44A1B04EDE800D593C3 /* ContainerViewController.swift in Sources */,
 				0170E43E1B026D8000D593C3 /* FirebaseManager.swift in Sources */,
+				0190BF361B0CD53700E508CF /* Record.swift in Sources */,
 				013C5A131B012E06002C4020 /* GoogleLoginManager.swift in Sources */,
 				0170E43C1B0259C400D593C3 /* TrackeratiUserDefaults.swift in Sources */,
 				0190BF321B0B899800E508CF /* Client.swift in Sources */,

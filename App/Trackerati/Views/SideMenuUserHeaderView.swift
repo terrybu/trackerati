@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-class UserHeaderView : UIView
+class SideMenuUserHeaderView : UIView
 {
     private weak var profilePictureImageView: UIImageView!
     private weak var profileNameLabel: UILabel!
@@ -24,7 +24,7 @@ class UserHeaderView : UIView
         setupNameLabel()
         setupActivityIndicator()
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "applyProfileInfo:", name: kUserProfilePictureDidFinishDownloading, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "applyProfileInfo:", name: kUserProfilePictureDidFinishDownloadingNotification, object: nil)
     }
 
     required init(coder aDecoder: NSCoder) {

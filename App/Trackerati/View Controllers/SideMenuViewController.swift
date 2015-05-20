@@ -83,7 +83,7 @@ class SideMenuViewController : UIViewController, UITableViewDelegate, UITableVie
     
     private func customHeaderView() -> UIView
     {
-        return UserHeaderView(frame: CGRect(origin: CGPointZero, size: CGSize(width: view.frame.size.width, height: kHeaderViewHeight)))
+        return SideMenuUserHeaderView(frame: CGRect(origin: CGPointZero, size: CGSize(width: view.frame.size.width, height: kHeaderViewHeight)))
     }
     
     private func setupLabelOnCell(cell: UITableViewCell, indexPath: NSIndexPath)
