@@ -57,6 +57,13 @@ class LoginScreen : UIViewController
         self.loginButton = loginButton
     }
     
+    // MARK: Public
+    
+    /**
+    Either enables or disables the Log In button and fades the button when disabled
+    
+    :param: enabled Bool indicating whether the button is enabled or not
+    */
     func setLoginButtonEnabled(enabled: Bool)
     {
         self.loginButton.enabled = enabled
