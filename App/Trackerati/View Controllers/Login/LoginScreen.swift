@@ -6,11 +6,7 @@
 //  Copyright (c) 2015 The Hackerati. All rights reserved.
 //
 
-import Foundation
-import UIKit
-
-protocol LoginScreenDelegate : class
-{
+protocol LoginScreenDelegate : class {
     func didPressLoginButton()
 }
 
@@ -51,9 +47,11 @@ class LoginScreen : UIViewController
         loginButton.setTranslatesAutoresizingMaskIntoConstraints(false)
         
         view.addSubview(loginButton)
-        let constraints = [NSLayoutConstraint(item: loginButton, attribute: .RightMargin, relatedBy: .Equal, toItem: view, attribute: .RightMargin, multiplier: 1.0, constant:0.0),
-                           NSLayoutConstraint(item: loginButton, attribute: .LeftMargin, relatedBy: .Equal, toItem: view, attribute: .LeftMargin, multiplier: 0.92, constant: 0.0),
-                           NSLayoutConstraint(item: loginButton, attribute: .CenterY, relatedBy: .Equal, toItem: view, attribute: .Bottom, multiplier: 0.93, constant: 0.0)]
+        let constraints = [
+            NSLayoutConstraint(item: loginButton, attribute: .RightMargin, relatedBy: .Equal, toItem: view, attribute: .RightMargin, multiplier: 1.0, constant:0.0),
+            NSLayoutConstraint(item: loginButton, attribute: .LeftMargin, relatedBy: .Equal, toItem: view, attribute: .LeftMargin, multiplier: 0.92, constant: 0.0),
+            NSLayoutConstraint(item: loginButton, attribute: .CenterY, relatedBy: .Equal, toItem: view, attribute: .Bottom, multiplier: 0.93, constant: 0.0)
+        ]
         view.addConstraints(constraints)
         
         self.loginButton = loginButton

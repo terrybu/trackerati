@@ -6,8 +6,6 @@
 //  Copyright (c) 2015 The Hackerati. All rights reserved.
 //
 
-import UIKit
-
 protocol SwitchDatePickerCellDelegate: class {
     func switchValueDidChange(cell: SwitchDatePickerCell, on: Bool)
     func dateValueDidChange(cell: SwitchDatePickerCell, date: NSDate)
@@ -16,12 +14,13 @@ protocol SwitchDatePickerCellDelegate: class {
 class SwitchDatePickerCell : UITableViewCell
 {
     weak var delegate: SwitchDatePickerCellDelegate?
-    weak var titleLabel: UILabel!
+    private(set) weak var titleLabel: UILabel!
     private(set) weak var onOffSwitch: UISwitch!
     private(set) weak var datePickerView: UIDatePicker!
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: .Default, reuseIdentifier: reuseIdentifier)
+        
         clipsToBounds = true
         setupLabelAndSwitch()
         setupDatePickerView()
@@ -54,7 +53,7 @@ class SwitchDatePickerCell : UITableViewCell
         self.onOffSwitch = onOffSwitch
     }
     
-    func setupDatePickerView()
+    private func setupDatePickerView()
     {
         var datePickerFrame = CGRectZero
         datePickerFrame.origin = CGPoint(x: 0.0, y: titleLabel.frame.size.height)
@@ -65,7 +64,7 @@ class SwitchDatePickerCell : UITableViewCell
         self.datePickerView = datePickerView
     }
     
-    func showTimePicker(show: Bool, animated: Bool) {
+    private func showTimePicker(show: Bool, animated: Bool) {
         
         let animationDuration: NSTimeInterval = animated ? 0.2 : 0.0
         let animationHeight = datePickerView.intrinsicContentSize().height
@@ -75,7 +74,8 @@ class SwitchDatePickerCell : UITableViewCell
         }
     }
     
-    func switchValueChanged(onOffSwitch: UISwitch)
+    @objc
+    private func switchValueChanged(onOffSwitch: UISwitch)
     {
         showTimePicker(onOffSwitch.on, animated: true)
         delegate?.switchValueDidChange(self, on: onOffSwitch.on)
@@ -85,7 +85,8 @@ class SwitchDatePickerCell : UITableViewCell
         }
     }
     
-    func dateValueChanged(datePicker: UIDatePicker)
+    @objc
+    private func dateValueChanged(datePicker: UIDatePicker)
     {
         delegate?.dateValueDidChange(self, date: datePicker.date)
     }

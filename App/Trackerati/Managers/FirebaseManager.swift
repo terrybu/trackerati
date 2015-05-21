@@ -6,8 +6,6 @@
 //  Copyright (c) 2015 The Hackerati. All rights reserved.
 //
 
-import Foundation
-
 enum DataInfoType: String
 {
     case Projects = "Projects"

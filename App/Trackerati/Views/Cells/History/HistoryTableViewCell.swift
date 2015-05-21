@@ -6,9 +6,6 @@
 //  Copyright (c) 2015 The Hackerati. All rights reserved.
 //
 
-import Foundation
-import UIKit
-
 class HistoryTableViewCell : UITableViewCell
 {
     private let kClientLabelPrefix = "Client: "

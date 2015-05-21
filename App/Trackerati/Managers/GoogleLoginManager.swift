@@ -6,8 +6,6 @@
 //  Copyright (c) 2015 The Hackerati. All rights reserved.
 //
 
-import Foundation
-
 let kUserDidAuthorizeNotification = "userDidAuthorizeNotification"
 let kUserProfilePictureDidFinishDownloadingNotification = "userProfilePictureDidFinishDownloading"
 
