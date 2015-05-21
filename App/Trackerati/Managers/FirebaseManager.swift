@@ -111,8 +111,8 @@ class FirebaseManager : NSObject
     private func getRecordsForUser(json: AnyObject, name: String) -> [Record]
     {
         var records = [Record]()
-        let unwantedCharacters = NSCharacterSet(charactersInString: "@.")
-        let firebaseUsername = join("", name.componentsSeparatedByCharactersInSet(unwantedCharacters))
+        let firebaseUsername = GoogleLoginManager.sharedManager.currentUser.firebaseID
+        
         if let dataDictionary = json as? NSDictionary {
             
             if let users = dataDictionary.objectForKey(DataInfoType.User.rawValue) as? NSDictionary { // get dictionary of all users

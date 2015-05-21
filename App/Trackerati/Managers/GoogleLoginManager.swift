@@ -35,8 +35,7 @@ class GoogleLoginManager : NSObject, GPPSignInDelegate, UIAlertViewDelegate
         return Static.instance!
     }
     
-    private(set) var profilePicture: UIImage?
-    private(set) var profileName: String?
+    private(set) var currentUser: User!
     private(set) var authorized: Bool = false
     
     // MARK: Public
@@ -112,16 +111,14 @@ class GoogleLoginManager : NSObject, GPPSignInDelegate, UIAlertViewDelegate
                 }
                 
                 // TODO: Send User model and configure the UI accordingly in the receiving VC
-                let userModel = User(email: email)
-                NSNotificationCenter.defaultCenter().postNotificationName(kUserDidAuthorizeNotification, object: userModel)
-                
-                getProfileInfo()
+                createUserFromProfile()
+                NSNotificationCenter.defaultCenter().postNotificationName(kUserDidAuthorizeNotification, object: currentUser)
             }
         }
         else {
             // TODO: Handle when get error
             println(error.localizedDescription)
-            self.logout()
+            logout()
         }
     }
     
@@ -138,9 +135,10 @@ class GoogleLoginManager : NSObject, GPPSignInDelegate, UIAlertViewDelegate
         return false
     }
     
-    private func getProfileInfo()
+    private func createUserFromProfile()
     {
-        profileName = googleSignInManager.googlePlusUser.displayName
+        let email = googleSignInManager.userEmail
+        let profileName = googleSignInManager.googlePlusUser.displayName
         
         dispatch_async(dispatch_queue_create("profileImageDownloadQueue", nil), {
             
@@ -150,7 +148,8 @@ class GoogleLoginManager : NSObject, GPPSignInDelegate, UIAlertViewDelegate
                     
                     let profilePicture = UIImage(data: imageData)
                     dispatch_async(dispatch_get_main_queue(), {
-                        self.profilePicture = profilePicture
+                        let profilePicture = profilePicture
+                        self.currentUser = User(email: email, profilePicture: profilePicture, displayName: profileName)
                         NSNotificationCenter.defaultCenter().postNotificationName(kUserProfilePictureDidFinishDownloadingNotification, object: nil)
                     })
                     

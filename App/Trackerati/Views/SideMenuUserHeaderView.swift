@@ -81,9 +81,9 @@ class SideMenuUserHeaderView : UIView
     @objc
     private func applyProfileInfo(notification: NSNotification)
     {
-        profileNameLabel.text = GoogleLoginManager.sharedManager.profileName
+        profileNameLabel.text = GoogleLoginManager.sharedManager.currentUser.displayName
         
-        if let profilePicture = GoogleLoginManager.sharedManager.profilePicture {
+        if let profilePicture = GoogleLoginManager.sharedManager.currentUser.profilePicture {
             profilePictureImageView.image = profilePicture
         }
         

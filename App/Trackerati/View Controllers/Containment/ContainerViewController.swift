@@ -137,12 +137,10 @@ class ContainerViewController : UIViewController, LoginScreenDelegate, MainViewC
     @objc
     private func setupInterfaceForLoggedInUser(notification: NSNotification)
     {
-        if let user = notification.object as? User {
-            loginScreen?.setLoginButtonEnabled(false)
-            displayLoadingHUD(true)
-            FirebaseManager.sharedManager.getAllDataOfType(.Projects)
-            FirebaseManager.sharedManager.getAllDataOfType(.User)
-        }
+        loginScreen?.setLoginButtonEnabled(false)
+        displayLoadingHUD(true)
+        FirebaseManager.sharedManager.getAllDataOfType(.Projects)
+        FirebaseManager.sharedManager.getAllDataOfType(.User)
     }
     
     private func displayLoginScreen()
