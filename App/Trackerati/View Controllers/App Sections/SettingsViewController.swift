@@ -17,13 +17,13 @@ class SettingsViewController : MainViewController, UITableViewDelegate, UITableV
     private weak var settingsTableView: UITableView!
     private weak var datePicker: UIDatePicker!
     
-    private var settings = [String:[String]]()
+    private var settings: [String:[String]] = [:]
     
     override func loadView() {
         super.loadView()
         view.backgroundColor = UIColor.blueColor()
         
-        settings = ["Notifications":[SettingType.Date.rawValue]]
+        settings = ["Notifications": [SettingType.Date.rawValue]]
         
         let settingsTableView = UITableView(frame: view.frame, style: .Grouped)
         settingsTableView.delegate = self
@@ -68,6 +68,7 @@ class SettingsViewController : MainViewController, UITableViewDelegate, UITableV
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell = SwitchDatePickerCell(style: .Default, reuseIdentifier: "cell")
         cell.onOffSwitch.setOn(TrackeratiUserDefaults.standardDefaults.notificationsOn(), animated: false)
+        
         if cell.onOffSwitch.on {
             if let savedTime = TrackeratiUserDefaults.standardDefaults.notificationTime() {
                 cell.datePickerView.setDate(savedTime, animated: false)

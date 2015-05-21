@@ -36,6 +36,7 @@ class SwitchDatePickerCell : UITableViewCell
         let cellHeight = contentView.frame.size.height
         let leftMargin = layoutMargins.left
         let titleLabelRect = CGRect(x: leftMargin, y: 0.0, width: contentView.frame.size.width, height: contentView.frame.size.height)
+        
         let titleLabel = UILabel(frame: titleLabelRect)
         titleLabel.text = "Notifications"
         contentView.addSubview(titleLabel)
@@ -74,6 +75,8 @@ class SwitchDatePickerCell : UITableViewCell
         }
     }
     
+    // MARK: UISwitch Selector
+    
     @objc
     private func switchValueChanged(onOffSwitch: UISwitch)
     {
@@ -84,6 +87,8 @@ class SwitchDatePickerCell : UITableViewCell
             delegate?.dateValueDidChange(self, date: datePickerView.date) // save date as well when turning on
         }
     }
+    
+    // MARK: UIDatePicker Selector
     
     @objc
     private func dateValueChanged(datePicker: UIDatePicker)

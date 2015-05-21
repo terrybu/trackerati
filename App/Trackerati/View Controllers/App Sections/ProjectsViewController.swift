@@ -25,7 +25,6 @@ class ProjectsViewController : UIViewController, UITableViewDelegate, UITableVie
         }
         else {
             let hud = MBProgressHUD.showHUDAddedTo(view, animated: true)
-            hud.mode = .Indeterminate
             hud.labelText = "Hang Tight!"
             hud.detailsLabelText = "Getting our awesome projects!"
             NSNotificationCenter.defaultCenter().addObserver(self, selector: "projectsFinishedDownloading:", name: kAllProjectsDownloadedNotificationName, object: nil)

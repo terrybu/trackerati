@@ -21,7 +21,6 @@ class HistoryViewController : MainViewController, UITableViewDelegate, UITableVi
         }
         else {
             let hud = MBProgressHUD.showHUDAddedTo(view, animated: true)
-            hud.mode = .Indeterminate
             hud.labelText = "Just a moment"
             hud.detailsLabelText = "Going through the file cabinets"
             NSNotificationCenter.defaultCenter().addObserver(self, selector: "historyFinishedDownloading:", name: kAllProjectsDownloadedNotificationName, object: nil)
@@ -45,7 +44,7 @@ class HistoryViewController : MainViewController, UITableViewDelegate, UITableVi
     
     // MARK: Private
     
-    func recordForIndexPath(indexPath: NSIndexPath) -> Record
+    private func recordForIndexPath(indexPath: NSIndexPath) -> Record
     {
         return userHistory[indexPath.section].1[indexPath.row]
     }

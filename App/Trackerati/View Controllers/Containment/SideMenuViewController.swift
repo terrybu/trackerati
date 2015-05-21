@@ -78,6 +78,8 @@ class SideMenuViewController : UIViewController, UITableViewDelegate, UITableVie
         self.view.addConstraints(constraints)
     }
     
+    // MARK: Private
+    
     private func customHeaderView() -> UIView
     {
         return SideMenuUserHeaderView(frame: CGRect(origin: CGPointZero, size: CGSize(width: view.frame.size.width, height: kHeaderViewHeight)))
