@@ -92,7 +92,7 @@ class FirebaseManager : NSObject
         })
     }
     
-    func userRecordsSortedByDate() -> [String: [Record]]
+    func userRecordsSortedByDate() -> [(String, [Record])]
     {
         var dateToRecordDictionary: [String: [Record]] = [:]
         for record in allUserRecords! {
@@ -104,8 +104,8 @@ class FirebaseManager : NSObject
                 dateToRecordDictionary[record.date] = [record]
             }
         }
-        println(dateToRecordDictionary)
-        return dateToRecordDictionary
+        let sortedRecordsByDate = sorted(dateToRecordDictionary) { $0.0 > $1.0 }
+        return sortedRecordsByDate
     }
     
     private func getRecordsForUser(json: AnyObject, name: String) -> [Record]

@@ -114,13 +114,13 @@ class ContainerViewController : UIViewController, LoginScreenDelegate, MainViewC
     private func setupInterfaceForLoggedInUser(notification: NSNotification)
     {
         if let user = notification.object as? User {
-            println(user.email)
             
             if let loginViewController = loginScreen {
                 let loadingHUD = MBProgressHUD.showHUDAddedTo(loginViewController.view, animated: true)
                 loadingHUD.labelText = "Hang tight!"
                 loadingHUD.detailsLabelText = "Just fetching some goodies"
             }
+            
             FirebaseManager.sharedManager.getAllDataOfType(.Projects)
             FirebaseManager.sharedManager.getAllDataOfType(.User)
         }
@@ -247,7 +247,7 @@ class ContainerViewController : UIViewController, LoginScreenDelegate, MainViewC
                 targetViewController = HomeViewController()
                 
             case .History:
-                break
+                targetViewController = HistoryViewController(userHistory: FirebaseManager.sharedManager.userRecordsSortedByDate())
                 
             case .Settings:
                 targetViewController = SettingsViewController()

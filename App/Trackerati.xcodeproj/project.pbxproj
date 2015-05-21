@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0126AAB71B0E211500B3907E /* HistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0126AAB61B0E211500B3907E /* HistoryViewController.swift */; };
 		013C5A131B012E06002C4020 /* GoogleLoginManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 013C5A121B012E06002C4020 /* GoogleLoginManager.swift */; };
 		01498B1A1B01027E00C7C395 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01498B191B01027E00C7C395 /* AppDelegate.swift */; };
 		01498B1C1B01027E00C7C395 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01498B1B1B01027E00C7C395 /* MainViewController.swift */; };
@@ -45,6 +46,7 @@
 		0190BF361B0CD53700E508CF /* Record.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0190BF351B0CD53700E508CF /* Record.swift */; };
 		0190BF381B0CFC3D00E508CF /* ProjectsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0190BF371B0CFC3D00E508CF /* ProjectsViewController.swift */; };
 		01DD394B1B0A70FD000D925D /* SideMenuUserHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01DD394A1B0A70FD000D925D /* SideMenuUserHeaderView.swift */; };
+		01EE0C441B0E2B7800AA4C10 /* HistoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01EE0C431B0E2B7800AA4C10 /* HistoryTableViewCell.swift */; };
 		BFC762EDEA775168E0305151 /* libPods-Trackerati.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 049E7FC2BC2B1D9187CEFDEC /* libPods-Trackerati.a */; };
 /* End PBXBuildFile section */
 
@@ -59,6 +61,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0126AAB61B0E211500B3907E /* HistoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HistoryViewController.swift; sourceTree = "<group>"; };
 		013C5A121B012E06002C4020 /* GoogleLoginManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoogleLoginManager.swift; sourceTree = "<group>"; };
 		01498B141B01027E00C7C395 /* Trackerati.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Trackerati.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		01498B181B01027E00C7C395 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -102,6 +105,7 @@
 		0190BF351B0CD53700E508CF /* Record.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Record.swift; sourceTree = "<group>"; };
 		0190BF371B0CFC3D00E508CF /* ProjectsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectsViewController.swift; sourceTree = "<group>"; };
 		01DD394A1B0A70FD000D925D /* SideMenuUserHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SideMenuUserHeaderView.swift; sourceTree = "<group>"; };
+		01EE0C431B0E2B7800AA4C10 /* HistoryTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HistoryTableViewCell.swift; sourceTree = "<group>"; };
 		049E7FC2BC2B1D9187CEFDEC /* libPods-Trackerati.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Trackerati.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3587A3B08253D04AD27B6510 /* Pods-Trackerati.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Trackerati.release.xcconfig"; path = "../Pods/Target Support Files/Pods-Trackerati/Pods-Trackerati.release.xcconfig"; sourceTree = "<group>"; };
 		FC4437DDCAA1EBF64F6F5D62 /* Pods-Trackerati.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Trackerati.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-Trackerati/Pods-Trackerati.debug.xcconfig"; sourceTree = "<group>"; };
@@ -222,6 +226,7 @@
 				0170E4471B04E37C00D593C3 /* SideMenuViewController.swift */,
 				0170E4491B04EDE800D593C3 /* ContainerViewController.swift */,
 				0190BF371B0CFC3D00E508CF /* ProjectsViewController.swift */,
+				0126AAB61B0E211500B3907E /* HistoryViewController.swift */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
@@ -298,6 +303,7 @@
 				0170E4521B0542A900D593C3 /* LoginScreen.swift */,
 				0170E4531B0542A900D593C3 /* SwitchDatePickerCell.swift */,
 				01DD394A1B0A70FD000D925D /* SideMenuUserHeaderView.swift */,
+				01EE0C431B0E2B7800AA4C10 /* HistoryTableViewCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -473,6 +479,8 @@
 				0170E4481B04E37C00D593C3 /* SideMenuViewController.swift in Sources */,
 				0170E4541B0542A900D593C3 /* LoginScreen.swift in Sources */,
 				0170E4441B02985100D593C3 /* User.swift in Sources */,
+				01EE0C441B0E2B7800AA4C10 /* HistoryTableViewCell.swift in Sources */,
+				0126AAB71B0E211500B3907E /* HistoryViewController.swift in Sources */,
 				0170E4551B0542A900D593C3 /* SwitchDatePickerCell.swift in Sources */,
 				0170E44E1B052A2200D593C3 /* HomeViewController.swift in Sources */,
 			);
