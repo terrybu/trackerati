@@ -88,6 +88,44 @@ class GoogleLoginManager : NSObject, GPPSignInDelegate, UIAlertViewDelegate
         TrackeratiUserDefaults.standardDefaults.logOutUser()
     }
     
+    /**
+    Silently attempt to log user back in if they've already authorized their account with the app
+    
+    :returns: Bool indicating whether or not the user already authorized
+    */
+    func attemptPreAuthorizationLogin() -> Bool
+    {
+        if googleSignInManager.clientID != "" {
+            return googleSignInManager.trySilentAuthentication()
+        }
+        return false
+    }
+    
+    // MARK: Private
+    
+    private func createUserFromProfile()
+    {
+        let email = googleSignInManager.userEmail
+        let profileName = googleSignInManager.googlePlusUser.displayName
+        
+        dispatch_async(dispatch_queue_create("profileImageDownloadQueue", nil), {
+            
+            if let imageURL = NSURL(string: self.googleSignInManager.googlePlusUser.image.url) {
+                
+                if let imageData = NSData(contentsOfURL: imageURL) {
+                    
+                    let profilePicture = UIImage(data: imageData)
+                    dispatch_async(dispatch_get_main_queue(), {
+                        let profilePicture = profilePicture
+                        self.currentUser = User(email: email, profilePicture: profilePicture, displayName: profileName)
+                        NSNotificationCenter.defaultCenter().postNotificationName(kUserProfilePictureDidFinishDownloadingNotification, object: nil)
+                    })
+                    
+                }
+            }
+        })
+    }
+    
     // MARK: Google Plus Sign In Delegate
     
     func finishedWithAuth(auth: GTMOAuth2Authentication!, error: NSError!) {
@@ -118,42 +156,6 @@ class GoogleLoginManager : NSObject, GPPSignInDelegate, UIAlertViewDelegate
             println(error.localizedDescription)
             logout()
         }
-    }
-    
-    /**
-    Silently attempt to log user back in if they've already authorized their account with the app
-    
-    :returns: Bool indicating whether or not the user already authorized
-    */
-    func attemptPreAuthorizationLogin() -> Bool
-    {
-        if googleSignInManager.clientID != "" {
-            return googleSignInManager.trySilentAuthentication()
-        }
-        return false
-    }
-    
-    private func createUserFromProfile()
-    {
-        let email = googleSignInManager.userEmail
-        let profileName = googleSignInManager.googlePlusUser.displayName
-        
-        dispatch_async(dispatch_queue_create("profileImageDownloadQueue", nil), {
-            
-            if let imageURL = NSURL(string: self.googleSignInManager.googlePlusUser.image.url) {
-                
-                if let imageData = NSData(contentsOfURL: imageURL) {
-                    
-                    let profilePicture = UIImage(data: imageData)
-                    dispatch_async(dispatch_get_main_queue(), {
-                        let profilePicture = profilePicture
-                        self.currentUser = User(email: email, profilePicture: profilePicture, displayName: profileName)
-                        NSNotificationCenter.defaultCenter().postNotificationName(kUserProfilePictureDidFinishDownloadingNotification, object: nil)
-                    })
-                    
-                }
-            }
-        })
     }
     
     // MARK: UIAlertView Delegate

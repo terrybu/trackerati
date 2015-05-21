@@ -33,7 +33,8 @@ class MainViewController: UIViewController {
     
     // MARK: Button Selectors
     
-    func displayMenu(button: UIBarButtonItem)
+    @objc
+    private func displayMenu(button: UIBarButtonItem)
     {
         delegate?.didPressMenuButton(button)
     }

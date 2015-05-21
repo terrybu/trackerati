@@ -26,7 +26,10 @@ class HomeViewController : MainViewController
         navigationItem.rightBarButtonItem = addProjectButton
     }
     
-    func displayProjects()
+    // MARK: UIBarButtonItem Selectors
+    
+    @objc
+    private func displayProjects()
     {
         let projectsViewController = ProjectsViewController(projects: FirebaseManager.sharedManager.allClientProjects)
         let navController = UINavigationController(rootViewController: projectsViewController)

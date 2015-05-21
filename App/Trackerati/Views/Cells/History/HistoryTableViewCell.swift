@@ -28,6 +28,10 @@ class HistoryTableViewCell : UITableViewCell
         setupHoursLabel()
     }
 
+    required init(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     private func setupClientLabel()
     {
         let clientLabel = UILabel(frame: CGRectZero)
@@ -71,10 +75,6 @@ class HistoryTableViewCell : UITableViewCell
         self.contentView.addSubview(hoursLabel)
         self.contentView.addConstraints(hoursLabelConstraints)
         self.hoursLabel = hoursLabel
-    }
-    
-    required init(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
     
     func setValuesForRecord(record: Record)

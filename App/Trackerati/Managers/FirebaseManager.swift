@@ -55,6 +55,15 @@ class FirebaseManager : NSObject
         firebaseDB = Firebase(url: url)
     }
     
+    /**
+    Asynchronously retrieves all data associated with the type passed in. This potentially fires off three notifications. 
+    One notification for completing the download of:
+    - Projects
+    - User records
+    - Everything
+    
+    :param: type The type of information you want to request
+    */
     func getAllDataOfType(type: DataInfoType)
     {
         self.firebaseDB.observeSingleEventOfType(.Value, withBlock: { snapshot in
@@ -90,6 +99,11 @@ class FirebaseManager : NSObject
         })
     }
     
+    /**
+    Sorts the User records by Date and maps the dates to tuples of Record objects
+    
+    :returns: An array of tuples with String dates mapped to an array of Record objects that correspond to that date
+    */
     func userRecordsSortedByDate() -> [(String, [Record])]
     {
         var dateToRecordDictionary: [String: [Record]] = [:]
@@ -105,6 +119,8 @@ class FirebaseManager : NSObject
         let sortedRecordsByDate = sorted(dateToRecordDictionary) { $0.0 > $1.0 }
         return sortedRecordsByDate
     }
+    
+    // MARK: Private
     
     private func getRecordsForUser(json: AnyObject, name: String) -> [Record]
     {
@@ -143,8 +159,6 @@ class FirebaseManager : NSObject
         
         return records
     }
-    
-    // MARK: Private
     
     private func createClientArrayFromJSON(json: AnyObject, sorted: Bool) -> [Client]
     {
