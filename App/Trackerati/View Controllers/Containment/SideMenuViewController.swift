@@ -6,9 +6,6 @@
 //  Copyright (c) 2015 The Hackerati. All rights reserved.
 //
 
-import Foundation
-import UIKit
-
 protocol SideMenuViewControllerDelegate: class {
     
     func didMakePageSelection(selection: SideMenuSelection)
@@ -83,7 +80,7 @@ class SideMenuViewController : UIViewController, UITableViewDelegate, UITableVie
     
     private func customHeaderView() -> UIView
     {
-        return UserHeaderView(frame: CGRect(origin: CGPointZero, size: CGSize(width: view.frame.size.width, height: kHeaderViewHeight)))
+        return SideMenuUserHeaderView(frame: CGRect(origin: CGPointZero, size: CGSize(width: view.frame.size.width, height: kHeaderViewHeight)))
     }
     
     private func setupLabelOnCell(cell: UITableViewCell, indexPath: NSIndexPath)

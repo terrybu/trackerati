@@ -6,8 +6,6 @@
 //  Copyright (c) 2015 The Hackerati. All rights reserved.
 //
 
-import UIKit
-
 class HomeViewController : MainViewController
 {
     init()
@@ -23,5 +21,15 @@ class HomeViewController : MainViewController
     override func loadView() {
         super.loadView()
         view.backgroundColor = UIColor.redColor()
+        
+        let addProjectButton = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: "displayProjects")
+        navigationItem.rightBarButtonItem = addProjectButton
+    }
+    
+    func displayProjects()
+    {
+        let projectsViewController = ProjectsViewController(projects: FirebaseManager.sharedManager.allClientProjects)
+        let navController = UINavigationController(rootViewController: projectsViewController)
+        self.presentViewController(navController, animated: true, completion: nil)
     }
 }

@@ -6,10 +6,7 @@
 //  Copyright (c) 2015 The Hackerati. All rights reserved.
 //
 
-import Foundation
-import UIKit
-
-class UserHeaderView : UIView
+class SideMenuUserHeaderView : UIView
 {
     private weak var profilePictureImageView: UIImageView!
     private weak var profileNameLabel: UILabel!
@@ -24,7 +21,7 @@ class UserHeaderView : UIView
         setupNameLabel()
         setupActivityIndicator()
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "applyProfileInfo:", name: kUserProfilePictureDidFinishDownloading, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "applyProfileInfo:", name: kUserProfilePictureDidFinishDownloadingNotification, object: nil)
     }
 
     required init(coder aDecoder: NSCoder) {
@@ -81,9 +78,9 @@ class UserHeaderView : UIView
     @objc
     private func applyProfileInfo(notification: NSNotification)
     {
-        profileNameLabel.text = GoogleLoginManager.sharedManager.profileName
+        profileNameLabel.text = GoogleLoginManager.sharedManager.currentUser.displayName
         
-        if let profilePicture = GoogleLoginManager.sharedManager.profilePicture {
+        if let profilePicture = GoogleLoginManager.sharedManager.currentUser.profilePicture {
             profilePictureImageView.image = profilePicture
         }
         

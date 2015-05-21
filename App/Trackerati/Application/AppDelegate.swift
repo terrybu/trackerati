@@ -6,7 +6,6 @@
 //  Copyright (c) 2015 The Hackerati. All rights reserved.
 //
 
-import UIKit
 import HockeySDK
 
 @UIApplicationMain
@@ -61,7 +60,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 localNotification.repeatInterval = .CalendarUnitDay
                 localNotification.timeZone = NSTimeZone.defaultTimeZone()
                 localNotification.fireDate = fireTime
-                localNotification.alertTitle = "Did you remember to log your time?"
+                // TODO: Put "better" alert body
                 localNotification.alertBody = "Ain't nobody got time for that... except for you!"
                 localNotification.applicationIconBadgeNumber = 1
                 UIApplication.sharedApplication().scheduleLocalNotification(localNotification)

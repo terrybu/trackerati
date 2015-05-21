@@ -6,9 +6,6 @@
 //  Copyright (c) 2015 The Hackerati. All rights reserved.
 //
 
-import Foundation
-import UIKit
-
 enum MenuState
 {
     case NotShowing
@@ -17,6 +14,7 @@ enum MenuState
 
 class ContainerViewController : UIViewController, LoginScreenDelegate, MainViewControllerDelegate, SideMenuViewControllerDelegate
 {
+    private let loadingDetails = ["Fetching some goodies", "Looking through file cabinets", "Getting your awesome work!"]
     private let maxXToBeginPanGesture: CGFloat = 30.0
     private var currentMenuState = MenuState.NotShowing
     private var currentShowingPage = SideMenuSelection.Home
@@ -41,13 +39,15 @@ class ContainerViewController : UIViewController, LoginScreenDelegate, MainViewC
         self.sideMenuViewController.delegate = self
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "setupInterfaceForLoggedInUser:", name: kUserDidAuthorizeNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "removeLoginScreen", name: kAllDataDownloadedNotificationName, object: nil)
     }
 
     required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func loadView() {
+    override func loadView()
+    {
         view = UIView(frame: UIScreen.mainScreen().bounds)
         
         centerNavigationController = UINavigationController(rootViewController: centerViewController)
@@ -60,14 +60,22 @@ class ContainerViewController : UIViewController, LoginScreenDelegate, MainViewC
         sideMenuViewController.didMoveToParentViewController(self)
         
         setupGestures()
+        displayLoginScreen()
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    override func viewDidAppear(animated: Bool)
+    {
+        super.viewDidAppear(animated)
         
-        if !GoogleLoginManager.sharedManager.authorized {
+        let authorized = GoogleLoginManager.sharedManager.authorized
+        loginScreen?.setLoginButtonEnabled(authorized)
+        
+        if !authorized {
             if !GoogleLoginManager.sharedManager.attemptPreAuthorizationLogin() {
-                displayLoginScreen()
+                loginScreen?.setLoginButtonEnabled(true)
+            }
+            else {
+                displayLoadingHUD(true)
             }
         }
     }
@@ -109,17 +117,27 @@ class ContainerViewController : UIViewController, LoginScreenDelegate, MainViewC
         })
     }
     
-    func setupInterfaceForLoggedInUser(notification: NSNotification)
+    private func displayLoadingHUD(display: Bool)
     {
-        centerNavigationController.popViewControllerAnimated(false)
-        centerNavigationController.setNavigationBarHidden(false, animated: true)
-        
-        tapToReturnGesture.enabled = true
-        edgePanGesture.enabled = true
-        
-        if let user = notification.object as? User {
-            println(user.email)
+        if display {
+            if !( MBProgressHUD.allHUDsForView(view).count > 0 ) {
+                let loadingHUD = MBProgressHUD.showHUDAddedTo(view, animated: true)
+                loadingHUD.labelText = "Hang tight!"
+                loadingHUD.detailsLabelText = randomLoadingDetail()
+            }
         }
+        else {
+            MBProgressHUD.hideAllHUDsForView(view, animated: true)
+        }
+    }
+    
+    @objc
+    private func setupInterfaceForLoggedInUser(notification: NSNotification)
+    {
+        loginScreen?.setLoginButtonEnabled(false)
+        displayLoadingHUD(true)
+        FirebaseManager.sharedManager.getAllDataOfType(.Projects)
+        FirebaseManager.sharedManager.getAllDataOfType(.User)
     }
     
     private func displayLoginScreen()
@@ -127,10 +145,23 @@ class ContainerViewController : UIViewController, LoginScreenDelegate, MainViewC
         tapToReturnGesture.enabled =  false
         edgePanGesture.enabled = false
         
-        var loginScreen = LoginScreen(delegate: self)
+        let loginScreen = LoginScreen(delegate: self)
         centerNavigationController.pushViewController(loginScreen, animated: false)
         centerNavigationController.setNavigationBarHidden(true, animated: false)
         self.loginScreen = loginScreen
+    }
+    
+    @objc
+    private func removeLoginScreen()
+    {
+        displayLoadingHUD(false)
+        
+        // Get rid of login screen
+        centerNavigationController.popViewControllerAnimated(false)
+        centerNavigationController.setNavigationBarHidden(false, animated: true)
+        
+        tapToReturnGesture.enabled = true
+        edgePanGesture.enabled = true
     }
     
     private func displaySnapshotView()
@@ -146,6 +177,11 @@ class ContainerViewController : UIViewController, LoginScreenDelegate, MainViewC
         snapshotView?.removeFromSuperview()
         self.hideStatusBar = false
         self.setNeedsStatusBarAppearanceUpdate()
+    }
+    
+    private func randomLoadingDetail() -> String
+    {
+        return loadingDetails[Int(arc4random_uniform(UInt32(loadingDetails.count)))]
     }
     
     // MARK: Gesture Recognizer Selectors
@@ -205,7 +241,8 @@ class ContainerViewController : UIViewController, LoginScreenDelegate, MainViewC
     
     // MARK: MainViewController Delegate
     
-    func didPressMenuButton(button: UIBarButtonItem) {
+    func didPressMenuButton(button: UIBarButtonItem)
+    {
         let sideMenuNotShowing = currentMenuState == .NotShowing
         if sideMenuNotShowing {
             displaySnapshotView()
@@ -219,18 +256,19 @@ class ContainerViewController : UIViewController, LoginScreenDelegate, MainViewC
     
     // MARK: SideMenuViewController Delegate
     
-    func didMakePageSelection(selection: SideMenuSelection) {
+    func didMakePageSelection(selection: SideMenuSelection)
+    {
         if currentShowingPage != selection {
             centerNavigationController.popViewControllerAnimated(false)
             
-            var targetViewController: MainViewController?
+            let targetViewController: MainViewController
             switch selection
             {
             case .Home:
                 targetViewController = HomeViewController()
                 
             case .History:
-                break
+                targetViewController = HistoryViewController(userHistory: FirebaseManager.sharedManager.userRecordsSortedByDate())
                 
             case .Settings:
                 targetViewController = SettingsViewController()
@@ -240,27 +278,28 @@ class ContainerViewController : UIViewController, LoginScreenDelegate, MainViewC
                 GoogleLoginManager.sharedManager.logout()
             }
             
-            if let target = targetViewController {
-                if target.title == nil {
-                    target.title = selection.rawValue
-                }
-                target.delegate = self
-                centerNavigationController.pushViewController(target, animated: false)
-                centerViewController = target
-                currentShowingPage = selection
-                
-                if currentShowingPage == .LogOut {
-                    displayLoginScreen()
-                    currentShowingPage = .Home
-                }
+            if targetViewController.title == nil {
+                targetViewController.title = selection.rawValue
             }
+            
+            targetViewController.delegate = self
+            centerNavigationController.pushViewController(targetViewController, animated: false)
+            centerViewController = targetViewController
+            currentShowingPage = selection
+            
+            if currentShowingPage == .LogOut {
+                displayLoginScreen()
+                currentShowingPage = .Home
+            }
+            
         }
         
         animateToSideMenu(false)
         removeSnapshotView()
     }
     
-    override func prefersStatusBarHidden() -> Bool {
+    override func prefersStatusBarHidden() -> Bool
+    {
         return hideStatusBar
     }
     

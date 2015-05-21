@@ -14,5 +14,6 @@
 #import <GooglePlus/GooglePlus.h>
 #import <GoogleOpenSource/GoogleOpenSource.h>
 #import <AFNetworking/AFNetworking.h>
+#import "MBProgressHUD.h"
 
 #endif
