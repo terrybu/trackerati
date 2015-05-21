@@ -11,7 +11,6 @@ import UIKit
 
 class HistoryViewController : MainViewController, UITableViewDelegate, UITableViewDataSource
 {
-    private let kViewControllerTitle = "History"
     private let kCellReuseIdentifier = "cell"
     
     private weak var historyTableView: UITableView!
@@ -27,7 +26,7 @@ class HistoryViewController : MainViewController, UITableViewDelegate, UITableVi
             let hud = MBProgressHUD.showHUDAddedTo(view, animated: true)
             hud.mode = .Indeterminate
             hud.labelText = "Just a moment"
-            hud.detailsLabelText = "Goind through the file cabinets"
+            hud.detailsLabelText = "Going through the file cabinets"
             NSNotificationCenter.defaultCenter().addObserver(self, selector: "historyFinishedDownloading:", name: kAllProjectsDownloadedNotificationName, object: nil)
         }
     }
@@ -37,7 +36,7 @@ class HistoryViewController : MainViewController, UITableViewDelegate, UITableVi
     }
  
     override func loadView() {
-        view = UIView(frame: UIScreen.mainScreen().bounds)
+        super.loadView()
         
         let historyTableView = UITableView(frame: view.frame, style: .Plain)
         historyTableView.registerClass(HistoryTableViewCell.self, forCellReuseIdentifier: kCellReuseIdentifier)
@@ -45,6 +44,13 @@ class HistoryViewController : MainViewController, UITableViewDelegate, UITableVi
         historyTableView.dataSource = self
         view.addSubview(historyTableView)
         self.historyTableView = historyTableView
+    }
+    
+    // MARK: Private
+    
+    func recordForIndexPath(indexPath: NSIndexPath) -> Record
+    {
+        return userHistory[indexPath.section].1[indexPath.row]
     }
     
     // MARK: NSNotificationCenter Observer Methods
@@ -60,6 +66,10 @@ class HistoryViewController : MainViewController, UITableViewDelegate, UITableVi
     
     // MARK: UITableView Datasource
     
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return HistoryTableViewCell.cellHeight
+    }
+    
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return userHistory.count
     }
@@ -74,7 +84,7 @@ class HistoryViewController : MainViewController, UITableViewDelegate, UITableVi
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(kCellReuseIdentifier, forIndexPath: indexPath) as! HistoryTableViewCell
-        cell.textLabel?.text = userHistory[indexPath.section].1[indexPath.row].client
+        cell.setValuesForRecord(recordForIndexPath(indexPath))
         return cell
     }
     

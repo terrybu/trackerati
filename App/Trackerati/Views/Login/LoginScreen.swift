@@ -16,7 +16,8 @@ protocol LoginScreenDelegate : class
 
 class LoginScreen : UIViewController
 {
-    private let buttonTitle = "Log In"
+    private let kButtonTitle = "Log In"
+    private let kButtonDisabledAlpha: CGFloat = 0.5
     
     private weak var delegate: LoginScreenDelegate?
     private weak var loginButton: UIButton!
@@ -35,14 +36,14 @@ class LoginScreen : UIViewController
         view = UIView(frame: UIScreen.mainScreen().bounds)
         view.backgroundColor = UIColor.whiteColor()
         
-        self.setupLoginButton()
+        setupLoginButton()
     }
     
-    func setupLoginButton()
+    private func setupLoginButton()
     {
         var loginButton = UIButton(frame: CGRectZero)
         loginButton.addTarget(self, action: "loginButtonPressed:", forControlEvents: .TouchUpInside)
-        loginButton.setTitle(buttonTitle, forState: .Normal)
+        loginButton.setTitle(kButtonTitle, forState: .Normal)
         loginButton.setTitleColor(UIColor.whiteColor(), forState: .Normal)
         loginButton.backgroundColor = UIColor(red:0.2, green:0.6, blue:0.86, alpha:1)
         loginButton.titleLabel?.font = UIFont(name: "HelveticaNeue-Light", size: 20.0)
@@ -58,7 +59,16 @@ class LoginScreen : UIViewController
         self.loginButton = loginButton
     }
     
-    func loginButtonPressed(button: UIButton)
+    func setLoginButtonEnabled(enabled: Bool)
+    {
+        self.loginButton.enabled = enabled
+        self.loginButton.alpha = enabled ? 1.0 : kButtonDisabledAlpha
+    }
+    
+    // MARK: UIButton Selectors
+    
+    @objc
+    private func loginButtonPressed(button: UIButton)
     {
         if let viewDelegate = delegate {
             viewDelegate.didPressLoginButton()
