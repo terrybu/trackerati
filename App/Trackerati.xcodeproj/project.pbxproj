@@ -23,9 +23,6 @@
 		01498B7C1B01182B00C7C395 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01498B7B1B01182B00C7C395 /* Security.framework */; };
 		01498B7E1B01183300C7C395 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01498B7D1B01183300C7C395 /* SystemConfiguration.framework */; };
 		01498B801B01183A00C7C395 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01498B7F1B01183A00C7C395 /* UIKit.framework */; };
-		01498B8C1B011BDA00C7C395 /* HockeySDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01498B881B011BDA00C7C395 /* HockeySDK.framework */; };
-		01498B8D1B011BDA00C7C395 /* HockeySDK.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 01498B8A1B011BDA00C7C395 /* HockeySDK.xcconfig */; };
-		01498B8E1B011BDA00C7C395 /* HockeySDKResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 01498B8B1B011BDA00C7C395 /* HockeySDKResources.bundle */; };
 		01498B911B011D4600C7C395 /* GoogleOpenSource.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01498B8F1B011D4600C7C395 /* GoogleOpenSource.framework */; };
 		01498B921B011D4700C7C395 /* GooglePlus.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01498B901B011D4600C7C395 /* GooglePlus.framework */; };
 		01498B941B011D5600C7C395 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01498B931B011D5600C7C395 /* AddressBook.framework */; };
@@ -47,6 +44,9 @@
 		0190BF381B0CFC3D00E508CF /* ProjectsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0190BF371B0CFC3D00E508CF /* ProjectsViewController.swift */; };
 		01DD394B1B0A70FD000D925D /* SideMenuUserHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01DD394A1B0A70FD000D925D /* SideMenuUserHeaderView.swift */; };
 		01EE0C441B0E2B7800AA4C10 /* HistoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01EE0C431B0E2B7800AA4C10 /* HistoryTableViewCell.swift */; };
+		01EE0C481B0E2F0200AA4C10 /* HockeySDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01EE0C461B0E2F0200AA4C10 /* HockeySDK.framework */; };
+		01EE0C521B0E301A00AA4C10 /* HockeySDK.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 01EE0C501B0E301A00AA4C10 /* HockeySDK.xcconfig */; };
+		01EE0C531B0E301A00AA4C10 /* HockeySDKResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 01EE0C511B0E301A00AA4C10 /* HockeySDKResources.bundle */; };
 		BFC762EDEA775168E0305151 /* libPods-Trackerati.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 049E7FC2BC2B1D9187CEFDEC /* libPods-Trackerati.a */; };
 /* End PBXBuildFile section */
 
@@ -82,9 +82,6 @@
 		01498B7B1B01182B00C7C395 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		01498B7D1B01183300C7C395 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		01498B7F1B01183A00C7C395 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
-		01498B881B011BDA00C7C395 /* HockeySDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = HockeySDK.framework; sourceTree = "<group>"; };
-		01498B8A1B011BDA00C7C395 /* HockeySDK.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = HockeySDK.xcconfig; sourceTree = "<group>"; };
-		01498B8B1B011BDA00C7C395 /* HockeySDKResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = HockeySDKResources.bundle; sourceTree = "<group>"; };
 		01498B8F1B011D4600C7C395 /* GoogleOpenSource.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleOpenSource.framework; sourceTree = "<group>"; };
 		01498B901B011D4600C7C395 /* GooglePlus.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GooglePlus.framework; sourceTree = "<group>"; };
 		01498B931B011D5600C7C395 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
@@ -106,6 +103,9 @@
 		0190BF371B0CFC3D00E508CF /* ProjectsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectsViewController.swift; sourceTree = "<group>"; };
 		01DD394A1B0A70FD000D925D /* SideMenuUserHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SideMenuUserHeaderView.swift; sourceTree = "<group>"; };
 		01EE0C431B0E2B7800AA4C10 /* HistoryTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HistoryTableViewCell.swift; sourceTree = "<group>"; };
+		01EE0C461B0E2F0200AA4C10 /* HockeySDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = HockeySDK.framework; sourceTree = "<group>"; };
+		01EE0C501B0E301A00AA4C10 /* HockeySDK.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = HockeySDK.xcconfig; sourceTree = "<group>"; };
+		01EE0C511B0E301A00AA4C10 /* HockeySDKResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = HockeySDKResources.bundle; sourceTree = "<group>"; };
 		049E7FC2BC2B1D9187CEFDEC /* libPods-Trackerati.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Trackerati.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3587A3B08253D04AD27B6510 /* Pods-Trackerati.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Trackerati.release.xcconfig"; path = "../Pods/Target Support Files/Pods-Trackerati/Pods-Trackerati.release.xcconfig"; sourceTree = "<group>"; };
 		FC4437DDCAA1EBF64F6F5D62 /* Pods-Trackerati.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Trackerati.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-Trackerati/Pods-Trackerati.debug.xcconfig"; sourceTree = "<group>"; };
@@ -127,10 +127,10 @@
 				01498B7A1B01182500C7C395 /* QuickLook.framework in Frameworks */,
 				01498B781B01182000C7C395 /* QuartzCore.framework in Frameworks */,
 				01498B761B01181900C7C395 /* MobileCoreServices.framework in Frameworks */,
+				01EE0C481B0E2F0200AA4C10 /* HockeySDK.framework in Frameworks */,
 				01498B741B01181400C7C395 /* Foundation.framework in Frameworks */,
 				01498B721B01180A00C7C395 /* AssetsLibrary.framework in Frameworks */,
 				01498B921B011D4700C7C395 /* GooglePlus.framework in Frameworks */,
-				01498B8C1B011BDA00C7C395 /* HockeySDK.framework in Frameworks */,
 				01498B6F1B0117FF00C7C395 /* CoreGraphics.framework in Frameworks */,
 				01498B701B0117FF00C7C395 /* CoreText.framework in Frameworks */,
 				BFC762EDEA775168E0305151 /* libPods-Trackerati.a in Frameworks */,
@@ -220,13 +220,8 @@
 		01498B391B0104C400C7C395 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				01498B1B1B01027E00C7C395 /* MainViewController.swift */,
-				0170E44D1B052A2200D593C3 /* HomeViewController.swift */,
-				0170E44B1B0526CD00D593C3 /* SettingsViewController.swift */,
-				0170E4471B04E37C00D593C3 /* SideMenuViewController.swift */,
-				0170E4491B04EDE800D593C3 /* ContainerViewController.swift */,
-				0190BF371B0CFC3D00E508CF /* ProjectsViewController.swift */,
-				0126AAB61B0E211500B3907E /* HistoryViewController.swift */,
+				01EE0C4E1B0E2F8700AA4C10 /* App Sections */,
+				01EE0C4D1B0E2F7500AA4C10 /* Containment */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
@@ -252,7 +247,7 @@
 		01498B3D1B0114C800C7C395 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				01498B871B011BDA00C7C395 /* HockeySDK.embeddedframework */,
+				01EE0C451B0E2F0200AA4C10 /* HockeySDK.embeddedframework */,
 				01498B8F1B011D4600C7C395 /* GoogleOpenSource.framework */,
 				01498B901B011D4600C7C395 /* GooglePlus.framework */,
 				01498B7F1B01183A00C7C395 /* UIKit.framework */,
@@ -269,24 +264,6 @@
 			path = Frameworks;
 			sourceTree = "<group>";
 		};
-		01498B871B011BDA00C7C395 /* HockeySDK.embeddedframework */ = {
-			isa = PBXGroup;
-			children = (
-				01498B881B011BDA00C7C395 /* HockeySDK.framework */,
-				01498B891B011BDA00C7C395 /* Resources */,
-			);
-			path = HockeySDK.embeddedframework;
-			sourceTree = "<group>";
-		};
-		01498B891B011BDA00C7C395 /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				01498B8A1B011BDA00C7C395 /* HockeySDK.xcconfig */,
-				01498B8B1B011BDA00C7C395 /* HockeySDKResources.bundle */,
-			);
-			path = Resources;
-			sourceTree = "<group>";
-		};
 		0170E4421B02984200D593C3 /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -300,12 +277,83 @@
 		0170E4511B0542A900D593C3 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				0170E4521B0542A900D593C3 /* LoginScreen.swift */,
-				0170E4531B0542A900D593C3 /* SwitchDatePickerCell.swift */,
+				01EE0C4A1B0E2F3600AA4C10 /* Cells */,
+				01EE0C491B0E2F2E00AA4C10 /* Login */,
 				01DD394A1B0A70FD000D925D /* SideMenuUserHeaderView.swift */,
-				01EE0C431B0E2B7800AA4C10 /* HistoryTableViewCell.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		01EE0C451B0E2F0200AA4C10 /* HockeySDK.embeddedframework */ = {
+			isa = PBXGroup;
+			children = (
+				01EE0C461B0E2F0200AA4C10 /* HockeySDK.framework */,
+				01EE0C4F1B0E301A00AA4C10 /* Resources */,
+			);
+			path = HockeySDK.embeddedframework;
+			sourceTree = "<group>";
+		};
+		01EE0C491B0E2F2E00AA4C10 /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				0170E4521B0542A900D593C3 /* LoginScreen.swift */,
+			);
+			path = Login;
+			sourceTree = "<group>";
+		};
+		01EE0C4A1B0E2F3600AA4C10 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				01EE0C4C1B0E2F4E00AA4C10 /* History */,
+				01EE0C4B1B0E2F4300AA4C10 /* Settings */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		01EE0C4B1B0E2F4300AA4C10 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				0170E4531B0542A900D593C3 /* SwitchDatePickerCell.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		01EE0C4C1B0E2F4E00AA4C10 /* History */ = {
+			isa = PBXGroup;
+			children = (
+				01EE0C431B0E2B7800AA4C10 /* HistoryTableViewCell.swift */,
+			);
+			path = History;
+			sourceTree = "<group>";
+		};
+		01EE0C4D1B0E2F7500AA4C10 /* Containment */ = {
+			isa = PBXGroup;
+			children = (
+				0170E4471B04E37C00D593C3 /* SideMenuViewController.swift */,
+				0170E4491B04EDE800D593C3 /* ContainerViewController.swift */,
+			);
+			path = Containment;
+			sourceTree = "<group>";
+		};
+		01EE0C4E1B0E2F8700AA4C10 /* App Sections */ = {
+			isa = PBXGroup;
+			children = (
+				01498B1B1B01027E00C7C395 /* MainViewController.swift */,
+				0170E44D1B052A2200D593C3 /* HomeViewController.swift */,
+				0170E44B1B0526CD00D593C3 /* SettingsViewController.swift */,
+				0190BF371B0CFC3D00E508CF /* ProjectsViewController.swift */,
+				0126AAB61B0E211500B3907E /* HistoryViewController.swift */,
+			);
+			path = "App Sections";
+			sourceTree = "<group>";
+		};
+		01EE0C4F1B0E301A00AA4C10 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				01EE0C501B0E301A00AA4C10 /* HockeySDK.xcconfig */,
+				01EE0C511B0E301A00AA4C10 /* HockeySDKResources.bundle */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 		3F88CD5D6D5D4B14DF4E0DA7 /* Pods */ = {
@@ -411,9 +459,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				01498B8D1B011BDA00C7C395 /* HockeySDK.xcconfig in Resources */,
-				01498B8E1B011BDA00C7C395 /* HockeySDKResources.bundle in Resources */,
+				01EE0C521B0E301A00AA4C10 /* HockeySDK.xcconfig in Resources */,
 				01498B211B01027E00C7C395 /* Images.xcassets in Resources */,
+				01EE0C531B0E301A00AA4C10 /* HockeySDKResources.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
