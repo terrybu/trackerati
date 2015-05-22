@@ -14,8 +14,9 @@ class Record : NSObject
     let project: String
     let status: String
     let type: String
+    let comment: String?
     
-    init(client: String, date: String, hours: String, project: String, status: String, type: String)
+    init(client: String, date: String, hours: String, project: String, status: String, type: String, comment: String?)
     {
         self.client = client
         self.date = date
@@ -23,6 +24,7 @@ class Record : NSObject
         self.project = project
         self.status = status
         self.type = type
+        self.comment = comment
     }
     
 }

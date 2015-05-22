@@ -20,6 +20,7 @@ enum RecordKey: String
     case Project = "project"
     case Status = "status"
     case WorkType = "type"
+    case Comment = "comment"
 }
 
 let kAllDataDownloadedNotificationName = "allDataDownloaded"
@@ -147,7 +148,8 @@ class FirebaseManager : NSObject
                                     let project = recordDictionary.objectForKey(RecordKey.Project.rawValue) as! String
                                     let status = recordDictionary.objectForKey(RecordKey.Status.rawValue) as! String
                                     let type = recordDictionary.objectForKey(RecordKey.WorkType.rawValue) as! String
-                                    let newRecord = Record(client: client, date: date, hours: hours, project: project, status: status, type: type)
+                                    let comment = recordDictionary.objectForKey(RecordKey.Comment.rawValue) as? String
+                                    let newRecord = Record(client: client, date: date, hours: hours, project: project, status: status, type: type, comment: comment)
                                     records.append(newRecord)
                                 }
                             }
