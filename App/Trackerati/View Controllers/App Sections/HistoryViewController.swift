@@ -23,7 +23,7 @@ class HistoryViewController : MainViewController, UITableViewDelegate
     override func loadView() {
         super.loadView()
         
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Edit, target: self, action: "editTableView")
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Trash, target: self, action: "editTableView")
         
         let historyTableView = UITableView(frame: view.frame, style: .Plain)
         historyTableView.delegate = self
