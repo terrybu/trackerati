@@ -23,6 +23,8 @@ class HistoryTableViewCell : UITableViewCell
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
+        accessoryType = .DetailButton
+        
         setupClientLabel()
         setupProjectsLabel()
         setupHoursLabel()
@@ -42,8 +44,8 @@ class HistoryTableViewCell : UITableViewCell
             NSLayoutConstraint(item: clientLabel, attribute: .Trailing, relatedBy: .Equal, toItem: self.contentView, attribute: .Trailing, multiplier: 1.0, constant: 0.0),
             NSLayoutConstraint(item: clientLabel, attribute: .Bottom, relatedBy: .Equal, toItem: self.contentView, attribute: .Bottom, multiplier: 0.33, constant: 0.0)
         ]
-        self.contentView.addSubview(clientLabel)
-        self.contentView.addConstraints(clientLabelConstraints)
+        contentView.addSubview(clientLabel)
+        contentView.addConstraints(clientLabelConstraints)
         self.clientLabel = clientLabel
     }
     
@@ -57,8 +59,8 @@ class HistoryTableViewCell : UITableViewCell
             NSLayoutConstraint(item: projectLabel, attribute: .Trailing, relatedBy: .Equal, toItem: self.contentView, attribute: .Trailing, multiplier: 1.0, constant: 0.0),
             NSLayoutConstraint(item: projectLabel, attribute: .Bottom, relatedBy: .Equal, toItem: self.contentView, attribute: .Bottom, multiplier: 0.66, constant: 0.0)
         ]
-        self.contentView.addSubview(projectLabel)
-        self.contentView.addConstraints(projectLabelConstraints)
+        contentView.addSubview(projectLabel)
+        contentView.addConstraints(projectLabelConstraints)
         self.projectLabel = projectLabel
     }
     
@@ -72,8 +74,8 @@ class HistoryTableViewCell : UITableViewCell
             NSLayoutConstraint(item: hoursLabel, attribute: .Trailing, relatedBy: .Equal, toItem: self.contentView, attribute: .Trailing, multiplier: 1.0, constant: 0.0),
             NSLayoutConstraint(item: hoursLabel, attribute: .Bottom, relatedBy: .Equal, toItem: self.contentView, attribute: .Bottom, multiplier: 1.0, constant: 0.0)
         ]
-        self.contentView.addSubview(hoursLabel)
-        self.contentView.addConstraints(hoursLabelConstraints)
+        contentView.addSubview(hoursLabel)
+        contentView.addConstraints(hoursLabelConstraints)
         self.hoursLabel = hoursLabel
     }
     

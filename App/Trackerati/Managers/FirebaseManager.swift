@@ -144,6 +144,7 @@ class FirebaseManager : NSObject
                                 
                                 if let recordDictionary = firebaseRecords.objectForKey(recordKey) as? NSDictionary { // get dictionary for individual record for specific hash
                                     
+                                    let id = recordKey as! String
                                     let client = recordDictionary.objectForKey(RecordKey.Client.rawValue) as! String
                                     let date = recordDictionary.objectForKey(RecordKey.Date.rawValue) as! String
                                     let hours = recordDictionary.objectForKey(RecordKey.Hours.rawValue) as! String
@@ -151,7 +152,7 @@ class FirebaseManager : NSObject
                                     let status = recordDictionary.objectForKey(RecordKey.Status.rawValue) as! String
                                     let type = recordDictionary.objectForKey(RecordKey.WorkType.rawValue) as! String
                                     let comment = recordDictionary.objectForKey(RecordKey.Comment.rawValue) as? String
-                                    let newRecord = Record(client: client, date: date, hours: hours, project: project, status: status, type: type, comment: comment)
+                                    let newRecord = Record(id: id, client: client, date: date, hours: hours, project: project, status: status, type: type, comment: comment)
                                     records.append(newRecord)
                                 }
                             }

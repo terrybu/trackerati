@@ -49,6 +49,12 @@ class HistoryViewController : MainViewController, UITableViewDelegate, UITableVi
         return userHistory[indexPath.section].1[indexPath.row]
     }
     
+    private func displayFormForRecordAtIndexPath(indexPath: NSIndexPath)
+    {
+        let selectedRecord = recordForIndexPath(indexPath)
+        navigationController?.pushViewController(RecordFormViewController(record: selectedRecord), animated: true)
+    }
+    
     // MARK: NSNotificationCenter Observer Methods
     
     @objc
@@ -58,6 +64,17 @@ class HistoryViewController : MainViewController, UITableViewDelegate, UITableVi
         
         MBProgressHUD.hideAllHUDsForView(view, animated: true)
         historyTableView.reloadData()
+    }
+    
+    // MARK: UITableView Delegate
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        displayFormForRecordAtIndexPath(indexPath)
+    }
+    
+    func tableView(tableView: UITableView, accessoryButtonTappedForRowWithIndexPath indexPath: NSIndexPath) {
+        displayFormForRecordAtIndexPath(indexPath)
     }
     
     // MARK: UITableView Datasource

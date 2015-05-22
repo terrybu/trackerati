@@ -8,6 +8,7 @@
 
 class Record : NSObject
 {
+    let id: String
     let client: String
     let date: String
     let hours: String
@@ -16,8 +17,9 @@ class Record : NSObject
     let type: String
     let comment: String?
     
-    init(client: String, date: String, hours: String, project: String, status: String, type: String, comment: String?)
+    init(id: String, client: String, date: String, hours: String, project: String, status: String, type: String, comment: String?)
     {
+        self.id = id
         self.client = client
         self.date = date
         self.hours = hours
