@@ -58,7 +58,9 @@ class FirebaseManager : NSObject
     
     /**
     Asynchronously retrieves all data associated with the type passed in. This potentially fires off three notifications. 
+    
     One notification for completing the download of:
+    
     - Projects
     - User records
     - Everything
@@ -101,7 +103,7 @@ class FirebaseManager : NSObject
     }
     
     /**
-    Sorts the User records by Date and maps the dates to tuples of Record objects
+    Sorts the User records by Date and maps the dates to an array of Record objects like so `(Date, [Record])`
     
     :returns: An array of tuples with String dates mapped to an array of Record objects that correspond to that date
     */
