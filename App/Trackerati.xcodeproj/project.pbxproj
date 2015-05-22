@@ -48,6 +48,7 @@
 		01EE0C521B0E301A00AA4C10 /* HockeySDK.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 01EE0C501B0E301A00AA4C10 /* HockeySDK.xcconfig */; };
 		01EE0C531B0E301A00AA4C10 /* HockeySDKResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 01EE0C511B0E301A00AA4C10 /* HockeySDKResources.bundle */; };
 		01EE0C561B0F7ADA00AA4C10 /* RecordFormViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01EE0C551B0F7ADA00AA4C10 /* RecordFormViewController.swift */; };
+		01EE0C591B0F865E00AA4C10 /* HistoryTableViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01EE0C581B0F865E00AA4C10 /* HistoryTableViewDataSource.swift */; };
 		BFC762EDEA775168E0305151 /* libPods-Trackerati.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 049E7FC2BC2B1D9187CEFDEC /* libPods-Trackerati.a */; };
 /* End PBXBuildFile section */
 
@@ -108,6 +109,7 @@
 		01EE0C501B0E301A00AA4C10 /* HockeySDK.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = HockeySDK.xcconfig; sourceTree = "<group>"; };
 		01EE0C511B0E301A00AA4C10 /* HockeySDKResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = HockeySDKResources.bundle; sourceTree = "<group>"; };
 		01EE0C551B0F7ADA00AA4C10 /* RecordFormViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecordFormViewController.swift; sourceTree = "<group>"; };
+		01EE0C581B0F865E00AA4C10 /* HistoryTableViewDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HistoryTableViewDataSource.swift; sourceTree = "<group>"; };
 		049E7FC2BC2B1D9187CEFDEC /* libPods-Trackerati.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Trackerati.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3587A3B08253D04AD27B6510 /* Pods-Trackerati.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Trackerati.release.xcconfig"; path = "../Pods/Target Support Files/Pods-Trackerati/Pods-Trackerati.release.xcconfig"; sourceTree = "<group>"; };
 		FC4437DDCAA1EBF64F6F5D62 /* Pods-Trackerati.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Trackerati.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-Trackerati/Pods-Trackerati.debug.xcconfig"; sourceTree = "<group>"; };
@@ -271,6 +273,7 @@
 		0170E4421B02984200D593C3 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				01EE0C571B0F864A00AA4C10 /* Data */,
 				0170E4431B02985100D593C3 /* User.swift */,
 				0190BF311B0B899800E508CF /* Client.swift */,
 				0190BF351B0CD53700E508CF /* Record.swift */,
@@ -365,6 +368,14 @@
 				01EE0C551B0F7ADA00AA4C10 /* RecordFormViewController.swift */,
 			);
 			name = Detail;
+			sourceTree = "<group>";
+		};
+		01EE0C571B0F864A00AA4C10 /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				01EE0C581B0F865E00AA4C10 /* HistoryTableViewDataSource.swift */,
+			);
+			name = Data;
 			sourceTree = "<group>";
 		};
 		3F88CD5D6D5D4B14DF4E0DA7 /* Pods */ = {
@@ -540,6 +551,7 @@
 				0170E4541B0542A900D593C3 /* LoginScreen.swift in Sources */,
 				0170E4441B02985100D593C3 /* User.swift in Sources */,
 				01EE0C441B0E2B7800AA4C10 /* HistoryTableViewCell.swift in Sources */,
+				01EE0C591B0F865E00AA4C10 /* HistoryTableViewDataSource.swift in Sources */,
 				0126AAB71B0E211500B3907E /* HistoryViewController.swift in Sources */,
 				0170E4551B0542A900D593C3 /* SwitchDatePickerCell.swift in Sources */,
 				0170E44E1B052A2200D593C3 /* HomeViewController.swift in Sources */,

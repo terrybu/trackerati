@@ -268,7 +268,7 @@ class ContainerViewController : UIViewController, LoginScreenDelegate, MainViewC
                 targetViewController = HomeViewController()
                 
             case .History:
-                targetViewController = HistoryViewController(userHistory: FirebaseManager.sharedManager.userRecordsSortedByDate())
+                targetViewController = HistoryViewController()
                 
             case .Settings:
                 targetViewController = SettingsViewController()

@@ -6,25 +6,14 @@
 //  Copyright (c) 2015 The Hackerati. All rights reserved.
 //
 
-class HistoryViewController : MainViewController, UITableViewDelegate, UITableViewDataSource
+class HistoryViewController : MainViewController, UITableViewDelegate
 {
-    private let kCellReuseIdentifier = "cell"
-    
     private weak var historyTableView: UITableView!
-    private var userHistory: [(String, [Record])] = []
+    private var historyTableViewDataSource: HistoryTableViewDataSource!
     
-    init(userHistory: [(String, [Record])]?)
+    init()
     {
         super.init(nibName: nil, bundle: nil)
-        if let history = userHistory {
-            self.userHistory = history
-        }
-        else {
-            let hud = MBProgressHUD.showHUDAddedTo(view, animated: true)
-            hud.labelText = "Just a moment"
-            hud.detailsLabelText = "Going through the file cabinets"
-            NSNotificationCenter.defaultCenter().addObserver(self, selector: "historyFinishedDownloading:", name: kAllProjectsDownloadedNotificationName, object: nil)
-        }
     }
 
     required init(coder aDecoder: NSCoder) {
@@ -34,36 +23,30 @@ class HistoryViewController : MainViewController, UITableViewDelegate, UITableVi
     override func loadView() {
         super.loadView()
         
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Edit, target: self, action: "editTableView")
+        
         let historyTableView = UITableView(frame: view.frame, style: .Plain)
-        historyTableView.registerClass(HistoryTableViewCell.self, forCellReuseIdentifier: kCellReuseIdentifier)
         historyTableView.delegate = self
-        historyTableView.dataSource = self
+        historyTableViewDataSource = HistoryTableViewDataSource(tableView: historyTableView)
+        historyTableView.dataSource = historyTableViewDataSource
         view.addSubview(historyTableView)
         self.historyTableView = historyTableView
     }
     
     // MARK: Private
     
-    private func recordForIndexPath(indexPath: NSIndexPath) -> Record
-    {
-        return userHistory[indexPath.section].1[indexPath.row]
-    }
-    
     private func displayFormForRecordAtIndexPath(indexPath: NSIndexPath)
     {
-        let selectedRecord = recordForIndexPath(indexPath)
+        let selectedRecord = historyTableViewDataSource.recordForIndexPath(indexPath)
         navigationController?.pushViewController(RecordFormViewController(record: selectedRecord), animated: true)
     }
     
-    // MARK: NSNotificationCenter Observer Methods
+    // MARK: UIBarButtonItem Selectors
     
     @objc
-    private func historyFinishedDownloading(notification: NSNotification)
+    private func editTableView()
     {
-        userHistory = FirebaseManager.sharedManager.userRecordsSortedByDate()
-        
-        MBProgressHUD.hideAllHUDsForView(view, animated: true)
-        historyTableView.reloadData()
+        historyTableView.setEditing(!historyTableView.editing, animated: true)
     }
     
     // MARK: UITableView Delegate
@@ -76,29 +59,9 @@ class HistoryViewController : MainViewController, UITableViewDelegate, UITableVi
     func tableView(tableView: UITableView, accessoryButtonTappedForRowWithIndexPath indexPath: NSIndexPath) {
         displayFormForRecordAtIndexPath(indexPath)
     }
-    
-    // MARK: UITableView Datasource
-    
+
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         return HistoryTableViewCell.cellHeight
-    }
-    
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return userHistory.count
-    }
-    
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return userHistory[section].1.count
-    }
-    
-    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return userHistory[section].0
-    }
-    
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier(kCellReuseIdentifier, forIndexPath: indexPath) as! HistoryTableViewCell
-        cell.setValuesForRecord(recordForIndexPath(indexPath))
-        return cell
     }
     
 }
