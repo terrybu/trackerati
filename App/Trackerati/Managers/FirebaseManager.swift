@@ -114,6 +114,7 @@ class FirebaseManager : NSObject
             if let datedRecords = dateToRecordDictionary[record.date] {
                 var mutableDatedRecords = datedRecords
                 mutableDatedRecords.append(record)
+                dateToRecordDictionary[record.date] = mutableDatedRecords
             }
             else {
                 dateToRecordDictionary[record.date] = [record]

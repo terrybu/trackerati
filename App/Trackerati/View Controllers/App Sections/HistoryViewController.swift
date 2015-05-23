@@ -53,7 +53,10 @@ class HistoryViewController : MainViewController, UITableViewDelegate
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
-        displayFormForRecordAtIndexPath(indexPath)
+        let selectedCell = tableView.cellForRowAtIndexPath(indexPath) as! HistoryTableViewCell
+        if selectedCell.currentState == .NotShowingMenu {
+            displayFormForRecordAtIndexPath(indexPath)
+        }
     }
     
     func tableView(tableView: UITableView, accessoryButtonTappedForRowWithIndexPath indexPath: NSIndexPath) {

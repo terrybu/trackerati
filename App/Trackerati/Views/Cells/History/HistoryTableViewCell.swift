@@ -6,39 +6,111 @@
 //  Copyright (c) 2015 The Hackerati. All rights reserved.
 //
 
-class HistoryTableViewCell : UITableViewCell
+protocol HistoryTableViewCellDelegate: class {
+    func didPressDeleteButton(cell: HistoryTableViewCell)
+    func didPressEditButton(cell: HistoryTableViewCell)
+}
+
+enum ActionMenuState
 {
+    case ShowingMenu
+    case NotShowingMenu
+}
+
+enum PanDirection
+{
+    case Left
+    case Right
+}
+
+class HistoryTableViewCell : UITableViewCell, UIGestureRecognizerDelegate
+{
+    private let kDeleteButtonTitle = "Delete"
+    private let kEditButtonTitle = "Edit"
     private let kClientLabelPrefix = "Client: "
     private let kProjectLabelPrefix = "Project: "
     private let kHoursLabelPrefix = "Hours: "
+    
+    private let kShowActionButtonsVelocityThreshold: CGFloat = 300.0
     
     class var cellHeight: CGFloat {
         return 95.0
     }
     
+    weak var delegate: HistoryTableViewCellDelegate?
+    
+    private weak var deleteButton: UIButton!
+    private weak var editButton: UIButton!
     private weak var infoContainerView: UIView!
     private weak var clientLabel: UILabel!
     private weak var projectLabel: UILabel!
     private weak var hoursLabel: UILabel!
+    private weak var panGesture: UIPanGestureRecognizer!
+    
+    var currentState = ActionMenuState.NotShowingMenu
+    var currentPanDirection = PanDirection.Left
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        accessoryType = .DetailButton
+        selectionStyle = .None
         
+        setupActionButtons()
         setupInfoContainerView()
         setupClientLabel()
         setupProjectsLabel()
         setupHoursLabel()
+        setupPanGesture()
     }
 
     required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    private func setupActionButtons()
+    {
+        let deleteButton = UIButton(frame: CGRectZero)
+        deleteButton.setTitle(kDeleteButtonTitle, forState: .Normal)
+        deleteButton.setTitleColor(UIColor.whiteColor(), forState: .Normal)
+        deleteButton.backgroundColor = UIColor(red:0.9, green:0.3, blue:0.26, alpha:1)
+        deleteButton.addTarget(self, action: "deleteButtonPressed:", forControlEvents: .TouchUpInside)
+        deleteButton.setTranslatesAutoresizingMaskIntoConstraints(false)
+        
+        let editButton = UIButton(frame: CGRectZero)
+        editButton.setTitle(kEditButtonTitle, forState: .Normal)
+        editButton.setTitleColor(UIColor.whiteColor(), forState: .Normal)
+        editButton.backgroundColor = UIColor(red:0.23, green:0.6, blue:0.85, alpha:1)
+        deleteButton.addTarget(self, action: "editButtonPressed:", forControlEvents: .TouchUpInside)
+        editButton.setTranslatesAutoresizingMaskIntoConstraints(false)
+        
+        let deleteButtonContraints = [
+            NSLayoutConstraint(item: deleteButton, attribute: .Trailing, relatedBy: .Equal, toItem: self.contentView, attribute: .Trailing, multiplier: 1.0, constant: 0.0),
+            NSLayoutConstraint(item: deleteButton, attribute: .Top, relatedBy: .Equal, toItem: self.contentView, attribute: .Top, multiplier: 1.0, constant: 0.0),
+            NSLayoutConstraint(item: deleteButton, attribute: .Bottom, relatedBy: .Equal, toItem: self.contentView, attribute: .Bottom, multiplier: 1.0, constant: 0.0),
+            NSLayoutConstraint(item: deleteButton, attribute: .Width, relatedBy: .Equal, toItem: self.contentView, attribute: .Width, multiplier: 0.25, constant: 0.0)
+        ]
+        
+        let editButtonContraints = [
+            NSLayoutConstraint(item: editButton, attribute: .Trailing, relatedBy: .Equal, toItem: deleteButton, attribute: .Leading, multiplier: 1.0, constant: 0.0),
+            NSLayoutConstraint(item: editButton, attribute: .Top, relatedBy: .Equal, toItem: self.contentView, attribute: .Top, multiplier: 1.0, constant: 0.0),
+            NSLayoutConstraint(item: editButton, attribute: .Bottom, relatedBy: .Equal, toItem: self.contentView, attribute: .Bottom, multiplier: 1.0, constant: 0.0),
+            NSLayoutConstraint(item: editButton, attribute: .Width, relatedBy: .Equal, toItem: self.contentView, attribute: .Width, multiplier: 0.25, constant: 0.0)
+        ]
+        
+        contentView.addSubview(deleteButton)
+        contentView.addConstraints(deleteButtonContraints)
+        
+        contentView.addSubview(editButton)
+        contentView.addConstraints(editButtonContraints)
+        
+        self.deleteButton = deleteButton
+        self.editButton = editButton
+    }
+    
     private func setupInfoContainerView()
     {
-        let infoContainerView = UIView(frame: contentView.frame)
+        let infoContainerView = UIView(frame: CGRectZero)
+        infoContainerView.backgroundColor = UIColor.whiteColor()
         infoContainerView.setTranslatesAutoresizingMaskIntoConstraints(false)
         let infoContainerViewConstraints = [
             NSLayoutConstraint(item: infoContainerView, attribute: .Leading, relatedBy: .Equal, toItem: self.contentView, attribute: .LeftMargin, multiplier: 1.0, constant: 0.0),
@@ -96,6 +168,89 @@ class HistoryTableViewCell : UITableViewCell
         self.hoursLabel = hoursLabel
     }
     
+    private func setupPanGesture()
+    {
+        let panGesture = UIPanGestureRecognizer(target: self, action: "panInfoView:")
+        panGesture.maximumNumberOfTouches = 1
+        panGesture.delegate = self
+        infoContainerView.addGestureRecognizer(panGesture)
+        self.panGesture = panGesture
+    }
+    
+    @objc
+    private func panInfoView(gesture: UIPanGestureRecognizer)
+    {
+        switch gesture.state
+        {
+        case .Began:
+            if currentState == .ShowingMenu {
+                gesture.enabled = false
+                gesture.enabled = true
+            }
+            
+        case .Possible, .Failed:
+            break
+            
+        case .Changed:
+            let translation = gesture.translationInView(contentView)
+            
+            if translation.x > 0.0 && currentState == .NotShowingMenu {
+                panGesture.enabled = false
+                panGesture.enabled = true
+            }
+            else {
+                currentPanDirection = translation.x < 0.0 ? .Left : .Right
+                
+                let translationStopperFactor: CGFloat
+                let amountToTranslate = translation.x - infoContainerView.transform.tx
+                
+                if abs(infoContainerView.transform.tx) > contentView.frame.size.width / 2.0 {
+                    translationStopperFactor = 0.01
+                }
+                else {
+                    translationStopperFactor = 1.0
+                }
+                
+                let resultingXTranslation = infoContainerView.transform.tx + (amountToTranslate * translationStopperFactor)
+                infoContainerView.transform = CGAffineTransformMakeTranslation(resultingXTranslation, 0.0)
+            }
+        case .Ended, .Cancelled:
+            let velocity = gesture.velocityInView(contentView)
+            let draggedFarEnoughToShowMenu = infoContainerView.transform.tx < 0.0 && abs(infoContainerView.transform.tx) > contentView.frame.size.width / 2.0
+            let velocityHighEnoughToShowMenu = (velocity.x > kShowActionButtonsVelocityThreshold && currentState == .NotShowingMenu) && currentPanDirection == .Left
+            let targetTransform: CGAffineTransform
+            if draggedFarEnoughToShowMenu || velocityHighEnoughToShowMenu {
+                targetTransform = CGAffineTransformMakeTranslation(-contentView.frame.size.width / 2.0, 0.0)
+            }
+            else {
+                targetTransform = CGAffineTransformIdentity
+            }
+            
+            UIView.animateWithDuration(0.2,
+                delay: 0.0,
+                options: .CurveEaseOut,
+                animations:
+                {
+                    self.infoContainerView.transform = targetTransform
+                },
+                completion: { finished in
+                    self.currentState = self.currentState == .NotShowingMenu ? .ShowingMenu : .NotShowingMenu
+            })
+        }
+    }
+    
+    @objc
+    private func deleteButtonPressed(button: UIButton)
+    {
+        delegate?.didPressDeleteButton(self)
+    }
+    
+    @objc
+    private func editButtonPressed(button: UIButton)
+    {
+        delegate?.didPressEditButton(self)
+    }
+    
     // MARK: Public
     
     /**
@@ -108,6 +263,17 @@ class HistoryTableViewCell : UITableViewCell
         clientLabel.text = kClientLabelPrefix + record.client
         projectLabel.text = kProjectLabelPrefix + record.project
         hoursLabel.text = kHoursLabelPrefix + record.hours
+    }
+    
+    // MARK: UIGestureRecognizer Delegate
+    
+    override func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRequireFailureOfGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return true
+    }
+    
+    override func gestureRecognizer(gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        
+        return true
     }
     
 }
