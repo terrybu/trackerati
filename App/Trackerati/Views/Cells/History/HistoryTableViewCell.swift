@@ -188,9 +188,6 @@ class HistoryTableViewCell : UITableViewCell, UIGestureRecognizerDelegate
                 gesture.enabled = true
             }
             
-        case .Possible, .Failed:
-            break
-            
         case .Changed:
             let translation = gesture.translationInView(contentView)
             
@@ -214,6 +211,7 @@ class HistoryTableViewCell : UITableViewCell, UIGestureRecognizerDelegate
                 let resultingXTranslation = infoContainerView.transform.tx + (amountToTranslate * translationStopperFactor)
                 infoContainerView.transform = CGAffineTransformMakeTranslation(resultingXTranslation, 0.0)
             }
+            
         case .Ended, .Cancelled:
             let velocity = gesture.velocityInView(contentView)
             let draggedFarEnoughToShowMenu = infoContainerView.transform.tx < 0.0 && abs(infoContainerView.transform.tx) > contentView.frame.size.width / 2.0
@@ -236,6 +234,9 @@ class HistoryTableViewCell : UITableViewCell, UIGestureRecognizerDelegate
                 completion: { finished in
                     self.currentState = self.currentState == .NotShowingMenu ? .ShowingMenu : .NotShowingMenu
             })
+            
+        case .Possible, .Failed:
+            break
         }
     }
     

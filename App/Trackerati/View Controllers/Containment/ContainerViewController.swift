@@ -38,6 +38,7 @@ class ContainerViewController : UIViewController, LoginScreenDelegate, MainViewC
         self.sideMenuViewController = sideMenuViewController
         self.sideMenuViewController.delegate = self
         
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "resetLoginScreenInterface:", name: kUserDidFailAuthorizationNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "setupInterfaceForLoggedInUser:", name: kUserDidAuthorizeNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "removeLoginScreen", name: kAllDataDownloadedNotificationName, object: nil)
     }
@@ -131,15 +132,6 @@ class ContainerViewController : UIViewController, LoginScreenDelegate, MainViewC
         }
     }
     
-    @objc
-    private func setupInterfaceForLoggedInUser(notification: NSNotification)
-    {
-        loginScreen?.setLoginButtonEnabled(false)
-        displayLoadingHUD(true)
-        FirebaseManager.sharedManager.getAllDataOfType(.Projects)
-        FirebaseManager.sharedManager.getAllDataOfType(.User)
-    }
-    
     private func displayLoginScreen()
     {
         tapToReturnGesture.enabled =  false
@@ -149,19 +141,6 @@ class ContainerViewController : UIViewController, LoginScreenDelegate, MainViewC
         centerNavigationController.pushViewController(loginScreen, animated: false)
         centerNavigationController.setNavigationBarHidden(true, animated: false)
         self.loginScreen = loginScreen
-    }
-    
-    @objc
-    private func removeLoginScreen()
-    {
-        displayLoadingHUD(false)
-        
-        // Get rid of login screen
-        centerNavigationController.popViewControllerAnimated(false)
-        centerNavigationController.setNavigationBarHidden(false, animated: true)
-        
-        tapToReturnGesture.enabled = true
-        edgePanGesture.enabled = true
     }
     
     private func displaySnapshotView()
@@ -182,6 +161,37 @@ class ContainerViewController : UIViewController, LoginScreenDelegate, MainViewC
     private func randomLoadingDetail() -> String
     {
         return loadingDetails[Int(arc4random_uniform(UInt32(loadingDetails.count)))]
+    }
+    
+    // MARK: NSNotificationCenter Selectors
+    
+    @objc
+    private func resetLoginScreenInterface(notification: NSNotification)
+    {
+        loginScreen?.setLoginButtonEnabled(true)
+        displayLoadingHUD(false)
+    }
+    
+    @objc
+    private func setupInterfaceForLoggedInUser(notification: NSNotification)
+    {
+        loginScreen?.setLoginButtonEnabled(false)
+        displayLoadingHUD(true)
+        FirebaseManager.sharedManager.getAllDataOfType(.Projects)
+        FirebaseManager.sharedManager.getAllDataOfType(.User)
+    }
+    
+    @objc
+    private func removeLoginScreen()
+    {
+        displayLoadingHUD(false)
+        
+        // Get rid of login screen
+        centerNavigationController.popViewControllerAnimated(false)
+        centerNavigationController.setNavigationBarHidden(false, animated: true)
+        
+        tapToReturnGesture.enabled = true
+        edgePanGesture.enabled = true
     }
     
     // MARK: Gesture Recognizer Selectors

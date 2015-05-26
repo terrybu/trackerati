@@ -7,6 +7,7 @@
 //
 
 let kUserDidAuthorizeNotification = "userDidAuthorizeNotification"
+let kUserDidFailAuthorizationNotification = "userDidFailAuthorizationNotification"
 let kUserProfilePictureDidFinishDownloadingNotification = "userProfilePictureDidFinishDownloading"
 
 class GoogleLoginManager : NSObject, GPPSignInDelegate, UIAlertViewDelegate
@@ -69,12 +70,11 @@ class GoogleLoginManager : NSObject, GPPSignInDelegate, UIAlertViewDelegate
         case .NotReachable, .Unknown:
             numberOfAttempts += 1
             if numberOfAttempts <= kMaxNumberOfLoginAttempts {
-                self.logout()
-                self.login()
+                logout()
+                login()
             }
             else {
-                let badConnectionAlertView = UIAlertView(title: "No Internet Connection", message: "Please make sure you have a strong internet connection and try again", delegate: self, cancelButtonTitle: "OK")
-                badConnectionAlertView.show()
+                displayAlertViewWithTitle("No Internet Connection", description: "Please make sure you have a strong internet connection and try again", buttonTitle: "OK", otherButtonTitle: nil)
             }
         }
     }
@@ -135,8 +135,7 @@ class GoogleLoginManager : NSObject, GPPSignInDelegate, UIAlertViewDelegate
             let email = googleSignInManager.userEmail
             if !(email as NSString).containsString(kHackeratiEmailDomain) {
                 
-                let invalidEmailAlertView = UIAlertView(title: "Invalid Email Address", message: "Please use a Hackerati email address", delegate: self, cancelButtonTitle: "No thanks", otherButtonTitles: "Try Again")
-                invalidEmailAlertView.show()
+                displayAlertViewWithTitle("Invalid Email Address", description: "Please use a Hackerati email address", buttonTitle: "No Thanks", otherButtonTitle: "Try Again")
             }
             else {
                 authorized = true
@@ -152,10 +151,22 @@ class GoogleLoginManager : NSObject, GPPSignInDelegate, UIAlertViewDelegate
             }
         }
         else {
-            // TODO: Handle when get error
-            println(error.localizedDescription)
-            logout()
+            
+            displayAlertViewWithTitle("Whoops. Something went wrong", description: error.localizedDescription, buttonTitle: "OK", otherButtonTitle: nil)
         }
+    }
+    
+    private func displayAlertViewWithTitle(title:String, description: String, buttonTitle: String, otherButtonTitle: String?)
+    {
+        let alertView: UIAlertView
+        if let otherButton = otherButtonTitle {
+            alertView = UIAlertView(title: title, message: description, delegate: self, cancelButtonTitle: buttonTitle, otherButtonTitles: otherButton)
+        }
+        else {
+            alertView = UIAlertView(title: title, message: description, delegate: self, cancelButtonTitle: buttonTitle)
+        }
+        
+        alertView.show()
     }
     
     // MARK: UIAlertView Delegate
@@ -163,10 +174,11 @@ class GoogleLoginManager : NSObject, GPPSignInDelegate, UIAlertViewDelegate
     func alertView(alertView: UIAlertView, clickedButtonAtIndex buttonIndex: Int) {
         switch buttonIndex {
         case 0:
-            self.logout()
+            logout()
+            NSNotificationCenter.defaultCenter().postNotificationName(kUserDidFailAuthorizationNotification, object: nil)
         case 1:
-            self.logout()
-            self.login()
+            logout()
+            login()
         default:
             break
         }
