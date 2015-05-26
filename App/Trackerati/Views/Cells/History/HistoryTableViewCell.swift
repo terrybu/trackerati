@@ -32,6 +32,7 @@ class HistoryTableViewCell : UITableViewCell, UIGestureRecognizerDelegate
     private let kHoursLabelPrefix = "Hours: "
     
     private let kShowActionButtonsVelocityThreshold: CGFloat = 300.0
+    private var lastTranslationValue: CGFloat = 0.0
     
     class var cellHeight: CGFloat {
         return 95.0
@@ -80,7 +81,7 @@ class HistoryTableViewCell : UITableViewCell, UIGestureRecognizerDelegate
         editButton.setTitle(kEditButtonTitle, forState: .Normal)
         editButton.setTitleColor(UIColor.whiteColor(), forState: .Normal)
         editButton.backgroundColor = UIColor(red:0.23, green:0.6, blue:0.85, alpha:1)
-        deleteButton.addTarget(self, action: "editButtonPressed:", forControlEvents: .TouchUpInside)
+        editButton.addTarget(self, action: "editButtonPressed:", forControlEvents: .TouchUpInside)
         editButton.setTranslatesAutoresizingMaskIntoConstraints(false)
         
         let deleteButtonContraints = [
@@ -177,6 +178,8 @@ class HistoryTableViewCell : UITableViewCell, UIGestureRecognizerDelegate
         self.panGesture = panGesture
     }
     
+    // MARK: Gesture Recognizer Selectors
+    
     @objc
     private func panInfoView(gesture: UIPanGestureRecognizer)
     {
@@ -191,12 +194,13 @@ class HistoryTableViewCell : UITableViewCell, UIGestureRecognizerDelegate
         case .Changed:
             let translation = gesture.translationInView(contentView)
             
+            // Cancel gesture if trying to pan right while the menu is not showing
             if translation.x > 0.0 && currentState == .NotShowingMenu {
                 panGesture.enabled = false
                 panGesture.enabled = true
             }
             else {
-                currentPanDirection = translation.x < 0.0 ? .Left : .Right
+                currentPanDirection = translation.x < lastTranslationValue ? .Left : .Right
                 
                 let translationStopperFactor: CGFloat
                 let amountToTranslate = translation.x - infoContainerView.transform.tx
@@ -212,27 +216,23 @@ class HistoryTableViewCell : UITableViewCell, UIGestureRecognizerDelegate
                 infoContainerView.transform = CGAffineTransformMakeTranslation(resultingXTranslation, 0.0)
             }
             
+            lastTranslationValue = translation.x
+            
         case .Ended, .Cancelled:
             let velocity = gesture.velocityInView(contentView)
-            let draggedFarEnoughToShowMenu = infoContainerView.transform.tx < 0.0 && abs(infoContainerView.transform.tx) > contentView.frame.size.width / 2.0
+            let draggedFarEnoughToShowMenu = (infoContainerView.transform.tx < 0.0 && abs(infoContainerView.transform.tx) > contentView.frame.size.width / 4.0) && currentState == .NotShowingMenu
             let velocityHighEnoughToShowMenu = (velocity.x > kShowActionButtonsVelocityThreshold && currentState == .NotShowingMenu) && currentPanDirection == .Left
             let targetTransform: CGAffineTransform
+            
             if draggedFarEnoughToShowMenu || velocityHighEnoughToShowMenu {
                 targetTransform = CGAffineTransformMakeTranslation(-contentView.frame.size.width / 2.0, 0.0)
             }
             else {
                 targetTransform = CGAffineTransformIdentity
             }
-            
-            UIView.animateWithDuration(0.2,
-                delay: 0.0,
-                options: .CurveEaseOut,
-                animations:
-                {
-                    self.infoContainerView.transform = targetTransform
-                },
-                completion: { finished in
-                    self.currentState = self.currentState == .NotShowingMenu ? .ShowingMenu : .NotShowingMenu
+
+            animateCellWithTransform(targetTransform, completion: { finished in
+                self.currentState = self.currentState == .NotShowingMenu ? .ShowingMenu : .NotShowingMenu
             })
             
         case .Possible, .Failed:
@@ -240,18 +240,39 @@ class HistoryTableViewCell : UITableViewCell, UIGestureRecognizerDelegate
         }
     }
     
+    // MARK: Action Button Selectors
+    
     @objc
     private func deleteButtonPressed(button: UIButton)
     {
-        delegate?.didPressDeleteButton(self)
+        println("DELETE BUTTON PRESSED")
+        animateCellWithTransform(CGAffineTransformIdentity, completion: { finished in
+            delegate?.didPressDeleteButton(self)
+        })
     }
     
     @objc
     private func editButtonPressed(button: UIButton)
     {
-        delegate?.didPressEditButton(self)
+        println("EDIT BUTTON PRESSED")
+        animateCellWithTransform(CGAffineTransformIdentity, completion: { finished in
+            delegate?.didPressEditButton(self)
+        })
     }
     
+    // MARK: Private
+    
+    private func animateCellWithTransform(transform: CGAffineTransform, completion:((finished: Bool) -> ())?)
+    {
+        UIView.animateWithDuration(0.2,
+            delay: 0.0,
+            options: .CurveEaseOut,
+            animations:
+            {
+                self.infoContainerView.transform = transform
+            },
+            completion: completion)
+    }
     // MARK: Public
     
     /**
