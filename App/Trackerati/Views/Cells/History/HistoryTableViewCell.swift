@@ -246,7 +246,8 @@ class HistoryTableViewCell : UITableViewCell, UIGestureRecognizerDelegate
     private func deleteButtonPressed(button: UIButton)
     {
         animateCellWithTransform(CGAffineTransformIdentity, completion: { finished in
-            delegate?.didPressDeleteButton(self)
+            self.currentState = self.currentState == .NotShowingMenu ? .ShowingMenu : .NotShowingMenu
+            self.delegate?.didPressDeleteButton(self)
         })
     }
     
@@ -254,7 +255,8 @@ class HistoryTableViewCell : UITableViewCell, UIGestureRecognizerDelegate
     private func editButtonPressed(button: UIButton)
     {
         animateCellWithTransform(CGAffineTransformIdentity, completion: { finished in
-            delegate?.didPressEditButton(self)
+            self.currentState = self.currentState == .NotShowingMenu ? .ShowingMenu : .NotShowingMenu
+            self.delegate?.didPressEditButton(self)
         })
     }
     
@@ -271,6 +273,7 @@ class HistoryTableViewCell : UITableViewCell, UIGestureRecognizerDelegate
             },
             completion: completion)
     }
+    
     // MARK: Public
     
     /**

@@ -6,7 +6,7 @@
 //  Copyright (c) 2015 The Hackerati. All rights reserved.
 //
 
-class HistoryViewController : MainViewController, UITableViewDelegate
+class HistoryViewController : MainViewController, UITableViewDelegate, HistoryTableViewCellDelegate
 {
     private weak var historyTableView: UITableView!
     private var historyTableViewDataSource: HistoryTableViewDataSource!
@@ -35,10 +35,10 @@ class HistoryViewController : MainViewController, UITableViewDelegate
     
     // MARK: Private
     
-    private func displayFormForRecordAtIndexPath(indexPath: NSIndexPath)
+    private func displayFormForRecordAtIndexPath(indexPath: NSIndexPath, editing: Bool)
     {
         let selectedRecord = historyTableViewDataSource.recordForIndexPath(indexPath)
-        navigationController?.pushViewController(RecordFormViewController(record: selectedRecord), animated: true)
+        navigationController?.pushViewController(RecordFormViewController(record: selectedRecord, editing: editing), animated: true)
     }
     
     // MARK: UIBarButtonItem Selectors
@@ -64,16 +64,24 @@ class HistoryViewController : MainViewController, UITableViewDelegate
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
         let selectedCell = tableView.cellForRowAtIndexPath(indexPath) as! HistoryTableViewCell
         if selectedCell.currentState == .NotShowingMenu {
-            displayFormForRecordAtIndexPath(indexPath)
+            displayFormForRecordAtIndexPath(indexPath, editing: false)
         }
-    }
-    
-    func tableView(tableView: UITableView, accessoryButtonTappedForRowWithIndexPath indexPath: NSIndexPath) {
-        displayFormForRecordAtIndexPath(indexPath)
     }
 
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         return HistoryTableViewCell.cellHeight
+    }
+    
+    // MARK: HistoryTableViewCell Delegate
+    
+    func didPressDeleteButton(cell: HistoryTableViewCell) {
+        // TODO: Delete cell from Firebase and table view
+    }
+    
+    func didPressEditButton(cell: HistoryTableViewCell) {
+        if let cellIndexPath = self.historyTableView.indexPathForCell(cell) {
+            displayFormForRecordAtIndexPath(cellIndexPath, editing: true)
+        }
     }
     
 }

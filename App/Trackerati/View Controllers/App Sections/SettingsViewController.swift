@@ -55,7 +55,6 @@ class SettingsViewController : MainViewController, UITableViewDelegate, UITableV
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // TODO: Make it the number of items for that setting
         let currentGroup = settings.keys.array[section]
         if let groupCells = settings[currentGroup] {
             return groupCells.count

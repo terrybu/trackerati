@@ -12,17 +12,6 @@ enum DataInfoType: String
     case User = "Users"
 }
 
-enum RecordKey: String
-{
-    case Client = "client"
-    case Date = "date"
-    case Hours = "hour"
-    case Project = "project"
-    case Status = "status"
-    case WorkType = "type"
-    case Comment = "comment"
-}
-
 let kAllDataDownloadedNotificationName = "allDataDownloaded"
 let kUserInfoDownloadedNotificationName = "userInfoDownloaded"
 let kAllProjectsDownloadedNotificationName = "allProjectsDownloaded"

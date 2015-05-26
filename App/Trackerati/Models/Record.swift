@@ -6,6 +6,20 @@
 //  Copyright (c) 2015 The Hackerati. All rights reserved.
 //
 
+enum RecordKey: String
+{
+    case ID = "id"
+    case Client = "client"
+    case Date = "date"
+    case Hours = "hour"
+    case Project = "project"
+    case Status = "status"
+    case WorkType = "type"
+    case Comment = "comment"
+    
+    static let editableValues = [Client, Date, Hours, Project, Status, WorkType, Comment]
+}
+
 class Record : NSObject
 {
     let id: String
@@ -16,6 +30,10 @@ class Record : NSObject
     let status: String
     let type: String
     let comment: String?
+    
+    class var numberOfFields: Int {
+        return RecordKey.editableValues.count
+    }
     
     init(id: String, client: String, date: String, hours: String, project: String, status: String, type: String, comment: String?)
     {
@@ -28,5 +46,4 @@ class Record : NSObject
         self.type = type
         self.comment = comment
     }
-    
 }

@@ -1,1966 +1,800 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
-	<key>archiveVersion</key>
-	<string>1</string>
-	<key>classes</key>
-	<dict/>
-	<key>objectVersion</key>
-	<string>46</string>
-	<key>objects</key>
-	<dict>
-		<key>0126AAB61B0E211500B3907E</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.swift</string>
-			<key>path</key>
-			<string>HistoryViewController.swift</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>0126AAB71B0E211500B3907E</key>
-		<dict>
-			<key>fileRef</key>
-			<string>0126AAB61B0E211500B3907E</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>013C5A111B012E06002C4020</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>013C5A121B012E06002C4020</string>
-				<string>0170E43D1B026D8000D593C3</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>path</key>
-			<string>Managers</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>013C5A121B012E06002C4020</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.swift</string>
-			<key>path</key>
-			<string>GoogleLoginManager.swift</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>013C5A131B012E06002C4020</key>
-		<dict>
-			<key>fileRef</key>
-			<string>013C5A121B012E06002C4020</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>01498B0B1B01027E00C7C395</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>01498B161B01027E00C7C395</string>
-				<string>01498B2C1B01027E00C7C395</string>
-				<string>01498B151B01027E00C7C395</string>
-				<string>3F88CD5D6D5D4B14DF4E0DA7</string>
-				<string>B656BDA259BF38E48D0BDABC</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>01498B0C1B01027E00C7C395</key>
-		<dict>
-			<key>attributes</key>
-			<dict>
-				<key>LastUpgradeCheck</key>
-				<string>0630</string>
-				<key>ORGANIZATIONNAME</key>
-				<string>The Hackerati</string>
-				<key>TargetAttributes</key>
-				<dict>
-					<key>01498B131B01027E00C7C395</key>
-					<dict>
-						<key>CreatedOnToolsVersion</key>
-						<string>6.3.1</string>
-					</dict>
-					<key>01498B281B01027E00C7C395</key>
-					<dict>
-						<key>CreatedOnToolsVersion</key>
-						<string>6.3.1</string>
-						<key>TestTargetID</key>
-						<string>01498B131B01027E00C7C395</string>
-					</dict>
-				</dict>
-			</dict>
-			<key>buildConfigurationList</key>
-			<string>01498B0F1B01027E00C7C395</string>
-			<key>compatibilityVersion</key>
-			<string>Xcode 3.2</string>
-			<key>developmentRegion</key>
-			<string>English</string>
-			<key>hasScannedForEncodings</key>
-			<string>0</string>
-			<key>isa</key>
-			<string>PBXProject</string>
-			<key>knownRegions</key>
-			<array>
-				<string>en</string>
-				<string>Base</string>
-			</array>
-			<key>mainGroup</key>
-			<string>01498B0B1B01027E00C7C395</string>
-			<key>productRefGroup</key>
-			<string>01498B151B01027E00C7C395</string>
-			<key>projectDirPath</key>
-			<string></string>
-			<key>projectReferences</key>
-			<array/>
-			<key>projectRoot</key>
-			<string></string>
-			<key>targets</key>
-			<array>
-				<string>01498B131B01027E00C7C395</string>
-				<string>01498B281B01027E00C7C395</string>
-			</array>
-		</dict>
-		<key>01498B0F1B01027E00C7C395</key>
-		<dict>
-			<key>buildConfigurations</key>
-			<array>
-				<string>01498B311B01027E00C7C395</string>
-				<string>01498B321B01027E00C7C395</string>
-			</array>
-			<key>defaultConfigurationIsVisible</key>
-			<string>0</string>
-			<key>defaultConfigurationName</key>
-			<string>Release</string>
-			<key>isa</key>
-			<string>XCConfigurationList</string>
-		</dict>
-		<key>01498B101B01027E00C7C395</key>
-		<dict>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>files</key>
-			<array>
-				<string>01DD394B1B0A70FD000D925D</string>
-				<string>0190BF381B0CFC3D00E508CF</string>
-				<string>01498B1C1B01027E00C7C395</string>
-				<string>01EE0C561B0F7ADA00AA4C10</string>
-				<string>01498B1A1B01027E00C7C395</string>
-				<string>0170E44C1B0526CD00D593C3</string>
-				<string>0170E44A1B04EDE800D593C3</string>
-				<string>0170E43E1B026D8000D593C3</string>
-				<string>0190BF361B0CD53700E508CF</string>
-				<string>013C5A131B012E06002C4020</string>
-				<string>0170E43C1B0259C400D593C3</string>
-				<string>0190BF321B0B899800E508CF</string>
-				<string>0170E4401B02962F00D593C3</string>
-				<string>0170E4481B04E37C00D593C3</string>
-				<string>0170E4541B0542A900D593C3</string>
-				<string>0170E4441B02985100D593C3</string>
-				<string>01EE0C441B0E2B7800AA4C10</string>
-				<string>01EE0C591B0F865E00AA4C10</string>
-				<string>0126AAB71B0E211500B3907E</string>
-				<string>0170E4551B0542A900D593C3</string>
-				<string>0170E44E1B052A2200D593C3</string>
-			</array>
-			<key>isa</key>
-			<string>PBXSourcesBuildPhase</string>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-		</dict>
-		<key>01498B111B01027E00C7C395</key>
-		<dict>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>files</key>
-			<array>
-				<string>01498B9A1B011D7C00C7C395</string>
-				<string>01498B981B011D7000C7C395</string>
-				<string>01498B961B011D6100C7C395</string>
-				<string>01498B941B011D5600C7C395</string>
-				<string>01498B801B01183A00C7C395</string>
-				<string>01498B7E1B01183300C7C395</string>
-				<string>01498B911B011D4600C7C395</string>
-				<string>01498B7C1B01182B00C7C395</string>
-				<string>01498B7A1B01182500C7C395</string>
-				<string>01498B781B01182000C7C395</string>
-				<string>01498B761B01181900C7C395</string>
-				<string>01EE0C481B0E2F0200AA4C10</string>
-				<string>01498B741B01181400C7C395</string>
-				<string>01498B721B01180A00C7C395</string>
-				<string>01498B921B011D4700C7C395</string>
-				<string>01498B6F1B0117FF00C7C395</string>
-				<string>01498B701B0117FF00C7C395</string>
-				<string>BFC762EDEA775168E0305151</string>
-			</array>
-			<key>isa</key>
-			<string>PBXFrameworksBuildPhase</string>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-		</dict>
-		<key>01498B121B01027E00C7C395</key>
-		<dict>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>files</key>
-			<array>
-				<string>01EE0C521B0E301A00AA4C10</string>
-				<string>01498B211B01027E00C7C395</string>
-				<string>01EE0C531B0E301A00AA4C10</string>
-			</array>
-			<key>isa</key>
-			<string>PBXResourcesBuildPhase</string>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-		</dict>
-		<key>01498B131B01027E00C7C395</key>
-		<dict>
-			<key>buildConfigurationList</key>
-			<string>01498B331B01027E00C7C395</string>
-			<key>buildPhases</key>
-			<array>
-				<string>A4D8E4E86763A5A291A749C0</string>
-				<string>01498B101B01027E00C7C395</string>
-				<string>01498B111B01027E00C7C395</string>
-				<string>01498B121B01027E00C7C395</string>
-				<string>BAE4BBF613F21C416523835B</string>
-			</array>
-			<key>buildRules</key>
-			<array/>
-			<key>dependencies</key>
-			<array/>
-			<key>isa</key>
-			<string>PBXNativeTarget</string>
-			<key>name</key>
-			<string>Trackerati</string>
-			<key>productName</key>
-			<string>Trackerati</string>
-			<key>productReference</key>
-			<string>01498B141B01027E00C7C395</string>
-			<key>productType</key>
-			<string>com.apple.product-type.application</string>
-		</dict>
-		<key>01498B141B01027E00C7C395</key>
-		<dict>
-			<key>explicitFileType</key>
-			<string>wrapper.application</string>
-			<key>includeInIndex</key>
-			<string>0</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>path</key>
-			<string>Trackerati.app</string>
-			<key>sourceTree</key>
-			<string>BUILT_PRODUCTS_DIR</string>
-		</dict>
-		<key>01498B151B01027E00C7C395</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>01498B141B01027E00C7C395</string>
-				<string>01498B291B01027E00C7C395</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>name</key>
-			<string>Products</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>01498B161B01027E00C7C395</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>01498B3A1B0104CF00C7C395</string>
-				<string>0170E4421B02984200D593C3</string>
-				<string>01498B3D1B0114C800C7C395</string>
-				<string>013C5A111B012E06002C4020</string>
-				<string>01498B3B1B0104DE00C7C395</string>
-				<string>01498B391B0104C400C7C395</string>
-				<string>0170E4511B0542A900D593C3</string>
-				<string>01498B171B01027E00C7C395</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>path</key>
-			<string>Trackerati</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>01498B171B01027E00C7C395</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>01498B3C1B01052700C7C395</string>
-				<string>01498B181B01027E00C7C395</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>path</key>
-			<string>Supporting Files</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>01498B181B01027E00C7C395</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>text.plist.xml</string>
-			<key>path</key>
-			<string>Info.plist</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>01498B191B01027E00C7C395</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.swift</string>
-			<key>path</key>
-			<string>AppDelegate.swift</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>01498B1A1B01027E00C7C395</key>
-		<dict>
-			<key>fileRef</key>
-			<string>01498B191B01027E00C7C395</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>01498B1B1B01027E00C7C395</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.swift</string>
-			<key>path</key>
-			<string>MainViewController.swift</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>01498B1C1B01027E00C7C395</key>
-		<dict>
-			<key>fileRef</key>
-			<string>01498B1B1B01027E00C7C395</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>01498B201B01027E00C7C395</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>folder.assetcatalog</string>
-			<key>path</key>
-			<string>Images.xcassets</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>01498B211B01027E00C7C395</key>
-		<dict>
-			<key>fileRef</key>
-			<string>01498B201B01027E00C7C395</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>01498B251B01027E00C7C395</key>
-		<dict>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>files</key>
-			<array>
-				<string>01498B301B01027E00C7C395</string>
-			</array>
-			<key>isa</key>
-			<string>PBXSourcesBuildPhase</string>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-		</dict>
-		<key>01498B261B01027E00C7C395</key>
-		<dict>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>files</key>
-			<array/>
-			<key>isa</key>
-			<string>PBXFrameworksBuildPhase</string>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-		</dict>
-		<key>01498B271B01027E00C7C395</key>
-		<dict>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>files</key>
-			<array/>
-			<key>isa</key>
-			<string>PBXResourcesBuildPhase</string>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-		</dict>
-		<key>01498B281B01027E00C7C395</key>
-		<dict>
-			<key>buildConfigurationList</key>
-			<string>01498B361B01027E00C7C395</string>
-			<key>buildPhases</key>
-			<array>
-				<string>01498B251B01027E00C7C395</string>
-				<string>01498B261B01027E00C7C395</string>
-				<string>01498B271B01027E00C7C395</string>
-			</array>
-			<key>buildRules</key>
-			<array/>
-			<key>dependencies</key>
-			<array>
-				<string>01498B2B1B01027E00C7C395</string>
-			</array>
-			<key>isa</key>
-			<string>PBXNativeTarget</string>
-			<key>name</key>
-			<string>TrackeratiTests</string>
-			<key>productName</key>
-			<string>TrackeratiTests</string>
-			<key>productReference</key>
-			<string>01498B291B01027E00C7C395</string>
-			<key>productType</key>
-			<string>com.apple.product-type.bundle.unit-test</string>
-		</dict>
-		<key>01498B291B01027E00C7C395</key>
-		<dict>
-			<key>explicitFileType</key>
-			<string>wrapper.cfbundle</string>
-			<key>includeInIndex</key>
-			<string>0</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>path</key>
-			<string>TrackeratiTests.xctest</string>
-			<key>sourceTree</key>
-			<string>BUILT_PRODUCTS_DIR</string>
-		</dict>
-		<key>01498B2A1B01027E00C7C395</key>
-		<dict>
-			<key>containerPortal</key>
-			<string>01498B0C1B01027E00C7C395</string>
-			<key>isa</key>
-			<string>PBXContainerItemProxy</string>
-			<key>proxyType</key>
-			<string>1</string>
-			<key>remoteGlobalIDString</key>
-			<string>01498B131B01027E00C7C395</string>
-			<key>remoteInfo</key>
-			<string>Trackerati</string>
-		</dict>
-		<key>01498B2B1B01027E00C7C395</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXTargetDependency</string>
-			<key>target</key>
-			<string>01498B131B01027E00C7C395</string>
-			<key>targetProxy</key>
-			<string>01498B2A1B01027E00C7C395</string>
-		</dict>
-		<key>01498B2C1B01027E00C7C395</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>01498B2F1B01027E00C7C395</string>
-				<string>01498B2D1B01027E00C7C395</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>path</key>
-			<string>TrackeratiTests</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>01498B2D1B01027E00C7C395</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>01498B2E1B01027E00C7C395</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>path</key>
-			<string>Supporting Files</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>01498B2E1B01027E00C7C395</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>text.plist.xml</string>
-			<key>path</key>
-			<string>Info.plist</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>01498B2F1B01027E00C7C395</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.swift</string>
-			<key>path</key>
-			<string>TrackeratiTests.swift</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>01498B301B01027E00C7C395</key>
-		<dict>
-			<key>fileRef</key>
-			<string>01498B2F1B01027E00C7C395</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>01498B311B01027E00C7C395</key>
-		<dict>
-			<key>buildSettings</key>
-			<dict>
-				<key>ALWAYS_SEARCH_USER_PATHS</key>
-				<string>NO</string>
-				<key>CLANG_CXX_LANGUAGE_STANDARD</key>
-				<string>gnu++0x</string>
-				<key>CLANG_CXX_LIBRARY</key>
-				<string>libc++</string>
-				<key>CLANG_ENABLE_MODULES</key>
-				<string>YES</string>
-				<key>CLANG_ENABLE_OBJC_ARC</key>
-				<string>YES</string>
-				<key>CLANG_WARN_BOOL_CONVERSION</key>
-				<string>YES</string>
-				<key>CLANG_WARN_CONSTANT_CONVERSION</key>
-				<string>YES</string>
-				<key>CLANG_WARN_DIRECT_OBJC_ISA_USAGE</key>
-				<string>YES_ERROR</string>
-				<key>CLANG_WARN_EMPTY_BODY</key>
-				<string>YES</string>
-				<key>CLANG_WARN_ENUM_CONVERSION</key>
-				<string>YES</string>
-				<key>CLANG_WARN_INT_CONVERSION</key>
-				<string>YES</string>
-				<key>CLANG_WARN_OBJC_ROOT_CLASS</key>
-				<string>YES_ERROR</string>
-				<key>CLANG_WARN_UNREACHABLE_CODE</key>
-				<string>YES</string>
-				<key>CLANG_WARN__DUPLICATE_METHOD_MATCH</key>
-				<string>YES</string>
-				<key>CODE_SIGN_IDENTITY[sdk=iphoneos*]</key>
-				<string>iPhone Developer</string>
-				<key>COPY_PHASE_STRIP</key>
-				<string>NO</string>
-				<key>DEBUG_INFORMATION_FORMAT</key>
-				<string>dwarf-with-dsym</string>
-				<key>ENABLE_STRICT_OBJC_MSGSEND</key>
-				<string>YES</string>
-				<key>GCC_C_LANGUAGE_STANDARD</key>
-				<string>gnu99</string>
-				<key>GCC_DYNAMIC_NO_PIC</key>
-				<string>NO</string>
-				<key>GCC_NO_COMMON_BLOCKS</key>
-				<string>YES</string>
-				<key>GCC_OPTIMIZATION_LEVEL</key>
-				<string>0</string>
-				<key>GCC_PRECOMPILE_PREFIX_HEADER</key>
-				<string>YES</string>
-				<key>GCC_PREFIX_HEADER</key>
-				<string>Trackerati/Supporting Files/Trackerati-PrefixHeader.pch</string>
-				<key>GCC_PREPROCESSOR_DEFINITIONS</key>
-				<array>
-					<string>DEBUG=1</string>
-					<string>$(inherited)</string>
-				</array>
-				<key>GCC_SYMBOLS_PRIVATE_EXTERN</key>
-				<string>NO</string>
-				<key>GCC_WARN_64_TO_32_BIT_CONVERSION</key>
-				<string>YES</string>
-				<key>GCC_WARN_ABOUT_RETURN_TYPE</key>
-				<string>YES_ERROR</string>
-				<key>GCC_WARN_UNDECLARED_SELECTOR</key>
-				<string>YES</string>
-				<key>GCC_WARN_UNINITIALIZED_AUTOS</key>
-				<string>YES_AGGRESSIVE</string>
-				<key>GCC_WARN_UNUSED_FUNCTION</key>
-				<string>YES</string>
-				<key>GCC_WARN_UNUSED_VARIABLE</key>
-				<string>YES</string>
-				<key>IPHONEOS_DEPLOYMENT_TARGET</key>
-				<string>8.3</string>
-				<key>MTL_ENABLE_DEBUG_INFO</key>
-				<string>YES</string>
-				<key>ONLY_ACTIVE_ARCH</key>
-				<string>YES</string>
-				<key>SDKROOT</key>
-				<string>iphoneos</string>
-				<key>SWIFT_OPTIMIZATION_LEVEL</key>
-				<string>-Onone</string>
-				<key>TARGETED_DEVICE_FAMILY</key>
-				<string>1,2</string>
-			</dict>
-			<key>isa</key>
-			<string>XCBuildConfiguration</string>
-			<key>name</key>
-			<string>Debug</string>
-		</dict>
-		<key>01498B321B01027E00C7C395</key>
-		<dict>
-			<key>buildSettings</key>
-			<dict>
-				<key>ALWAYS_SEARCH_USER_PATHS</key>
-				<string>NO</string>
-				<key>CLANG_CXX_LANGUAGE_STANDARD</key>
-				<string>gnu++0x</string>
-				<key>CLANG_CXX_LIBRARY</key>
-				<string>libc++</string>
-				<key>CLANG_ENABLE_MODULES</key>
-				<string>YES</string>
-				<key>CLANG_ENABLE_OBJC_ARC</key>
-				<string>YES</string>
-				<key>CLANG_WARN_BOOL_CONVERSION</key>
-				<string>YES</string>
-				<key>CLANG_WARN_CONSTANT_CONVERSION</key>
-				<string>YES</string>
-				<key>CLANG_WARN_DIRECT_OBJC_ISA_USAGE</key>
-				<string>YES_ERROR</string>
-				<key>CLANG_WARN_EMPTY_BODY</key>
-				<string>YES</string>
-				<key>CLANG_WARN_ENUM_CONVERSION</key>
-				<string>YES</string>
-				<key>CLANG_WARN_INT_CONVERSION</key>
-				<string>YES</string>
-				<key>CLANG_WARN_OBJC_ROOT_CLASS</key>
-				<string>YES_ERROR</string>
-				<key>CLANG_WARN_UNREACHABLE_CODE</key>
-				<string>YES</string>
-				<key>CLANG_WARN__DUPLICATE_METHOD_MATCH</key>
-				<string>YES</string>
-				<key>CODE_SIGN_IDENTITY[sdk=iphoneos*]</key>
-				<string>iPhone Developer</string>
-				<key>COPY_PHASE_STRIP</key>
-				<string>NO</string>
-				<key>DEBUG_INFORMATION_FORMAT</key>
-				<string>dwarf-with-dsym</string>
-				<key>ENABLE_NS_ASSERTIONS</key>
-				<string>NO</string>
-				<key>ENABLE_STRICT_OBJC_MSGSEND</key>
-				<string>YES</string>
-				<key>GCC_C_LANGUAGE_STANDARD</key>
-				<string>gnu99</string>
-				<key>GCC_NO_COMMON_BLOCKS</key>
-				<string>YES</string>
-				<key>GCC_PRECOMPILE_PREFIX_HEADER</key>
-				<string>YES</string>
-				<key>GCC_PREFIX_HEADER</key>
-				<string>Trackerati/Supporting Files/Trackerati-PrefixHeader.pch</string>
-				<key>GCC_WARN_64_TO_32_BIT_CONVERSION</key>
-				<string>YES</string>
-				<key>GCC_WARN_ABOUT_RETURN_TYPE</key>
-				<string>YES_ERROR</string>
-				<key>GCC_WARN_UNDECLARED_SELECTOR</key>
-				<string>YES</string>
-				<key>GCC_WARN_UNINITIALIZED_AUTOS</key>
-				<string>YES_AGGRESSIVE</string>
-				<key>GCC_WARN_UNUSED_FUNCTION</key>
-				<string>YES</string>
-				<key>GCC_WARN_UNUSED_VARIABLE</key>
-				<string>YES</string>
-				<key>IPHONEOS_DEPLOYMENT_TARGET</key>
-				<string>8.3</string>
-				<key>MTL_ENABLE_DEBUG_INFO</key>
-				<string>NO</string>
-				<key>SDKROOT</key>
-				<string>iphoneos</string>
-				<key>TARGETED_DEVICE_FAMILY</key>
-				<string>1,2</string>
-				<key>VALIDATE_PRODUCT</key>
-				<string>YES</string>
-			</dict>
-			<key>isa</key>
-			<string>XCBuildConfiguration</string>
-			<key>name</key>
-			<string>Release</string>
-		</dict>
-		<key>01498B331B01027E00C7C395</key>
-		<dict>
-			<key>buildConfigurations</key>
-			<array>
-				<string>01498B341B01027E00C7C395</string>
-				<string>01498B351B01027E00C7C395</string>
-			</array>
-			<key>defaultConfigurationIsVisible</key>
-			<string>0</string>
-			<key>defaultConfigurationName</key>
-			<string>Release</string>
-			<key>isa</key>
-			<string>XCConfigurationList</string>
-		</dict>
-		<key>01498B341B01027E00C7C395</key>
-		<dict>
-			<key>baseConfigurationReference</key>
-			<string>FC4437DDCAA1EBF64F6F5D62</string>
-			<key>buildSettings</key>
-			<dict>
-				<key>ASSETCATALOG_COMPILER_APPICON_NAME</key>
-				<string>AppIcon</string>
-				<key>ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME</key>
-				<string>LaunchImage</string>
-				<key>FRAMEWORK_SEARCH_PATHS</key>
-				<array>
-					<string>$(inherited)</string>
-					<string>$(PROJECT_DIR)/Trackerati/HockeySDK-iOS/HockeySDK.embeddedframework</string>
-					<string>$(PROJECT_DIR)/Trackerati/HockeySDK-iOS/HockeySDKCrashOnly</string>
-					<string>$(PROJECT_DIR)/Trackerati/Frameworks/HockeySDK-iOS/HockeySDK.embeddedframework</string>
-					<string>$(PROJECT_DIR)/Trackerati/Frameworks/HockeySDK.embeddedframework</string>
-					<string>$(PROJECT_DIR)/Trackerati/Frameworks</string>
-				</array>
-				<key>GCC_PRECOMPILE_PREFIX_HEADER</key>
-				<string>NO</string>
-				<key>GCC_PREFIX_HEADER</key>
-				<string></string>
-				<key>INFOPLIST_FILE</key>
-				<string>Trackerati/Supporting Files/Info.plist</string>
-				<key>IPHONEOS_DEPLOYMENT_TARGET</key>
-				<string>8.0</string>
-				<key>LD_RUNPATH_SEARCH_PATHS</key>
-				<string>$(inherited) @executable_path/Frameworks</string>
-				<key>OTHER_SWIFT_FLAGS</key>
-				<string>-DDEBUG</string>
-				<key>PRODUCT_NAME</key>
-				<string>$(TARGET_NAME)</string>
-				<key>SWIFT_OBJC_BRIDGING_HEADER</key>
-				<string>Trackerati/Supporting Files/Trackerati-BridgingHeader.h</string>
-			</dict>
-			<key>isa</key>
-			<string>XCBuildConfiguration</string>
-			<key>name</key>
-			<string>Debug</string>
-		</dict>
-		<key>01498B351B01027E00C7C395</key>
-		<dict>
-			<key>baseConfigurationReference</key>
-			<string>3587A3B08253D04AD27B6510</string>
-			<key>buildSettings</key>
-			<dict>
-				<key>ASSETCATALOG_COMPILER_APPICON_NAME</key>
-				<string>AppIcon</string>
-				<key>ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME</key>
-				<string>LaunchImage</string>
-				<key>FRAMEWORK_SEARCH_PATHS</key>
-				<array>
-					<string>$(inherited)</string>
-					<string>$(PROJECT_DIR)/Trackerati/HockeySDK-iOS/HockeySDK.embeddedframework</string>
-					<string>$(PROJECT_DIR)/Trackerati/HockeySDK-iOS/HockeySDKCrashOnly</string>
-					<string>$(PROJECT_DIR)/Trackerati/Frameworks/HockeySDK-iOS/HockeySDK.embeddedframework</string>
-					<string>$(PROJECT_DIR)/Trackerati/Frameworks/HockeySDK.embeddedframework</string>
-					<string>$(PROJECT_DIR)/Trackerati/Frameworks</string>
-				</array>
-				<key>GCC_PRECOMPILE_PREFIX_HEADER</key>
-				<string>NO</string>
-				<key>GCC_PREFIX_HEADER</key>
-				<string></string>
-				<key>INFOPLIST_FILE</key>
-				<string>Trackerati/Supporting Files/Info.plist</string>
-				<key>IPHONEOS_DEPLOYMENT_TARGET</key>
-				<string>8.0</string>
-				<key>LD_RUNPATH_SEARCH_PATHS</key>
-				<string>$(inherited) @executable_path/Frameworks</string>
-				<key>OTHER_SWIFT_FLAGS</key>
-				<string>-DRELEASE</string>
-				<key>PRODUCT_NAME</key>
-				<string>$(TARGET_NAME)</string>
-				<key>SWIFT_OBJC_BRIDGING_HEADER</key>
-				<string>Trackerati/Supporting Files/Trackerati-BridgingHeader.h</string>
-			</dict>
-			<key>isa</key>
-			<string>XCBuildConfiguration</string>
-			<key>name</key>
-			<string>Release</string>
-		</dict>
-		<key>01498B361B01027E00C7C395</key>
-		<dict>
-			<key>buildConfigurations</key>
-			<array>
-				<string>01498B371B01027E00C7C395</string>
-				<string>01498B381B01027E00C7C395</string>
-			</array>
-			<key>defaultConfigurationIsVisible</key>
-			<string>0</string>
-			<key>defaultConfigurationName</key>
-			<string>Release</string>
-			<key>isa</key>
-			<string>XCConfigurationList</string>
-		</dict>
-		<key>01498B371B01027E00C7C395</key>
-		<dict>
-			<key>buildSettings</key>
-			<dict>
-				<key>BUNDLE_LOADER</key>
-				<string>$(TEST_HOST)</string>
-				<key>FRAMEWORK_SEARCH_PATHS</key>
-				<array>
-					<string>$(SDKROOT)/Developer/Library/Frameworks</string>
-					<string>$(inherited)</string>
-				</array>
-				<key>GCC_PREPROCESSOR_DEFINITIONS</key>
-				<array>
-					<string>DEBUG=1</string>
-					<string>$(inherited)</string>
-				</array>
-				<key>INFOPLIST_FILE</key>
-				<string>TrackeratiTests/Supporting Files/Info.plist</string>
-				<key>LD_RUNPATH_SEARCH_PATHS</key>
-				<string>$(inherited) @executable_path/Frameworks @loader_path/Frameworks</string>
-				<key>PRODUCT_NAME</key>
-				<string>$(TARGET_NAME)</string>
-				<key>TEST_HOST</key>
-				<string>$(BUILT_PRODUCTS_DIR)/Trackerati.app/Trackerati</string>
-			</dict>
-			<key>isa</key>
-			<string>XCBuildConfiguration</string>
-			<key>name</key>
-			<string>Debug</string>
-		</dict>
-		<key>01498B381B01027E00C7C395</key>
-		<dict>
-			<key>buildSettings</key>
-			<dict>
-				<key>BUNDLE_LOADER</key>
-				<string>$(TEST_HOST)</string>
-				<key>FRAMEWORK_SEARCH_PATHS</key>
-				<array>
-					<string>$(SDKROOT)/Developer/Library/Frameworks</string>
-					<string>$(inherited)</string>
-				</array>
-				<key>INFOPLIST_FILE</key>
-				<string>TrackeratiTests/Supporting Files/Info.plist</string>
-				<key>LD_RUNPATH_SEARCH_PATHS</key>
-				<string>$(inherited) @executable_path/Frameworks @loader_path/Frameworks</string>
-				<key>PRODUCT_NAME</key>
-				<string>$(TARGET_NAME)</string>
-				<key>TEST_HOST</key>
-				<string>$(BUILT_PRODUCTS_DIR)/Trackerati.app/Trackerati</string>
-			</dict>
-			<key>isa</key>
-			<string>XCBuildConfiguration</string>
-			<key>name</key>
-			<string>Release</string>
-		</dict>
-		<key>01498B391B0104C400C7C395</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>01EE0C541B0F7AC400AA4C10</string>
-				<string>01EE0C4E1B0E2F8700AA4C10</string>
-				<string>01EE0C491B0E2F2E00AA4C10</string>
-				<string>01EE0C4D1B0E2F7500AA4C10</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>path</key>
-			<string>View Controllers</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>01498B3A1B0104CF00C7C395</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>01498B191B01027E00C7C395</string>
-				<string>0170E43B1B0259C400D593C3</string>
-				<string>0170E43F1B02962F00D593C3</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>path</key>
-			<string>Application</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>01498B3B1B0104DE00C7C395</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>01498B201B01027E00C7C395</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>path</key>
-			<string>Resources</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>01498B3C1B01052700C7C395</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.c.h</string>
-			<key>path</key>
-			<string>Trackerati-BridgingHeader.h</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>01498B3D1B0114C800C7C395</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>01EE0C451B0E2F0200AA4C10</string>
-				<string>01498B8F1B011D4600C7C395</string>
-				<string>01498B901B011D4600C7C395</string>
-				<string>01498B7F1B01183A00C7C395</string>
-				<string>01498B7D1B01183300C7C395</string>
-				<string>01498B7B1B01182B00C7C395</string>
-				<string>01498B791B01182500C7C395</string>
-				<string>01498B771B01182000C7C395</string>
-				<string>01498B751B01181900C7C395</string>
-				<string>01498B731B01181400C7C395</string>
-				<string>01498B711B01180A00C7C395</string>
-				<string>01498B6D1B0117FF00C7C395</string>
-				<string>01498B6E1B0117FF00C7C395</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>path</key>
-			<string>Frameworks</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>01498B6D1B0117FF00C7C395</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>wrapper.framework</string>
-			<key>name</key>
-			<string>CoreGraphics.framework</string>
-			<key>path</key>
-			<string>System/Library/Frameworks/CoreGraphics.framework</string>
-			<key>sourceTree</key>
-			<string>SDKROOT</string>
-		</dict>
-		<key>01498B6E1B0117FF00C7C395</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>wrapper.framework</string>
-			<key>name</key>
-			<string>CoreText.framework</string>
-			<key>path</key>
-			<string>System/Library/Frameworks/CoreText.framework</string>
-			<key>sourceTree</key>
-			<string>SDKROOT</string>
-		</dict>
-		<key>01498B6F1B0117FF00C7C395</key>
-		<dict>
-			<key>fileRef</key>
-			<string>01498B6D1B0117FF00C7C395</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>01498B701B0117FF00C7C395</key>
-		<dict>
-			<key>fileRef</key>
-			<string>01498B6E1B0117FF00C7C395</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>01498B711B01180A00C7C395</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>wrapper.framework</string>
-			<key>name</key>
-			<string>AssetsLibrary.framework</string>
-			<key>path</key>
-			<string>System/Library/Frameworks/AssetsLibrary.framework</string>
-			<key>sourceTree</key>
-			<string>SDKROOT</string>
-		</dict>
-		<key>01498B721B01180A00C7C395</key>
-		<dict>
-			<key>fileRef</key>
-			<string>01498B711B01180A00C7C395</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>01498B731B01181400C7C395</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>wrapper.framework</string>
-			<key>name</key>
-			<string>Foundation.framework</string>
-			<key>path</key>
-			<string>System/Library/Frameworks/Foundation.framework</string>
-			<key>sourceTree</key>
-			<string>SDKROOT</string>
-		</dict>
-		<key>01498B741B01181400C7C395</key>
-		<dict>
-			<key>fileRef</key>
-			<string>01498B731B01181400C7C395</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>01498B751B01181900C7C395</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>wrapper.framework</string>
-			<key>name</key>
-			<string>MobileCoreServices.framework</string>
-			<key>path</key>
-			<string>System/Library/Frameworks/MobileCoreServices.framework</string>
-			<key>sourceTree</key>
-			<string>SDKROOT</string>
-		</dict>
-		<key>01498B761B01181900C7C395</key>
-		<dict>
-			<key>fileRef</key>
-			<string>01498B751B01181900C7C395</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>01498B771B01182000C7C395</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>wrapper.framework</string>
-			<key>name</key>
-			<string>QuartzCore.framework</string>
-			<key>path</key>
-			<string>System/Library/Frameworks/QuartzCore.framework</string>
-			<key>sourceTree</key>
-			<string>SDKROOT</string>
-		</dict>
-		<key>01498B781B01182000C7C395</key>
-		<dict>
-			<key>fileRef</key>
-			<string>01498B771B01182000C7C395</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>01498B791B01182500C7C395</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>wrapper.framework</string>
-			<key>name</key>
-			<string>QuickLook.framework</string>
-			<key>path</key>
-			<string>System/Library/Frameworks/QuickLook.framework</string>
-			<key>sourceTree</key>
-			<string>SDKROOT</string>
-		</dict>
-		<key>01498B7A1B01182500C7C395</key>
-		<dict>
-			<key>fileRef</key>
-			<string>01498B791B01182500C7C395</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>01498B7B1B01182B00C7C395</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>wrapper.framework</string>
-			<key>name</key>
-			<string>Security.framework</string>
-			<key>path</key>
-			<string>System/Library/Frameworks/Security.framework</string>
-			<key>sourceTree</key>
-			<string>SDKROOT</string>
-		</dict>
-		<key>01498B7C1B01182B00C7C395</key>
-		<dict>
-			<key>fileRef</key>
-			<string>01498B7B1B01182B00C7C395</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>01498B7D1B01183300C7C395</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>wrapper.framework</string>
-			<key>name</key>
-			<string>SystemConfiguration.framework</string>
-			<key>path</key>
-			<string>System/Library/Frameworks/SystemConfiguration.framework</string>
-			<key>sourceTree</key>
-			<string>SDKROOT</string>
-		</dict>
-		<key>01498B7E1B01183300C7C395</key>
-		<dict>
-			<key>fileRef</key>
-			<string>01498B7D1B01183300C7C395</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>01498B7F1B01183A00C7C395</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>wrapper.framework</string>
-			<key>name</key>
-			<string>UIKit.framework</string>
-			<key>path</key>
-			<string>System/Library/Frameworks/UIKit.framework</string>
-			<key>sourceTree</key>
-			<string>SDKROOT</string>
-		</dict>
-		<key>01498B801B01183A00C7C395</key>
-		<dict>
-			<key>fileRef</key>
-			<string>01498B7F1B01183A00C7C395</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>01498B8F1B011D4600C7C395</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>wrapper.framework</string>
-			<key>path</key>
-			<string>GoogleOpenSource.framework</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>01498B901B011D4600C7C395</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>wrapper.framework</string>
-			<key>path</key>
-			<string>GooglePlus.framework</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>01498B911B011D4600C7C395</key>
-		<dict>
-			<key>fileRef</key>
-			<string>01498B8F1B011D4600C7C395</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>01498B921B011D4700C7C395</key>
-		<dict>
-			<key>fileRef</key>
-			<string>01498B901B011D4600C7C395</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>01498B931B011D5600C7C395</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>wrapper.framework</string>
-			<key>name</key>
-			<string>AddressBook.framework</string>
-			<key>path</key>
-			<string>System/Library/Frameworks/AddressBook.framework</string>
-			<key>sourceTree</key>
-			<string>SDKROOT</string>
-		</dict>
-		<key>01498B941B011D5600C7C395</key>
-		<dict>
-			<key>fileRef</key>
-			<string>01498B931B011D5600C7C395</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>01498B951B011D6100C7C395</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>wrapper.framework</string>
-			<key>name</key>
-			<string>CoreLocation.framework</string>
-			<key>path</key>
-			<string>System/Library/Frameworks/CoreLocation.framework</string>
-			<key>sourceTree</key>
-			<string>SDKROOT</string>
-		</dict>
-		<key>01498B961B011D6100C7C395</key>
-		<dict>
-			<key>fileRef</key>
-			<string>01498B951B011D6100C7C395</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>01498B971B011D7000C7C395</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>wrapper.framework</string>
-			<key>name</key>
-			<string>CoreMotion.framework</string>
-			<key>path</key>
-			<string>System/Library/Frameworks/CoreMotion.framework</string>
-			<key>sourceTree</key>
-			<string>SDKROOT</string>
-		</dict>
-		<key>01498B981B011D7000C7C395</key>
-		<dict>
-			<key>fileRef</key>
-			<string>01498B971B011D7000C7C395</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>01498B991B011D7C00C7C395</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>wrapper.framework</string>
-			<key>name</key>
-			<string>MediaPlayer.framework</string>
-			<key>path</key>
-			<string>System/Library/Frameworks/MediaPlayer.framework</string>
-			<key>sourceTree</key>
-			<string>SDKROOT</string>
-		</dict>
-		<key>01498B9A1B011D7C00C7C395</key>
-		<dict>
-			<key>fileRef</key>
-			<string>01498B991B011D7C00C7C395</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>0170E43B1B0259C400D593C3</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.swift</string>
-			<key>path</key>
-			<string>TrackeratiUserDefaults.swift</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>0170E43C1B0259C400D593C3</key>
-		<dict>
-			<key>fileRef</key>
-			<string>0170E43B1B0259C400D593C3</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>0170E43D1B026D8000D593C3</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.swift</string>
-			<key>path</key>
-			<string>FirebaseManager.swift</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>0170E43E1B026D8000D593C3</key>
-		<dict>
-			<key>fileRef</key>
-			<string>0170E43D1B026D8000D593C3</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>0170E43F1B02962F00D593C3</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.swift</string>
-			<key>path</key>
-			<string>Constants.swift</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>0170E4401B02962F00D593C3</key>
-		<dict>
-			<key>fileRef</key>
-			<string>0170E43F1B02962F00D593C3</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>0170E4421B02984200D593C3</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>01EE0C571B0F864A00AA4C10</string>
-				<string>0170E4431B02985100D593C3</string>
-				<string>0190BF311B0B899800E508CF</string>
-				<string>0190BF351B0CD53700E508CF</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>path</key>
-			<string>Models</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>0170E4431B02985100D593C3</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.swift</string>
-			<key>path</key>
-			<string>User.swift</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>0170E4441B02985100D593C3</key>
-		<dict>
-			<key>fileRef</key>
-			<string>0170E4431B02985100D593C3</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>0170E4471B04E37C00D593C3</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.swift</string>
-			<key>path</key>
-			<string>SideMenuViewController.swift</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>0170E4481B04E37C00D593C3</key>
-		<dict>
-			<key>fileRef</key>
-			<string>0170E4471B04E37C00D593C3</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>0170E4491B04EDE800D593C3</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.swift</string>
-			<key>path</key>
-			<string>ContainerViewController.swift</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>0170E44A1B04EDE800D593C3</key>
-		<dict>
-			<key>fileRef</key>
-			<string>0170E4491B04EDE800D593C3</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>0170E44B1B0526CD00D593C3</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.swift</string>
-			<key>path</key>
-			<string>SettingsViewController.swift</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>0170E44C1B0526CD00D593C3</key>
-		<dict>
-			<key>fileRef</key>
-			<string>0170E44B1B0526CD00D593C3</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>0170E44D1B052A2200D593C3</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.swift</string>
-			<key>path</key>
-			<string>HomeViewController.swift</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>0170E44E1B052A2200D593C3</key>
-		<dict>
-			<key>fileRef</key>
-			<string>0170E44D1B052A2200D593C3</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>0170E4511B0542A900D593C3</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>01EE0C4A1B0E2F3600AA4C10</string>
-				<string>01DD394A1B0A70FD000D925D</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>path</key>
-			<string>Views</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>0170E4521B0542A900D593C3</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.swift</string>
-			<key>path</key>
-			<string>LoginScreen.swift</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>0170E4531B0542A900D593C3</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.swift</string>
-			<key>path</key>
-			<string>SwitchDatePickerCell.swift</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>0170E4541B0542A900D593C3</key>
-		<dict>
-			<key>fileRef</key>
-			<string>0170E4521B0542A900D593C3</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>0170E4551B0542A900D593C3</key>
-		<dict>
-			<key>fileRef</key>
-			<string>0170E4531B0542A900D593C3</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>0190BF311B0B899800E508CF</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.swift</string>
-			<key>path</key>
-			<string>Client.swift</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>0190BF321B0B899800E508CF</key>
-		<dict>
-			<key>fileRef</key>
-			<string>0190BF311B0B899800E508CF</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>0190BF351B0CD53700E508CF</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.swift</string>
-			<key>path</key>
-			<string>Record.swift</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>0190BF361B0CD53700E508CF</key>
-		<dict>
-			<key>fileRef</key>
-			<string>0190BF351B0CD53700E508CF</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>0190BF371B0CFC3D00E508CF</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.swift</string>
-			<key>path</key>
-			<string>ProjectsViewController.swift</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>0190BF381B0CFC3D00E508CF</key>
-		<dict>
-			<key>fileRef</key>
-			<string>0190BF371B0CFC3D00E508CF</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>01DD394A1B0A70FD000D925D</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.swift</string>
-			<key>path</key>
-			<string>SideMenuUserHeaderView.swift</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>01DD394B1B0A70FD000D925D</key>
-		<dict>
-			<key>fileRef</key>
-			<string>01DD394A1B0A70FD000D925D</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>01EE0C431B0E2B7800AA4C10</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.swift</string>
-			<key>path</key>
-			<string>HistoryTableViewCell.swift</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>01EE0C441B0E2B7800AA4C10</key>
-		<dict>
-			<key>fileRef</key>
-			<string>01EE0C431B0E2B7800AA4C10</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>01EE0C451B0E2F0200AA4C10</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>01EE0C461B0E2F0200AA4C10</string>
-				<string>01EE0C4F1B0E301A00AA4C10</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>path</key>
-			<string>HockeySDK.embeddedframework</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>01EE0C461B0E2F0200AA4C10</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>wrapper.framework</string>
-			<key>path</key>
-			<string>HockeySDK.framework</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>01EE0C481B0E2F0200AA4C10</key>
-		<dict>
-			<key>fileRef</key>
-			<string>01EE0C461B0E2F0200AA4C10</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>01EE0C491B0E2F2E00AA4C10</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>0170E4521B0542A900D593C3</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>path</key>
-			<string>Login</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>01EE0C4A1B0E2F3600AA4C10</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>01EE0C4C1B0E2F4E00AA4C10</string>
-				<string>01EE0C4B1B0E2F4300AA4C10</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>path</key>
-			<string>Cells</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>01EE0C4B1B0E2F4300AA4C10</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>0170E4531B0542A900D593C3</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>path</key>
-			<string>Settings</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>01EE0C4C1B0E2F4E00AA4C10</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>01EE0C431B0E2B7800AA4C10</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>path</key>
-			<string>History</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>01EE0C4D1B0E2F7500AA4C10</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>0170E4471B04E37C00D593C3</string>
-				<string>0170E4491B04EDE800D593C3</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>path</key>
-			<string>Containment</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>01EE0C4E1B0E2F8700AA4C10</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>01498B1B1B01027E00C7C395</string>
-				<string>0170E44D1B052A2200D593C3</string>
-				<string>0170E44B1B0526CD00D593C3</string>
-				<string>0190BF371B0CFC3D00E508CF</string>
-				<string>0126AAB61B0E211500B3907E</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>path</key>
-			<string>App Sections</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>01EE0C4F1B0E301A00AA4C10</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>01EE0C501B0E301A00AA4C10</string>
-				<string>01EE0C511B0E301A00AA4C10</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>path</key>
-			<string>Resources</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>01EE0C501B0E301A00AA4C10</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>text.xcconfig</string>
-			<key>path</key>
-			<string>HockeySDK.xcconfig</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>01EE0C511B0E301A00AA4C10</key>
-		<dict>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>wrapper.plug-in</string>
-			<key>path</key>
-			<string>HockeySDKResources.bundle</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>01EE0C521B0E301A00AA4C10</key>
-		<dict>
-			<key>fileRef</key>
-			<string>01EE0C501B0E301A00AA4C10</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>01EE0C531B0E301A00AA4C10</key>
-		<dict>
-			<key>fileRef</key>
-			<string>01EE0C511B0E301A00AA4C10</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>01EE0C541B0F7AC400AA4C10</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>01EE0C551B0F7ADA00AA4C10</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>path</key>
-			<string>Detail</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>01EE0C551B0F7ADA00AA4C10</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.swift</string>
-			<key>path</key>
-			<string>RecordFormViewController.swift</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>01EE0C561B0F7ADA00AA4C10</key>
-		<dict>
-			<key>fileRef</key>
-			<string>01EE0C551B0F7ADA00AA4C10</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>01EE0C571B0F864A00AA4C10</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>01EE0C581B0F865E00AA4C10</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>path</key>
-			<string>Data</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>01EE0C581B0F865E00AA4C10</key>
-		<dict>
-			<key>fileEncoding</key>
-			<string>4</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>sourcecode.swift</string>
-			<key>path</key>
-			<string>HistoryTableViewDataSource.swift</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>01EE0C591B0F865E00AA4C10</key>
-		<dict>
-			<key>fileRef</key>
-			<string>01EE0C581B0F865E00AA4C10</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>049E7FC2BC2B1D9187CEFDEC</key>
-		<dict>
-			<key>explicitFileType</key>
-			<string>archive.ar</string>
-			<key>includeInIndex</key>
-			<string>0</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>path</key>
-			<string>libPods-Trackerati.a</string>
-			<key>sourceTree</key>
-			<string>BUILT_PRODUCTS_DIR</string>
-		</dict>
-		<key>3587A3B08253D04AD27B6510</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>text.xcconfig</string>
-			<key>name</key>
-			<string>Pods-Trackerati.release.xcconfig</string>
-			<key>path</key>
-			<string>../Pods/Target Support Files/Pods-Trackerati/Pods-Trackerati.release.xcconfig</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>3F88CD5D6D5D4B14DF4E0DA7</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>FC4437DDCAA1EBF64F6F5D62</string>
-				<string>3587A3B08253D04AD27B6510</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>name</key>
-			<string>Pods</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>A4D8E4E86763A5A291A749C0</key>
-		<dict>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>files</key>
-			<array/>
-			<key>inputPaths</key>
-			<array/>
-			<key>isa</key>
-			<string>PBXShellScriptBuildPhase</string>
-			<key>name</key>
-			<string>Check Pods Manifest.lock</string>
-			<key>outputPaths</key>
-			<array/>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-			<key>shellPath</key>
-			<string>/bin/sh</string>
-			<key>shellScript</key>
-			<string>diff "${PODS_ROOT}/../Podfile.lock" "${PODS_ROOT}/Manifest.lock" &gt; /dev/null
-if [[ $? != 0 ]] ; then
-    cat &lt;&lt; EOM
-error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.
-EOM
-    exit 1
-fi
-</string>
-			<key>showEnvVarsInLog</key>
-			<string>0</string>
-		</dict>
-		<key>B656BDA259BF38E48D0BDABC</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>01498B991B011D7C00C7C395</string>
-				<string>01498B971B011D7000C7C395</string>
-				<string>01498B951B011D6100C7C395</string>
-				<string>01498B931B011D5600C7C395</string>
-				<string>049E7FC2BC2B1D9187CEFDEC</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>name</key>
-			<string>Frameworks</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-		<key>BAE4BBF613F21C416523835B</key>
-		<dict>
-			<key>buildActionMask</key>
-			<string>2147483647</string>
-			<key>files</key>
-			<array/>
-			<key>inputPaths</key>
-			<array/>
-			<key>isa</key>
-			<string>PBXShellScriptBuildPhase</string>
-			<key>name</key>
-			<string>Copy Pods Resources</string>
-			<key>outputPaths</key>
-			<array/>
-			<key>runOnlyForDeploymentPostprocessing</key>
-			<string>0</string>
-			<key>shellPath</key>
-			<string>/bin/sh</string>
-			<key>shellScript</key>
-			<string>"${SRCROOT}/../Pods/Target Support Files/Pods-Trackerati/Pods-Trackerati-resources.sh"
-</string>
-			<key>showEnvVarsInLog</key>
-			<string>0</string>
-		</dict>
-		<key>BFC762EDEA775168E0305151</key>
-		<dict>
-			<key>fileRef</key>
-			<string>049E7FC2BC2B1D9187CEFDEC</string>
-			<key>isa</key>
-			<string>PBXBuildFile</string>
-		</dict>
-		<key>FC4437DDCAA1EBF64F6F5D62</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>text.xcconfig</string>
-			<key>name</key>
-			<string>Pods-Trackerati.debug.xcconfig</string>
-			<key>path</key>
-			<string>../Pods/Target Support Files/Pods-Trackerati/Pods-Trackerati.debug.xcconfig</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
-		</dict>
-	</dict>
-	<key>rootObject</key>
-	<string>01498B0C1B01027E00C7C395</string>
-</dict>
-</plist>
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0126AAB71B0E211500B3907E /* HistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0126AAB61B0E211500B3907E /* HistoryViewController.swift */; };
+		013C5A131B012E06002C4020 /* GoogleLoginManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 013C5A121B012E06002C4020 /* GoogleLoginManager.swift */; };
+		013F783F1B14EC4B004842B2 /* RecordFormTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 013F783E1B14EC4B004842B2 /* RecordFormTableView.swift */; };
+		013F78431B14F5DB004842B2 /* RecordDetailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 013F78421B14F5DB004842B2 /* RecordDetailTableViewCell.swift */; };
+		01498B1A1B01027E00C7C395 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01498B191B01027E00C7C395 /* AppDelegate.swift */; };
+		01498B1C1B01027E00C7C395 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01498B1B1B01027E00C7C395 /* MainViewController.swift */; };
+		01498B211B01027E00C7C395 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 01498B201B01027E00C7C395 /* Images.xcassets */; };
+		01498B301B01027E00C7C395 /* TrackeratiTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01498B2F1B01027E00C7C395 /* TrackeratiTests.swift */; };
+		01498B6F1B0117FF00C7C395 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01498B6D1B0117FF00C7C395 /* CoreGraphics.framework */; };
+		01498B701B0117FF00C7C395 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01498B6E1B0117FF00C7C395 /* CoreText.framework */; };
+		01498B721B01180A00C7C395 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01498B711B01180A00C7C395 /* AssetsLibrary.framework */; };
+		01498B741B01181400C7C395 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01498B731B01181400C7C395 /* Foundation.framework */; };
+		01498B761B01181900C7C395 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01498B751B01181900C7C395 /* MobileCoreServices.framework */; };
+		01498B781B01182000C7C395 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01498B771B01182000C7C395 /* QuartzCore.framework */; };
+		01498B7A1B01182500C7C395 /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01498B791B01182500C7C395 /* QuickLook.framework */; };
+		01498B7C1B01182B00C7C395 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01498B7B1B01182B00C7C395 /* Security.framework */; };
+		01498B7E1B01183300C7C395 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01498B7D1B01183300C7C395 /* SystemConfiguration.framework */; };
+		01498B801B01183A00C7C395 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01498B7F1B01183A00C7C395 /* UIKit.framework */; };
+		01498B911B011D4600C7C395 /* GoogleOpenSource.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01498B8F1B011D4600C7C395 /* GoogleOpenSource.framework */; };
+		01498B921B011D4700C7C395 /* GooglePlus.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01498B901B011D4600C7C395 /* GooglePlus.framework */; };
+		01498B941B011D5600C7C395 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01498B931B011D5600C7C395 /* AddressBook.framework */; };
+		01498B961B011D6100C7C395 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01498B951B011D6100C7C395 /* CoreLocation.framework */; };
+		01498B981B011D7000C7C395 /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01498B971B011D7000C7C395 /* CoreMotion.framework */; };
+		01498B9A1B011D7C00C7C395 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01498B991B011D7C00C7C395 /* MediaPlayer.framework */; };
+		0170E43C1B0259C400D593C3 /* TrackeratiUserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0170E43B1B0259C400D593C3 /* TrackeratiUserDefaults.swift */; };
+		0170E43E1B026D8000D593C3 /* FirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0170E43D1B026D8000D593C3 /* FirebaseManager.swift */; };
+		0170E4401B02962F00D593C3 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0170E43F1B02962F00D593C3 /* Constants.swift */; };
+		0170E4441B02985100D593C3 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0170E4431B02985100D593C3 /* User.swift */; };
+		0170E4481B04E37C00D593C3 /* SideMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0170E4471B04E37C00D593C3 /* SideMenuViewController.swift */; };
+		0170E44A1B04EDE800D593C3 /* ContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0170E4491B04EDE800D593C3 /* ContainerViewController.swift */; };
+		0170E44C1B0526CD00D593C3 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0170E44B1B0526CD00D593C3 /* SettingsViewController.swift */; };
+		0170E44E1B052A2200D593C3 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0170E44D1B052A2200D593C3 /* HomeViewController.swift */; };
+		0170E4541B0542A900D593C3 /* LoginScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0170E4521B0542A900D593C3 /* LoginScreen.swift */; };
+		0170E4551B0542A900D593C3 /* SwitchDatePickerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0170E4531B0542A900D593C3 /* SwitchDatePickerCell.swift */; };
+		0190BF321B0B899800E508CF /* Client.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0190BF311B0B899800E508CF /* Client.swift */; };
+		0190BF361B0CD53700E508CF /* Record.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0190BF351B0CD53700E508CF /* Record.swift */; };
+		0190BF381B0CFC3D00E508CF /* ProjectsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0190BF371B0CFC3D00E508CF /* ProjectsViewController.swift */; };
+		01DD394B1B0A70FD000D925D /* SideMenuUserHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01DD394A1B0A70FD000D925D /* SideMenuUserHeaderView.swift */; };
+		01EE0C441B0E2B7800AA4C10 /* HistoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01EE0C431B0E2B7800AA4C10 /* HistoryTableViewCell.swift */; };
+		01EE0C481B0E2F0200AA4C10 /* HockeySDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01EE0C461B0E2F0200AA4C10 /* HockeySDK.framework */; };
+		01EE0C521B0E301A00AA4C10 /* HockeySDK.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 01EE0C501B0E301A00AA4C10 /* HockeySDK.xcconfig */; };
+		01EE0C531B0E301A00AA4C10 /* HockeySDKResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 01EE0C511B0E301A00AA4C10 /* HockeySDKResources.bundle */; };
+		01EE0C561B0F7ADA00AA4C10 /* RecordFormViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01EE0C551B0F7ADA00AA4C10 /* RecordFormViewController.swift */; };
+		01EE0C591B0F865E00AA4C10 /* HistoryTableViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01EE0C581B0F865E00AA4C10 /* HistoryTableViewDataSource.swift */; };
+		BFC762EDEA775168E0305151 /* libPods-Trackerati.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 049E7FC2BC2B1D9187CEFDEC /* libPods-Trackerati.a */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		01498B2A1B01027E00C7C395 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 01498B0C1B01027E00C7C395 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 01498B131B01027E00C7C395;
+			remoteInfo = Trackerati;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		0126AAB61B0E211500B3907E /* HistoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HistoryViewController.swift; sourceTree = "<group>"; };
+		013C5A121B012E06002C4020 /* GoogleLoginManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoogleLoginManager.swift; sourceTree = "<group>"; };
+		013F783E1B14EC4B004842B2 /* RecordFormTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecordFormTableView.swift; sourceTree = "<group>"; };
+		013F78421B14F5DB004842B2 /* RecordDetailTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecordDetailTableViewCell.swift; sourceTree = "<group>"; };
+		01498B141B01027E00C7C395 /* Trackerati.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Trackerati.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		01498B181B01027E00C7C395 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		01498B191B01027E00C7C395 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		01498B1B1B01027E00C7C395 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
+		01498B201B01027E00C7C395 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		01498B291B01027E00C7C395 /* TrackeratiTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TrackeratiTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		01498B2E1B01027E00C7C395 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		01498B2F1B01027E00C7C395 /* TrackeratiTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackeratiTests.swift; sourceTree = "<group>"; };
+		01498B3C1B01052700C7C395 /* Trackerati-BridgingHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Trackerati-BridgingHeader.h"; sourceTree = "<group>"; };
+		01498B6D1B0117FF00C7C395 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		01498B6E1B0117FF00C7C395 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
+		01498B711B01180A00C7C395 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
+		01498B731B01181400C7C395 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		01498B751B01181900C7C395 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
+		01498B771B01182000C7C395 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		01498B791B01182500C7C395 /* QuickLook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickLook.framework; path = System/Library/Frameworks/QuickLook.framework; sourceTree = SDKROOT; };
+		01498B7B1B01182B00C7C395 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		01498B7D1B01183300C7C395 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		01498B7F1B01183A00C7C395 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		01498B8F1B011D4600C7C395 /* GoogleOpenSource.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleOpenSource.framework; sourceTree = "<group>"; };
+		01498B901B011D4600C7C395 /* GooglePlus.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GooglePlus.framework; sourceTree = "<group>"; };
+		01498B931B011D5600C7C395 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
+		01498B951B011D6100C7C395 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		01498B971B011D7000C7C395 /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
+		01498B991B011D7C00C7C395 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
+		0170E43B1B0259C400D593C3 /* TrackeratiUserDefaults.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackeratiUserDefaults.swift; sourceTree = "<group>"; };
+		0170E43D1B026D8000D593C3 /* FirebaseManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseManager.swift; sourceTree = "<group>"; };
+		0170E43F1B02962F00D593C3 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		0170E4431B02985100D593C3 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		0170E4471B04E37C00D593C3 /* SideMenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SideMenuViewController.swift; sourceTree = "<group>"; };
+		0170E4491B04EDE800D593C3 /* ContainerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContainerViewController.swift; sourceTree = "<group>"; };
+		0170E44B1B0526CD00D593C3 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		0170E44D1B052A2200D593C3 /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		0170E4521B0542A900D593C3 /* LoginScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginScreen.swift; sourceTree = "<group>"; };
+		0170E4531B0542A900D593C3 /* SwitchDatePickerCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwitchDatePickerCell.swift; sourceTree = "<group>"; };
+		0190BF311B0B899800E508CF /* Client.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Client.swift; sourceTree = "<group>"; };
+		0190BF351B0CD53700E508CF /* Record.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Record.swift; sourceTree = "<group>"; };
+		0190BF371B0CFC3D00E508CF /* ProjectsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectsViewController.swift; sourceTree = "<group>"; };
+		01DD394A1B0A70FD000D925D /* SideMenuUserHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SideMenuUserHeaderView.swift; sourceTree = "<group>"; };
+		01EE0C431B0E2B7800AA4C10 /* HistoryTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HistoryTableViewCell.swift; sourceTree = "<group>"; };
+		01EE0C461B0E2F0200AA4C10 /* HockeySDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = HockeySDK.framework; sourceTree = "<group>"; };
+		01EE0C501B0E301A00AA4C10 /* HockeySDK.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = HockeySDK.xcconfig; sourceTree = "<group>"; };
+		01EE0C511B0E301A00AA4C10 /* HockeySDKResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = HockeySDKResources.bundle; sourceTree = "<group>"; };
+		01EE0C551B0F7ADA00AA4C10 /* RecordFormViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecordFormViewController.swift; sourceTree = "<group>"; };
+		01EE0C581B0F865E00AA4C10 /* HistoryTableViewDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HistoryTableViewDataSource.swift; sourceTree = "<group>"; };
+		049E7FC2BC2B1D9187CEFDEC /* libPods-Trackerati.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Trackerati.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		3587A3B08253D04AD27B6510 /* Pods-Trackerati.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Trackerati.release.xcconfig"; path = "../Pods/Target Support Files/Pods-Trackerati/Pods-Trackerati.release.xcconfig"; sourceTree = "<group>"; };
+		FC4437DDCAA1EBF64F6F5D62 /* Pods-Trackerati.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Trackerati.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-Trackerati/Pods-Trackerati.debug.xcconfig"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		01498B111B01027E00C7C395 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				01498B9A1B011D7C00C7C395 /* MediaPlayer.framework in Frameworks */,
+				01498B981B011D7000C7C395 /* CoreMotion.framework in Frameworks */,
+				01498B961B011D6100C7C395 /* CoreLocation.framework in Frameworks */,
+				01498B941B011D5600C7C395 /* AddressBook.framework in Frameworks */,
+				01498B801B01183A00C7C395 /* UIKit.framework in Frameworks */,
+				01498B7E1B01183300C7C395 /* SystemConfiguration.framework in Frameworks */,
+				01498B911B011D4600C7C395 /* GoogleOpenSource.framework in Frameworks */,
+				01498B7C1B01182B00C7C395 /* Security.framework in Frameworks */,
+				01498B7A1B01182500C7C395 /* QuickLook.framework in Frameworks */,
+				01498B781B01182000C7C395 /* QuartzCore.framework in Frameworks */,
+				01498B761B01181900C7C395 /* MobileCoreServices.framework in Frameworks */,
+				01EE0C481B0E2F0200AA4C10 /* HockeySDK.framework in Frameworks */,
+				01498B741B01181400C7C395 /* Foundation.framework in Frameworks */,
+				01498B721B01180A00C7C395 /* AssetsLibrary.framework in Frameworks */,
+				01498B921B011D4700C7C395 /* GooglePlus.framework in Frameworks */,
+				01498B6F1B0117FF00C7C395 /* CoreGraphics.framework in Frameworks */,
+				01498B701B0117FF00C7C395 /* CoreText.framework in Frameworks */,
+				BFC762EDEA775168E0305151 /* libPods-Trackerati.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		01498B261B01027E00C7C395 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		013C5A111B012E06002C4020 /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				013C5A121B012E06002C4020 /* GoogleLoginManager.swift */,
+				0170E43D1B026D8000D593C3 /* FirebaseManager.swift */,
+			);
+			path = Managers;
+			sourceTree = "<group>";
+		};
+		013F783D1B14EC32004842B2 /* TableViews */ = {
+			isa = PBXGroup;
+			children = (
+				013F783E1B14EC4B004842B2 /* RecordFormTableView.swift */,
+			);
+			name = TableViews;
+			sourceTree = "<group>";
+		};
+		01498B0B1B01027E00C7C395 = {
+			isa = PBXGroup;
+			children = (
+				01498B161B01027E00C7C395 /* Trackerati */,
+				01498B2C1B01027E00C7C395 /* TrackeratiTests */,
+				01498B151B01027E00C7C395 /* Products */,
+				3F88CD5D6D5D4B14DF4E0DA7 /* Pods */,
+				B656BDA259BF38E48D0BDABC /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		01498B151B01027E00C7C395 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				01498B141B01027E00C7C395 /* Trackerati.app */,
+				01498B291B01027E00C7C395 /* TrackeratiTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		01498B161B01027E00C7C395 /* Trackerati */ = {
+			isa = PBXGroup;
+			children = (
+				01498B3A1B0104CF00C7C395 /* Application */,
+				0170E4421B02984200D593C3 /* Models */,
+				01498B3D1B0114C800C7C395 /* Frameworks */,
+				013C5A111B012E06002C4020 /* Managers */,
+				01498B3B1B0104DE00C7C395 /* Resources */,
+				01498B391B0104C400C7C395 /* View Controllers */,
+				0170E4511B0542A900D593C3 /* Views */,
+				01498B171B01027E00C7C395 /* Supporting Files */,
+			);
+			path = Trackerati;
+			sourceTree = "<group>";
+		};
+		01498B171B01027E00C7C395 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				01498B3C1B01052700C7C395 /* Trackerati-BridgingHeader.h */,
+				01498B181B01027E00C7C395 /* Info.plist */,
+			);
+			path = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		01498B2C1B01027E00C7C395 /* TrackeratiTests */ = {
+			isa = PBXGroup;
+			children = (
+				01498B2F1B01027E00C7C395 /* TrackeratiTests.swift */,
+				01498B2D1B01027E00C7C395 /* Supporting Files */,
+			);
+			path = TrackeratiTests;
+			sourceTree = "<group>";
+		};
+		01498B2D1B01027E00C7C395 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				01498B2E1B01027E00C7C395 /* Info.plist */,
+			);
+			path = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		01498B391B0104C400C7C395 /* View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				01EE0C541B0F7AC400AA4C10 /* Detail */,
+				01EE0C4E1B0E2F8700AA4C10 /* App Sections */,
+				01EE0C491B0E2F2E00AA4C10 /* Login */,
+				01EE0C4D1B0E2F7500AA4C10 /* Containment */,
+			);
+			path = "View Controllers";
+			sourceTree = "<group>";
+		};
+		01498B3A1B0104CF00C7C395 /* Application */ = {
+			isa = PBXGroup;
+			children = (
+				01498B191B01027E00C7C395 /* AppDelegate.swift */,
+				0170E43B1B0259C400D593C3 /* TrackeratiUserDefaults.swift */,
+				0170E43F1B02962F00D593C3 /* Constants.swift */,
+			);
+			path = Application;
+			sourceTree = "<group>";
+		};
+		01498B3B1B0104DE00C7C395 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				01498B201B01027E00C7C395 /* Images.xcassets */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		01498B3D1B0114C800C7C395 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				01EE0C451B0E2F0200AA4C10 /* HockeySDK.embeddedframework */,
+				01498B8F1B011D4600C7C395 /* GoogleOpenSource.framework */,
+				01498B901B011D4600C7C395 /* GooglePlus.framework */,
+				01498B7F1B01183A00C7C395 /* UIKit.framework */,
+				01498B7D1B01183300C7C395 /* SystemConfiguration.framework */,
+				01498B7B1B01182B00C7C395 /* Security.framework */,
+				01498B791B01182500C7C395 /* QuickLook.framework */,
+				01498B771B01182000C7C395 /* QuartzCore.framework */,
+				01498B751B01181900C7C395 /* MobileCoreServices.framework */,
+				01498B731B01181400C7C395 /* Foundation.framework */,
+				01498B711B01180A00C7C395 /* AssetsLibrary.framework */,
+				01498B6D1B0117FF00C7C395 /* CoreGraphics.framework */,
+				01498B6E1B0117FF00C7C395 /* CoreText.framework */,
+			);
+			path = Frameworks;
+			sourceTree = "<group>";
+		};
+		0170E4421B02984200D593C3 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				01EE0C571B0F864A00AA4C10 /* Data */,
+				0170E4431B02985100D593C3 /* User.swift */,
+				0190BF311B0B899800E508CF /* Client.swift */,
+				0190BF351B0CD53700E508CF /* Record.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		0170E4511B0542A900D593C3 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				013F783D1B14EC32004842B2 /* TableViews */,
+				01EE0C4A1B0E2F3600AA4C10 /* Cells */,
+				01DD394A1B0A70FD000D925D /* SideMenuUserHeaderView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		01EE0C451B0E2F0200AA4C10 /* HockeySDK.embeddedframework */ = {
+			isa = PBXGroup;
+			children = (
+				01EE0C461B0E2F0200AA4C10 /* HockeySDK.framework */,
+				01EE0C4F1B0E301A00AA4C10 /* Resources */,
+			);
+			path = HockeySDK.embeddedframework;
+			sourceTree = "<group>";
+		};
+		01EE0C491B0E2F2E00AA4C10 /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				0170E4521B0542A900D593C3 /* LoginScreen.swift */,
+			);
+			path = Login;
+			sourceTree = "<group>";
+		};
+		01EE0C4A1B0E2F3600AA4C10 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				01EE0C4C1B0E2F4E00AA4C10 /* History */,
+				01EE0C4B1B0E2F4300AA4C10 /* Settings */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		01EE0C4B1B0E2F4300AA4C10 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				0170E4531B0542A900D593C3 /* SwitchDatePickerCell.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		01EE0C4C1B0E2F4E00AA4C10 /* History */ = {
+			isa = PBXGroup;
+			children = (
+				01EE0C431B0E2B7800AA4C10 /* HistoryTableViewCell.swift */,
+				013F78421B14F5DB004842B2 /* RecordDetailTableViewCell.swift */,
+			);
+			path = History;
+			sourceTree = "<group>";
+		};
+		01EE0C4D1B0E2F7500AA4C10 /* Containment */ = {
+			isa = PBXGroup;
+			children = (
+				0170E4471B04E37C00D593C3 /* SideMenuViewController.swift */,
+				0170E4491B04EDE800D593C3 /* ContainerViewController.swift */,
+			);
+			path = Containment;
+			sourceTree = "<group>";
+		};
+		01EE0C4E1B0E2F8700AA4C10 /* App Sections */ = {
+			isa = PBXGroup;
+			children = (
+				01498B1B1B01027E00C7C395 /* MainViewController.swift */,
+				0170E44D1B052A2200D593C3 /* HomeViewController.swift */,
+				0170E44B1B0526CD00D593C3 /* SettingsViewController.swift */,
+				0190BF371B0CFC3D00E508CF /* ProjectsViewController.swift */,
+				0126AAB61B0E211500B3907E /* HistoryViewController.swift */,
+			);
+			path = "App Sections";
+			sourceTree = "<group>";
+		};
+		01EE0C4F1B0E301A00AA4C10 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				01EE0C501B0E301A00AA4C10 /* HockeySDK.xcconfig */,
+				01EE0C511B0E301A00AA4C10 /* HockeySDKResources.bundle */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		01EE0C541B0F7AC400AA4C10 /* Detail */ = {
+			isa = PBXGroup;
+			children = (
+				01EE0C551B0F7ADA00AA4C10 /* RecordFormViewController.swift */,
+			);
+			path = Detail;
+			sourceTree = "<group>";
+		};
+		01EE0C571B0F864A00AA4C10 /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				01EE0C581B0F865E00AA4C10 /* HistoryTableViewDataSource.swift */,
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
+		3F88CD5D6D5D4B14DF4E0DA7 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				FC4437DDCAA1EBF64F6F5D62 /* Pods-Trackerati.debug.xcconfig */,
+				3587A3B08253D04AD27B6510 /* Pods-Trackerati.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		B656BDA259BF38E48D0BDABC /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				01498B991B011D7C00C7C395 /* MediaPlayer.framework */,
+				01498B971B011D7000C7C395 /* CoreMotion.framework */,
+				01498B951B011D6100C7C395 /* CoreLocation.framework */,
+				01498B931B011D5600C7C395 /* AddressBook.framework */,
+				049E7FC2BC2B1D9187CEFDEC /* libPods-Trackerati.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		01498B131B01027E00C7C395 /* Trackerati */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 01498B331B01027E00C7C395 /* Build configuration list for PBXNativeTarget "Trackerati" */;
+			buildPhases = (
+				A4D8E4E86763A5A291A749C0 /* Check Pods Manifest.lock */,
+				01498B101B01027E00C7C395 /* Sources */,
+				01498B111B01027E00C7C395 /* Frameworks */,
+				01498B121B01027E00C7C395 /* Resources */,
+				BAE4BBF613F21C416523835B /* Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Trackerati;
+			productName = Trackerati;
+			productReference = 01498B141B01027E00C7C395 /* Trackerati.app */;
+			productType = "com.apple.product-type.application";
+		};
+		01498B281B01027E00C7C395 /* TrackeratiTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 01498B361B01027E00C7C395 /* Build configuration list for PBXNativeTarget "TrackeratiTests" */;
+			buildPhases = (
+				01498B251B01027E00C7C395 /* Sources */,
+				01498B261B01027E00C7C395 /* Frameworks */,
+				01498B271B01027E00C7C395 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				01498B2B1B01027E00C7C395 /* PBXTargetDependency */,
+			);
+			name = TrackeratiTests;
+			productName = TrackeratiTests;
+			productReference = 01498B291B01027E00C7C395 /* TrackeratiTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		01498B0C1B01027E00C7C395 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0630;
+				ORGANIZATIONNAME = "The Hackerati";
+				TargetAttributes = {
+					01498B131B01027E00C7C395 = {
+						CreatedOnToolsVersion = 6.3.1;
+					};
+					01498B281B01027E00C7C395 = {
+						CreatedOnToolsVersion = 6.3.1;
+						TestTargetID = 01498B131B01027E00C7C395;
+					};
+				};
+			};
+			buildConfigurationList = 01498B0F1B01027E00C7C395 /* Build configuration list for PBXProject "Trackerati" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 01498B0B1B01027E00C7C395;
+			productRefGroup = 01498B151B01027E00C7C395 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				01498B131B01027E00C7C395 /* Trackerati */,
+				01498B281B01027E00C7C395 /* TrackeratiTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		01498B121B01027E00C7C395 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				01EE0C521B0E301A00AA4C10 /* HockeySDK.xcconfig in Resources */,
+				01498B211B01027E00C7C395 /* Images.xcassets in Resources */,
+				01EE0C531B0E301A00AA4C10 /* HockeySDKResources.bundle in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		01498B271B01027E00C7C395 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		A4D8E4E86763A5A291A749C0 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		BAE4BBF613F21C416523835B /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-Trackerati/Pods-Trackerati-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		01498B101B01027E00C7C395 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				01DD394B1B0A70FD000D925D /* SideMenuUserHeaderView.swift in Sources */,
+				0190BF381B0CFC3D00E508CF /* ProjectsViewController.swift in Sources */,
+				01498B1C1B01027E00C7C395 /* MainViewController.swift in Sources */,
+				01EE0C561B0F7ADA00AA4C10 /* RecordFormViewController.swift in Sources */,
+				01498B1A1B01027E00C7C395 /* AppDelegate.swift in Sources */,
+				0170E44C1B0526CD00D593C3 /* SettingsViewController.swift in Sources */,
+				0170E44A1B04EDE800D593C3 /* ContainerViewController.swift in Sources */,
+				0170E43E1B026D8000D593C3 /* FirebaseManager.swift in Sources */,
+				0190BF361B0CD53700E508CF /* Record.swift in Sources */,
+				013C5A131B012E06002C4020 /* GoogleLoginManager.swift in Sources */,
+				0170E43C1B0259C400D593C3 /* TrackeratiUserDefaults.swift in Sources */,
+				0190BF321B0B899800E508CF /* Client.swift in Sources */,
+				0170E4401B02962F00D593C3 /* Constants.swift in Sources */,
+				0170E4481B04E37C00D593C3 /* SideMenuViewController.swift in Sources */,
+				0170E4541B0542A900D593C3 /* LoginScreen.swift in Sources */,
+				0170E4441B02985100D593C3 /* User.swift in Sources */,
+				01EE0C441B0E2B7800AA4C10 /* HistoryTableViewCell.swift in Sources */,
+				01EE0C591B0F865E00AA4C10 /* HistoryTableViewDataSource.swift in Sources */,
+				013F783F1B14EC4B004842B2 /* RecordFormTableView.swift in Sources */,
+				0126AAB71B0E211500B3907E /* HistoryViewController.swift in Sources */,
+				013F78431B14F5DB004842B2 /* RecordDetailTableViewCell.swift in Sources */,
+				0170E4551B0542A900D593C3 /* SwitchDatePickerCell.swift in Sources */,
+				0170E44E1B052A2200D593C3 /* HomeViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		01498B251B01027E00C7C395 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				01498B301B01027E00C7C395 /* TrackeratiTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		01498B2B1B01027E00C7C395 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 01498B131B01027E00C7C395 /* Trackerati */;
+			targetProxy = 01498B2A1B01027E00C7C395 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		01498B311B01027E00C7C395 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Trackerati/Supporting Files/Trackerati-PrefixHeader.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		01498B321B01027E00C7C395 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Trackerati/Supporting Files/Trackerati-PrefixHeader.pch";
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		01498B341B01027E00C7C395 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = FC4437DDCAA1EBF64F6F5D62 /* Pods-Trackerati.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Trackerati/HockeySDK-iOS/HockeySDK.embeddedframework",
+					"$(PROJECT_DIR)/Trackerati/HockeySDK-iOS/HockeySDKCrashOnly",
+					"$(PROJECT_DIR)/Trackerati/Frameworks/HockeySDK-iOS/HockeySDK.embeddedframework",
+					"$(PROJECT_DIR)/Trackerati/Frameworks/HockeySDK.embeddedframework",
+					"$(PROJECT_DIR)/Trackerati/Frameworks",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
+				INFOPLIST_FILE = "Trackerati/Supporting Files/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_SWIFT_FLAGS = "-DDEBUG";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Trackerati/Supporting Files/Trackerati-BridgingHeader.h";
+			};
+			name = Debug;
+		};
+		01498B351B01027E00C7C395 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3587A3B08253D04AD27B6510 /* Pods-Trackerati.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Trackerati/HockeySDK-iOS/HockeySDK.embeddedframework",
+					"$(PROJECT_DIR)/Trackerati/HockeySDK-iOS/HockeySDKCrashOnly",
+					"$(PROJECT_DIR)/Trackerati/Frameworks/HockeySDK-iOS/HockeySDK.embeddedframework",
+					"$(PROJECT_DIR)/Trackerati/Frameworks/HockeySDK.embeddedframework",
+					"$(PROJECT_DIR)/Trackerati/Frameworks",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
+				INFOPLIST_FILE = "Trackerati/Supporting Files/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_SWIFT_FLAGS = "-DRELEASE";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Trackerati/Supporting Files/Trackerati-BridgingHeader.h";
+			};
+			name = Release;
+		};
+		01498B371B01027E00C7C395 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "TrackeratiTests/Supporting Files/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Trackerati.app/Trackerati";
+			};
+			name = Debug;
+		};
+		01498B381B01027E00C7C395 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "TrackeratiTests/Supporting Files/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Trackerati.app/Trackerati";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		01498B0F1B01027E00C7C395 /* Build configuration list for PBXProject "Trackerati" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				01498B311B01027E00C7C395 /* Debug */,
+				01498B321B01027E00C7C395 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		01498B331B01027E00C7C395 /* Build configuration list for PBXNativeTarget "Trackerati" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				01498B341B01027E00C7C395 /* Debug */,
+				01498B351B01027E00C7C395 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		01498B361B01027E00C7C395 /* Build configuration list for PBXNativeTarget "TrackeratiTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				01498B371B01027E00C7C395 /* Debug */,
+				01498B381B01027E00C7C395 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 01498B0C1B01027E00C7C395 /* Project object */;
+}
