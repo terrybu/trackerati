@@ -68,6 +68,12 @@ class HistoryTableViewCell : UITableViewCell, UIGestureRecognizerDelegate
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func prepareForReuse() {
+        animateCellWithTransform(CGAffineTransformIdentity, duration: 0.0, completion: { finished in
+            self.currentState = .NotShowingMenu
+        })
+    }
+    
     private func setupActionButtons()
     {
         let deleteButton = UIButton(frame: CGRectZero)
@@ -231,7 +237,7 @@ class HistoryTableViewCell : UITableViewCell, UIGestureRecognizerDelegate
                 targetTransform = CGAffineTransformIdentity
             }
 
-            animateCellWithTransform(targetTransform, completion: { finished in
+            animateCellWithTransform(targetTransform, duration: 0.2, completion: { finished in
                 self.currentState = self.currentState == .NotShowingMenu ? .ShowingMenu : .NotShowingMenu
             })
             
@@ -245,8 +251,8 @@ class HistoryTableViewCell : UITableViewCell, UIGestureRecognizerDelegate
     @objc
     private func deleteButtonPressed(button: UIButton)
     {
-        animateCellWithTransform(CGAffineTransformIdentity, completion: { finished in
-            self.currentState = self.currentState == .NotShowingMenu ? .ShowingMenu : .NotShowingMenu
+        animateCellWithTransform(CGAffineTransformIdentity, duration: 0.2, completion: { finished in
+            self.currentState = .NotShowingMenu
             self.delegate?.didPressDeleteButton(self)
         })
     }
@@ -254,17 +260,17 @@ class HistoryTableViewCell : UITableViewCell, UIGestureRecognizerDelegate
     @objc
     private func editButtonPressed(button: UIButton)
     {
-        animateCellWithTransform(CGAffineTransformIdentity, completion: { finished in
-            self.currentState = self.currentState == .NotShowingMenu ? .ShowingMenu : .NotShowingMenu
+        animateCellWithTransform(CGAffineTransformIdentity, duration: 0.2, completion: { finished in
+            self.currentState = .NotShowingMenu
             self.delegate?.didPressEditButton(self)
         })
     }
     
     // MARK: Private
     
-    private func animateCellWithTransform(transform: CGAffineTransform, completion:((finished: Bool) -> ())?)
+    private func animateCellWithTransform(transform: CGAffineTransform, duration: NSTimeInterval, completion:((finished: Bool) -> ())?)
     {
-        UIView.animateWithDuration(0.2,
+        UIView.animateWithDuration(duration,
             delay: 0.0,
             options: .CurveEaseOut,
             animations:

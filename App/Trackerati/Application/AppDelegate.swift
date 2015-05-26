@@ -23,7 +23,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         #if RELEASE
         configureHockeySDK()
         #endif
-        
+    
         configureSingletons()
         resetNotification()
         
