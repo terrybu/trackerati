@@ -245,7 +245,6 @@ class HistoryTableViewCell : UITableViewCell, UIGestureRecognizerDelegate
     @objc
     private func deleteButtonPressed(button: UIButton)
     {
-        println("DELETE BUTTON PRESSED")
         animateCellWithTransform(CGAffineTransformIdentity, completion: { finished in
             delegate?.didPressDeleteButton(self)
         })
@@ -254,7 +253,6 @@ class HistoryTableViewCell : UITableViewCell, UIGestureRecognizerDelegate
     @objc
     private func editButtonPressed(button: UIButton)
     {
-        println("EDIT BUTTON PRESSED")
         animateCellWithTransform(CGAffineTransformIdentity, completion: { finished in
             delegate?.didPressEditButton(self)
         })
