@@ -46,4 +46,44 @@ class Record : NSObject
         self.type = type
         self.comment = comment
     }
+    
+    func valueForType(recordType: RecordKey) -> String?
+    {
+        switch recordType
+        {
+        case .Client:
+            return client
+            
+        case .Date:
+            return date
+            
+        case .Hours:
+            return hours
+            
+        case .Project:
+            return project
+            
+        case .Status:
+            if let statusAsInt = status.toInt() {
+                return kRecordStatusNames[statusAsInt - 1]
+            }
+            else {
+                return nil
+            }
+            
+        case .WorkType:
+            if let workTypeAsInt = type.toInt() {
+                return kRecordWorkTypeNames[workTypeAsInt - 1]
+            }
+            else {
+                return nil
+            }
+
+        case .Comment:
+            return comment
+            
+        default:
+            return nil
+        }
+    }
 }

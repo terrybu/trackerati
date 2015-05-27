@@ -9,7 +9,7 @@
 class RecordFormViewController : UIViewController, UITableViewDelegate, UITableViewDataSource
 {
     private let kCellReuseIdentifier = "cell"
-    
+    private let kCellDefaultHeight: CGFloat = 44.0
     private let record: Record
     
     private weak var recordFormTableView: RecordFormTableView!
@@ -38,6 +38,10 @@ class RecordFormViewController : UIViewController, UITableViewDelegate, UITableV
  
     // MARK: UITableView Datasource
     
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return kCellDefaultHeight
+    }
+    
     func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return RecordKey.editableValues[section].rawValue.capitalizedString
     }
@@ -52,6 +56,9 @@ class RecordFormViewController : UIViewController, UITableViewDelegate, UITableV
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(kCellReuseIdentifier, forIndexPath: indexPath) as! RecordDetailTableViewCell
+        let recordType = RecordKey.editableValues[indexPath.section]
+        cell.information = record.valueForType(recordType)
+        cell.infoType = recordType
         return cell
     }
     
