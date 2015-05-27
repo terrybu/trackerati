@@ -49,6 +49,11 @@ class RecordDetailTableViewCell : UITableViewCell, UITextFieldDelegate, UIPicker
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func resignFirstResponder() -> Bool {
+        infoTextField.resignFirstResponder()
+        return super.resignFirstResponder()
+    }
+    
     private func setupTextField()
     {
         let infoTextField = UITextField(frame: CGRectZero)
@@ -65,49 +70,30 @@ class RecordDetailTableViewCell : UITableViewCell, UITextFieldDelegate, UIPicker
         self.infoTextField = infoTextField
     }
     
-    private func setupCellForType(type: RecordKey)
+    // MARK: Private
+    
+    private func datePickerViewForEditing() -> UIDatePicker
     {
-        switch type
-        {
-        case .Client, .Project:
-            infoTextField.textColor = UIColor.grayColor()
+        let datePicker = UIDatePicker()
+        datePicker.datePickerMode = .Date
+        let dateFormatter = NSDateFormatter()
+        
+        if let info = information {
+            dateFormatter.dateFormat = "MM/dd/yyyy"
             
-        case .Date:
-            let datePicker = UIDatePicker()
-            datePicker.datePickerMode = .Date
-            let dateFormatter = NSDateFormatter()
-            
-            if let info = information {
-                dateFormatter.dateFormat = "MM/dd/yyyy"
-                
-                if let date = dateFormatter.dateFromString(info) {
-                    datePicker.date = date
-                }
-                else {
-                    datePicker.date = NSDate()
-                }
+            if let date = dateFormatter.dateFromString(info) {
+                datePicker.date = date
             }
             else {
                 datePicker.date = NSDate()
             }
-            
-            datePicker.addTarget(self, action: "datePickerChanged:", forControlEvents: .ValueChanged)
-            infoTextField.inputView = datePicker
-            infoTextField.tintColor = UIColor.clearColor() // hides blinking cursor
-            
-        case .Hours:
-            infoTextField.keyboardType = .NumberPad
-            
-        case .Status, .WorkType:
-            infoTextField.tintColor = UIColor.clearColor() // hides blinking cursor
-            infoTextField.inputView = createPickerViewForType(type)
-            
-        case .Comment:
-            break
-            
-        default:
-            break
         }
+        else {
+            datePicker.date = NSDate()
+        }
+        
+        datePicker.addTarget(self, action: "datePickerChanged:", forControlEvents: .ValueChanged)
+        return datePicker
     }
     
     private func createPickerViewForType(cellType: RecordKey) -> UIPickerView?
@@ -123,6 +109,32 @@ class RecordDetailTableViewCell : UITableViewCell, UITextFieldDelegate, UIPicker
             
         default:
             return nil
+        }
+    }
+    
+    private func setupCellForType(type: RecordKey)
+    {
+        switch type
+        {
+        case .Client, .Project:
+            infoTextField.textColor = UIColor.grayColor()
+            
+        case .Date:
+            infoTextField.tintColor = UIColor.clearColor() // hides blinking cursor
+            infoTextField.inputView = datePickerViewForEditing()
+            
+        case .Hours:
+            infoTextField.keyboardType = .NumberPad
+            
+        case .Status, .WorkType:
+            infoTextField.tintColor = UIColor.clearColor() // hides blinking cursor
+            infoTextField.inputView = createPickerViewForType(type)
+            
+        case .Comment:
+            break
+            
+        default:
+            break
         }
     }
     

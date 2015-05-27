@@ -13,12 +13,16 @@ class RecordFormViewController : UIViewController, UITableViewDelegate, UITableV
     private let record: Record
     
     private weak var recordFormTableView: RecordFormTableView!
+    private weak var activeCell: RecordDetailTableViewCell?
     
     init(record: Record, editing: Bool)
     {
         self.record = record
         super.init(nibName: nil, bundle: nil)
         title = record.date
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardDidShow:", name: UIKeyboardDidShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillHide:", name: UIKeyboardWillHideNotification, object: nil)
     }
 
     required init(coder aDecoder: NSCoder) {
@@ -36,6 +40,37 @@ class RecordFormViewController : UIViewController, UITableViewDelegate, UITableV
         self.recordFormTableView = recordFormTableView
     }
  
+    // MARK: UIKeyboard Notification Selectors
+    
+    @objc
+    private func keyboardDidShow(notification: NSNotification)
+    {
+        if let keyboardDict = notification.userInfo {
+            if let keyboardRect = keyboardDict[UIKeyboardFrameBeginUserInfoKey]?.CGRectValue() {
+                let newContentInsets = UIEdgeInsets(top: 0.0, left: 0.0, bottom: keyboardRect.size.height, right: 0.0)
+                recordFormTableView.contentInset = newContentInsets
+                recordFormTableView.scrollIndicatorInsets = newContentInsets
+                
+                if let activeRect = activeCell?.frame {
+                    recordFormTableView.scrollRectToVisible(activeRect, animated: true)
+                }
+            }
+        }
+    }
+    
+    @objc
+    private func keyboardWillHide(notification: NSNotification)
+    {
+        recordFormTableView.contentInset = UIEdgeInsetsZero
+        recordFormTableView.scrollIndicatorInsets = UIEdgeInsetsZero
+    }
+    
+    // MARK: UITableView Delegate
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        activeCell = tableView.cellForRowAtIndexPath(indexPath) as? RecordDetailTableViewCell
+    }
+    
     // MARK: UITableView Datasource
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
