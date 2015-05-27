@@ -75,7 +75,6 @@ class FirebaseManager : NSObject
                 if self.allUserRecords == nil {
                     self.allUserRecords = self.getRecordsForUser(snapshot.value, name: TrackeratiUserDefaults.standardDefaults.currentUser())
                 }
-                
                 downloadedData = self.allUserRecords!
             }
 

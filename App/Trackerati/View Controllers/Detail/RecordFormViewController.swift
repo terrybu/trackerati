@@ -97,4 +97,12 @@ class RecordFormViewController : UIViewController, UITableViewDelegate, UITableV
         return cell
     }
     
+    override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
+        if let touch = touches.first as? UITouch, let cell = activeCell {
+            if cell.isFirstResponder() && touch.view != cell {
+                cell.endEditing(true)
+            }
+        }
+    }
+    
 }

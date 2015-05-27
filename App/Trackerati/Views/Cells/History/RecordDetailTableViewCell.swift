@@ -49,6 +49,14 @@ class RecordDetailTableViewCell : UITableViewCell, UITextFieldDelegate, UIPicker
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func prepareForReuse() {
+        infoTextField.textColor = UIColor.blackColor()
+    }
+    
+    override func isFirstResponder() -> Bool {
+        return infoTextField.isFirstResponder()
+    }
+    
     override func resignFirstResponder() -> Bool {
         infoTextField.resignFirstResponder()
         return super.resignFirstResponder()
@@ -57,6 +65,7 @@ class RecordDetailTableViewCell : UITableViewCell, UITextFieldDelegate, UIPicker
     private func setupTextField()
     {
         let infoTextField = UITextField(frame: CGRectZero)
+        infoTextField.returnKeyType = .Done
         infoTextField.delegate = self
         infoTextField.setTranslatesAutoresizingMaskIntoConstraints(false)
         let constraints = [
@@ -185,10 +194,13 @@ class RecordDetailTableViewCell : UITableViewCell, UITextFieldDelegate, UIPicker
         }
     }
     
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        return self.resignFirstResponder()
+    }
+    
     func textFieldDidEndEditing(textField: UITextField) {
         if initialTextValue != textField.text {
             delegate?.textFieldTextDidChangeForCell(self, newText: textField.text)
         }
     }
-    
 }
