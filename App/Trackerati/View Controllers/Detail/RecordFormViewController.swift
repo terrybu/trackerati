@@ -47,7 +47,15 @@ class RecordFormViewController : UIViewController, UITableViewDelegate, UITableV
     {
         if let keyboardDict = notification.userInfo {
             if let keyboardRect = keyboardDict[UIKeyboardFrameBeginUserInfoKey]?.CGRectValue() {
-                let newContentInsets = UIEdgeInsets(top: 0.0, left: 0.0, bottom: keyboardRect.size.height, right: 0.0)
+                
+                let newContentInsets: UIEdgeInsets
+                if let navBarHeight = navigationController?.navigationBar.frame.size.height {
+                    newContentInsets = UIEdgeInsets(top: navBarHeight, left: 0.0, bottom: keyboardRect.size.height, right: 0.0)
+                }
+                else {
+                    newContentInsets = UIEdgeInsets(top: 0.0, left: 0.0, bottom: keyboardRect.size.height, right: 0.0)
+                }
+                
                 recordFormTableView.contentInset = newContentInsets
                 recordFormTableView.scrollIndicatorInsets = newContentInsets
                 
@@ -61,8 +69,14 @@ class RecordFormViewController : UIViewController, UITableViewDelegate, UITableV
     @objc
     private func keyboardWillHide(notification: NSNotification)
     {
-        recordFormTableView.contentInset = UIEdgeInsetsZero
-        recordFormTableView.scrollIndicatorInsets = UIEdgeInsetsZero
+        if let navBarHeight = navigationController?.navigationBar.frame.size.height {
+            recordFormTableView.contentInset = UIEdgeInsets(top: navBarHeight, left: 0.0, bottom: 0.0, right: 0.0)
+            recordFormTableView.scrollIndicatorInsets = UIEdgeInsets(top: navBarHeight, left: 0.0, bottom: 0.0, right: 0.0)
+        }
+        else {
+            recordFormTableView.contentInset = UIEdgeInsetsZero
+            recordFormTableView.scrollIndicatorInsets = UIEdgeInsetsZero
+        }
     }
     
     // MARK: UITableView Delegate

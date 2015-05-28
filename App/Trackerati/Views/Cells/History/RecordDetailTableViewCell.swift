@@ -84,6 +84,7 @@ class RecordDetailTableViewCell : UITableViewCell, UITextFieldDelegate, UIPicker
     private func datePickerViewForEditing() -> UIDatePicker
     {
         let datePicker = UIDatePicker()
+        datePicker.backgroundColor = UIColor.whiteColor()
         datePicker.datePickerMode = .Date
         let dateFormatter = NSDateFormatter()
         
@@ -105,7 +106,7 @@ class RecordDetailTableViewCell : UITableViewCell, UITextFieldDelegate, UIPicker
         return datePicker
     }
     
-    private func createPickerViewForType(cellType: RecordKey) -> UIPickerView?
+    private func pickerViewForType(cellType: RecordKey) -> UIView?
     {
         switch cellType
         {
@@ -114,11 +115,22 @@ class RecordDetailTableViewCell : UITableViewCell, UITextFieldDelegate, UIPicker
             pickerView.backgroundColor = UIColor.whiteColor()
             pickerView.delegate = self
             pickerView.dataSource = self
+            addCustomInputViewDoneButtonOnView(pickerView)
             return pickerView
             
         default:
             return nil
         }
+    }
+    
+    private func addCustomInputViewDoneButtonOnView(view: UIView)
+    {
+        let doneButton = UIButton(frame: CGRect(origin: view.frame.origin, size: CGSize(width: 50.0, height: 30.0)))
+        doneButton.setTitle("Done", forState: .Normal)
+        doneButton.setTitleColor(UIColor.blueColor(), forState: .Normal)
+        doneButton.addTarget(self, action: "resignFirstResponder", forControlEvents: .TouchUpInside)
+        
+        view.addSubview(doneButton)
     }
     
     private func setupCellForType(type: RecordKey)
@@ -137,7 +149,7 @@ class RecordDetailTableViewCell : UITableViewCell, UITextFieldDelegate, UIPicker
             
         case .Status, .WorkType:
             infoTextField.tintColor = UIColor.clearColor() // hides blinking cursor
-            infoTextField.inputView = createPickerViewForType(type)
+            infoTextField.inputView = pickerViewForType(type)
             
         case .Comment:
             break
@@ -195,7 +207,7 @@ class RecordDetailTableViewCell : UITableViewCell, UITextFieldDelegate, UIPicker
     }
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {
-        return self.resignFirstResponder()
+        return resignFirstResponder()
     }
     
     func textFieldDidEndEditing(textField: UITextField) {
