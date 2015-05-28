@@ -92,6 +92,7 @@ class RecordFormViewController : UIViewController, UITableViewDelegate, UITableV
         editingForm = false
         for visibleCell in recordFormTableView.visibleCells()
         {
+            (visibleCell as? RecordDetailTableViewCell)?.resignFirstResponder()
             (visibleCell as? RecordDetailTableViewCell)?.editingInfo = editingForm
         }
         setupEditButton()

@@ -124,27 +124,16 @@ class RecordDetailTableViewCell : UITableViewCell, UITextFieldDelegate, UIPicker
     {
         switch cellType
         {
-        case .Status, .WorkType:
+        case .Hours, .Status, .WorkType:
             let pickerView = UIPickerView()
             pickerView.backgroundColor = UIColor.whiteColor()
             pickerView.delegate = self
             pickerView.dataSource = self
-            addCustomInputViewDoneButtonOnView(pickerView)
             return pickerView
             
         default:
             return nil
         }
-    }
-    
-    private func addCustomInputViewDoneButtonOnView(view: UIView)
-    {
-        let doneButton = UIButton(frame: CGRect(origin: view.frame.origin, size: CGSize(width: 50.0, height: 30.0)))
-        doneButton.setTitle("Done", forState: .Normal)
-        doneButton.setTitleColor(UIColor.blueColor(), forState: .Normal)
-        doneButton.addTarget(self, action: "resignFirstResponder", forControlEvents: .TouchUpInside)
-        
-        view.addSubview(doneButton)
     }
     
     private func setupCellForType(type: RecordKey)
@@ -158,10 +147,7 @@ class RecordDetailTableViewCell : UITableViewCell, UITextFieldDelegate, UIPicker
             infoTextField.tintColor = UIColor.clearColor() // hides blinking cursor
             infoTextField.inputView = datePickerViewForEditing()
             
-        case .Hours:
-            infoTextField.keyboardType = .NumberPad
-            
-        case .Status, .WorkType:
+        case .Hours, .Status, .WorkType:
             infoTextField.tintColor = UIColor.clearColor() // hides blinking cursor
             infoTextField.inputView = pickerViewForType(type)
             
@@ -190,19 +176,57 @@ class RecordDetailTableViewCell : UITableViewCell, UITextFieldDelegate, UIPicker
     }
     
     func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return infoType! == .Status ? kRecordStatusNames.count : kRecordWorkTypeNames.count
+        switch infoType! {
+        case .Hours:
+            return kRecordHoursNames.count
+            
+        case .Status:
+            return kRecordStatusNames.count
+            
+        case .WorkType:
+            return kRecordWorkTypeNames.count
+            
+        default:
+            return 0
+        }
     }
     
     // MARK: UIPickerView Delegate
     
     func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        let options = infoType! == .Status ? kRecordStatusNames : kRecordWorkTypeNames
+        let options: [String]
+        switch infoType! {
+        case .Hours:
+            options = kRecordHoursNames
+            
+        case .Status:
+            options = kRecordStatusNames
+        
+        case .WorkType:
+            options = kRecordWorkTypeNames
+            
+        default:
+            options = []
+        }
         information = options[row]
         delegate?.textFieldTextDidChangeForCell(self, newText: String(row + 1))
     }
     
     func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String! {
-        let options = infoType! == .Status ? kRecordStatusNames : kRecordWorkTypeNames
+        let options: [String]
+        switch infoType! {
+        case .Hours:
+            options = kRecordHoursNames
+            
+        case .Status:
+            options = kRecordStatusNames
+            
+        case .WorkType:
+            options = kRecordWorkTypeNames
+            
+        default:
+            options = []
+        }
         return options[row]
     }
     
