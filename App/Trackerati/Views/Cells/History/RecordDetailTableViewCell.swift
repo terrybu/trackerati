@@ -9,13 +9,14 @@
 let kDefaultNilInformationValue = "Information Unavailable"
 
 protocol RecordDetailTableViewCellDelegate : class {
+    func didSelectTextFieldOnCell(cell: RecordDetailTableViewCell?)
     func textFieldTextDidChangeForCell(cell: RecordDetailTableViewCell, newText: String)
 }
 
 class RecordDetailTableViewCell : UITableViewCell, UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource
 {
     private weak var infoTextField: UITextField!
-    private weak var delegate: RecordDetailTableViewCellDelegate?
+    weak var delegate: RecordDetailTableViewCellDelegate?
     
     private var initialTextValue: String!
     
@@ -38,7 +39,16 @@ class RecordDetailTableViewCell : UITableViewCell, UITextFieldDelegate, UIPicker
         }
     }
     
-    var editable: Bool = false
+    var editingInfo = false {
+        didSet {
+            if editingInfo && infoType! != .Client && infoType! != .Project {
+                infoTextField?.textColor = UIColor.blackColor()
+            }
+            else {
+                infoTextField?.textColor = UIColor.grayColor()
+            }
+        }
+    }
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -47,10 +57,6 @@ class RecordDetailTableViewCell : UITableViewCell, UITextFieldDelegate, UIPicker
 
     required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    override func prepareForReuse() {
-        infoTextField.textColor = UIColor.blackColor()
     }
     
     override func isFirstResponder() -> Bool {
@@ -67,6 +73,14 @@ class RecordDetailTableViewCell : UITableViewCell, UITextFieldDelegate, UIPicker
         let infoTextField = UITextField(frame: CGRectZero)
         infoTextField.returnKeyType = .Done
         infoTextField.delegate = self
+        
+        if !editingInfo {
+            infoTextField.textColor = UIColor.grayColor()
+        }
+        else {
+            infoTextField.textColor = UIColor.blackColor()
+        }
+        
         infoTextField.setTranslatesAutoresizingMaskIntoConstraints(false)
         let constraints = [
             NSLayoutConstraint(item: infoTextField, attribute: .Top, relatedBy: .Equal, toItem: self.contentView, attribute: .Top, multiplier: 1.0, constant: 0.0),
@@ -199,10 +213,12 @@ class RecordDetailTableViewCell : UITableViewCell, UITextFieldDelegate, UIPicker
         switch infoType!
         {
         case .Client, .Project:
+            delegate?.didSelectTextFieldOnCell(nil)
             return false
             
         default:
-            return true
+            delegate?.didSelectTextFieldOnCell(self)
+            return editingInfo
         }
     }
     

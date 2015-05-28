@@ -6,7 +6,7 @@
 //  Copyright (c) 2015 The Hackerati. All rights reserved.
 //
 
-class RecordFormViewController : UIViewController, UITableViewDelegate, UITableViewDataSource
+class RecordFormViewController : UIViewController, UITableViewDelegate, UITableViewDataSource, RecordDetailTableViewCellDelegate
 {
     private let kCellReuseIdentifier = "cell"
     private let kCellDefaultHeight: CGFloat = 44.0
@@ -15,8 +15,11 @@ class RecordFormViewController : UIViewController, UITableViewDelegate, UITableV
     private weak var recordFormTableView: RecordFormTableView!
     private weak var activeCell: RecordDetailTableViewCell?
     
+    private var editingForm: Bool
+    
     init(record: Record, editing: Bool)
     {
+        editingForm = editing
         self.record = record
         super.init(nibName: nil, bundle: nil)
         title = record.date
@@ -32,14 +35,70 @@ class RecordFormViewController : UIViewController, UITableViewDelegate, UITableV
     override func loadView() {
         view = UIView(frame: UIScreen.mainScreen().bounds)
         
+        setupTableView()
+        
+        if editingForm {
+            setupSaveButton()
+        }
+        else {
+            setupEditButton()
+        }
+    }
+ 
+    private func setupTableView()
+    {
         let recordFormTableView = RecordFormTableView(frame: view.frame)
         recordFormTableView.registerClass(RecordDetailTableViewCell.self, forCellReuseIdentifier: kCellReuseIdentifier)
         recordFormTableView.delegate = self
         recordFormTableView.dataSource = self
+        
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: "tapToDismissKeyboard:")
+        tapGestureRecognizer.numberOfTouchesRequired = 1
+        tapGestureRecognizer.numberOfTapsRequired = 1
+        recordFormTableView.addGestureRecognizer(tapGestureRecognizer)
+        
         view.addSubview(recordFormTableView)
         self.recordFormTableView = recordFormTableView
     }
- 
+    
+    private func setupEditButton()
+    {
+        let editButton = UIBarButtonItem(barButtonSystemItem: .Edit, target: self, action: "enableEditing")
+        navigationItem.rightBarButtonItem = editButton
+    }
+    
+    private func setupSaveButton()
+    {
+        let saveButton = UIBarButtonItem(barButtonSystemItem: .Done, target: self, action: "saveRecord")
+        navigationItem.rightBarButtonItem = saveButton
+    }
+    
+    // MARK: UIBarButtonItem Selectors
+    
+    @objc
+    private func enableEditing()
+    {
+        editingForm = true
+        for visibleCell in recordFormTableView.visibleCells()
+        {
+            (visibleCell as? RecordDetailTableViewCell)?.editingInfo = editingForm
+        }
+        setupSaveButton()
+    }
+    
+    @objc
+    private func saveRecord()
+    {
+        editingForm = false
+        for visibleCell in recordFormTableView.visibleCells()
+        {
+            (visibleCell as? RecordDetailTableViewCell)?.editingInfo = editingForm
+        }
+        setupEditButton()
+        
+        // TODO: Write to Firebase
+    }
+    
     // MARK: UIKeyboard Notification Selectors
     
     @objc
@@ -79,10 +138,27 @@ class RecordFormViewController : UIViewController, UITableViewDelegate, UITableV
         }
     }
     
-    // MARK: UITableView Delegate
+    // MARK: UIGestureRecognizer Selectors
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        activeCell = tableView.cellForRowAtIndexPath(indexPath) as? RecordDetailTableViewCell
+    @objc
+    private func tapToDismissKeyboard(gesture: UITapGestureRecognizer)
+    {
+        let tapLocation = gesture.locationInView(recordFormTableView)
+        if let cell = activeCell {
+            if !CGRectContainsPoint(cell.frame, tapLocation) {
+                cell.resignFirstResponder()
+            }
+        }
+    }
+    
+    // MARK: RecordDetailTableViewCell Delegate
+    
+    func didSelectTextFieldOnCell(cell: RecordDetailTableViewCell?) {
+        activeCell = cell
+    }
+    
+    func textFieldTextDidChangeForCell(cell: RecordDetailTableViewCell, newText: String) {
+        // TODO: Enable a save button to save the changes
     }
     
     // MARK: UITableView Datasource
@@ -108,15 +184,8 @@ class RecordFormViewController : UIViewController, UITableViewDelegate, UITableV
         let recordType = RecordKey.editableValues[indexPath.section]
         cell.information = record.valueForType(recordType)
         cell.infoType = recordType
+        cell.editingInfo = editingForm
+        cell.delegate = self
         return cell
     }
-    
-    override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
-        if let touch = touches.first as? UITouch, let cell = activeCell {
-            if cell.isFirstResponder() && touch.view != cell {
-                cell.endEditing(true)
-            }
-        }
-    }
-    
 }
