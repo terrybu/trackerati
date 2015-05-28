@@ -1,6 +1,14 @@
-source 'https://github.com/CocoaPods/Specs.git'
-pod 'Firebase', '>= 2.0.3'
-pod 'MCSwipeTableViewCell'
-pod 'KNSemiModalViewController'
-pod 'KVOController'
-pod "JVFloatingDrawer"
+xcodeproj 'App/Trackerati.xcodeproj/'
+
+# Uncomment this line to define a global platform for your project
+platform :ios, '8.0'
+
+target 'Trackerati' do
+	pod 'AFNetworking'
+	pod 'Firebase', '>= 2.2.2'
+	pod 'MBProgressHUD'
+end
+
+target 'TrackeratiTests' do
+
+end
