@@ -51,6 +51,10 @@ class HistoryViewController : MainViewController, UITableViewDelegate, HistoryTa
     
     // MARK: UITableView Delegate
     
+    func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+        (cell as? HistoryTableViewCell)?.delegate = self
+    }
+    
     // Disables default UITableView swipe to delete. HistoryCell has own custom delete button
     func tableView(tableView: UITableView, editingStyleForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCellEditingStyle {
         if tableView.editing {
