@@ -5,7 +5,7 @@ platform :ios, '8.0'
 
 target 'Trackerati' do
 	pod 'AFNetworking'
-	pod 'Firebase', '>= 2.2.2'
+	pod 'Firebase'
 	pod 'MBProgressHUD'
 end
 

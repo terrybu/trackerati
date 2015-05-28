@@ -25,7 +25,7 @@ PODS:
 
 DEPENDENCIES:
   - AFNetworking
-  - Firebase (>= 2.2.2)
+  - Firebase
   - MBProgressHUD
 
 SPEC CHECKSUMS:
@@ -33,4 +33,4 @@ SPEC CHECKSUMS:
   Firebase: e35cdd2561bf4fea9c1e384e9400a9c173d19e47
   MBProgressHUD: c47f2c166c126cf2ce36498d80f33e754d4e93ad
 
-COCOAPODS: 0.37.1
+COCOAPODS: 0.37.2
