@@ -52,6 +52,7 @@ class HistoryViewController : MainViewController, UITableViewDelegate, HistoryTa
     // MARK: UITableView Delegate
     
     func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+        // Set delegate of cell here since datasource is separated out
         (cell as? HistoryTableViewCell)?.delegate = self
     }
     
