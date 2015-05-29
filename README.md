@@ -3,8 +3,24 @@ Hackerati time tracker app for iOS
 
 Trackerati-ios is an iOS app that allows the users to browse through existing projects to add themselves and to submit hours. 
 It ulitizes Google OAuth 2.0 and the user must give his/her permission to user profile and email adress.
+
+#Contributing
+
+We use [synx](https://github.com/venmo/synx) to keep the file structure of the project neat and organized. Please note that The contents in the `Resources` directory of the `HockeySDK.embeddedframework` gets deleted when this runs even if you exclude the `Frameworks` directory. The work around is to download the [latest version of the Hockey SDK](http://hockeyapp.net/releases/) and copy the `Resources` directory from the image and paste it in the `HockeySDK.embeddedframework` directory (which can be found in `App/Trackerati/Frameworks/`) and overwrite the current `Resource` directory in Finder
+
+#Pods
+
+Trackerati uses these pods as of now:
+
+- [AFNetworking](https://github.com/AFNetworking/AFNetworking)
+- [Firebase](https://www.firebase.com/docs/ios/)
+- [MBProgressHUD](https://github.com/jdg/MBProgressHUD)
+
+# Data
+
 The submitted records are stored in Firebase. --> blazing-torch-6772.firebaseio.com
 The structure of the data is as follows:
+
 ```json
 {
   "Projects":{
@@ -32,16 +48,9 @@ The structure of the data is as follows:
       }
   }
 }
-```json
+```
 
-** A node must have at least one value otherwise it will be deleted. As such a placeholder is placed in every node to prevent it from deleting. **
-
-Pod install
-source 'https://github.com/CocoaPods/Specs.git'
-pod 'Firebase', '>= 2.0.3'
-pod 'MCSwipeTableViewCell'
-pod 'KNSemiModalViewController'
-pod 'KVOController'
+**NOTE: A node must have at least one value otherwise it will be deleted. As such a placeholder is placed in every node to prevent it from deleting.**
 
 Below is the validation rule on FireBase
 
