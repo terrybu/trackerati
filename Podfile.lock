@@ -21,16 +21,19 @@ PODS:
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
   - Firebase (2.2.2)
+  - google-plus-ios-sdk (1.7.1)
   - MBProgressHUD (0.9.1)
 
 DEPENDENCIES:
   - AFNetworking
   - Firebase
+  - google-plus-ios-sdk
   - MBProgressHUD
 
 SPEC CHECKSUMS:
   AFNetworking: e1d86c2a96bb5d2e7408da36149806706ee122fe
   Firebase: e35cdd2561bf4fea9c1e384e9400a9c173d19e47
+  google-plus-ios-sdk: 47adbe03ea904bdb7aa1c0eca282a23c4686e1bc
   MBProgressHUD: c47f2c166c126cf2ce36498d80f33e754d4e93ad
 
 COCOAPODS: 0.37.2
