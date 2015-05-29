@@ -25,8 +25,6 @@
 		01498B7C1B01182B00C7C395 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01498B7B1B01182B00C7C395 /* Security.framework */; };
 		01498B7E1B01183300C7C395 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01498B7D1B01183300C7C395 /* SystemConfiguration.framework */; };
 		01498B801B01183A00C7C395 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01498B7F1B01183A00C7C395 /* UIKit.framework */; };
-		01498B911B011D4600C7C395 /* GoogleOpenSource.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01498B8F1B011D4600C7C395 /* GoogleOpenSource.framework */; };
-		01498B921B011D4700C7C395 /* GooglePlus.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01498B901B011D4600C7C395 /* GooglePlus.framework */; };
 		01498B941B011D5600C7C395 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01498B931B011D5600C7C395 /* AddressBook.framework */; };
 		01498B961B011D6100C7C395 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01498B951B011D6100C7C395 /* CoreLocation.framework */; };
 		01498B981B011D7000C7C395 /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01498B971B011D7000C7C395 /* CoreMotion.framework */; };
@@ -89,8 +87,6 @@
 		01498B7B1B01182B00C7C395 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		01498B7D1B01183300C7C395 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		01498B7F1B01183A00C7C395 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
-		01498B8F1B011D4600C7C395 /* GoogleOpenSource.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleOpenSource.framework; sourceTree = "<group>"; };
-		01498B901B011D4600C7C395 /* GooglePlus.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GooglePlus.framework; sourceTree = "<group>"; };
 		01498B931B011D5600C7C395 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		01498B951B011D6100C7C395 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		01498B971B011D7000C7C395 /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
@@ -132,7 +128,6 @@
 				01498B941B011D5600C7C395 /* AddressBook.framework in Frameworks */,
 				01498B801B01183A00C7C395 /* UIKit.framework in Frameworks */,
 				01498B7E1B01183300C7C395 /* SystemConfiguration.framework in Frameworks */,
-				01498B911B011D4600C7C395 /* GoogleOpenSource.framework in Frameworks */,
 				01498B7C1B01182B00C7C395 /* Security.framework in Frameworks */,
 				01498B7A1B01182500C7C395 /* QuickLook.framework in Frameworks */,
 				01498B781B01182000C7C395 /* QuartzCore.framework in Frameworks */,
@@ -140,7 +135,6 @@
 				01EE0C481B0E2F0200AA4C10 /* HockeySDK.framework in Frameworks */,
 				01498B741B01181400C7C395 /* Foundation.framework in Frameworks */,
 				01498B721B01180A00C7C395 /* AssetsLibrary.framework in Frameworks */,
-				01498B921B011D4700C7C395 /* GooglePlus.framework in Frameworks */,
 				01498B6F1B0117FF00C7C395 /* CoreGraphics.framework in Frameworks */,
 				01498B701B0117FF00C7C395 /* CoreText.framework in Frameworks */,
 				BFC762EDEA775168E0305151 /* libPods-Trackerati.a in Frameworks */,
@@ -268,8 +262,6 @@
 			isa = PBXGroup;
 			children = (
 				01EE0C451B0E2F0200AA4C10 /* HockeySDK.embeddedframework */,
-				01498B8F1B011D4600C7C395 /* GoogleOpenSource.framework */,
-				01498B901B011D4600C7C395 /* GooglePlus.framework */,
 				01498B7F1B01183A00C7C395 /* UIKit.framework */,
 				01498B7D1B01183300C7C395 /* SystemConfiguration.framework */,
 				01498B7B1B01182B00C7C395 /* Security.framework */,
