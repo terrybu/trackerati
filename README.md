@@ -2,7 +2,6 @@
 Hackerati time tracker app for iOS
 
 Trackerati-ios is an iOS app that allows the users to browse through existing projects to add themselves and to submit hours. 
-It ulitizes Google OAuth 2.0 and the user must give his/her permission to user profile and email adress.
 
 #Contributing
 
@@ -13,13 +12,26 @@ We use [synx](https://github.com/venmo/synx) to keep the file structure of the p
 Trackerati uses these pods as of now:
 
 - [AFNetworking](https://github.com/AFNetworking/AFNetworking)
+   * Handles network monitoring
 - [Firebase](https://www.firebase.com/docs/ios/)
+   * Current data store
+- [Google Plus SDK](https://developers.google.com/+/mobile/ios/getting-started)
+   * For OAuth 2.0 and the user must give his/her permission to user profile and email adress.
 - [MBProgressHUD](https://github.com/jdg/MBProgressHUD)
+   * For general, full page loading indicators
 
 # Data
 
-The submitted records are stored in Firebase. --> blazing-torch-6772.firebaseio.com
-The structure of the data is as follows:
+The submitted records are stored in Firebase. 
+
+There are 2 environments and URLs for each:
+
+* Dev: `https://trackerati-dev.firebaseio.com`
+   * For access to this, please contact **Patrick**
+* Production: `blazing-torch-6772.firebaseio.com`
+   * For access to this, please contact **Geoff**
+
+The structure of the data for both environments are as follows:
 
 ```json
 {
