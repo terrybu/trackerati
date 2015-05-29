@@ -1,8 +1,8 @@
 language: objective-c
+osx_image: beta-xcode6.3
 xcode_project: App/Trackerati.xcodeproj
 xcode_scheme: Trackerati
 xcode_sdk: iphonesimulator
-osx_image: beta-xcode6.3
 
 before_install:
     - brew update
