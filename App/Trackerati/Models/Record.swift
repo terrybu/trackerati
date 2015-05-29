@@ -47,6 +47,13 @@ class Record : NSObject
         self.comment = comment
     }
     
+    convenience init(client: String, project: String)
+    {
+        let dateFormatter = NSDateFormatter()
+        dateFormatter.dateFormat = "MM/dd/yyyy"
+        self.init(id: "", client: client, date: dateFormatter.stringFromDate(NSDate()), hours: "", project: project, status: "", type: "", comment: nil)
+    }
+    
     func valueForType(recordType: RecordKey) -> String?
     {
         switch recordType
