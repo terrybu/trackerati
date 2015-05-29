@@ -65,6 +65,12 @@ class ProjectsViewController : UIViewController, UITableViewDelegate, UITableVie
         }
     }
     
+    // MARK: UITableView Delegate
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        // TODO: Pin selected project
+    }
+    
     // MARK: UITableView Datasource
     
     func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -82,6 +88,7 @@ class ProjectsViewController : UIViewController, UITableViewDelegate, UITableVie
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(kCellReuseIdentifier, forIndexPath: indexPath) as! UITableViewCell
         cell.textLabel?.text = projectNameForIndexPath(indexPath)
+        cell.selectionStyle = .None
         return cell
     }
     
