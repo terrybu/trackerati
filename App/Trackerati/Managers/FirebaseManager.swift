@@ -38,6 +38,7 @@ class FirebaseManager : NSObject
     
     var allClientProjects: [Client]?
     var allUserRecords: [Record]?
+    var pinnedProjects: [Client]?
     
     func configureWithDatabaseURL(url: String)
     {
@@ -60,7 +61,6 @@ class FirebaseManager : NSObject
     {
         self.firebaseDB.observeSingleEventOfType(.Value, withBlock: { snapshot in
             var notificationName = ""
-            var downloadedData = []
             
             switch type {
             case .Projects:
@@ -68,23 +68,23 @@ class FirebaseManager : NSObject
                 if self.allClientProjects == nil {
                     self.allClientProjects = self.createClientArrayFromJSON(snapshot.value, sorted: true)
                 }
-                downloadedData = self.allClientProjects!
                 
             case .User:
                 notificationName = kUserInfoDownloadedNotificationName
                 if self.allUserRecords == nil {
                     self.allUserRecords = self.getRecordsForUser(snapshot.value, name: TrackeratiUserDefaults.standardDefaults.currentUser())
                 }
-                downloadedData = self.allUserRecords!
+                
+                if self.pinnedProjects == nil {
+                    self.pinnedProjects = self.pinnedProjectsForLoggedInUser()
+                }
             }
 
-            
             dispatch_async(dispatch_get_main_queue(), {
-                let userInfo = [kNotificationDownloadedInfoKey: downloadedData]
-                NSNotificationCenter.defaultCenter().postNotificationName(notificationName, object: nil, userInfo: userInfo)
+                NSNotificationCenter.defaultCenter().postNotificationName(notificationName, object: nil)
                 
-                if self.allUserRecords != nil && self.allClientProjects != nil {
-                    NSNotificationCenter.defaultCenter().postNotificationName(kAllDataDownloadedNotificationName, object: nil, userInfo: nil)
+                if self.allUserRecords != nil && self.allClientProjects != nil && self.pinnedProjects != nil {
+                    NSNotificationCenter.defaultCenter().postNotificationName(kAllDataDownloadedNotificationName, object: nil)
                 }
             })
         })
@@ -158,13 +158,31 @@ class FirebaseManager : NSObject
     {
         let dataDictionary = json as! NSDictionary
         let projects = dataDictionary.objectForKey(DataInfoType.Projects.rawValue) as! NSDictionary
-        var clients = [Client]()
+        var clients: [Client] = []
         
         for key in projects.allKeys {
             let clientName = key as! String
             let projectDetails = projects.objectForKey(key) as! NSDictionary
-            let clientProjects = projectDetails.allKeys as! [String]
-            let newClient = Client(companyName: clientName, projectNames: clientProjects)
+            
+            var projects: [Project] = []
+            for projectName in projectDetails.allKeys as! [String] {
+                var usersForProject: [String] = []
+                if let projectUsers = projectDetails.objectForKey(projectName) as? NSDictionary {
+                    for userKey in projectUsers.allKeys {
+                        // Gotta get another stupid dictionary to index into for the names of users...
+                        if let userDictionary = projectUsers.objectForKey(userKey) as? NSDictionary, let userFirebaseID = userDictionary.objectForKey("name") as? String {
+                            if userFirebaseID != "placeholder" {
+                                usersForProject.append(userFirebaseID)
+                            }
+                        }
+                    }
+                }
+                
+                let newProject = Project(name: projectName, users: usersForProject)
+                projects.append(newProject)
+            }
+            
+            let newClient = Client(companyName: clientName, projects: projects)
             clients.append(newClient)
         }
         
@@ -173,6 +191,20 @@ class FirebaseManager : NSObject
         }
         
         return clients
+    }
+    
+    private func pinnedProjectsForLoggedInUser() -> [Client]
+    {
+        var pinnedProjects: [Client] = []
+        for client in allClientProjects! {
+            let newProjectArray = client.projects.filter({ contains($0.users, GoogleLoginManager.sharedManager.currentUser.firebaseID) })
+            if newProjectArray.count > 0 {
+                let pinnedClient = Client(companyName: client.companyName, projects: newProjectArray)
+                pinnedProjects.append(pinnedClient)
+            }
+        }
+        
+        return pinnedProjects
     }
     
 }
