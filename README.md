@@ -1,4 +1,7 @@
 # trackerati-ios
+
+[![Build Status](https://magnum.travis-ci.com/thehackerati/trackerati-ios.svg?token=bfpRRsgzvKFo5bqXpqYg)](https://magnum.travis-ci.com/thehackerati/trackerati-ios)
+
 Hackerati time tracker app for iOS
 
 Trackerati-ios is an iOS app that allows the users to browse through existing projects to add themselves and to submit hours. 
