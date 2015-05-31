@@ -1,11 +1,10 @@
 language: objective-c
+xcode_workspace: Trackerati.xcworkspace
+xcode_scheme: Trackerati
+xcode_sdk: iphonesimulator8.0
 osx_image: beta-xcode6.3
 
 before_install:
     - brew update
     - if brew outdated | grep -qx xctool; then brew upgrade xctool; fi
     - gem install cocoapods
-
-script:
-    - xcodebuild -project App/Trackerati.xcodeproj -scheme "Trackerati" -sdk iphonesimulator
-      -destination "platform=iOS Simulator,name=iPhone 6" ONLY_ACTIVE_ARCH=NO  test | xcpretty -c
