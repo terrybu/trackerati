@@ -10,6 +10,10 @@ Trackerati-ios is an iOS app that allows the users to browse through existing pr
 
 We use [synx](https://github.com/venmo/synx) to keep the file structure of the project neat and organized. Please note that The contents in the `Resources` directory of the `HockeySDK.embeddedframework` gets deleted when this runs even if you exclude the `Frameworks` directory. The work around is to download the [latest version of the Hockey SDK](http://hockeyapp.net/releases/) and copy the `Resources` directory from the image and paste it in the `HockeySDK.embeddedframework` directory (which can be found in `App/Trackerati/Frameworks/`) and overwrite the current `Resource` directory in Finder
 
+#Continuous Integration
+
+The project uses Travis for continuous integration. Currently (as of **5/31/15**) Travis uses a beta image of Xcode 6.3 to compile Swift sources. Once they release an official image of Xcode 6.3, the `.travis.yml` will need to be updated (odds are you'll just have to delete or alter the `osx_image: beta-xcode6.3` line). You can see the project's build logs [here](https://magnum.travis-ci.com/thehackerati/trackerati-ios)
+
 #Pods
 
 Trackerati uses these pods as of now:
