@@ -43,6 +43,7 @@
 		0190BF321B0B899800E508CF /* Client.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0190BF311B0B899800E508CF /* Client.swift */; };
 		0190BF361B0CD53700E508CF /* Record.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0190BF351B0CD53700E508CF /* Record.swift */; };
 		0190BF381B0CFC3D00E508CF /* ProjectsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0190BF371B0CFC3D00E508CF /* ProjectsViewController.swift */; };
+		019FCA0F1B1E372A007E7E8B /* MBProgressHUDExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019FCA0E1B1E372A007E7E8B /* MBProgressHUDExtension.swift */; };
 		01DD394B1B0A70FD000D925D /* SideMenuUserHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01DD394A1B0A70FD000D925D /* SideMenuUserHeaderView.swift */; };
 		01EE0C441B0E2B7800AA4C10 /* HistoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01EE0C431B0E2B7800AA4C10 /* HistoryTableViewCell.swift */; };
 		01EE0C481B0E2F0200AA4C10 /* HockeySDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01EE0C461B0E2F0200AA4C10 /* HockeySDK.framework */; };
@@ -105,6 +106,7 @@
 		0190BF311B0B899800E508CF /* Client.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Client.swift; sourceTree = "<group>"; };
 		0190BF351B0CD53700E508CF /* Record.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Record.swift; sourceTree = "<group>"; };
 		0190BF371B0CFC3D00E508CF /* ProjectsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectsViewController.swift; sourceTree = "<group>"; };
+		019FCA0E1B1E372A007E7E8B /* MBProgressHUDExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MBProgressHUDExtension.swift; sourceTree = "<group>"; };
 		01DD394A1B0A70FD000D925D /* SideMenuUserHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SideMenuUserHeaderView.swift; sourceTree = "<group>"; };
 		01EE0C431B0E2B7800AA4C10 /* HistoryTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HistoryTableViewCell.swift; sourceTree = "<group>"; };
 		01EE0C461B0E2F0200AA4C10 /* HockeySDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = HockeySDK.framework; sourceTree = "<group>"; };
@@ -294,6 +296,7 @@
 				013F783D1B14EC32004842B2 /* TableViews */,
 				01EE0C4A1B0E2F3600AA4C10 /* Cells */,
 				01DD394A1B0A70FD000D925D /* SideMenuUserHeaderView.swift */,
+				019FCA0E1B1E372A007E7E8B /* MBProgressHUDExtension.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -553,6 +556,7 @@
 				0170E43E1B026D8000D593C3 /* FirebaseManager.swift in Sources */,
 				0190BF361B0CD53700E508CF /* Record.swift in Sources */,
 				013C5A131B012E06002C4020 /* GoogleLoginManager.swift in Sources */,
+				019FCA0F1B1E372A007E7E8B /* MBProgressHUDExtension.swift in Sources */,
 				0170E43C1B0259C400D593C3 /* TrackeratiUserDefaults.swift in Sources */,
 				0190BF321B0B899800E508CF /* Client.swift in Sources */,
 				0170E4401B02962F00D593C3 /* Constants.swift in Sources */,

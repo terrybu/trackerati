@@ -89,7 +89,7 @@ class ProjectsViewController : UIViewController, UITableViewDelegate, UITableVie
                 
                 hud.labelText = "Saving to Pinned Projects"
                 FirebaseManager.sharedManager.pinCurrentUserToProject(clientProjects[indexPath.section].companyName, projectName: projectNameForIndexPath(indexPath), completion:{
-                    self.showCompletedHUD()
+                    MBProgressHUD.showCompletionHUD(onView: self.view, duration: UInt64(2.0))
                 })
             }
             else {
@@ -100,7 +100,7 @@ class ProjectsViewController : UIViewController, UITableViewDelegate, UITableVie
                 
                 hud.labelText = "Removing Pinned Project"
                 FirebaseManager.sharedManager.removeCurrentUserFromProject(clientProjects[indexPath.section].companyName, projectName: projectNameForIndexPath(indexPath), completion: {
-                    self.showCompletedHUD()
+                    MBProgressHUD.showCompletionHUD(onView: self.view, duration: UInt64(2.0))
                 })
             }
         }
@@ -160,20 +160,6 @@ class ProjectsViewController : UIViewController, UITableViewDelegate, UITableVie
     private func projectNameForIndexPath(indexPath: NSIndexPath) -> String
     {
         return clientProjects[indexPath.section].projects[indexPath.row].name
-    }
-    
-    private func showCompletedHUD()
-    {
-        MBProgressHUD.hideHUDForView(self.view, animated: true)
-        
-        let completedHUD = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
-        completedHUD.mode = .CustomView
-        completedHUD.customView = UIImageView(image: UIImage(named: "CompletedCheckMark"))
-        completedHUD.labelText = "Completed!"
-        let timeUntilHide = dispatch_time(DISPATCH_TIME_NOW, Int64(UInt64(2.0) * NSEC_PER_SEC))
-        dispatch_after(timeUntilHide, dispatch_get_main_queue(), {
-            MBProgressHUD.hideHUDForView(self.view, animated: true)
-        })
     }
     
     // MARK: UIBarButtonItem Selectors
