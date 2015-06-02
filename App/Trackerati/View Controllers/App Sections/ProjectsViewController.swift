@@ -10,6 +10,7 @@ class ProjectsViewController : UIViewController, UITableViewDelegate, UITableVie
 {
     private let kViewControllerTitle = "Projects"
     private let kCellReuseIdentifier = "cell"
+    private let kCheckMarkImageName = "CheckMark"
     
     private weak var projectsTableView: UITableView!
     
@@ -69,6 +70,22 @@ class ProjectsViewController : UIViewController, UITableViewDelegate, UITableVie
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         // TODO: Pin selected project
+        tableView.cellForRowAtIndexPath(indexPath)?.accessoryView = UIImageView(image: UIImage(named: kCheckMarkImageName))
+        let project = projectForIndexPath(indexPath)
+        
+        var existingClient = false
+        for client in FirebaseManager.sharedManager.pinnedProjects! {
+            if client.companyName == clientProjects[indexPath.section].companyName {
+                client.projects.append(project)
+                existingClient = true
+                break
+            }
+        }
+        
+        if !existingClient {
+            let newPinnedClient = Client(companyName: clientProjects[indexPath.section].companyName, projects: [project])
+            FirebaseManager.sharedManager.pinnedProjects!.append(newPinnedClient)
+        }
     }
     
     // MARK: UITableView Datasource
@@ -87,12 +104,27 @@ class ProjectsViewController : UIViewController, UITableViewDelegate, UITableVie
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(kCellReuseIdentifier, forIndexPath: indexPath) as! UITableViewCell
-        cell.textLabel?.text = projectNameForIndexPath(indexPath)
+        let projectName = projectNameForIndexPath(indexPath)
+        cell.textLabel?.text = projectName
         cell.selectionStyle = .None
+        cell.accessoryView = nil
+        
+        for client in FirebaseManager.sharedManager.pinnedProjects!
+        {
+            if contains(client.projects, projectForIndexPath(indexPath)) {
+                cell.accessoryView = UIImageView(image: UIImage(named: kCheckMarkImageName))
+            }
+        }
+        
         return cell
     }
     
     // MARK: Private
+    
+    private func projectForIndexPath(indexPath: NSIndexPath) -> Project
+    {
+        return clientProjects[indexPath.section].projects[indexPath.row]
+    }
     
     private func projectNameForIndexPath(indexPath: NSIndexPath) -> String
     {

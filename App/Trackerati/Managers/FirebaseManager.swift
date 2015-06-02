@@ -112,6 +112,11 @@ class FirebaseManager : NSObject
         return sortedRecordsByDate
     }
     
+    func pinCurrentUserToProject(client: Client)
+    {
+        // TODO: Write user to client in Firebase
+    }
+    
     // MARK: Private
     
     private func getRecordsForUser(json: AnyObject, name: String) -> [Record]
