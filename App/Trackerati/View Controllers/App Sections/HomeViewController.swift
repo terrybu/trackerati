@@ -6,8 +6,17 @@
 //  Copyright (c) 2015 The Hackerati. All rights reserved.
 //
 
-class HomeViewController : MainViewController
+class HomeViewController : MainViewController, UITableViewDelegate, UITableViewDataSource
 {
+    private let kCellReuseIdentifier = "cell"
+    
+    private weak var pinnedProjectsTableView: UITableView!
+    private var pinnedProjects: [Client] {
+        get {
+            return FirebaseManager.sharedManager.pinnedProjects!
+        }
+    }
+
     init()
     {
         super.init(nibName: nil, bundle: nil)
@@ -20,10 +29,22 @@ class HomeViewController : MainViewController
     
     override func loadView() {
         super.loadView()
-        view.backgroundColor = UIColor.redColor()
         
         let addProjectButton = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: "displayProjects")
         navigationItem.rightBarButtonItem = addProjectButton
+        
+        setupTableView()
+    }
+    
+    private func setupTableView()
+    {
+        let pinnedProjectsTableView = UITableView(frame: view.frame, style: .Plain)
+        pinnedProjectsTableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: kCellReuseIdentifier)
+        pinnedProjectsTableView.delegate = self
+        pinnedProjectsTableView.dataSource = self
+        pinnedProjectsTableView.tableFooterView = UIView(frame: CGRectZero)
+        view.addSubview(pinnedProjectsTableView)
+        self.pinnedProjectsTableView = pinnedProjectsTableView
     }
     
     // MARK: UIBarButtonItem Selectors
@@ -35,4 +56,33 @@ class HomeViewController : MainViewController
         let navController = UINavigationController(rootViewController: projectsViewController)
         self.presentViewController(navController, animated: true, completion: nil)
     }
+    
+    // MARK: UITableView Delegate
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        tableView.deselectRowAtIndexPath(indexPath, animated: false)
+        
+        // TODO: Start a new form for the Client the user selected
+    }
+    
+    // MARK: UITableView Datasource
+    
+    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return pinnedProjects[section].companyName
+    }
+    
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        return pinnedProjects.count
+    }
+    
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return pinnedProjects[section].projects.count
+    }
+    
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCellWithIdentifier(kCellReuseIdentifier, forIndexPath: indexPath) as! UITableViewCell
+        cell.textLabel?.text = pinnedProjects[indexPath.section].projects[indexPath.row].name
+        return cell
+    }
+    
 }

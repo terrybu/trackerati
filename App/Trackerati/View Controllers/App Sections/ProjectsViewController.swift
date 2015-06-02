@@ -13,7 +13,7 @@ class ProjectsViewController : UIViewController, UITableViewDelegate, UITableVie
     
     private weak var projectsTableView: UITableView!
     
-    private var projects: [Client] = []
+    private var clientProjects: [Client] = []
     
     init(projects: [Client]?)
     {
@@ -21,7 +21,7 @@ class ProjectsViewController : UIViewController, UITableViewDelegate, UITableVie
         self.title = kViewControllerTitle
         
         if let projectArray = projects {
-            self.projects = projectArray
+            clientProjects = projectArray
         }
         else {
             let hud = MBProgressHUD.showHUDAddedTo(view, animated: true)
@@ -57,7 +57,7 @@ class ProjectsViewController : UIViewController, UITableViewDelegate, UITableVie
     {
         if let userInfo = notification.userInfo {
             if let downloadedProjects = userInfo[kNotificationDownloadedInfoKey] as? [Client] {
-                projects = downloadedProjects
+                clientProjects = downloadedProjects
                 
                 MBProgressHUD.hideAllHUDsForView(view, animated: true)
                 projectsTableView.reloadData()
@@ -65,23 +65,30 @@ class ProjectsViewController : UIViewController, UITableViewDelegate, UITableVie
         }
     }
     
+    // MARK: UITableView Delegate
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        // TODO: Pin selected project
+    }
+    
     // MARK: UITableView Datasource
     
     func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return projects[section].companyName
+        return clientProjects[section].companyName
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return projects.count
+        return clientProjects.count
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return projects[section].projectNames.count
+        return clientProjects[section].projects.count
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(kCellReuseIdentifier, forIndexPath: indexPath) as! UITableViewCell
         cell.textLabel?.text = projectNameForIndexPath(indexPath)
+        cell.selectionStyle = .None
         return cell
     }
     
@@ -89,7 +96,7 @@ class ProjectsViewController : UIViewController, UITableViewDelegate, UITableVie
     
     private func projectNameForIndexPath(indexPath: NSIndexPath) -> String
     {
-        return projects[indexPath.section].projectNames[indexPath.row]
+        return clientProjects[indexPath.section].projects[indexPath.row].name
     }
     
     // MARK: UIBarButtonItem Selectors

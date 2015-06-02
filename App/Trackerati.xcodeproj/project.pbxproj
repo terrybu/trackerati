@@ -39,6 +39,7 @@
 		0170E44E1B052A2200D593C3 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0170E44D1B052A2200D593C3 /* HomeViewController.swift */; };
 		0170E4541B0542A900D593C3 /* LoginScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0170E4521B0542A900D593C3 /* LoginScreen.swift */; };
 		0170E4551B0542A900D593C3 /* SwitchDatePickerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0170E4531B0542A900D593C3 /* SwitchDatePickerCell.swift */; };
+		017D693E1B17A1F00046287F /* Project.swift in Sources */ = {isa = PBXBuildFile; fileRef = 017D693D1B17A1F00046287F /* Project.swift */; };
 		0190BF321B0B899800E508CF /* Client.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0190BF311B0B899800E508CF /* Client.swift */; };
 		0190BF361B0CD53700E508CF /* Record.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0190BF351B0CD53700E508CF /* Record.swift */; };
 		0190BF381B0CFC3D00E508CF /* ProjectsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0190BF371B0CFC3D00E508CF /* ProjectsViewController.swift */; };
@@ -100,6 +101,7 @@
 		0170E44D1B052A2200D593C3 /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		0170E4521B0542A900D593C3 /* LoginScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginScreen.swift; sourceTree = "<group>"; };
 		0170E4531B0542A900D593C3 /* SwitchDatePickerCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwitchDatePickerCell.swift; sourceTree = "<group>"; };
+		017D693D1B17A1F00046287F /* Project.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Project.swift; sourceTree = "<group>"; };
 		0190BF311B0B899800E508CF /* Client.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Client.swift; sourceTree = "<group>"; };
 		0190BF351B0CD53700E508CF /* Record.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Record.swift; sourceTree = "<group>"; };
 		0190BF371B0CFC3D00E508CF /* ProjectsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectsViewController.swift; sourceTree = "<group>"; };
@@ -281,6 +283,7 @@
 				0170E4431B02985100D593C3 /* User.swift */,
 				0190BF311B0B899800E508CF /* Client.swift */,
 				0190BF351B0CD53700E508CF /* Record.swift */,
+				017D693D1B17A1F00046287F /* Project.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -563,6 +566,7 @@
 				013F78431B14F5DB004842B2 /* RecordDetailTableViewCell.swift in Sources */,
 				0170E4551B0542A900D593C3 /* SwitchDatePickerCell.swift in Sources */,
 				0170E44E1B052A2200D593C3 /* HomeViewController.swift in Sources */,
+				017D693E1B17A1F00046287F /* Project.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -9,11 +9,11 @@
 class Client : NSObject
 {
     let companyName: String
-    let projectNames: [String]
+    let projects: [Project]
 
-    init(companyName: String, projectNames: [String])
+    init(companyName: String, projects: [Project])
     {
         self.companyName = companyName
-        self.projectNames = projectNames
+        self.projects = projects
     }
 }
