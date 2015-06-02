@@ -8,3 +8,10 @@ before_install:
     - brew update
     - if brew outdated | grep -qx xctool; then brew upgrade xctool; fi
     - gem install cocoapods
+
+notifications:
+  email: false
+  slack:
+    secure: JbDIDcI58yvAAklwaAB+jpQryw3KnhaN9j5lUflNFCPzFzmboh2JQR2IVhOibXnjiH5yjvg0PrB9HXe/oZYnDOeTwOwmU0FJjn9Qu3pDDZwZAtnj91YPK327h1csmtK8E0CyA1Sm2mC/4E+CqtuodS5nEUJbdP65PaD+feZVvgg=
+    on_success: change # default: always
+    on_failure: change # default: always
