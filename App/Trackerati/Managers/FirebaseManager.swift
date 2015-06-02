@@ -117,6 +117,7 @@ class FirebaseManager : NSObject
     
     :param: clientName  Name of company the project belongs to
     :param: projectName Name of project within the company
+    :param: completion  Completion closure once the user is deleted from Firebase
     */
     func pinCurrentUserToProject(clientName: String, projectName: String, completion:(() -> Void)?)
     {
@@ -130,6 +131,13 @@ class FirebaseManager : NSObject
         })
     }
     
+    /**
+    Removes a user from a project in Firebase
+    
+    :param: clientName  Name of company
+    :param: projectName Name of project within the company
+    :param: completion  Completion closure once the user is deleted from Firebase
+    */
     func removeCurrentUserFromProject(clientName: String, projectName: String, completion:(() -> Void)?)
     {
         let projectURL = "Projects/\(clientName)/\(projectName)"
