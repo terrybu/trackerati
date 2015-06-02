@@ -9,7 +9,7 @@
 class Client : NSObject
 {
     let companyName: String
-    let projects: [Project]
+    var projects: [Project]
 
     init(companyName: String, projects: [Project])
     {

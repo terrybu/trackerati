@@ -36,6 +36,11 @@ class HomeViewController : MainViewController, UITableViewDelegate, UITableViewD
         setupTableView()
     }
     
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(true)
+        pinnedProjectsTableView.reloadData()
+    }
+    
     private func setupTableView()
     {
         let pinnedProjectsTableView = UITableView(frame: view.frame, style: .Plain)

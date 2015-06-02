@@ -112,6 +112,60 @@ class FirebaseManager : NSObject
         return sortedRecordsByDate
     }
     
+    /**
+    Writes the current logged in user to the list of users on a project in Firebase
+    
+    :param: clientName  Name of company the project belongs to
+    :param: projectName Name of project within the company
+    :param: completion  Completion closure once the user is deleted from Firebase
+    */
+    func pinCurrentUserToProject(clientName: String, projectName: String, completion:(() -> Void)?)
+    {
+        let projectURL = "Projects/\(clientName)/\(projectName)"
+        let pinProjectRef = firebaseDB.childByAppendingPath(projectURL)
+        let userToPinRef = pinProjectRef.childByAutoId()
+        userToPinRef.setValue(["name": GoogleLoginManager.sharedManager.currentUser.firebaseID], withCompletionBlock: { error, firbaseRef in
+            if let closure = completion {
+                closure()
+            }
+        })
+    }
+    
+    /**
+    Removes a user from a project in Firebase
+    
+    :param: clientName  Name of company
+    :param: projectName Name of project within the company
+    :param: completion  Completion closure once the user is deleted from Firebase
+    */
+    func removeCurrentUserFromProject(clientName: String, projectName: String, completion:(() -> Void)?)
+    {
+        let projectURL = "Projects/\(clientName)/\(projectName)"
+        let removeProjectRef = firebaseDB.childByAppendingPath(projectURL)
+        removeProjectRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
+            if let userDictionary = snapshot.value as? NSDictionary {
+                
+                let keys = userDictionary.allKeys
+                for key in keys {
+                    
+                    if let readUser = userDictionary.objectForKey(key) as? NSDictionary {
+                        
+                        if readUser.objectForKey("name") as! String == GoogleLoginManager.sharedManager.currentUser.firebaseID {
+                            
+                            let refToRemove = removeProjectRef.childByAppendingPath(key as! String)
+                            refToRemove.removeValueWithCompletionBlock({ error, firebaseRef in
+                                if let closure = completion {
+                                    closure()
+                                }
+                            })
+                            break
+                        }
+                    }
+                }
+            }
+        })
+    }
+    
     // MARK: Private
     
     private func getRecordsForUser(json: AnyObject, name: String) -> [Record]
