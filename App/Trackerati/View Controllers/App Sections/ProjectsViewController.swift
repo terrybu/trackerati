@@ -73,16 +73,11 @@ class ProjectsViewController : UIViewController, UITableViewDelegate, UITableVie
         tableView.cellForRowAtIndexPath(indexPath)?.accessoryView = UIImageView(image: UIImage(named: kCheckMarkImageName))
         let project = projectForIndexPath(indexPath)
         
-        var existingClient = false
-        for client in FirebaseManager.sharedManager.pinnedProjects! {
-            if client.companyName == clientProjects[indexPath.section].companyName {
-                client.projects.append(project)
-                existingClient = true
-                break
-            }
+        let indexOfPinnedProject = clientPinned(atIndexPath: indexPath)
+        if indexOfPinnedProject != -1 {
+            FirebaseManager.sharedManager.pinnedProjects![indexOfPinnedProject].projects.append(project)
         }
-        
-        if !existingClient {
+        else {
             let newPinnedClient = Client(companyName: clientProjects[indexPath.section].companyName, projects: [project])
             FirebaseManager.sharedManager.pinnedProjects!.append(newPinnedClient)
         }
@@ -122,6 +117,19 @@ class ProjectsViewController : UIViewController, UITableViewDelegate, UITableVie
     }
     
     // MARK: Private
+    
+    private func clientPinned(atIndexPath indexPath:NSIndexPath) -> Int
+    {
+        var i = 0
+        for client in FirebaseManager.sharedManager.pinnedProjects! {
+            if client.companyName == clientProjects[indexPath.section].companyName {
+                return i
+            }
+            i++
+        }
+        
+        return -1
+    }
     
     private func projectForIndexPath(indexPath: NSIndexPath) -> Project
     {
