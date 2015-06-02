@@ -70,19 +70,40 @@ class ProjectsViewController : UIViewController, UITableViewDelegate, UITableVie
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         
-        tableView.cellForRowAtIndexPath(indexPath)?.accessoryView = UIImageView(image: UIImage(named: kCheckMarkImageName))
-        let project = projectForIndexPath(indexPath)
-        
-        let indexOfPinnedProject = clientPinned(atIndexPath: indexPath)
-        if indexOfPinnedProject != -1 {
-            FirebaseManager.sharedManager.pinnedProjects![indexOfPinnedProject].projects.append(project)
+        if let selectedCell = tableView.cellForRowAtIndexPath(indexPath) {
+            
+            let hud = MBProgressHUD.showHUDAddedTo(view, animated: true)
+            if selectedCell.accessoryView == nil {
+                
+                selectedCell.accessoryView = UIImageView(image: UIImage(named: kCheckMarkImageName))
+                let project = projectForIndexPath(indexPath)
+                
+                let indexOfPinnedProject = clientPinned(atIndexPath: indexPath)
+                if indexOfPinnedProject != -1 {
+                    FirebaseManager.sharedManager.pinnedProjects![indexOfPinnedProject].projects.append(project)
+                }
+                else {
+                    let newPinnedClient = Client(companyName: clientProjects[indexPath.section].companyName, projects: [project])
+                    FirebaseManager.sharedManager.pinnedProjects!.append(newPinnedClient)
+                }
+                
+                hud.labelText = "Saving to Pinned Projects"
+                FirebaseManager.sharedManager.pinCurrentUserToProject(clientProjects[indexPath.section].companyName, projectName: projectNameForIndexPath(indexPath), completion:{
+                    self.showCompletedHUD()
+                })
+            }
+            else {
+                selectedCell.accessoryView = nil
+                
+                let indexOfPinnedProject = clientPinned(atIndexPath: indexPath)
+                FirebaseManager.sharedManager.pinnedProjects!.removeAtIndex(indexOfPinnedProject)
+                
+                hud.labelText = "Removing Pinned Project"
+                FirebaseManager.sharedManager.removeCurrentUserFromProject(clientProjects[indexPath.section].companyName, projectName: projectNameForIndexPath(indexPath), completion: {
+                    self.showCompletedHUD()
+                })
+            }
         }
-        else {
-            let newPinnedClient = Client(companyName: clientProjects[indexPath.section].companyName, projects: [project])
-            FirebaseManager.sharedManager.pinnedProjects!.append(newPinnedClient)
-        }
-        
-        FirebaseManager.sharedManager.pinCurrentUserToProject(clientProjects[indexPath.section].companyName, projectName: projectNameForIndexPath(indexPath))
     }
     
     // MARK: UITableView Datasource
@@ -139,6 +160,20 @@ class ProjectsViewController : UIViewController, UITableViewDelegate, UITableVie
     private func projectNameForIndexPath(indexPath: NSIndexPath) -> String
     {
         return clientProjects[indexPath.section].projects[indexPath.row].name
+    }
+    
+    private func showCompletedHUD()
+    {
+        MBProgressHUD.hideHUDForView(self.view, animated: true)
+        
+        let completedHUD = MBProgressHUD.showHUDAddedTo(self.view, animated: true)
+        completedHUD.mode = .CustomView
+        completedHUD.customView = UIImageView(image: UIImage(named: "CompletedCheckMark"))
+        completedHUD.labelText = "Completed!"
+        let timeUntilHide = dispatch_time(DISPATCH_TIME_NOW, Int64(UInt64(2.0) * NSEC_PER_SEC))
+        dispatch_after(timeUntilHide, dispatch_get_main_queue(), {
+            MBProgressHUD.hideHUDForView(self.view, animated: true)
+        })
     }
     
     // MARK: UIBarButtonItem Selectors

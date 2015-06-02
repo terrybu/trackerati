@@ -118,12 +118,44 @@ class FirebaseManager : NSObject
     :param: clientName  Name of company the project belongs to
     :param: projectName Name of project within the company
     */
-    func pinCurrentUserToProject(clientName: String, projectName: String)
+    func pinCurrentUserToProject(clientName: String, projectName: String, completion:(() -> Void)?)
     {
         let projectURL = "Projects/\(clientName)/\(projectName)"
         let pinProjectRef = firebaseDB.childByAppendingPath(projectURL)
         let userToPinRef = pinProjectRef.childByAutoId()
-        userToPinRef.setValue(["name": GoogleLoginManager.sharedManager.currentUser.firebaseID])
+        userToPinRef.setValue(["name": GoogleLoginManager.sharedManager.currentUser.firebaseID], withCompletionBlock: { error, firbaseRef in
+            if let closure = completion {
+                closure()
+            }
+        })
+    }
+    
+    func removeCurrentUserFromProject(clientName: String, projectName: String, completion:(() -> Void)?)
+    {
+        let projectURL = "Projects/\(clientName)/\(projectName)"
+        let removeProjectRef = firebaseDB.childByAppendingPath(projectURL)
+        removeProjectRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
+            if let userDictionary = snapshot.value as? NSDictionary {
+                
+                let keys = userDictionary.allKeys
+                for key in keys {
+                    
+                    if let readUser = userDictionary.objectForKey(key) as? NSDictionary {
+                        
+                        if readUser.objectForKey("name") as! String == GoogleLoginManager.sharedManager.currentUser.firebaseID {
+                            
+                            let refToRemove = removeProjectRef.childByAppendingPath(key as! String)
+                            refToRemove.removeValueWithCompletionBlock({ error, firebaseRef in
+                                if let closure = completion {
+                                    closure()
+                                }
+                            })
+                            break
+                        }
+                    }
+                }
+            }
+        })
     }
     
     // MARK: Private
