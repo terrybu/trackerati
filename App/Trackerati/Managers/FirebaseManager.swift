@@ -72,7 +72,7 @@ class FirebaseManager : NSObject
             case .User:
                 notificationName = kUserInfoDownloadedNotificationName
                 if self.allUserRecords == nil {
-                    self.allUserRecords = self.getRecordsForUser(snapshot.value, name: TrackeratiUserDefaults.standardDefaults.currentUser())
+                    self.allUserRecords = self.getRecordsForUser(snapshot.value, name: GoogleLoginManager.sharedManager.currentUser.firebaseID)
                 }
                 
                 if self.pinnedProjects == nil {
@@ -112,9 +112,18 @@ class FirebaseManager : NSObject
         return sortedRecordsByDate
     }
     
-    func pinCurrentUserToProject(client: Client)
+    /**
+    Writes the current logged in user to the list of users on a project in Firebase
+    
+    :param: clientName  Name of company the project belongs to
+    :param: projectName Name of project within the company
+    */
+    func pinCurrentUserToProject(clientName: String, projectName: String)
     {
-        // TODO: Write user to client in Firebase
+        let projectURL = "Projects/\(clientName)/\(projectName)"
+        let pinProjectRef = firebaseDB.childByAppendingPath(projectURL)
+        let userToPinRef = pinProjectRef.childByAutoId()
+        userToPinRef.setValue(["name": GoogleLoginManager.sharedManager.currentUser.firebaseID])
     }
     
     // MARK: Private

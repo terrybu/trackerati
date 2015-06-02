@@ -69,7 +69,7 @@ class ProjectsViewController : UIViewController, UITableViewDelegate, UITableVie
     // MARK: UITableView Delegate
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        // TODO: Pin selected project
+        
         tableView.cellForRowAtIndexPath(indexPath)?.accessoryView = UIImageView(image: UIImage(named: kCheckMarkImageName))
         let project = projectForIndexPath(indexPath)
         
@@ -86,6 +86,8 @@ class ProjectsViewController : UIViewController, UITableViewDelegate, UITableVie
             let newPinnedClient = Client(companyName: clientProjects[indexPath.section].companyName, projects: [project])
             FirebaseManager.sharedManager.pinnedProjects!.append(newPinnedClient)
         }
+        
+        FirebaseManager.sharedManager.pinCurrentUserToProject(clientProjects[indexPath.section].companyName, projectName: projectNameForIndexPath(indexPath))
     }
     
     // MARK: UITableView Datasource
