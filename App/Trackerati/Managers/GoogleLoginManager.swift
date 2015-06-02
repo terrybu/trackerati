@@ -85,7 +85,6 @@ class GoogleLoginManager : NSObject, GPPSignInDelegate, UIAlertViewDelegate
     func logout()
     {
         googleSignInManager.signOut()
-        TrackeratiUserDefaults.standardDefaults.logOutUser()
     }
     
     /**
@@ -139,10 +138,6 @@ class GoogleLoginManager : NSObject, GPPSignInDelegate, UIAlertViewDelegate
             }
             else {
                 authorized = true
-                
-                if TrackeratiUserDefaults.standardDefaults.currentUser() != email { // add user to userdefaults
-                    TrackeratiUserDefaults.standardDefaults.setCurrentUser(email)
-                }
                 
                 createUserFromProfile()
                 NSNotificationCenter.defaultCenter().postNotificationName(kUserDidAuthorizeNotification, object: currentUser)
