@@ -72,7 +72,7 @@ class FirebaseManager : NSObject
             case .User:
                 notificationName = kUserInfoDownloadedNotificationName
                 if self.allUserRecords == nil {
-                    self.allUserRecords = self.getRecordsForUser(snapshot.value, name: TrackeratiUserDefaults.standardDefaults.currentUser())
+                    self.allUserRecords = self.getRecordsForUser(snapshot.value, name: GoogleLoginManager.sharedManager.currentUser.firebaseID)
                 }
                 
                 if self.pinnedProjects == nil {
