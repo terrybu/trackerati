@@ -23,13 +23,13 @@ enum RecordKey: String
 class Record : NSObject
 {
     let id: String
-    let client: String
-    let date: String
-    let hours: String
-    let project: String
-    let status: String
-    let type: String
-    let comment: String?
+    var client: String
+    var date: String
+    var hours: String
+    var project: String
+    var status: String
+    var type: String
+    var comment: String?
     
     class var numberOfFields: Int {
         return RecordKey.editableValues.count

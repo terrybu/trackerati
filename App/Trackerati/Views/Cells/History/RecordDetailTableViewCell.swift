@@ -18,8 +18,6 @@ class RecordDetailTableViewCell : UITableViewCell, UITextFieldDelegate, UIPicker
     private weak var infoTextField: UITextField!
     weak var delegate: RecordDetailTableViewCellDelegate?
     
-    private var initialTextValue: String!
-    
     var infoType: RecordKey! {
         didSet {
             setupCellForType(infoType)
@@ -34,8 +32,6 @@ class RecordDetailTableViewCell : UITableViewCell, UITextFieldDelegate, UIPicker
             else {
                 infoTextField.text = kDefaultNilInformationValue
             }
-            
-            initialTextValue = infoTextField.text
         }
     }
     
@@ -214,10 +210,7 @@ class RecordDetailTableViewCell : UITableViewCell, UITextFieldDelegate, UIPicker
             newValue = ""
         }
         
-        if newValue != initialTextValue {
-            delegate?.textFieldTextDidChangeForCell(self, newText: newValue)
-        }
-        
+        delegate?.textFieldTextDidChangeForCell(self, newText: newValue)
         information = options[row]
     }
     
@@ -260,8 +253,6 @@ class RecordDetailTableViewCell : UITableViewCell, UITextFieldDelegate, UIPicker
     }
     
     func textFieldDidEndEditing(textField: UITextField) {
-        if initialTextValue != textField.text {
-            delegate?.textFieldTextDidChangeForCell(self, newText: textField.text)
-        }
+        delegate?.textFieldTextDidChangeForCell(self, newText: textField.text)
     }
 }

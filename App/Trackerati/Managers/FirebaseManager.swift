@@ -163,23 +163,36 @@ class FirebaseManager : NSObject
         })
     }
     
-    func saveNewRecord(record: Record, completion: (() -> Void)?)
+    func saveNewRecord(record: Record, completion: ((error: NSError!) -> Void)?)
     {
         let userURL = "Users/\(GoogleLoginManager.sharedManager.currentUser.firebaseID)/records"
-        let newRecordRef = firebaseDB.childByAppendingPath(userURL).childByAutoId()
         
-        var recordToSave: [String: String] = [:]
+        var recordToSave: NSMutableDictionary = [:]
         for field in RecordKey.editableValues {
             if let value = record.valueForType(field, rawValue: true) {
-                recordToSave[field.rawValue] = value
+                recordToSave.setValue(NSString(string: value), forKey: field.rawValue)
             }
         }
-        newRecordRef.setValue(recordToSave, withCompletionBlock: { error, firebaseRef in
-            
-            if let closure = completion {
-                closure()
-            }
-        })
+        println(recordToSave)
+        if record.id == "" { // we're adding a new record
+            let recordRef = firebaseDB.childByAppendingPath(userURL).childByAutoId()
+            recordRef.setValue(recordToSave as [NSObject: AnyObject], withCompletionBlock: { error, firebaseRef in
+                
+                if let closure = completion {
+                    closure(error: error)
+                }
+            })
+        }
+        else { // we're editing a previous record
+            println(record.id)
+            let recordRef = firebaseDB.childByAppendingPath(record.id)
+            recordRef.updateChildValues(recordToSave as [NSObject : AnyObject], withCompletionBlock: { error, firebaseRef in
+                println(firebaseRef.key)
+                if let closure = completion {
+                    closure(error: error)
+                }
+            })
+        }
     }
     
     // MARK: Private

@@ -11,6 +11,7 @@ class RecordFormViewController : UIViewController, UITableViewDelegate, UITableV
     private let kCellReuseIdentifier = "cell"
     private let kCellDefaultHeight: CGFloat = 44.0
     private let record: Record
+    private let tempRecord: Record
     
     private weak var recordFormTableView: RecordFormTableView!
     private weak var activeCell: RecordDetailTableViewCell?
@@ -22,6 +23,7 @@ class RecordFormViewController : UIViewController, UITableViewDelegate, UITableV
     {
         editingForm = editing
         self.record = record
+        tempRecord = record
         super.init(nibName: nil, bundle: nil)
         title = record.date
         
@@ -120,14 +122,18 @@ class RecordFormViewController : UIViewController, UITableViewDelegate, UITableV
         disableEditing()
         let hud = MBProgressHUD.showHUDAddedTo(view, animated: true)
         hud.labelText = "Saving Record"
-        FirebaseManager.sharedManager.saveNewRecord(record, completion: {
-            
-            FirebaseManager.sharedManager.getAllDataOfType(.User, completion: {
-                
-                MBProgressHUD.showCompletionHUD(onView: self.view, duration: 2.0, completion: {
-                    self.dismissViewControllerAnimated(true, completion: nil)
+        FirebaseManager.sharedManager.saveNewRecord(tempRecord, completion: { error in
+            if error == nil {
+                FirebaseManager.sharedManager.getAllDataOfType(.User, completion: {
+                    
+                    MBProgressHUD.showCompletionHUD(onView: self.view, duration: 2.0, completion: {
+                        if let containerVC = UIApplication.sharedApplication().keyWindow?.rootViewController as? ContainerViewController
+                        {
+                            containerVC.centerNavigationController.popViewControllerAnimated(true)
+                        }
+                    })
                 })
-            })
+            }
         })
     }
     
@@ -190,7 +196,25 @@ class RecordFormViewController : UIViewController, UITableViewDelegate, UITableV
     }
     
     func textFieldTextDidChangeForCell(cell: RecordDetailTableViewCell, newText: String) {
-        setupSaveButton()
+        
+        if tempRecord.valueForType(cell.infoType, rawValue: false) != newText {
+            setupSaveButton()
+            
+            switch cell.infoType! {
+            case .Date:
+                tempRecord.date = newText
+            case .Hours:
+                tempRecord.hours = newText
+            case .Status:
+                tempRecord.status = newText
+            case .WorkType:
+                tempRecord.type = newText
+            case .Comment:
+                tempRecord.comment = newText
+            default:
+                break
+            }
+        }
     }
     
     // MARK: UITableView Datasource

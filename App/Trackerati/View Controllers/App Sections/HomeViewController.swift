@@ -76,11 +76,16 @@ class HomeViewController : MainViewController, UITableViewDelegate, UITableViewD
         let companyName = pinnedProjects[indexPath.section].companyName
         let projectName = pinnedProjects[indexPath.section].projects[indexPath.row].name
         let newRecord = Record(client: companyName, project: projectName)
+        
         let newForm = RecordFormViewController(record: newRecord, saveOnly: true)
         newForm.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Cancel, target: self, action: "dismissNewForm")
         newForm.title = "New Record"
         let newFormNavController = UINavigationController(rootViewController: newForm)
-        presentViewController(newFormNavController, animated: true, completion: nil)
+        
+        if let containerVC = UIApplication.sharedApplication().keyWindow?.rootViewController as? ContainerViewController
+        {
+            containerVC.centerNavigationController.presentViewController(newFormNavController, animated: true, completion: nil)
+        }
     }
     
     // MARK: UITableView Datasource
