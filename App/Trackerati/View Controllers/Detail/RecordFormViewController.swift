@@ -16,6 +16,7 @@ class RecordFormViewController : UIViewController, UITableViewDelegate, UITableV
     private weak var activeCell: RecordDetailTableViewCell?
     
     private var editingForm: Bool
+    private var saveOnly = false
     
     init(record: Record, editing: Bool)
     {
@@ -28,6 +29,12 @@ class RecordFormViewController : UIViewController, UITableViewDelegate, UITableV
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillHide:", name: UIKeyboardWillHideNotification, object: nil)
     }
 
+    convenience init(record: Record, saveOnly: Bool)
+    {
+        self.init(record: record, editing: true)
+        self.saveOnly = saveOnly
+    }
+    
     required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -37,8 +44,11 @@ class RecordFormViewController : UIViewController, UITableViewDelegate, UITableV
         
         setupTableView()
         
-        if editingForm {
+        if saveOnly {
             setupSaveButton()
+        }
+        else if editingForm {
+            setupDoneButton()
         }
         else {
             setupEditButton()
@@ -67,9 +77,15 @@ class RecordFormViewController : UIViewController, UITableViewDelegate, UITableV
         navigationItem.rightBarButtonItem = editButton
     }
     
+    private func setupDoneButton()
+    {
+        let doneButton = UIBarButtonItem(barButtonSystemItem: .Done, target: self, action: "disableEditing")
+        navigationItem.rightBarButtonItem = doneButton
+    }
+    
     private func setupSaveButton()
     {
-        let saveButton = UIBarButtonItem(barButtonSystemItem: .Done, target: self, action: "saveRecord")
+        let saveButton = UIBarButtonItem(barButtonSystemItem: .Save, target: self, action: "saveRecord")
         navigationItem.rightBarButtonItem = saveButton
     }
     
@@ -83,11 +99,11 @@ class RecordFormViewController : UIViewController, UITableViewDelegate, UITableV
         {
             (visibleCell as? RecordDetailTableViewCell)?.editingInfo = editingForm
         }
-        setupSaveButton()
+        setupDoneButton()
     }
     
     @objc
-    private func saveRecord()
+    private func disableEditing()
     {
         editingForm = false
         for visibleCell in recordFormTableView.visibleCells()
@@ -96,7 +112,12 @@ class RecordFormViewController : UIViewController, UITableViewDelegate, UITableV
             (visibleCell as? RecordDetailTableViewCell)?.editingInfo = editingForm
         }
         setupEditButton()
-        
+    }
+    
+    @objc
+    private func saveRecord()
+    {
+        disableEditing()
         // TODO: Write to Firebase
     }
     
@@ -159,7 +180,7 @@ class RecordFormViewController : UIViewController, UITableViewDelegate, UITableV
     }
     
     func textFieldTextDidChangeForCell(cell: RecordDetailTableViewCell, newText: String) {
-        // TODO: Enable a save button to save the changes
+        setupSaveButton()
     }
     
     // MARK: UITableView Datasource

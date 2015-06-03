@@ -59,15 +59,28 @@ class HomeViewController : MainViewController, UITableViewDelegate, UITableViewD
     {
         let projectsViewController = ProjectsViewController(projects: FirebaseManager.sharedManager.allClientProjects)
         let navController = UINavigationController(rootViewController: projectsViewController)
-        self.presentViewController(navController, animated: true, completion: nil)
+        presentViewController(navController, animated: true, completion: nil)
+    }
+    
+    @objc
+    private func dismissNewForm()
+    {
+        dismissViewControllerAnimated(true, completion: nil)
     }
     
     // MARK: UITableView Delegate
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        tableView.deselectRowAtIndexPath(indexPath, animated: false)
-        
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
         // TODO: Start a new form for the Client the user selected
+        let companyName = pinnedProjects[indexPath.section].companyName
+        let projectName = pinnedProjects[indexPath.section].projects[indexPath.row].name
+        let newRecord = Record(client: companyName, project: projectName)
+        let newForm = RecordFormViewController(record: newRecord, saveOnly: true)
+        newForm.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Cancel, target: self, action: "dismissNewForm")
+        newForm.title = "New Record"
+        let newFormNavController = UINavigationController(rootViewController: newForm)
+        presentViewController(newFormNavController, animated: true, completion: nil)
     }
     
     // MARK: UITableView Datasource

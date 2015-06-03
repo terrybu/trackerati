@@ -51,7 +51,7 @@ class Record : NSObject
     {
         let dateFormatter = NSDateFormatter()
         dateFormatter.dateFormat = "MM/dd/yyyy"
-        self.init(id: "", client: client, date: dateFormatter.stringFromDate(NSDate()), hours: "", project: project, status: "", type: "", comment: nil)
+        self.init(id: "", client: client, date: dateFormatter.stringFromDate(NSDate()), hours: "8.0", project: project, status: "1", type: "1", comment: nil)
     }
     
     func valueForType(recordType: RecordKey) -> String?
