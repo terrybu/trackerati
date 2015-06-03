@@ -118,7 +118,17 @@ class RecordFormViewController : UIViewController, UITableViewDelegate, UITableV
     private func saveRecord()
     {
         disableEditing()
-        // TODO: Write to Firebase
+        let hud = MBProgressHUD.showHUDAddedTo(view, animated: true)
+        hud.labelText = "Saving Record"
+        FirebaseManager.sharedManager.saveNewRecord(record, completion: {
+            
+            FirebaseManager.sharedManager.getAllDataOfType(.User, completion: {
+                
+                MBProgressHUD.showCompletionHUD(onView: self.view, duration: 2.0, completion: {
+                    self.dismissViewControllerAnimated(true, completion: nil)
+                })
+            })
+        })
     }
     
     // MARK: UIKeyboard Notification Selectors
@@ -204,7 +214,7 @@ class RecordFormViewController : UIViewController, UITableViewDelegate, UITableV
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(kCellReuseIdentifier, forIndexPath: indexPath) as! RecordDetailTableViewCell
         let recordType = RecordKey.editableValues[indexPath.section]
-        cell.information = record.valueForType(recordType)
+        cell.information = record.valueForType(recordType, rawValue: false)
         cell.infoType = recordType
         cell.editingInfo = editingForm
         cell.delegate = self

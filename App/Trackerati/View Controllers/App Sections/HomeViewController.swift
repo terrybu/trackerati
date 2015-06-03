@@ -72,7 +72,7 @@ class HomeViewController : MainViewController, UITableViewDelegate, UITableViewD
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
-        // TODO: Start a new form for the Client the user selected
+        
         let companyName = pinnedProjects[indexPath.section].companyName
         let projectName = pinnedProjects[indexPath.section].projects[indexPath.row].name
         let newRecord = Record(client: companyName, project: projectName)

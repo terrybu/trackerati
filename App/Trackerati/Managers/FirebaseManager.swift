@@ -57,7 +57,7 @@ class FirebaseManager : NSObject
     
     :param: type The type of information you want to request
     */
-    func getAllDataOfType(type: DataInfoType)
+    func getAllDataOfType(type: DataInfoType, completion: (() -> Void)?)
     {
         self.firebaseDB.observeSingleEventOfType(.Value, withBlock: { snapshot in
             var notificationName = ""
@@ -65,19 +65,12 @@ class FirebaseManager : NSObject
             switch type {
             case .Projects:
                 notificationName = kAllProjectsDownloadedNotificationName
-                if self.allClientProjects == nil {
-                    self.allClientProjects = self.createClientArrayFromJSON(snapshot.value, sorted: true)
-                }
+                self.allClientProjects = self.createClientArrayFromJSON(snapshot.value, sorted: true)
                 
             case .User:
                 notificationName = kUserInfoDownloadedNotificationName
-                if self.allUserRecords == nil {
-                    self.allUserRecords = self.getRecordsForUser(snapshot.value, name: GoogleLoginManager.sharedManager.currentUser.firebaseID)
-                }
-                
-                if self.pinnedProjects == nil {
-                    self.pinnedProjects = self.pinnedProjectsForLoggedInUser()
-                }
+                self.allUserRecords = self.getRecordsForUser(snapshot.value, name: GoogleLoginManager.sharedManager.currentUser.firebaseID)
+                self.pinnedProjects = self.pinnedProjectsForLoggedInUser()
             }
 
             dispatch_async(dispatch_get_main_queue(), {
@@ -85,6 +78,10 @@ class FirebaseManager : NSObject
                 
                 if self.allUserRecords != nil && self.allClientProjects != nil && self.pinnedProjects != nil {
                     NSNotificationCenter.defaultCenter().postNotificationName(kAllDataDownloadedNotificationName, object: nil)
+                }
+                
+                if let closure = completion {
+                    closure()
                 }
             })
         })
@@ -162,6 +159,25 @@ class FirebaseManager : NSObject
                         }
                     }
                 }
+            }
+        })
+    }
+    
+    func saveNewRecord(record: Record, completion: (() -> Void)?)
+    {
+        let userURL = "Users/\(GoogleLoginManager.sharedManager.currentUser.firebaseID)/records"
+        let newRecordRef = firebaseDB.childByAppendingPath(userURL).childByAutoId()
+        
+        var recordToSave: [String: String] = [:]
+        for field in RecordKey.editableValues {
+            if let value = record.valueForType(field, rawValue: true) {
+                recordToSave[field.rawValue] = value
+            }
+        }
+        newRecordRef.setValue(recordToSave, withCompletionBlock: { error, firebaseRef in
+            
+            if let closure = completion {
+                closure()
             }
         })
     }

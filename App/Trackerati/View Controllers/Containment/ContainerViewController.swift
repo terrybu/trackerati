@@ -177,8 +177,8 @@ class ContainerViewController : UIViewController, LoginScreenDelegate, MainViewC
     {
         loginScreen?.setLoginButtonEnabled(false)
         displayLoadingHUD(true)
-        FirebaseManager.sharedManager.getAllDataOfType(.Projects)
-        FirebaseManager.sharedManager.getAllDataOfType(.User)
+        FirebaseManager.sharedManager.getAllDataOfType(.Projects, completion: nil)
+        FirebaseManager.sharedManager.getAllDataOfType(.User, completion: nil)
     }
     
     @objc
