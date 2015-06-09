@@ -199,18 +199,18 @@ class RecordDetailTableViewCell : UITableViewCell, UITextFieldDelegate, UIPicker
             
         case .Status:
             options = kRecordStatusNames
-            newValue = String(row + 1)
+            newValue = String(row)
         
         case .WorkType:
             options = kRecordWorkTypeNames
-            newValue = String(row + 1)
+            newValue = String(row)
             
         default:
             options = []
             newValue = ""
         }
         
-        delegate?.textFieldTextDidChangeForCell(self, newText: newValue)
+        delegate?.textFieldTextDidChangeForCell(self, newText: String(newValue))
         information = options[row]
     }
     

@@ -76,7 +76,7 @@ class Record : NSObject
             }
             
             if let statusAsInt = status.toInt() {
-                return kRecordStatusNames[statusAsInt - 1]
+                return kRecordStatusNames[statusAsInt]
             }
             else {
                 return nil
@@ -88,7 +88,7 @@ class Record : NSObject
             }
             
             if let workTypeAsInt = type.toInt() {
-                return kRecordWorkTypeNames[workTypeAsInt - 1]
+                return kRecordWorkTypeNames[workTypeAsInt]
             }
             else {
                 return nil
