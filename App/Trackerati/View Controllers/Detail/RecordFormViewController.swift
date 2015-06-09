@@ -129,7 +129,7 @@ class RecordFormViewController : UIViewController, UITableViewDelegate, UITableV
                     MBProgressHUD.showCompletionHUD(onView: self.view, duration: 2.0, completion: {
                         if let containerVC = UIApplication.sharedApplication().keyWindow?.rootViewController as? ContainerViewController
                         {
-                            containerVC.centerNavigationController.popViewControllerAnimated(true)
+                            containerVC.centerNavigationController.dismissViewControllerAnimated(true, completion: nil);
                         }
                     })
                 })

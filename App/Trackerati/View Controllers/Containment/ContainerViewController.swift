@@ -210,7 +210,7 @@ class ContainerViewController : UIViewController, LoginScreenDelegate, MainViewC
         addChildViewController(centerNavigationController)
         centerNavigationController.didMoveToParentViewController(self)
         
-        //TB: gestures are gone after you nil out the centerNavigationController and was causing crash, add them back
+        //TB: gestures are gone after you nil out the centerNavigationController, add them back
         setupGestures()
         tapToReturnGesture.enabled = true
         edgePanGesture.enabled = true
