@@ -200,11 +200,25 @@ class ContainerViewController : UIViewController, LoginScreenDelegate, MainViewC
         displayLoadingHUD(false)
         
         // Get rid of login screen
-        centerNavigationController.popViewControllerAnimated(false)
-        centerNavigationController.setNavigationBarHidden(false, animated: true)
+        // TB: without removing centerNavController and adding them back this way, there was a "ghost view" bug where it wouldn't let user select cells properly on homeVC
+        centerNavigationController.removeFromParentViewController()
+        centerNavigationController.view.removeFromSuperview()
+        centerNavigationController = nil
         
+        centerNavigationController = UINavigationController(rootViewController: centerViewController)
+        view.addSubview(centerNavigationController.view)
+        addChildViewController(centerNavigationController)
+        centerNavigationController.didMoveToParentViewController(self)
+        
+        //TB: gestures are gone after you nil out the centerNavigationController and was causing crash, add them back
+        setupGestures()
         tapToReturnGesture.enabled = true
         edgePanGesture.enabled = true
+        
+        //TB: seems like animateToSideMenu is necessary to get rid of the "ghost view bug" that blocked didSelectRow from homeVC, removeSnapshot is not neccesary though?
+        
+        animateToSideMenu(false)
+//        removeSnapshotView()
     }
     
     // MARK: Gesture Recognizer Selectors
