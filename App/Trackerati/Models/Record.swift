@@ -23,13 +23,13 @@ enum RecordKey: String
 class Record : NSObject
 {
     let id: String
-    let client: String
-    let date: String
-    let hours: String
-    let project: String
-    let status: String
-    let type: String
-    let comment: String?
+    var client: String
+    var date: String
+    var hours: String
+    var project: String
+    var status: String
+    var type: String
+    var comment: String?
     
     class var numberOfFields: Int {
         return RecordKey.editableValues.count
@@ -51,10 +51,10 @@ class Record : NSObject
     {
         let dateFormatter = NSDateFormatter()
         dateFormatter.dateFormat = "MM/dd/yyyy"
-        self.init(id: "", client: client, date: dateFormatter.stringFromDate(NSDate()), hours: "", project: project, status: "", type: "", comment: nil)
+        self.init(id: "", client: client, date: dateFormatter.stringFromDate(NSDate()), hours: "8.0", project: project, status: "1", type: "1", comment: nil)
     }
     
-    func valueForType(recordType: RecordKey) -> String?
+    func valueForType(recordType: RecordKey, rawValue: Bool) -> String?
     {
         switch recordType
         {
@@ -71,6 +71,10 @@ class Record : NSObject
             return project
             
         case .Status:
+            if rawValue {
+                return status
+            }
+            
             if let statusAsInt = status.toInt() {
                 return kRecordStatusNames[statusAsInt - 1]
             }
@@ -79,6 +83,10 @@ class Record : NSObject
             }
             
         case .WorkType:
+            if rawValue {
+                return type
+            }
+            
             if let workTypeAsInt = type.toInt() {
                 return kRecordWorkTypeNames[workTypeAsInt - 1]
             }
