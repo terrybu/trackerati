@@ -35,6 +35,7 @@ class GoogleLoginManager : NSObject, GPPSignInDelegate, UIAlertViewDelegate
     }
     
     private(set) var currentUser: User!
+    private(set) var authToken: String!
     private(set) var authorized: Bool = false
     
     // MARK: Public
@@ -140,6 +141,7 @@ class GoogleLoginManager : NSObject, GPPSignInDelegate, UIAlertViewDelegate
                 authorized = true
                 
                 createUserFromProfile()
+                authToken = auth.accessToken
                 NSNotificationCenter.defaultCenter().postNotificationName(kUserDidAuthorizeNotification, object: currentUser)
             }
         }

@@ -12,6 +12,8 @@ enum DataInfoType: String
     case User = "Users"
 }
 
+let kUserAuthenticatedFirebaseSuccessfullyNotificationName = "userAutheticatedSuccessfully"
+let kUserAuthenticatedFirebaseUnsuccessfullyNotificationName = "userAutheticatedUnsuccessfully"
 let kAllDataDownloadedNotificationName = "allDataDownloaded"
 let kUserInfoDownloadedNotificationName = "userInfoDownloaded"
 let kAllProjectsDownloadedNotificationName = "allProjectsDownloaded"
@@ -47,6 +49,26 @@ class FirebaseManager : NSObject
     }
     
     /**
+    Authenticates the logged in user with Firebase. Will fire a successful authentication notification if successful and an unsuccessful notification if not
+    
+    :param: token An OAuth token provided by the Google Plus API
+    */
+    func authenticateWithToken(token: String!)
+    {
+        firebaseDB.authWithOAuthProvider("google", token: token, withCompletionBlock: { error, authData in
+            dispatch_async(dispatch_get_main_queue(), {
+                if error != nil {
+                    // TODO: Show error
+                    NSNotificationCenter.defaultCenter().postNotificationName(kUserAuthenticatedFirebaseUnsuccessfullyNotificationName, object: nil)
+                }
+                else {
+                    NSNotificationCenter.defaultCenter().postNotificationName(kUserAuthenticatedFirebaseSuccessfullyNotificationName, object: nil)
+                }
+            })
+        })
+    }
+    
+    /**
     Asynchronously retrieves all data associated with the type passed in. This potentially fires off three notifications. 
     
     One notification for completing the download of:
@@ -59,6 +81,7 @@ class FirebaseManager : NSObject
     */
     func getAllDataOfType(type: DataInfoType)
     {
+        
         self.firebaseDB.observeSingleEventOfType(.Value, withBlock: { snapshot in
             var notificationName = ""
             
@@ -79,7 +102,7 @@ class FirebaseManager : NSObject
                     self.pinnedProjects = self.pinnedProjectsForLoggedInUser()
                 }
             }
-
+            
             dispatch_async(dispatch_get_main_queue(), {
                 NSNotificationCenter.defaultCenter().postNotificationName(notificationName, object: nil)
                 
@@ -88,6 +111,7 @@ class FirebaseManager : NSObject
                 }
             })
         })
+    
     }
     
     /**

@@ -38,9 +38,7 @@ class ContainerViewController : UIViewController, LoginScreenDelegate, MainViewC
         self.sideMenuViewController = sideMenuViewController
         self.sideMenuViewController.delegate = self
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "resetLoginScreenInterface:", name: kUserDidFailAuthorizationNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "setupInterfaceForLoggedInUser:", name: kUserDidAuthorizeNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "removeLoginScreen", name: kAllDataDownloadedNotificationName, object: nil)
+        setupNotifications()
     }
 
     required init(coder aDecoder: NSCoder) {
@@ -82,6 +80,15 @@ class ContainerViewController : UIViewController, LoginScreenDelegate, MainViewC
     }
     
     // MARK: Private
+    
+    private func setupNotifications()
+    {
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "resetLoginScreenInterface:", name: kUserDidFailAuthorizationNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "setupInterfaceForLoggedInUser:", name: kUserDidAuthorizeNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "removeLoginScreen", name: kAllDataDownloadedNotificationName, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "getFirebaseData", name: kUserAuthenticatedFirebaseSuccessfullyNotificationName, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "resetLoginScreenInterface:", name: kUserAuthenticatedFirebaseUnsuccessfullyNotificationName, object: nil)
+    }
     
     private func setupGestures()
     {
@@ -177,6 +184,12 @@ class ContainerViewController : UIViewController, LoginScreenDelegate, MainViewC
     {
         loginScreen?.setLoginButtonEnabled(false)
         displayLoadingHUD(true)
+        FirebaseManager.sharedManager.authenticateWithToken(GoogleLoginManager.sharedManager.authToken)
+    }
+    
+    @objc
+    private func getFirebaseData()
+    {
         FirebaseManager.sharedManager.getAllDataOfType(.Projects)
         FirebaseManager.sharedManager.getAllDataOfType(.User)
     }
