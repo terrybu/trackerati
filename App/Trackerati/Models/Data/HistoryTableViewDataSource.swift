@@ -37,8 +37,23 @@ class HistoryTableViewDataSource : NSObject, UITableViewDataSource
     
     func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if editingStyle == .Delete {
-            // TODO: Delete cell and record from Firebase
+            deleteRecordFirebaseDataSourceAndViewAtIndexPath(indexPath);
         }
+    }
+    
+    func deleteRecordFirebaseDataSourceAndViewAtIndexPath(indexPath: NSIndexPath) {
+        var deleteThisRecord = recordForIndexPath(indexPath) //point to it before you lose it in userHistory
+        FirebaseManager.sharedManager.deleteRecord(deleteThisRecord, completion: { (error) -> Void in
+            self.userHistory[indexPath.section].1.removeAtIndex(indexPath.row)
+            if (self.userHistory[indexPath.section].1.isEmpty) {
+                self.userHistory.removeAtIndex(indexPath.section);
+                self.tableView.deleteSections(NSIndexSet(index: indexPath.section), withRowAnimation: UITableViewRowAnimation.Automatic);
+            }
+            else {
+                self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
+            }
+        })
+
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {

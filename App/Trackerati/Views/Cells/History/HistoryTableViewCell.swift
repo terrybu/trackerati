@@ -251,7 +251,7 @@ class HistoryTableViewCell : UITableViewCell, UIGestureRecognizerDelegate
     @objc
     private func deleteButtonPressed(button: UIButton)
     {
-        animateCellWithTransform(CGAffineTransformIdentity, duration: 0.2, completion: { finished in
+        animateCellWithTransform(CGAffineTransformIdentity, duration: 0.01, completion: { finished in
             self.currentState = .NotShowingMenu
             self.delegate?.didPressDeleteButton(self)
         })
