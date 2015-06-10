@@ -86,8 +86,9 @@ class HistoryViewController : MainViewController, UITableViewDelegate, HistoryTa
     // MARK: HistoryTableViewCell Delegate
     
     func didPressDeleteButton(cell: HistoryTableViewCell) {
-        // TODO: Delete cell from Firebase and table view
-        println("did press delete button");
+        if let cellIndexPath = self.historyTableView.indexPathForCell(cell) {
+            historyTableViewDataSource.deleteRecordFirebaseDataSourceAndViewAtIndexPath(cellIndexPath);
+        }
     }
     
     func didPressEditButton(cell: HistoryTableViewCell) {
