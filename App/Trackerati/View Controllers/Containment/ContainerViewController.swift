@@ -19,7 +19,7 @@ class ContainerViewController : UIViewController, LoginScreenDelegate, MainViewC
     private var currentMenuState = MenuState.NotShowing
     private var currentShowingPage = SideMenuSelection.Home
     
-    private var centerNavigationController: UINavigationController!
+    private(set) var centerNavigationController: UINavigationController!
     private var centerViewController: MainViewController!
     private var sideMenuViewController: SideMenuViewController!
     
@@ -49,14 +49,14 @@ class ContainerViewController : UIViewController, LoginScreenDelegate, MainViewC
     {
         view = UIView(frame: UIScreen.mainScreen().bounds)
         
+        view.insertSubview(sideMenuViewController.view, atIndex: 0)
+        addChildViewController(sideMenuViewController)
+        sideMenuViewController.didMoveToParentViewController(self)
+        
         centerNavigationController = UINavigationController(rootViewController: centerViewController)
         view.addSubview(centerNavigationController.view)
         addChildViewController(centerNavigationController)
         centerNavigationController.didMoveToParentViewController(self)
-        
-        view.insertSubview(sideMenuViewController.view, atIndex: 0)
-        addChildViewController(sideMenuViewController)
-        sideMenuViewController.didMoveToParentViewController(self)
         
         setupGestures()
         displayLoginScreen()
@@ -94,14 +94,14 @@ class ContainerViewController : UIViewController, LoginScreenDelegate, MainViewC
     {
         let edgePanGesture = UIPanGestureRecognizer(target: self, action: "translateTopView:")
         edgePanGesture.maximumNumberOfTouches = 1
-        self.centerNavigationController.view.addGestureRecognizer(edgePanGesture)
+        centerNavigationController.view.addGestureRecognizer(edgePanGesture)
         self.edgePanGesture = edgePanGesture
         
         let tapToReturnGesture = UITapGestureRecognizer(target: self, action: "returnToMainScreen:")
         tapToReturnGesture.numberOfTapsRequired = 1
         tapToReturnGesture.numberOfTouchesRequired = 1
         tapToReturnGesture.enabled = false
-        self.centerNavigationController.view.addGestureRecognizer(tapToReturnGesture)
+        centerNavigationController.view.addGestureRecognizer(tapToReturnGesture)
         self.tapToReturnGesture = tapToReturnGesture
     }
     
@@ -190,8 +190,8 @@ class ContainerViewController : UIViewController, LoginScreenDelegate, MainViewC
     @objc
     private func getFirebaseData()
     {
-        FirebaseManager.sharedManager.getAllDataOfType(.Projects)
-        FirebaseManager.sharedManager.getAllDataOfType(.User)
+        FirebaseManager.sharedManager.getAllDataOfType(.Projects, completion: nil);
+        FirebaseManager.sharedManager.getAllDataOfType(.User, completion: nil);
     }
     
     @objc
@@ -200,11 +200,25 @@ class ContainerViewController : UIViewController, LoginScreenDelegate, MainViewC
         displayLoadingHUD(false)
         
         // Get rid of login screen
-        centerNavigationController.popViewControllerAnimated(false)
-        centerNavigationController.setNavigationBarHidden(false, animated: true)
+        // TB: without removing centerNavController and adding them back this way, there was a "ghost view" bug where it wouldn't let user select cells properly on homeVC
+        centerNavigationController.removeFromParentViewController()
+        centerNavigationController.view.removeFromSuperview()
+        centerNavigationController = nil
         
+        centerNavigationController = UINavigationController(rootViewController: centerViewController)
+        view.addSubview(centerNavigationController.view)
+        addChildViewController(centerNavigationController)
+        centerNavigationController.didMoveToParentViewController(self)
+        
+        //TB: gestures are gone after you nil out the centerNavigationController, add them back
+        setupGestures()
         tapToReturnGesture.enabled = true
         edgePanGesture.enabled = true
+        
+        //TB: seems like animateToSideMenu is necessary to get rid of the "ghost view bug" that blocked didSelectRow from homeVC, removeSnapshot is not neccesary though?
+        
+        animateToSideMenu(false)
+//        removeSnapshotView()
     }
     
     // MARK: Gesture Recognizer Selectors
@@ -282,7 +296,11 @@ class ContainerViewController : UIViewController, LoginScreenDelegate, MainViewC
     func didMakePageSelection(selection: SideMenuSelection)
     {
         if currentShowingPage != selection {
-            centerNavigationController.popViewControllerAnimated(false)
+//            let currentViewFrame = centerNavigationController.view.frame
+            centerNavigationController.removeFromParentViewController()
+            centerNavigationController.view.removeFromSuperview()
+            centerNavigationController = nil
+//            centerNavigationController.popViewControllerAnimated(false)
             
             let targetViewController: MainViewController
             switch selection
@@ -306,9 +324,16 @@ class ContainerViewController : UIViewController, LoginScreenDelegate, MainViewC
             }
             
             targetViewController.delegate = self
-            centerNavigationController.pushViewController(targetViewController, animated: false)
+//            centerNavigationController.pushViewController(targetViewController, animated: false)
             centerViewController = targetViewController
             currentShowingPage = selection
+            
+            centerNavigationController = UINavigationController(rootViewController: centerViewController)
+//            centerNavigationController.view.frame = currentViewFrame
+            view.addSubview(centerNavigationController.view)
+            addChildViewController(centerNavigationController)
+            centerNavigationController.didMoveToParentViewController(self)
+            setupGestures()
             
             if currentShowingPage == .LogOut {
                 displayLoginScreen()

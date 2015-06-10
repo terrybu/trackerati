@@ -6,7 +6,7 @@
 //  Copyright (c) 2015 The Hackerati. All rights reserved.
 //
 
-let kDefaultNilInformationValue = "Information Unavailable"
+let kDefaultNilInformationValue = ""
 
 protocol RecordDetailTableViewCellDelegate : class {
     func didSelectTextFieldOnCell(cell: RecordDetailTableViewCell?)
@@ -17,8 +17,6 @@ class RecordDetailTableViewCell : UITableViewCell, UITextFieldDelegate, UIPicker
 {
     private weak var infoTextField: UITextField!
     weak var delegate: RecordDetailTableViewCellDelegate?
-    
-    private var initialTextValue: String!
     
     var infoType: RecordKey! {
         didSet {
@@ -34,8 +32,6 @@ class RecordDetailTableViewCell : UITableViewCell, UITextFieldDelegate, UIPicker
             else {
                 infoTextField.text = kDefaultNilInformationValue
             }
-            
-            initialTextValue = infoTextField.text
         }
     }
     
@@ -54,10 +50,6 @@ class RecordDetailTableViewCell : UITableViewCell, UITextFieldDelegate, UIPicker
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupTextField()
     }
-
-    required init(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
     
     override func isFirstResponder() -> Bool {
         return infoTextField.isFirstResponder()
@@ -66,6 +58,10 @@ class RecordDetailTableViewCell : UITableViewCell, UITextFieldDelegate, UIPicker
     override func resignFirstResponder() -> Bool {
         infoTextField.resignFirstResponder()
         return super.resignFirstResponder()
+    }
+    
+    required init(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     private func setupTextField()
@@ -195,21 +191,27 @@ class RecordDetailTableViewCell : UITableViewCell, UITextFieldDelegate, UIPicker
     
     func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         let options: [String]
+        let newValue: String
         switch infoType! {
         case .Hours:
             options = kRecordHoursNames
+            newValue = String(format: "%.1f", (Double(row) + 1.0) / 2.0)
             
         case .Status:
             options = kRecordStatusNames
+            newValue = String(row)
         
         case .WorkType:
             options = kRecordWorkTypeNames
+            newValue = String(row)
             
         default:
             options = []
+            newValue = ""
         }
+        
+        delegate?.textFieldTextDidChangeForCell(self, newText: String(newValue))
         information = options[row]
-        delegate?.textFieldTextDidChangeForCell(self, newText: String(row + 1))
     }
     
     func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String! {
@@ -251,8 +253,6 @@ class RecordDetailTableViewCell : UITableViewCell, UITextFieldDelegate, UIPicker
     }
     
     func textFieldDidEndEditing(textField: UITextField) {
-        if initialTextValue != textField.text {
-            delegate?.textFieldTextDidChangeForCell(self, newText: textField.text)
-        }
+        delegate?.textFieldTextDidChangeForCell(self, newText: textField.text)
     }
 }

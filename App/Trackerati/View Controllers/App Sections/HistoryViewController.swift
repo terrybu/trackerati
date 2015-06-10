@@ -11,15 +11,6 @@ class HistoryViewController : MainViewController, UITableViewDelegate, HistoryTa
     private weak var historyTableView: UITableView!
     private var historyTableViewDataSource: HistoryTableViewDataSource!
     
-    init()
-    {
-        super.init(nibName: nil, bundle: nil)
-    }
-
-    required init(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
- 
     override func loadView() {
         super.loadView()
         
@@ -38,7 +29,16 @@ class HistoryViewController : MainViewController, UITableViewDelegate, HistoryTa
     private func displayFormForRecordAtIndexPath(indexPath: NSIndexPath, editing: Bool)
     {
         let selectedRecord = historyTableViewDataSource.recordForIndexPath(indexPath)
-        navigationController?.pushViewController(RecordFormViewController(record: selectedRecord, editing: editing), animated: true)
+        
+        if let containerVC = UIApplication.sharedApplication().keyWindow?.rootViewController as? ContainerViewController
+        {
+            let recordForm = RecordFormViewController(record: selectedRecord, editing: editing)
+            recordForm.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Cancel, target: self, action: "dismissForm")
+            recordForm.title = selectedRecord.date
+            let newFormNavController = UINavigationController(rootViewController: recordForm)
+            containerVC.centerNavigationController.presentViewController(newFormNavController, animated: true, completion: nil)
+        }
+//        navigationController?.pushViewController(RecordFormViewController(record: selectedRecord, editing: editing), animated: true)
     }
     
     // MARK: UIBarButtonItem Selectors
@@ -47,6 +47,12 @@ class HistoryViewController : MainViewController, UITableViewDelegate, HistoryTa
     private func editTableView()
     {
         historyTableView.setEditing(!historyTableView.editing, animated: true)
+    }
+    
+    @objc
+    private func dismissForm()
+    {
+        dismissViewControllerAnimated(true, completion: nil)
     }
     
     // MARK: UITableView Delegate

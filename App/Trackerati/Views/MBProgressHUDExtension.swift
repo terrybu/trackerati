@@ -8,7 +8,7 @@
 
 extension MBProgressHUD
 {
-    class func showCompletionHUD(onView view: UIView, duration: UInt64)
+    class func showCompletionHUD(onView view: UIView, duration: Double, completion:(() -> Void)?)
     {
         MBProgressHUD.hideHUDForView(view, animated: true)
         
@@ -16,9 +16,12 @@ extension MBProgressHUD
         completedHUD.mode = .CustomView
         completedHUD.customView = UIImageView(image: UIImage(named: "CompletedCheckMark"))
         completedHUD.labelText = "Completed!"
-        let timeUntilHide = dispatch_time(DISPATCH_TIME_NOW, Int64(duration * NSEC_PER_SEC))
+        let timeUntilHide = dispatch_time(DISPATCH_TIME_NOW, Int64(UInt64(duration) * NSEC_PER_SEC))
         dispatch_after(timeUntilHide, dispatch_get_main_queue(), {
             MBProgressHUD.hideHUDForView(view, animated: true)
+            if let closure = completion {
+                closure()
+            }
         })
     }
 }
