@@ -1,7 +1,7 @@
 //
 //  AppDelegate.swift
 //  Trackerati
-//
+///Users/TerryBu/Desktop/trackerati-ios/App/Trackerati/Models/User.swift
 //  Created by Clayton Rieck on 5/11/15.
 //  Copyright (c) 2015 The Hackerati. All rights reserved.
 //

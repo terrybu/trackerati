@@ -87,6 +87,7 @@ class HistoryViewController : MainViewController, UITableViewDelegate, HistoryTa
     
     func didPressDeleteButton(cell: HistoryTableViewCell) {
         // TODO: Delete cell from Firebase and table view
+        println("did press delete button");
     }
     
     func didPressEditButton(cell: HistoryTableViewCell) {

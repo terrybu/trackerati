@@ -187,6 +187,8 @@ class FirebaseManager : NSObject
         })
     }
     
+    //MARK: Records Saving & Deleting
+    
     func saveNewRecord(record: Record, completion: ((error: NSError!) -> Void)?)
     {
         let userURL = "Users/\(GoogleLoginManager.sharedManager.currentUser.firebaseID)/records"
@@ -216,6 +218,17 @@ class FirebaseManager : NSObject
                     closure(error: error)
                 }
             })
+        }
+    }
+    
+    func deleteRecord(record: Record, completion: ((error: NSError!) -> Void)?)
+    {
+        let userURL = "Users/\(GoogleLoginManager.sharedManager.currentUser.firebaseID)/records"
+        let recordRef = firebaseDB.childByAppendingPath(userURL + "/" + record.id)
+        recordRef.removeValueWithCompletionBlock { error, firebaseRef in
+            if let closure = completion {
+                closure(error: error)
+            }
         }
     }
     
