@@ -60,6 +60,7 @@ class HomeViewController : MainViewController, UITableViewDelegate, UITableViewD
         let projectsViewController = ProjectsViewController(projects: FirebaseManager.sharedManager.allClientProjects)
         let navController = UINavigationController(rootViewController: projectsViewController)
         presentViewController(navController, animated: true, completion: nil)
+//        self.navigationController?.pushViewController(projectsViewController, animated: true);
     }
     
     @objc

@@ -6,7 +6,7 @@
 //  Copyright (c) 2015 The Hackerati. All rights reserved.
 //
 
-class ProjectsViewController : UIViewController, UITableViewDelegate, UITableViewDataSource
+class ProjectsViewController : UIViewController, UITableViewDelegate, UITableViewDataSource, floatMenuDelegate
 {
     private let kViewControllerTitle = "Projects"
     private let kCellReuseIdentifier = "cell"
@@ -38,9 +38,16 @@ class ProjectsViewController : UIViewController, UITableViewDelegate, UITableVie
     
     override func loadView() {
         view = UIView(frame: UIScreen.mainScreen().bounds)
-        
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Done, target: self, action: "closeViewController")
+    
         setupTableView()
+        
+        let floatFrame = CGRectMake(UIScreen.mainScreen().bounds.size.width-44-22, UIScreen.mainScreen().bounds.size.height-44-22, 40, 44)
+        var floatingButton = VCFloatingActionButton(frame: floatFrame, normalImage: UIImage(named: "plus"), andPressedImage: UIImage(named:"plus"), withScrollview: projectsTableView)
+        floatingButton.delegate = self;
+        self.view.addSubview(floatingButton);
+        
+        var backHomeButton = UIBarButtonItem(title: "Home", style: UIBarButtonItemStyle.Plain, target: self, action: "closeViewController");
+        navigationItem.leftBarButtonItem = backHomeButton;
     }
     
     private func setupTableView()
@@ -137,6 +144,22 @@ class ProjectsViewController : UIViewController, UITableViewDelegate, UITableVie
         return cell
     }
     
+    // MARK: FloatMenu Delegate
+    
+    func floatingButtonWasPressed() {
+        let navCtrl = UINavigationController(rootViewController: NewProjectViewController())
+        presentViewController(navCtrl, animated: true, completion: nil);
+    }
+    
+    // MARK: UIBarButtonItem Selectors
+    
+    @objc
+    private func closeViewController()
+    {
+        self.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    
     // MARK: Private
     
     private func clientPinned(atIndexPath indexPath:NSIndexPath) -> Int
@@ -162,12 +185,5 @@ class ProjectsViewController : UIViewController, UITableViewDelegate, UITableVie
         return clientProjects[indexPath.section].projects[indexPath.row].name
     }
     
-    // MARK: UIBarButtonItem Selectors
-    
-    @objc
-    private func closeViewController()
-    {
-        self.dismissViewControllerAnimated(true, completion: nil)
-    }
     
 }
