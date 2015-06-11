@@ -52,6 +52,8 @@
 		01EE0C561B0F7ADA00AA4C10 /* RecordFormViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01EE0C551B0F7ADA00AA4C10 /* RecordFormViewController.swift */; };
 		01EE0C591B0F865E00AA4C10 /* HistoryTableViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01EE0C581B0F865E00AA4C10 /* HistoryTableViewDataSource.swift */; };
 		BFC762EDEA775168E0305151 /* libPods-Trackerati.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 049E7FC2BC2B1D9187CEFDEC /* libPods-Trackerati.a */; };
+		D9E536161B2A1FE100A1400B /* VCFloatingActionButton.m in Sources */ = {isa = PBXBuildFile; fileRef = D9E536131B2A1FE100A1400B /* VCFloatingActionButton.m */; };
+		D9E536181B2A2BB700A1400B /* NewProjectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9E536171B2A2BB700A1400B /* NewProjectViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -116,6 +118,9 @@
 		01EE0C581B0F865E00AA4C10 /* HistoryTableViewDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HistoryTableViewDataSource.swift; sourceTree = "<group>"; };
 		049E7FC2BC2B1D9187CEFDEC /* libPods-Trackerati.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Trackerati.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3587A3B08253D04AD27B6510 /* Pods-Trackerati.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Trackerati.release.xcconfig"; path = "../Pods/Target Support Files/Pods-Trackerati/Pods-Trackerati.release.xcconfig"; sourceTree = "<group>"; };
+		D9E536121B2A1FE100A1400B /* VCFloatingActionButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCFloatingActionButton.h; sourceTree = "<group>"; };
+		D9E536131B2A1FE100A1400B /* VCFloatingActionButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCFloatingActionButton.m; sourceTree = "<group>"; };
+		D9E536171B2A2BB700A1400B /* NewProjectViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewProjectViewController.swift; sourceTree = "<group>"; };
 		FC4437DDCAA1EBF64F6F5D62 /* Pods-Trackerati.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Trackerati.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-Trackerati/Pods-Trackerati.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -208,6 +213,7 @@
 		01498B171B01027E00C7C395 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				D9E5360E1B2A1FE100A1400B /* VCFloatingActionButton */,
 				01498B3C1B01052700C7C395 /* Trackerati-BridgingHeader.h */,
 				01498B181B01027E00C7C395 /* Info.plist */,
 			);
@@ -358,9 +364,10 @@
 			children = (
 				01498B1B1B01027E00C7C395 /* MainViewController.swift */,
 				0170E44D1B052A2200D593C3 /* HomeViewController.swift */,
-				0170E44B1B0526CD00D593C3 /* SettingsViewController.swift */,
 				0190BF371B0CFC3D00E508CF /* ProjectsViewController.swift */,
+				D9E536171B2A2BB700A1400B /* NewProjectViewController.swift */,
 				0126AAB61B0E211500B3907E /* HistoryViewController.swift */,
+				0170E44B1B0526CD00D593C3 /* SettingsViewController.swift */,
 			);
 			path = "App Sections";
 			sourceTree = "<group>";
@@ -409,6 +416,15 @@
 				049E7FC2BC2B1D9187CEFDEC /* libPods-Trackerati.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		D9E5360E1B2A1FE100A1400B /* VCFloatingActionButton */ = {
+			isa = PBXGroup;
+			children = (
+				D9E536121B2A1FE100A1400B /* VCFloatingActionButton.h */,
+				D9E536131B2A1FE100A1400B /* VCFloatingActionButton.m */,
+			);
+			path = VCFloatingActionButton;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -561,7 +577,9 @@
 				0190BF321B0B899800E508CF /* Client.swift in Sources */,
 				0170E4401B02962F00D593C3 /* Constants.swift in Sources */,
 				0170E4481B04E37C00D593C3 /* SideMenuViewController.swift in Sources */,
+				D9E536161B2A1FE100A1400B /* VCFloatingActionButton.m in Sources */,
 				0170E4541B0542A900D593C3 /* LoginScreen.swift in Sources */,
+				D9E536181B2A2BB700A1400B /* NewProjectViewController.swift in Sources */,
 				0170E4441B02985100D593C3 /* User.swift in Sources */,
 				01EE0C441B0E2B7800AA4C10 /* HistoryTableViewCell.swift in Sources */,
 				01EE0C591B0F865E00AA4C10 /* HistoryTableViewDataSource.swift in Sources */,

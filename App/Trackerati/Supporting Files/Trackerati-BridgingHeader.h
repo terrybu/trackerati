@@ -15,5 +15,6 @@
 #import <GoogleOpenSource/GoogleOpenSource.h>
 #import <AFNetworking/AFNetworking.h>
 #import "MBProgressHUD.h"
+#import "VCFloatingActionButton.h"
 
 #endif
