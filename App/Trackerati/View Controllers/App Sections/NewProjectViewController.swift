@@ -7,10 +7,11 @@
 //
 
 class NewProjectViewController: UIViewController, MPGTextFieldDelegate {
-    var clientData = [Dictionary<String, AnyObject>]()
-    var projectData = [Dictionary<String, AnyObject>]()
+    var arrayOfClients = FirebaseManager.sharedManager.allClientProjects
+    var clientDataForMPG = [Dictionary<String, AnyObject>]()
+    var projectDataForMPG = [Dictionary<String, AnyObject>]()
     @IBOutlet weak var clientMPGTextField: MPGTextField_Swift!
-    @IBOutlet weak var projectTextField: MPGTextField_Swift!
+    @IBOutlet weak var projectMPGTextField: MPGTextField_Swift!
     
     init()
     {
@@ -24,23 +25,40 @@ class NewProjectViewController: UIViewController, MPGTextFieldDelegate {
     
     
     override func viewDidLoad() {
-        clientData = [
+        setUpMPGTextFields()
+        setUpNavButtons()
+    }
+    
+    //MARK: Set-Up postload
+    
+    private func setUpMPGTextFields() {
+        clientDataForMPG = [
             ["DisplayText": "Hackerati", "Type": 0],
             ["DisplayText": "BAM-X", "Type": 0]
         ]
-        projectData = [
+        projectDataForMPG = [
             ["DisplayText": "Operations", "Type": 1],
             ["DisplayText": "Marketing", "Type": 1]
         ]
         clientMPGTextField.mDelegate = self
-        projectTextField.mDelegate = self
+        projectMPGTextField.mDelegate = self
     }
     
+    private func setUpNavButtons() {
+        var backButton = UIBarButtonItem(title: "Back", style: UIBarButtonItemStyle.Plain, target: self, action: "closeViewController");
+        navigationItem.leftBarButtonItem = backButton;
+        
+        var saveButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Save, target: self, action: "saveNewProject")
+        navigationItem.rightBarButtonItem = saveButton;
+    }
+    
+    //MARK: MPGTextFieldDelegate Methods
+    
     func dataForPopoverInTextField(textfield: MPGTextField_Swift) -> [Dictionary<String, AnyObject>] {
-        if (textfield.isEqual(self.projectTextField)) {
-            return projectData
+        if (textfield.isEqual(self.projectMPGTextField)) {
+            return projectDataForMPG
         }
-        return clientData
+        return clientDataForMPG
     }
     
     func textFieldDidEndEditing(textField: MPGTextField_Swift, withSelection data: Dictionary<String, AnyObject>) {
@@ -49,6 +67,14 @@ class NewProjectViewController: UIViewController, MPGTextFieldDelegate {
     
     func textFieldShouldSelect(textField: MPGTextField_Swift) -> Bool {
         return true
+    }
+    
+    //MARK: MISC
+    
+    @objc
+    private func closeViewController()
+    {
+        self.dismissViewControllerAnimated(true, completion: nil)
     }
     
     

@@ -7,7 +7,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="NewProjectViewController" customModule="Trackerati" customModuleProvider="target">
             <connections>
                 <outlet property="clientMPGTextField" destination="IrN-1Z-h3G" id="TWe-cd-74d"/>
-                <outlet property="projectTextField" destination="CrS-zg-cTL" id="Qkz-Pb-HUB"/>
+                <outlet property="projectMPGTextField" destination="CrS-zg-cTL" id="9gT-vJ-lKK"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
