@@ -52,6 +52,8 @@
 		01EE0C561B0F7ADA00AA4C10 /* RecordFormViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01EE0C551B0F7ADA00AA4C10 /* RecordFormViewController.swift */; };
 		01EE0C591B0F865E00AA4C10 /* HistoryTableViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01EE0C581B0F865E00AA4C10 /* HistoryTableViewDataSource.swift */; };
 		BFC762EDEA775168E0305151 /* libPods-Trackerati.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 049E7FC2BC2B1D9187CEFDEC /* libPods-Trackerati.a */; };
+		D94B66691B2F332600288B01 /* MPGTextField-Swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = D94B66681B2F332600288B01 /* MPGTextField-Swift.swift */; };
+		D94B666F1B2F412E00288B01 /* NewProjectViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D94B666D1B2F412E00288B01 /* NewProjectViewController.xib */; };
 		D9E536161B2A1FE100A1400B /* VCFloatingActionButton.m in Sources */ = {isa = PBXBuildFile; fileRef = D9E536131B2A1FE100A1400B /* VCFloatingActionButton.m */; };
 		D9E536181B2A2BB700A1400B /* NewProjectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9E536171B2A2BB700A1400B /* NewProjectViewController.swift */; };
 /* End PBXBuildFile section */
@@ -67,14 +69,14 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		0126AAB61B0E211500B3907E /* HistoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HistoryViewController.swift; sourceTree = "<group>"; };
+		0126AAB61B0E211500B3907E /* HistoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HistoryViewController.swift; path = "App Sections/HistoryViewController.swift"; sourceTree = "<group>"; };
 		013C5A121B012E06002C4020 /* GoogleLoginManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoogleLoginManager.swift; sourceTree = "<group>"; };
 		013F783E1B14EC4B004842B2 /* RecordFormTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecordFormTableView.swift; sourceTree = "<group>"; };
 		013F78421B14F5DB004842B2 /* RecordDetailTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecordDetailTableViewCell.swift; sourceTree = "<group>"; };
 		01498B141B01027E00C7C395 /* Trackerati.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Trackerati.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		01498B181B01027E00C7C395 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		01498B191B01027E00C7C395 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		01498B1B1B01027E00C7C395 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
+		01498B1B1B01027E00C7C395 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MainViewController.swift; path = "App Sections/MainViewController.swift"; sourceTree = "<group>"; };
 		01498B201B01027E00C7C395 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		01498B291B01027E00C7C395 /* TrackeratiTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TrackeratiTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		01498B2E1B01027E00C7C395 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -100,14 +102,14 @@
 		0170E4431B02985100D593C3 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		0170E4471B04E37C00D593C3 /* SideMenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SideMenuViewController.swift; sourceTree = "<group>"; };
 		0170E4491B04EDE800D593C3 /* ContainerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContainerViewController.swift; sourceTree = "<group>"; };
-		0170E44B1B0526CD00D593C3 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
-		0170E44D1B052A2200D593C3 /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		0170E44B1B0526CD00D593C3 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SettingsViewController.swift; path = "App Sections/SettingsViewController.swift"; sourceTree = "<group>"; };
+		0170E44D1B052A2200D593C3 /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HomeViewController.swift; path = "App Sections/HomeViewController.swift"; sourceTree = "<group>"; };
 		0170E4521B0542A900D593C3 /* LoginScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginScreen.swift; sourceTree = "<group>"; };
 		0170E4531B0542A900D593C3 /* SwitchDatePickerCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwitchDatePickerCell.swift; sourceTree = "<group>"; };
 		017D693D1B17A1F00046287F /* Project.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Project.swift; sourceTree = "<group>"; };
 		0190BF311B0B899800E508CF /* Client.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Client.swift; sourceTree = "<group>"; };
 		0190BF351B0CD53700E508CF /* Record.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Record.swift; sourceTree = "<group>"; };
-		0190BF371B0CFC3D00E508CF /* ProjectsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectsViewController.swift; sourceTree = "<group>"; };
+		0190BF371B0CFC3D00E508CF /* ProjectsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ProjectsViewController.swift; path = "App Sections/ProjectsViewController.swift"; sourceTree = "<group>"; };
 		019FCA0E1B1E372A007E7E8B /* MBProgressHUDExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MBProgressHUDExtension.swift; sourceTree = "<group>"; };
 		01DD394A1B0A70FD000D925D /* SideMenuUserHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SideMenuUserHeaderView.swift; sourceTree = "<group>"; };
 		01EE0C431B0E2B7800AA4C10 /* HistoryTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HistoryTableViewCell.swift; sourceTree = "<group>"; };
@@ -118,9 +120,11 @@
 		01EE0C581B0F865E00AA4C10 /* HistoryTableViewDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HistoryTableViewDataSource.swift; sourceTree = "<group>"; };
 		049E7FC2BC2B1D9187CEFDEC /* libPods-Trackerati.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Trackerati.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3587A3B08253D04AD27B6510 /* Pods-Trackerati.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Trackerati.release.xcconfig"; path = "../Pods/Target Support Files/Pods-Trackerati/Pods-Trackerati.release.xcconfig"; sourceTree = "<group>"; };
+		D94B66681B2F332600288B01 /* MPGTextField-Swift.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MPGTextField-Swift.swift"; sourceTree = "<group>"; };
+		D94B666D1B2F412E00288B01 /* NewProjectViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NewProjectViewController.xib; path = "../View Controllers/NewProjectViewController.xib"; sourceTree = "<group>"; };
 		D9E536121B2A1FE100A1400B /* VCFloatingActionButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCFloatingActionButton.h; sourceTree = "<group>"; };
 		D9E536131B2A1FE100A1400B /* VCFloatingActionButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCFloatingActionButton.m; sourceTree = "<group>"; };
-		D9E536171B2A2BB700A1400B /* NewProjectViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewProjectViewController.swift; sourceTree = "<group>"; };
+		D9E536171B2A2BB700A1400B /* NewProjectViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NewProjectViewController.swift; path = "App Sections/NewProjectViewController.swift"; sourceTree = "<group>"; };
 		FC4437DDCAA1EBF64F6F5D62 /* Pods-Trackerati.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Trackerati.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-Trackerati/Pods-Trackerati.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -205,6 +209,7 @@
 				01498B3B1B0104DE00C7C395 /* Resources */,
 				01498B391B0104C400C7C395 /* View Controllers */,
 				0170E4511B0542A900D593C3 /* Views */,
+				D94B66671B2F32EC00288B01 /* Third Party */,
 				01498B171B01027E00C7C395 /* Supporting Files */,
 			);
 			path = Trackerati;
@@ -213,7 +218,6 @@
 		01498B171B01027E00C7C395 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				D9E5360E1B2A1FE100A1400B /* VCFloatingActionButton */,
 				01498B3C1B01052700C7C395 /* Trackerati-BridgingHeader.h */,
 				01498B181B01027E00C7C395 /* Info.plist */,
 			);
@@ -240,10 +244,15 @@
 		01498B391B0104C400C7C395 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				01498B1B1B01027E00C7C395 /* MainViewController.swift */,
+				0170E44D1B052A2200D593C3 /* HomeViewController.swift */,
+				0190BF371B0CFC3D00E508CF /* ProjectsViewController.swift */,
+				D9E536171B2A2BB700A1400B /* NewProjectViewController.swift */,
+				0126AAB61B0E211500B3907E /* HistoryViewController.swift */,
+				0170E44B1B0526CD00D593C3 /* SettingsViewController.swift */,
 				01EE0C541B0F7AC400AA4C10 /* Detail */,
-				01EE0C4E1B0E2F8700AA4C10 /* App Sections */,
 				01EE0C491B0E2F2E00AA4C10 /* Login */,
-				01EE0C4D1B0E2F7500AA4C10 /* Containment */,
+				01EE0C4D1B0E2F7500AA4C10 /* Side Menu Effect */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
@@ -299,10 +308,11 @@
 		0170E4511B0542A900D593C3 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				D94B666D1B2F412E00288B01 /* NewProjectViewController.xib */,
 				013F783D1B14EC32004842B2 /* TableViews */,
 				01EE0C4A1B0E2F3600AA4C10 /* Cells */,
-				01DD394A1B0A70FD000D925D /* SideMenuUserHeaderView.swift */,
 				019FCA0E1B1E372A007E7E8B /* MBProgressHUDExtension.swift */,
+				01DD394A1B0A70FD000D925D /* SideMenuUserHeaderView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -350,26 +360,14 @@
 			path = History;
 			sourceTree = "<group>";
 		};
-		01EE0C4D1B0E2F7500AA4C10 /* Containment */ = {
+		01EE0C4D1B0E2F7500AA4C10 /* Side Menu Effect */ = {
 			isa = PBXGroup;
 			children = (
 				0170E4471B04E37C00D593C3 /* SideMenuViewController.swift */,
 				0170E4491B04EDE800D593C3 /* ContainerViewController.swift */,
 			);
+			name = "Side Menu Effect";
 			path = Containment;
-			sourceTree = "<group>";
-		};
-		01EE0C4E1B0E2F8700AA4C10 /* App Sections */ = {
-			isa = PBXGroup;
-			children = (
-				01498B1B1B01027E00C7C395 /* MainViewController.swift */,
-				0170E44D1B052A2200D593C3 /* HomeViewController.swift */,
-				0190BF371B0CFC3D00E508CF /* ProjectsViewController.swift */,
-				D9E536171B2A2BB700A1400B /* NewProjectViewController.swift */,
-				0126AAB61B0E211500B3907E /* HistoryViewController.swift */,
-				0170E44B1B0526CD00D593C3 /* SettingsViewController.swift */,
-			);
-			path = "App Sections";
 			sourceTree = "<group>";
 		};
 		01EE0C4F1B0E301A00AA4C10 /* Resources */ = {
@@ -418,13 +416,23 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		D94B66671B2F32EC00288B01 /* Third Party */ = {
+			isa = PBXGroup;
+			children = (
+				D94B66681B2F332600288B01 /* MPGTextField-Swift.swift */,
+				D9E5360E1B2A1FE100A1400B /* VCFloatingActionButton */,
+			);
+			name = "Third Party";
+			sourceTree = "<group>";
+		};
 		D9E5360E1B2A1FE100A1400B /* VCFloatingActionButton */ = {
 			isa = PBXGroup;
 			children = (
 				D9E536121B2A1FE100A1400B /* VCFloatingActionButton.h */,
 				D9E536131B2A1FE100A1400B /* VCFloatingActionButton.m */,
 			);
-			path = VCFloatingActionButton;
+			name = VCFloatingActionButton;
+			path = "Supporting Files/VCFloatingActionButton";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -509,6 +517,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D94B666F1B2F412E00288B01 /* NewProjectViewController.xib in Resources */,
 				01EE0C521B0E301A00AA4C10 /* HockeySDK.xcconfig in Resources */,
 				01498B211B01027E00C7C395 /* Images.xcassets in Resources */,
 				01EE0C531B0E301A00AA4C10 /* HockeySDKResources.bundle in Resources */,
@@ -572,6 +581,7 @@
 				0170E43E1B026D8000D593C3 /* FirebaseManager.swift in Sources */,
 				0190BF361B0CD53700E508CF /* Record.swift in Sources */,
 				013C5A131B012E06002C4020 /* GoogleLoginManager.swift in Sources */,
+				D94B66691B2F332600288B01 /* MPGTextField-Swift.swift in Sources */,
 				019FCA0F1B1E372A007E7E8B /* MBProgressHUDExtension.swift in Sources */,
 				0170E43C1B0259C400D593C3 /* TrackeratiUserDefaults.swift in Sources */,
 				0190BF321B0B899800E508CF /* Client.swift in Sources */,

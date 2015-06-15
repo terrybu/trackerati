@@ -6,22 +6,37 @@
 //  Copyright (c) 2015 The Hackerati. All rights reserved.
 //
 
-class NewProjectViewController: UIViewController {
+class NewProjectViewController: UIViewController, MPGTextFieldDelegate {
+    var sampleData = [Dictionary<String, AnyObject>]()
+
+    @IBOutlet weak var mpgTextField: MPGTextField_Swift!
     
     init()
     {
-        super.init(nibName: nil, bundle: nil)
+        super.init(nibName: "NewProjectViewController", bundle: nil)
         self.title = "Add New Project or Client"
     }
-    
+
     required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func loadView() {
-        view = UIView(frame: UIScreen.mainScreen().bounds)
-        view.backgroundColor = UIColor.whiteColor()
-
+    
+    override func viewDidLoad() {
+        mpgTextField.mDelegate = self
+        sampleData.append(["DisplayText": "hallelujah displaytext", "DisplaySubText": "subtext"])
+    }
+    
+    func dataForPopoverInTextField(textfield: MPGTextField_Swift) -> [Dictionary<String, AnyObject>] {
+        return sampleData
+    }
+    
+    func textFieldDidEndEditing(textField: MPGTextField_Swift, withSelection data: Dictionary<String, AnyObject>) {
+        println("Dictionary received = \(data)")
+    }
+    
+    func textFieldShouldSelect(textField: MPGTextField_Swift) -> Bool {
+        return true
     }
     
     
