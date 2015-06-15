@@ -44,6 +44,7 @@ class ProjectsViewController : UIViewController, UITableViewDelegate, UITableVie
         let floatFrame = CGRectMake(UIScreen.mainScreen().bounds.size.width-44-22, UIScreen.mainScreen().bounds.size.height-44-22, 40, 44)
         var floatingButton = VCFloatingActionButton(frame: floatFrame, normalImage: UIImage(named: "plus"), andPressedImage: UIImage(named:"plus"), withScrollview: projectsTableView)
         floatingButton.delegate = self;
+        floatingButton.hideWhileScrolling = true;
         self.view.addSubview(floatingButton);
         
         var backHomeButton = UIBarButtonItem(title: "Home", style: UIBarButtonItemStyle.Plain, target: self, action: "closeViewController");

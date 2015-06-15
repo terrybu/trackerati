@@ -145,11 +145,12 @@ class MPGTextField_Swift: UITextField, UITextFieldDelegate, UITableViewDelegate,
     }
     
     func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        let dataForRowAtIndexPath = self.applyFilterWithSearchQuery(self.text)[0]
-        let type : AnyObject? = dataForRowAtIndexPath["Type"]
-        let typeInt = type as! Int
-        if (typeInt == 1) {
-            return "Existing Project Names"
+        if !(self.applyFilterWithSearchQuery(self.text)).isEmpty {
+            let firstDictionaryAfterFilter = self.applyFilterWithSearchQuery(self.text)[0]
+            let type : Int = firstDictionaryAfterFilter["Type"] as! Int
+            if (type == 1) {
+                return "Existing Project Names"
+            }
         }
         return "Existing Client Names"
     }

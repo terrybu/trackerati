@@ -7,9 +7,10 @@
 //
 
 class NewProjectViewController: UIViewController, MPGTextFieldDelegate {
-    var arrayOfClients = FirebaseManager.sharedManager.allClientProjects
+    var clientsArray = FirebaseManager.sharedManager.allClientProjects
     var clientDataForMPG = [Dictionary<String, AnyObject>]()
     var projectDataForMPG = [Dictionary<String, AnyObject>]()
+    var uniqueProjectNamesSet = NSMutableSet()
     @IBOutlet weak var clientMPGTextField: MPGTextField_Swift!
     @IBOutlet weak var projectMPGTextField: MPGTextField_Swift!
     
@@ -27,21 +28,34 @@ class NewProjectViewController: UIViewController, MPGTextFieldDelegate {
     override func viewDidLoad() {
         setUpMPGTextFields()
         setUpNavButtons()
+        parseDataForMPGTextFields(clientsArray!)
     }
     
     //MARK: Set-Up postload
     
     private func setUpMPGTextFields() {
-        clientDataForMPG = [
-            ["DisplayText": "Hackerati", "Type": 0],
-            ["DisplayText": "BAM-X", "Type": 0]
-        ]
-        projectDataForMPG = [
-            ["DisplayText": "Operations", "Type": 1],
-            ["DisplayText": "Marketing", "Type": 1]
-        ]
         clientMPGTextField.mDelegate = self
         projectMPGTextField.mDelegate = self
+        clientMPGTextField.enabled = false
+        projectMPGTextField.enabled = false
+    }
+    
+    private func parseDataForMPGTextFields([Client]) {
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+            for client:Client in self.clientsArray! {
+                self.clientDataForMPG.append(["DisplayText" : client.companyName, "Type": 0])
+                for project:Project in client.projects {
+                    self.uniqueProjectNamesSet.addObject(project.name)
+                }
+            }
+            self.uniqueProjectNamesSet.enumerateObjectsUsingBlock({ (projectName, idx) -> Void in
+                self.projectDataForMPG.append(["DisplayText" : projectName, "Type": 1])
+            })
+            dispatch_async(dispatch_get_main_queue(), {
+                self.clientMPGTextField.enabled = true
+                self.projectMPGTextField.enabled = true
+            })
+        })
     }
     
     private func setUpNavButtons() {
