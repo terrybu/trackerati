@@ -74,16 +74,18 @@ class MPGTextField_Swift: UITextField, UITextFieldDelegate, UITableViewDelegate,
     }
     
     override func resignFirstResponder() -> Bool{
-        UIView.animateWithDuration(0.3,
-            animations: ({
-                    self.tableViewController!.tableView.alpha = 0.0
-                }),
-            completion:{
-                    (finished : Bool) in
-                    self.tableViewController!.tableView.removeFromSuperview()
-                    self.tableViewController = nil
-                })
-        self.handleExit()
+        if let tvc = self.tableViewController {
+            UIView.animateWithDuration(0.3,
+                animations: ({
+                        self.tableViewController!.tableView.alpha = 0.0
+                    }),
+                completion:{
+                        (finished : Bool) in
+                        self.tableViewController!.tableView.removeFromSuperview()
+                        self.tableViewController = nil
+                    })
+            self.handleExit()
+        }
         return super.resignFirstResponder()
     }
     
@@ -140,6 +142,16 @@ class MPGTextField_Swift: UITextField, UITextFieldDelegate, UITableViewDelegate,
                 self.resignFirstResponder()
             }
         }
+    }
+    
+    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        let dataForRowAtIndexPath = self.applyFilterWithSearchQuery(self.text)[0]
+        let type : AnyObject? = dataForRowAtIndexPath["Type"]
+        let typeInt = type as! Int
+        if (typeInt == 1) {
+            return "Existing Project Names"
+        }
+        return "Existing Client Names"
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int{

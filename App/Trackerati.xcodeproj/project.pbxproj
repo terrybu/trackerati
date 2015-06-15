@@ -121,7 +121,7 @@
 		049E7FC2BC2B1D9187CEFDEC /* libPods-Trackerati.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Trackerati.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3587A3B08253D04AD27B6510 /* Pods-Trackerati.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Trackerati.release.xcconfig"; path = "../Pods/Target Support Files/Pods-Trackerati/Pods-Trackerati.release.xcconfig"; sourceTree = "<group>"; };
 		D94B66681B2F332600288B01 /* MPGTextField-Swift.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MPGTextField-Swift.swift"; sourceTree = "<group>"; };
-		D94B666D1B2F412E00288B01 /* NewProjectViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NewProjectViewController.xib; path = "../View Controllers/NewProjectViewController.xib"; sourceTree = "<group>"; };
+		D94B666D1B2F412E00288B01 /* NewProjectViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NewProjectViewController.xib; sourceTree = "<group>"; };
 		D9E536121B2A1FE100A1400B /* VCFloatingActionButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCFloatingActionButton.h; sourceTree = "<group>"; };
 		D9E536131B2A1FE100A1400B /* VCFloatingActionButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCFloatingActionButton.m; sourceTree = "<group>"; };
 		D9E536171B2A2BB700A1400B /* NewProjectViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NewProjectViewController.swift; path = "App Sections/NewProjectViewController.swift"; sourceTree = "<group>"; };
@@ -248,6 +248,7 @@
 				0170E44D1B052A2200D593C3 /* HomeViewController.swift */,
 				0190BF371B0CFC3D00E508CF /* ProjectsViewController.swift */,
 				D9E536171B2A2BB700A1400B /* NewProjectViewController.swift */,
+				D94B666D1B2F412E00288B01 /* NewProjectViewController.xib */,
 				0126AAB61B0E211500B3907E /* HistoryViewController.swift */,
 				0170E44B1B0526CD00D593C3 /* SettingsViewController.swift */,
 				01EE0C541B0F7AC400AA4C10 /* Detail */,
@@ -308,7 +309,6 @@
 		0170E4511B0542A900D593C3 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				D94B666D1B2F412E00288B01 /* NewProjectViewController.xib */,
 				013F783D1B14EC32004842B2 /* TableViews */,
 				01EE0C4A1B0E2F3600AA4C10 /* Cells */,
 				019FCA0E1B1E372A007E7E8B /* MBProgressHUDExtension.swift */,

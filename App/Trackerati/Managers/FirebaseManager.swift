@@ -59,6 +59,7 @@ class FirebaseManager : NSObject
             dispatch_async(dispatch_get_main_queue(), {
                 if error != nil {
                     // TODO: Show error
+                    println(error)
                     NSNotificationCenter.defaultCenter().postNotificationName(kUserAuthenticatedFirebaseUnsuccessfullyNotificationName, object: nil)
                 }
                 else {

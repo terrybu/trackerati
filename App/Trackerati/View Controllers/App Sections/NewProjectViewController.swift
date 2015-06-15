@@ -7,14 +7,15 @@
 //
 
 class NewProjectViewController: UIViewController, MPGTextFieldDelegate {
-    var sampleData = [Dictionary<String, AnyObject>]()
-
-    @IBOutlet weak var mpgTextField: MPGTextField_Swift!
+    var clientData = [Dictionary<String, AnyObject>]()
+    var projectData = [Dictionary<String, AnyObject>]()
+    @IBOutlet weak var clientMPGTextField: MPGTextField_Swift!
+    @IBOutlet weak var projectTextField: MPGTextField_Swift!
     
     init()
     {
         super.init(nibName: "NewProjectViewController", bundle: nil)
-        self.title = "Add New Project or Client"
+        self.title = "Add New Project"
     }
 
     required init(coder aDecoder: NSCoder) {
@@ -23,12 +24,23 @@ class NewProjectViewController: UIViewController, MPGTextFieldDelegate {
     
     
     override func viewDidLoad() {
-        mpgTextField.mDelegate = self
-        sampleData.append(["DisplayText": "hallelujah displaytext", "DisplaySubText": "subtext"])
+        clientData = [
+            ["DisplayText": "Hackerati", "Type": 0],
+            ["DisplayText": "BAM-X", "Type": 0]
+        ]
+        projectData = [
+            ["DisplayText": "Operations", "Type": 1],
+            ["DisplayText": "Marketing", "Type": 1]
+        ]
+        clientMPGTextField.mDelegate = self
+        projectTextField.mDelegate = self
     }
     
     func dataForPopoverInTextField(textfield: MPGTextField_Swift) -> [Dictionary<String, AnyObject>] {
-        return sampleData
+        if (textfield.isEqual(self.projectTextField)) {
+            return projectData
+        }
+        return clientData
     }
     
     func textFieldDidEndEditing(textField: MPGTextField_Swift, withSelection data: Dictionary<String, AnyObject>) {
