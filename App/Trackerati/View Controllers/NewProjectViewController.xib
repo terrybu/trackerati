@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="NewProjectViewController" customModule="Trackerati" customModuleProvider="target">
+            <connections>
+                <outlet property="clientMPGTextField" destination="IrN-1Z-h3G" id="TWe-cd-74d"/>
+                <outlet property="projectMPGTextField" destination="CrS-zg-cTL" id="9gT-vJ-lKK"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Client Name:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dSF-9R-Y3S">
+                    <rect key="frame" x="12" y="87" width="101" height="21"/>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Input Client Name" textAlignment="center" minimumFontSize="17" clearButtonMode="always" translatesAutoresizingMaskIntoConstraints="NO" id="IrN-1Z-h3G" customClass="MPGTextField_Swift" customModule="Trackerati" customModuleProvider="target">
+                    <rect key="frame" x="12" y="120" width="576" height="30"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                    <textInputTraits key="textInputTraits"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="color" keyPath="popoverBackgroundColor">
+                            <color key="value" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="color" keyPath="seperatorColor">
+                            <color key="value" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </textField>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Project Name:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="A3d-Qe-nDP">
+                    <rect key="frame" x="12" y="204" width="112" height="21"/>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Input Project Name" textAlignment="center" minimumFontSize="17" clearButtonMode="always" translatesAutoresizingMaskIntoConstraints="NO" id="CrS-zg-cTL" customClass="MPGTextField_Swift" customModule="Trackerati" customModuleProvider="target">
+                    <rect key="frame" x="12" y="233" width="576" height="30"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                    <textInputTraits key="textInputTraits"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="color" keyPath="popoverBackgroundColor">
+                            <color key="value" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="color" keyPath="seperatorColor">
+                            <color key="value" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </textField>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="CrS-zg-cTL" firstAttribute="top" secondItem="A3d-Qe-nDP" secondAttribute="bottom" constant="8" id="0jl-8k-Qy4"/>
+                <constraint firstItem="dSF-9R-Y3S" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="12" id="2Gj-YN-DX2"/>
+                <constraint firstItem="dSF-9R-Y3S" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="87" id="3xH-2b-sCb"/>
+                <constraint firstItem="A3d-Qe-nDP" firstAttribute="leading" secondItem="IrN-1Z-h3G" secondAttribute="leading" id="9cp-I1-gz4"/>
+                <constraint firstItem="CrS-zg-cTL" firstAttribute="trailing" secondItem="IrN-1Z-h3G" secondAttribute="trailing" id="E8J-nB-E78"/>
+                <constraint firstItem="IrN-1Z-h3G" firstAttribute="centerY" secondItem="dSF-9R-Y3S" secondAttribute="centerY" id="Lmi-nU-qsc"/>
+                <constraint firstAttribute="centerX" secondItem="IrN-1Z-h3G" secondAttribute="centerX" id="Mse-RG-SBS"/>
+                <constraint firstItem="CrS-zg-cTL" firstAttribute="leading" secondItem="A3d-Qe-nDP" secondAttribute="leading" id="Psv-87-c7h"/>
+                <constraint firstAttribute="trailing" secondItem="IrN-1Z-h3G" secondAttribute="trailing" constant="12" id="YBv-7y-EhW"/>
+                <constraint firstItem="A3d-Qe-nDP" firstAttribute="top" secondItem="IrN-1Z-h3G" secondAttribute="bottom" constant="54" id="YZf-Cf-2oh"/>
+                <constraint firstItem="IrN-1Z-h3G" firstAttribute="leading" secondItem="dSF-9R-Y3S" secondAttribute="leading" id="ZmA-oE-n8v"/>
+                <constraint firstItem="IrN-1Z-h3G" firstAttribute="top" secondItem="dSF-9R-Y3S" secondAttribute="bottom" constant="12" id="jwv-M7-pe6"/>
+                <constraint firstItem="IrN-1Z-h3G" firstAttribute="leading" secondItem="dSF-9R-Y3S" secondAttribute="trailing" constant="16" id="mHO-xa-YP4"/>
+                <constraint firstItem="IrN-1Z-h3G" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="87" id="oQX-bT-ylw"/>
+                <constraint firstAttribute="centerY" secondItem="IrN-1Z-h3G" secondAttribute="centerY" constant="198" id="vMX-cL-pkF"/>
+            </constraints>
+            <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+            <variation key="default">
+                <mask key="constraints">
+                    <exclude reference="Lmi-nU-qsc"/>
+                    <exclude reference="Mse-RG-SBS"/>
+                    <exclude reference="mHO-xa-YP4"/>
+                    <exclude reference="oQX-bT-ylw"/>
+                    <exclude reference="vMX-cL-pkF"/>
+                </mask>
+            </variation>
+        </view>
+    </objects>
+</document>

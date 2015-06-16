@@ -38,7 +38,6 @@ class HistoryViewController : MainViewController, UITableViewDelegate, HistoryTa
             let newFormNavController = UINavigationController(rootViewController: recordForm)
             containerVC.centerNavigationController.presentViewController(newFormNavController, animated: true, completion: nil)
         }
-//        navigationController?.pushViewController(RecordFormViewController(record: selectedRecord, editing: editing), animated: true)
     }
     
     // MARK: UIBarButtonItem Selectors
