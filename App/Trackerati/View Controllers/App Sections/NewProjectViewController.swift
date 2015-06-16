@@ -11,6 +11,8 @@ class NewProjectViewController: UIViewController, MPGTextFieldDelegate {
     var clientDataForMPG = [Dictionary<String, AnyObject>]()
     var projectDataForMPG = [Dictionary<String, AnyObject>]()
     var uniqueProjectNamesSet = NSMutableSet()
+    var onDismiss: (() -> ())?
+    
     @IBOutlet weak var clientMPGTextField: MPGTextField_Swift!
     @IBOutlet weak var projectMPGTextField: MPGTextField_Swift!
     
@@ -89,7 +91,9 @@ class NewProjectViewController: UIViewController, MPGTextFieldDelegate {
     @objc
     private func closeViewController()
     {
-        self.dismissViewControllerAnimated(true, completion: nil)
+        self.dismissViewControllerAnimated(true, completion: { () -> Void in
+            self.onDismiss!()
+        })
     }
     
     @objc

@@ -235,7 +235,7 @@ class FirebaseManager : NSObject
     // MARK: Projects Saving & Deleting
     
     func validateProjectNameBeforeSendingToFirebase(clientString: String, projectString: String) -> Bool {
-
+        //TODO: need lowercase/uppercase check ex) to prevenet "hackerati" vs "Hackerati"
         return true
     }
     
@@ -257,10 +257,17 @@ class FirebaseManager : NSObject
                     let placeHolder = [ "name" : "placeholder" ]
                     newProjectRefWithID.setValue(placeHolder as [NSObject: AnyObject], withCompletionBlock: { error, firebaseRef in
                         
-                        
-                        
-                        if let closure = completion {
-                            closure(error: error, duplicateFound: false)
+                        if error == nil {
+                            FirebaseManager.sharedManager.getAllDataOfType(.Projects, completion: { () -> Void in
+                                if let closure = completion {
+                                    closure(error: error, duplicateFound: false)
+                                }
+                            })
+                        }
+                        else {
+                            if let closure = completion {
+                                closure(error: error, duplicateFound: false)
+                            }
                         }
                     })
                 }

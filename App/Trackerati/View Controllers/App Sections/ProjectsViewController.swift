@@ -51,6 +51,8 @@ class ProjectsViewController : UIViewController, UITableViewDelegate, UITableVie
         navigationItem.leftBarButtonItem = backHomeButton;
     }
     
+    
+    
     private func setupTableView()
     {
         let projectsTableView = UITableView(frame: view.frame, style: .Plain)
@@ -145,10 +147,15 @@ class ProjectsViewController : UIViewController, UITableViewDelegate, UITableVie
         return cell
     }
     
-    // MARK: FloatMenu Delegate
+    // MARK: FloatButton Delegate
     
     func floatingButtonWasPressed() {
-        let navCtrl = UINavigationController(rootViewController: NewProjectViewController())
+        let newProjectVC = NewProjectViewController()
+        let navCtrl = UINavigationController(rootViewController: newProjectVC)
+        newProjectVC.onDismiss = {
+            self.clientProjects = FirebaseManager.sharedManager.allClientProjects!
+            self.projectsTableView.reloadData()
+        }
         presentViewController(navCtrl, animated: true, completion: nil);
     }
     
