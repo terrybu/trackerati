@@ -99,6 +99,14 @@ class NewProjectViewController: UIViewController, MPGTextFieldDelegate {
     @objc
     private func saveNewProject()
     {
+        if (self.clientMPGTextField.text.isEmpty || self.projectMPGTextField.text.isEmpty) {
+            let alertController = UIAlertController(title: "Empty Input", message:
+                "Either Client Name or Project Name cannot be empty", preferredStyle: UIAlertControllerStyle.Alert)
+            alertController.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default,handler: nil))
+            presentViewController(alertController, animated: true, completion: nil)
+            return
+        }
+        
         let hud = MBProgressHUD.showHUDAddedTo(view, animated: true)
         hud.labelText = "Saving New Project"
         
