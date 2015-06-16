@@ -20,6 +20,7 @@ class ProjectsViewController : UIViewController, UITableViewDelegate, UITableVie
     {
         super.init(nibName: nil, bundle: nil)
         self.title = kViewControllerTitle
+        self.navigationItem.prompt = "Tap on project name to pin/unpin"
         
         if let projectArray = projects {
             clientProjects = projectArray

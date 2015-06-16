@@ -28,6 +28,7 @@ class NewProjectViewController: UIViewController, MPGTextFieldDelegate {
     
     
     override func viewDidLoad() {
+        self.navigationItem.prompt = "Input both fields and press Save to add new project"
         setUpMPGTextFields()
         setUpNavButtons()
         parseDataForMPGTextFields(clientsArray!)
