@@ -54,6 +54,7 @@
 		BFC762EDEA775168E0305151 /* libPods-Trackerati.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 049E7FC2BC2B1D9187CEFDEC /* libPods-Trackerati.a */; };
 		D94B66691B2F332600288B01 /* MPGTextField-Swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = D94B66681B2F332600288B01 /* MPGTextField-Swift.swift */; };
 		D94B666F1B2F412E00288B01 /* NewProjectViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D94B666D1B2F412E00288B01 /* NewProjectViewController.xib */; };
+		D9572CF21B30D75A00F2620E /* UIColorExtension.swft.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9572CF11B30D75A00F2620E /* UIColorExtension.swft.swift */; };
 		D9E536161B2A1FE100A1400B /* VCFloatingActionButton.m in Sources */ = {isa = PBXBuildFile; fileRef = D9E536131B2A1FE100A1400B /* VCFloatingActionButton.m */; };
 		D9E536181B2A2BB700A1400B /* NewProjectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9E536171B2A2BB700A1400B /* NewProjectViewController.swift */; };
 /* End PBXBuildFile section */
@@ -77,7 +78,7 @@
 		01498B181B01027E00C7C395 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		01498B191B01027E00C7C395 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		01498B1B1B01027E00C7C395 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MainViewController.swift; path = "App Sections/MainViewController.swift"; sourceTree = "<group>"; };
-		01498B201B01027E00C7C395 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		01498B201B01027E00C7C395 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = Resources/Images.xcassets; sourceTree = "<group>"; };
 		01498B291B01027E00C7C395 /* TrackeratiTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TrackeratiTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		01498B2E1B01027E00C7C395 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		01498B2F1B01027E00C7C395 /* TrackeratiTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackeratiTests.swift; sourceTree = "<group>"; };
@@ -122,6 +123,7 @@
 		3587A3B08253D04AD27B6510 /* Pods-Trackerati.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Trackerati.release.xcconfig"; path = "../Pods/Target Support Files/Pods-Trackerati/Pods-Trackerati.release.xcconfig"; sourceTree = "<group>"; };
 		D94B66681B2F332600288B01 /* MPGTextField-Swift.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MPGTextField-Swift.swift"; sourceTree = "<group>"; };
 		D94B666D1B2F412E00288B01 /* NewProjectViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NewProjectViewController.xib; sourceTree = "<group>"; };
+		D9572CF11B30D75A00F2620E /* UIColorExtension.swft.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UIColorExtension.swft.swift; path = ../Resources/UIColorExtension.swft.swift; sourceTree = "<group>"; };
 		D9E536121B2A1FE100A1400B /* VCFloatingActionButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCFloatingActionButton.h; sourceTree = "<group>"; };
 		D9E536131B2A1FE100A1400B /* VCFloatingActionButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCFloatingActionButton.m; sourceTree = "<group>"; };
 		D9E536171B2A2BB700A1400B /* NewProjectViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NewProjectViewController.swift; path = "App Sections/NewProjectViewController.swift"; sourceTree = "<group>"; };
@@ -206,8 +208,9 @@
 				0170E4421B02984200D593C3 /* Models */,
 				01498B3D1B0114C800C7C395 /* Frameworks */,
 				013C5A111B012E06002C4020 /* Managers */,
-				01498B3B1B0104DE00C7C395 /* Resources */,
+				01498B201B01027E00C7C395 /* Images.xcassets */,
 				01498B391B0104C400C7C395 /* View Controllers */,
+				D9572CF31B30D77500F2620E /* Extensions */,
 				0170E4511B0542A900D593C3 /* Views */,
 				D94B66671B2F32EC00288B01 /* Third Party */,
 				01498B171B01027E00C7C395 /* Supporting Files */,
@@ -268,14 +271,6 @@
 			path = Application;
 			sourceTree = "<group>";
 		};
-		01498B3B1B0104DE00C7C395 /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				01498B201B01027E00C7C395 /* Images.xcassets */,
-			);
-			path = Resources;
-			sourceTree = "<group>";
-		};
 		01498B3D1B0114C800C7C395 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -311,7 +306,6 @@
 			children = (
 				013F783D1B14EC32004842B2 /* TableViews */,
 				01EE0C4A1B0E2F3600AA4C10 /* Cells */,
-				019FCA0E1B1E372A007E7E8B /* MBProgressHUDExtension.swift */,
 				01DD394A1B0A70FD000D925D /* SideMenuUserHeaderView.swift */,
 			);
 			path = Views;
@@ -423,6 +417,16 @@
 				D9E5360E1B2A1FE100A1400B /* VCFloatingActionButton */,
 			);
 			name = "Third Party";
+			sourceTree = "<group>";
+		};
+		D9572CF31B30D77500F2620E /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				019FCA0E1B1E372A007E7E8B /* MBProgressHUDExtension.swift */,
+				D9572CF11B30D75A00F2620E /* UIColorExtension.swft.swift */,
+			);
+			name = Extensions;
+			path = Views;
 			sourceTree = "<group>";
 		};
 		D9E5360E1B2A1FE100A1400B /* VCFloatingActionButton */ = {
@@ -585,6 +589,7 @@
 				019FCA0F1B1E372A007E7E8B /* MBProgressHUDExtension.swift in Sources */,
 				0170E43C1B0259C400D593C3 /* TrackeratiUserDefaults.swift in Sources */,
 				0190BF321B0B899800E508CF /* Client.swift in Sources */,
+				D9572CF21B30D75A00F2620E /* UIColorExtension.swft.swift in Sources */,
 				0170E4401B02962F00D593C3 /* Constants.swift in Sources */,
 				0170E4481B04E37C00D593C3 /* SideMenuViewController.swift in Sources */,
 				D9E536161B2A1FE100A1400B /* VCFloatingActionButton.m in Sources */,
