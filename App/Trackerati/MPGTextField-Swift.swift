@@ -149,10 +149,10 @@ class MPGTextField_Swift: UITextField, UITextFieldDelegate, UITableViewDelegate,
             let firstDictionaryAfterFilter = self.applyFilterWithSearchQuery(self.text)[0]
             let type : Int = firstDictionaryAfterFilter["Type"] as! Int
             if (type == 1) {
-                return "Existing Project Names"
+                return "All Existing Project Names"
             }
         }
-        return "Existing Client Names"
+        return "All Existing Client Names"
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int{

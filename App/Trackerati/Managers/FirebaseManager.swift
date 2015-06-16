@@ -58,7 +58,6 @@ class FirebaseManager : NSObject
         firebaseDB.authWithOAuthProvider("google", token: token, withCompletionBlock: { error, authData in
             dispatch_async(dispatch_get_main_queue(), {
                 if error != nil {
-                    // TODO: Show error
                     println(error)
                     NSNotificationCenter.defaultCenter().postNotificationName(kUserAuthenticatedFirebaseUnsuccessfullyNotificationName, object: nil)
                 }
@@ -232,6 +231,45 @@ class FirebaseManager : NSObject
             }
         }
     }
+    
+    // MARK: Projects Saving & Deleting
+    
+    func validateProjectNameBeforeSendingToFirebase(clientString: String, projectString: String) -> Bool {
+
+        return true
+    }
+    
+    func saveNewProject (clientString: String, projectString: String, completion: ((error: NSError!, duplicateFound: Bool) -> Void)?)
+    {
+        if (validateProjectNameBeforeSendingToFirebase(clientString, projectString: projectString)) {
+            let newProjectURL = "Projects/\(clientString)/\(projectString)"
+            let newProjectRef = firebaseDB.childByAppendingPath(newProjectURL)
+            newProjectRef.observeSingleEventOfType(.Value, withBlock: { snapshot in
+                if (snapshot.value != nil && snapshot.hasChildren()) {
+                    //if we got data back from firebase at that URL, client/project name already exists, don't write
+                    if let closure = completion {
+                        closure(error: nil, duplicateFound: true)
+                    }
+                }
+                else {
+                    //safe to write
+                    let newProjectRefWithID = newProjectRef.childByAutoId()
+                    let placeHolder = [ "name" : "placeholder" ]
+                    newProjectRefWithID.setValue(placeHolder as [NSObject: AnyObject], withCompletionBlock: { error, firebaseRef in
+                        
+                        
+                        
+                        if let closure = completion {
+                            closure(error: error, duplicateFound: false)
+                        }
+                    })
+                }
+            })
+        }
+    }
+
+
+    
     
     // MARK: Private
     

@@ -83,13 +83,45 @@ class NewProjectViewController: UIViewController, MPGTextFieldDelegate {
         return true
     }
     
-    //MARK: MISC
+    
+    //MARK: Navbutton Actions
     
     @objc
     private func closeViewController()
     {
         self.dismissViewControllerAnimated(true, completion: nil)
     }
+    
+    @objc
+    private func saveNewProject()
+    {
+        let hud = MBProgressHUD.showHUDAddedTo(view, animated: true)
+        hud.labelText = "Saving New Project"
+        
+        FirebaseManager.sharedManager.saveNewProject(self.clientMPGTextField.text, projectString: self.projectMPGTextField.text, completion: { (error, duplicateFound) -> Void in
+            if (error != nil || duplicateFound) {
+                var alertController : UIAlertController?
+                if (error != nil) {
+                    println(error)
+                    alertController = UIAlertController(title: "Error", message:
+                        "There was an error while trying to save new project to database, please try again later", preferredStyle: UIAlertControllerStyle.Alert)
+                }
+                else if (duplicateFound) {
+                    alertController = UIAlertController(title: "Same project name exists", message:
+                        "You cannot add this project name under this client because it already exists in current database", preferredStyle: UIAlertControllerStyle.Alert)
+                }
+                alertController!.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default,handler: nil))
+                self.presentViewController(alertController!, animated: true, completion: nil)
+                hud.hide(true)
+            }
+            else {
+                MBProgressHUD.showCompletionHUD(onView: self.view, duration: 1.5, completion: {
+                    self.closeViewController()
+                })
+            }
+        })
+    }
+    
     
     
 }
