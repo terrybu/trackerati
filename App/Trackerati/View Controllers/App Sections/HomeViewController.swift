@@ -30,6 +30,8 @@ class HomeViewController : MainViewController, UITableViewDelegate, UITableViewD
     override func loadView() {
         super.loadView()
         
+        self.navigationItem.prompt = "Tap project name to record hours or pin more projects"
+        
         let addProjectButton = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: "displayProjects")
         navigationItem.rightBarButtonItem = addProjectButton
         
@@ -73,7 +75,10 @@ class HomeViewController : MainViewController, UITableViewDelegate, UITableViewD
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
-        
+        presentNewRecordFormVC(indexPath)
+    }
+    
+    func presentNewRecordFormVC(indexPath: NSIndexPath) {
         let companyName = pinnedProjects[indexPath.section].companyName
         let projectName = pinnedProjects[indexPath.section].projects[indexPath.row].name
         let newRecord = Record(client: companyName, project: projectName)
@@ -106,6 +111,11 @@ class HomeViewController : MainViewController, UITableViewDelegate, UITableViewD
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(kCellReuseIdentifier, forIndexPath: indexPath) as! UITableViewCell
         cell.textLabel?.text = pinnedProjects[indexPath.section].projects[indexPath.row].name
+        //Do we want to standardize as plus button like Android?
+//        var plusButton: UIButton  = UIButton.buttonWithType(UIButtonType.ContactAdd) as! UIButton
+//        plusButton.tag = indexPath.row
+//        plusButton.addTarget(self, action: "presentNewRecordFormVC:", forControlEvents: UIControlEvents.TouchUpInside)
+        cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
         return cell
     }
     
