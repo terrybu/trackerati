@@ -113,7 +113,7 @@
 		0190BF351B0CD53700E508CF /* Record.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Record.swift; sourceTree = "<group>"; };
 		0190BF371B0CFC3D00E508CF /* ProjectsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ProjectsViewController.swift; path = "App Sections/ProjectsViewController.swift"; sourceTree = "<group>"; };
 		019FCA0E1B1E372A007E7E8B /* MBProgressHUDExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MBProgressHUDExtension.swift; sourceTree = "<group>"; };
-		01DD394A1B0A70FD000D925D /* SideMenuUserHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SideMenuUserHeaderView.swift; path = ../../Views/SideMenuUserHeaderView.swift; sourceTree = "<group>"; };
+		01DD394A1B0A70FD000D925D /* SideMenuUserHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SideMenuUserHeaderView.swift; sourceTree = "<group>"; };
 		01EE0C431B0E2B7800AA4C10 /* HistoryTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HistoryTableViewCell.swift; sourceTree = "<group>"; };
 		01EE0C461B0E2F0200AA4C10 /* HockeySDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = HockeySDK.framework; sourceTree = "<group>"; };
 		01EE0C501B0E301A00AA4C10 /* HockeySDK.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = HockeySDK.xcconfig; sourceTree = "<group>"; };
@@ -306,6 +306,7 @@
 		0170E4511B0542A900D593C3 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				01DD394A1B0A70FD000D925D /* SideMenuUserHeaderView.swift */,
 				013F783D1B14EC32004842B2 /* TableViews */,
 				01EE0C4A1B0E2F3600AA4C10 /* Cells */,
 			);
@@ -360,7 +361,6 @@
 			children = (
 				0170E4471B04E37C00D593C3 /* SideMenuViewController.swift */,
 				0170E4491B04EDE800D593C3 /* ContainerViewController.swift */,
-				01DD394A1B0A70FD000D925D /* SideMenuUserHeaderView.swift */,
 			);
 			name = "Side Menu Effect";
 			path = Containment;

@@ -191,7 +191,7 @@ class MPGTextField_Swift: UITextField, UITextFieldDelegate, UITableViewDelegate,
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath){
-        //self.text = self.applyFilterWithSearchQuery(self.text)[indexPath.row]["DisplayText"]
+        self.text = self.applyFilterWithSearchQuery(self.text)[indexPath.row]["DisplayText"] as! String
         self.resignFirstResponder()
     }
     
@@ -219,14 +219,8 @@ class MPGTextField_Swift: UITextField, UITextFieldDelegate, UITableViewDelegate,
             table.tableView.removeFromSuperview()
         }
         if (mDelegate?.textFieldShouldSelect?(self) != nil){
-            if self.applyFilterWithSearchQuery(self.text).count > 0 {
-                let selectedData = self.applyFilterWithSearchQuery(self.text)[0]
-                let displayText : AnyObject? = selectedData["DisplayText"]
-                self.text = displayText as! String
-                mDelegate?.textFieldDidEndEditing?(self, withSelection: selectedData)
-            }
-            else{
-                mDelegate?.textFieldDidEndEditing?(self, withSelection: ["DisplayText":self.text, "CustomObject":"NEW"])
+            if (self.text != nil) {
+                mDelegate?.textFieldDidEndEditing?(self, withSelection: ["DisplayText":self.text])
             }
         }
 

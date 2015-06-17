@@ -15,7 +15,7 @@ class SideMenuUserHeaderView : UIView
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        backgroundColor = UIColor.clearColor()
+        backgroundColor = UIColor.whiteColor()
         
         setupImageView()
         setupNameLabel()
