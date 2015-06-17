@@ -30,8 +30,9 @@ class HomeViewController : MainViewController, UITableViewDelegate, UITableViewD
     override func loadView() {
         super.loadView()
         
-        self.navigationItem.prompt = "Tap project name to record hours or pin more projects"
-        
+        self.navigationItem.prompt = "Tap on project name to record your hours"
+        setNavUIToHackeratiColors()
+
         let addProjectButton = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: "displayProjects")
         navigationItem.rightBarButtonItem = addProjectButton
         

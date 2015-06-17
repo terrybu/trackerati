@@ -21,8 +21,8 @@ class SettingsViewController : MainViewController, UITableViewDelegate, UITableV
     
     override func loadView() {
         super.loadView()
-        view.backgroundColor = UIColor.blueColor()
-        
+        setNavUIToHackeratiColors()
+
         settings = ["Notifications": [SettingType.Date.rawValue]]
         
         let settingsTableView = UITableView(frame: view.frame, style: .Grouped)
@@ -31,6 +31,8 @@ class SettingsViewController : MainViewController, UITableViewDelegate, UITableV
         settingsTableView.allowsSelection = false
         view.addSubview(settingsTableView)
         self.settingsTableView = settingsTableView
+        
+        
     }
     
     // MARK: UITableView Delegate

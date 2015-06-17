@@ -38,18 +38,17 @@ class ProjectsViewController : UIViewController, UITableViewDelegate, UITableVie
     }
     
     override func loadView() {
+        super.loadView()
+
         view = UIView(frame: UIScreen.mainScreen().bounds)
-    
-        setupTableView()
-        
-        let floatFrame = CGRectMake(UIScreen.mainScreen().bounds.size.width-44-22, UIScreen.mainScreen().bounds.size.height-44-22, 40, 44)
-        var floatingButton = VCFloatingActionButton(frame: floatFrame, normalImage: UIImage(named: "plus"), andPressedImage: UIImage(named:"plus"), withScrollview: projectsTableView)
-        floatingButton.delegate = self;
-        floatingButton.hideWhileScrolling = true;
-        self.view.addSubview(floatingButton);
         
         var backHomeButton = UIBarButtonItem(title: "Home", style: UIBarButtonItemStyle.Plain, target: self, action: "closeViewController");
         navigationItem.leftBarButtonItem = backHomeButton;
+        
+        setNavUIToHackeratiColors()
+
+        setupTableView()
+        setupFloatingActionButtonWithPlus()
     }
     
     
@@ -62,6 +61,14 @@ class ProjectsViewController : UIViewController, UITableViewDelegate, UITableVie
         projectsTableView.dataSource = self
         view.addSubview(projectsTableView)
         self.projectsTableView = projectsTableView
+    }
+    
+    private func setupFloatingActionButtonWithPlus() {
+        let floatFrame = CGRectMake(UIScreen.mainScreen().bounds.size.width-44-22, UIScreen.mainScreen().bounds.size.height-44-22, 40, 44)
+        var floatingButton = VCFloatingActionButton(frame: floatFrame, normalImage: UIImage(named: "plus"), andPressedImage: UIImage(named:"plus"), withScrollview: projectsTableView)
+        floatingButton.delegate = self;
+        floatingButton.hideWhileScrolling = true;
+        self.view.addSubview(floatingButton);
     }
     
     @objc

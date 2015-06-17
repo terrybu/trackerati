@@ -15,7 +15,8 @@ class HistoryViewController : MainViewController, UITableViewDelegate, HistoryTa
         super.loadView()
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Trash, target: self, action: "editTableView")
-        
+        setNavUIToHackeratiColors()
+
         let historyTableView = UITableView(frame: view.frame, style: .Plain)
         historyTableView.delegate = self
         historyTableViewDataSource = HistoryTableViewDataSource(tableView: historyTableView)
