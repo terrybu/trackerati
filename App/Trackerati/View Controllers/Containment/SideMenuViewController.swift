@@ -43,11 +43,11 @@ class SideMenuViewController : UIViewController, UITableViewDelegate, UITableVie
     override func loadView() {
         view = UIView(frame: UIScreen.mainScreen().bounds)
         
-        setupMenuBackground()
-        setupMenu()
+//        setupMenuBackground()
+        setupMenuTableView()
     }
     
-    private func setupMenu()
+    private func setupMenuTableView()
     {
         let menuTableView = UITableView(frame: view.frame, style: .Plain)
         menuTableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: kCellReuseIdentifier)
@@ -79,21 +79,6 @@ class SideMenuViewController : UIViewController, UITableViewDelegate, UITableVie
         self.view.addConstraints(constraints)
     }
     
-    // MARK: Private
-    
-    private func customHeaderView() -> UIView
-    {
-        return SideMenuUserHeaderView(frame: CGRect(origin: CGPointZero, size: CGSize(width: view.frame.size.width, height: kHeaderViewHeight)))
-    }
-    
-    private func setupLabelOnCell(cell: UITableViewCell, indexPath: NSIndexPath)
-    {
-        let titleLabelFrame = CGRect(x: cell.layoutMargins.left, y: 0.0, width: cell.contentView.frame.size.width, height: cell.contentView.frame.size.height)
-        let titleLabel = UILabel(frame: titleLabelFrame)
-        titleLabel.text = menuItems[indexPath.row].rawValue
-        cell.contentView.addSubview(titleLabel)
-    }
-    
     // MARK: UITableView Delegate
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
@@ -114,8 +99,34 @@ class SideMenuViewController : UIViewController, UITableViewDelegate, UITableVie
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(kCellReuseIdentifier, forIndexPath: indexPath) as! UITableViewCell
         cell.backgroundColor = UIColor.clearColor()
-        setupLabelOnCell(cell, indexPath: indexPath)
+//        setupLabelOnCell(cell, indexPath: indexPath) Why do this instead of just using cell's default text label?
+        cell.textLabel!.text = menuItems[indexPath.row].rawValue
+        cell.textLabel!.textColor = UIColor.whiteColor()
+        var icon = UIImage(named: menuItems[indexPath.row].rawValue)
+        icon?.imageWithRenderingMode(.AlwaysTemplate)
+        cell.imageView!.image = icon
+        cell.imageView!.tintColor = UIColor.whiteColor()
         return cell
+    }
+    
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return 50
+    }
+    
+    // MARK: Private
+    
+    private func customHeaderView() -> UIView
+    {
+        return SideMenuUserHeaderView(frame: CGRect(origin: CGPointZero, size: CGSize(width: view.frame.size.width, height: kHeaderViewHeight)))
+    }
+    
+    private func setupLabelOnCell(cell: UITableViewCell, indexPath: NSIndexPath)
+    {
+        let titleLabelFrame = CGRect(x: cell.layoutMargins.left, y: 0.0, width: cell.contentView.frame.size.width, height: cell.contentView.frame.size.height)
+        let titleLabel = UILabel(frame: titleLabelFrame)
+        titleLabel.text = menuItems[indexPath.row].rawValue
+        titleLabel.textColor = UIColor.whiteColor()
+        cell.contentView.addSubview(titleLabel)
     }
     
 }
