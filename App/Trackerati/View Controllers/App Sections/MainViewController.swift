@@ -24,7 +24,9 @@ class MainViewController: UIViewController {
         if let menuImage = UIImage(named: "MenuButton") {
             let menuButton = UIButton(frame: CGRect(origin: CGPointZero, size: menuImage.size))
             menuButton.showsTouchWhenHighlighted = false
-            menuButton.setBackgroundImage(UIImage(named: "MenuButton"), forState: .Normal)
+            var hamburger = UIImage(named: "MenuButton")?.imageWithRenderingMode(.AlwaysTemplate)
+            menuButton.setImage(hamburger, forState: .Normal)
+            menuButton.tintColor = UIColor.whiteColor()
             menuButton.addTarget(self, action: "displayMenu:", forControlEvents: .TouchUpInside)
             let customBarButtonItem = UIBarButtonItem(customView: menuButton)
             navigationItem.leftBarButtonItem = customBarButtonItem
