@@ -41,9 +41,32 @@ class NewProjectViewController: UIViewController, MPGTextFieldDelegate {
     
     private func setUpMPGTextFields() {
         clientMPGTextField.mDelegate = self
+        clientMPGTextField.addTarget(self, action: "clientTextFieldDidChange", forControlEvents: UIControlEvents.EditingChanged)
+        
         projectMPGTextField.mDelegate = self
+        projectMPGTextField.addTarget(self, action: "projectTextFieldDidChange", forControlEvents: UIControlEvents.EditingChanged)
+
+
         clientMPGTextField.enabled = false
         projectMPGTextField.enabled = false
+    }
+    
+    func clientTextFieldDidChange() {
+        if (!self.clientMPGTextField.text.isEmpty && !self.projectMPGTextField.text.isEmpty) {
+            navigationItem.rightBarButtonItem?.enabled = true
+        }
+        else {
+            navigationItem.rightBarButtonItem?.enabled = false
+        }
+    }
+    
+    func projectTextFieldDidChange() {
+        if (!self.clientMPGTextField.text.isEmpty && !self.projectMPGTextField.text.isEmpty) {
+            navigationItem.rightBarButtonItem?.enabled = true
+        }
+        else {
+            navigationItem.rightBarButtonItem?.enabled = false
+        }
     }
     
     private func parseDataForMPGTextFields([Client]) {
@@ -83,13 +106,11 @@ class NewProjectViewController: UIViewController, MPGTextFieldDelegate {
     }
     
     func textFieldDidEndEditing(textField: MPGTextField_Swift, withSelection data: Dictionary<String, AnyObject>) {
-        if (!self.clientMPGTextField.text.isEmpty && !self.projectMPGTextField.text.isEmpty) {
-            navigationItem.rightBarButtonItem?.enabled = true
-        }
+        println(data)
     }
     
     func textFieldShouldSelect(textField: MPGTextField_Swift) -> Bool {
-        return true
+        return false
     }
     
     
