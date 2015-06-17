@@ -29,6 +29,9 @@ class NewProjectViewController: UIViewController, MPGTextFieldDelegate {
     
     override func viewDidLoad() {
         self.navigationItem.prompt = "Input both fields and press Save to add new project"
+        
+        setNavUIToHackeratiColors()
+        
         setUpMPGTextFields()
         setUpNavButtons()
         parseDataForMPGTextFields(clientsArray!)
@@ -67,6 +70,7 @@ class NewProjectViewController: UIViewController, MPGTextFieldDelegate {
         
         var saveButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Save, target: self, action: "saveNewProject")
         navigationItem.rightBarButtonItem = saveButton;
+        saveButton.enabled = false
     }
     
     //MARK: MPGTextFieldDelegate Methods
@@ -79,7 +83,9 @@ class NewProjectViewController: UIViewController, MPGTextFieldDelegate {
     }
     
     func textFieldDidEndEditing(textField: MPGTextField_Swift, withSelection data: Dictionary<String, AnyObject>) {
-        println("Dictionary received = \(data)")
+        if (!self.clientMPGTextField.text.isEmpty && !self.projectMPGTextField.text.isEmpty) {
+            navigationItem.rightBarButtonItem?.enabled = true
+        }
     }
     
     func textFieldShouldSelect(textField: MPGTextField_Swift) -> Bool {

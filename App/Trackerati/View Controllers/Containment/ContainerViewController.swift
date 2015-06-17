@@ -54,6 +54,7 @@ class ContainerViewController : UIViewController, LoginScreenDelegate, MainViewC
         sideMenuViewController.didMoveToParentViewController(self)
         
         centerNavigationController = UINavigationController(rootViewController: centerViewController)
+
         view.addSubview(centerNavigationController.view)
         addChildViewController(centerNavigationController)
         centerNavigationController.didMoveToParentViewController(self)
@@ -296,11 +297,9 @@ class ContainerViewController : UIViewController, LoginScreenDelegate, MainViewC
     func didMakePageSelection(selection: SideMenuSelection)
     {
         if currentShowingPage != selection {
-//            let currentViewFrame = centerNavigationController.view.frame
             centerNavigationController.removeFromParentViewController()
             centerNavigationController.view.removeFromSuperview()
             centerNavigationController = nil
-//            centerNavigationController.popViewControllerAnimated(false)
             
             let targetViewController: MainViewController
             switch selection
@@ -324,12 +323,12 @@ class ContainerViewController : UIViewController, LoginScreenDelegate, MainViewC
             }
             
             targetViewController.delegate = self
-//            centerNavigationController.pushViewController(targetViewController, animated: false)
             centerViewController = targetViewController
             currentShowingPage = selection
             
             centerNavigationController = UINavigationController(rootViewController: centerViewController)
-//            centerNavigationController.view.frame = currentViewFrame
+
+
             view.addSubview(centerNavigationController.view)
             addChildViewController(centerNavigationController)
             centerNavigationController.didMoveToParentViewController(self)

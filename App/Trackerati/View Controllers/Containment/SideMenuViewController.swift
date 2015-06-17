@@ -53,7 +53,8 @@ class SideMenuViewController : UIViewController, UITableViewDelegate, UITableVie
         menuTableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: kCellReuseIdentifier)
         menuTableView.delegate = self
         menuTableView.dataSource = self
-        menuTableView.backgroundColor = UIColor(red:0.93, green:0.94, blue:0.95, alpha:0.7)
+//        menuTableView.backgroundColor = UIColor(red:0.93, green:0.94, blue:0.95, alpha:0.7)
+        menuTableView.backgroundColor = UIColor(rgba: kHackeratiBlue)
         menuTableView.separatorStyle = .None
         menuTableView.scrollEnabled = false
         menuTableView.tableHeaderView = customHeaderView()
