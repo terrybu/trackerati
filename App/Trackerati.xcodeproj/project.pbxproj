@@ -119,7 +119,7 @@
 		01EE0C501B0E301A00AA4C10 /* HockeySDK.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = HockeySDK.xcconfig; sourceTree = "<group>"; };
 		01EE0C511B0E301A00AA4C10 /* HockeySDKResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = HockeySDKResources.bundle; sourceTree = "<group>"; };
 		01EE0C551B0F7ADA00AA4C10 /* RecordFormViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecordFormViewController.swift; sourceTree = "<group>"; };
-		01EE0C581B0F865E00AA4C10 /* HistoryTableViewDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HistoryTableViewDataSource.swift; sourceTree = "<group>"; };
+		01EE0C581B0F865E00AA4C10 /* HistoryTableViewDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HistoryTableViewDataSource.swift; path = ../Models/Data/HistoryTableViewDataSource.swift; sourceTree = "<group>"; };
 		049E7FC2BC2B1D9187CEFDEC /* libPods-Trackerati.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Trackerati.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3587A3B08253D04AD27B6510 /* Pods-Trackerati.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Trackerati.release.xcconfig"; path = "../Pods/Target Support Files/Pods-Trackerati/Pods-Trackerati.release.xcconfig"; sourceTree = "<group>"; };
 		D94B66681B2F332600288B01 /* MPGTextField-Swift.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MPGTextField-Swift.swift"; sourceTree = "<group>"; };
@@ -255,6 +255,7 @@
 				D9E536171B2A2BB700A1400B /* NewProjectViewController.swift */,
 				D94B666D1B2F412E00288B01 /* NewProjectViewController.xib */,
 				0126AAB61B0E211500B3907E /* HistoryViewController.swift */,
+				01EE0C581B0F865E00AA4C10 /* HistoryTableViewDataSource.swift */,
 				0170E44B1B0526CD00D593C3 /* SettingsViewController.swift */,
 				01EE0C541B0F7AC400AA4C10 /* Detail */,
 				01EE0C491B0E2F2E00AA4C10 /* Login */,
@@ -294,7 +295,6 @@
 		0170E4421B02984200D593C3 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				01EE0C571B0F864A00AA4C10 /* Data */,
 				0170E4431B02985100D593C3 /* User.swift */,
 				0190BF311B0B899800E508CF /* Client.swift */,
 				0190BF351B0CD53700E508CF /* Record.swift */,
@@ -381,14 +381,6 @@
 				01EE0C551B0F7ADA00AA4C10 /* RecordFormViewController.swift */,
 			);
 			path = Detail;
-			sourceTree = "<group>";
-		};
-		01EE0C571B0F864A00AA4C10 /* Data */ = {
-			isa = PBXGroup;
-			children = (
-				01EE0C581B0F865E00AA4C10 /* HistoryTableViewDataSource.swift */,
-			);
-			path = Data;
 			sourceTree = "<group>";
 		};
 		3F88CD5D6D5D4B14DF4E0DA7 /* Pods */ = {
