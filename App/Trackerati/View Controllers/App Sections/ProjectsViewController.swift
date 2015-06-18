@@ -130,6 +130,16 @@ class ProjectsViewController : UIViewController, UITableViewDelegate, UITableVie
         return clientProjects[section].companyName
     }
     
+    func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        var header:UITableViewHeaderFooterView = view as! UITableViewHeaderFooterView
+        
+        view.tintColor = UIColor(rgba: "#F47C2E")
+        header.textLabel.textColor = UIColor.whiteColor()
+        header.textLabel.font = UIFont.boldSystemFontOfSize(25)
+        //        header.textLabel.frame = header.frame
+        //        header.textLabel.textAlignment = NSTextAlignment.Center
+    }
+    
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return clientProjects.count
     }

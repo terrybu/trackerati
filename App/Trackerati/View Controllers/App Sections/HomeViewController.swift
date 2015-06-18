@@ -101,13 +101,29 @@ class HomeViewController : MainViewController, UITableViewDelegate, UITableViewD
         return pinnedProjects[section].companyName
     }
     
+    func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        var header:UITableViewHeaderFooterView = view as! UITableViewHeaderFooterView
+        
+        view.tintColor = UIColor(rgba: "#2D2D2D")
+        header.textLabel.textColor = UIColor.whiteColor()
+        header.textLabel.font = UIFont.boldSystemFontOfSize(25)
+//        header.textLabel.frame = header.frame
+//        header.textLabel.textAlignment = NSTextAlignment.Center
+    }
+    
+    func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 45
+    }
+    
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return pinnedProjects.count
     }
     
+    
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return pinnedProjects[section].projects.count
     }
+    
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(kCellReuseIdentifier, forIndexPath: indexPath) as! UITableViewCell
