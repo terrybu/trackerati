@@ -37,7 +37,6 @@ class ContainerViewController : UIViewController, LoginScreenDelegate, MainViewC
         self.centerViewController.delegate = self
         self.sideMenuViewController = sideMenuViewController
         self.sideMenuViewController.delegate = self
-        
         setupNotifications()
     }
 
@@ -54,7 +53,8 @@ class ContainerViewController : UIViewController, LoginScreenDelegate, MainViewC
         sideMenuViewController.didMoveToParentViewController(self)
         
         centerNavigationController = UINavigationController(rootViewController: centerViewController)
-
+        centerViewController.setNavUIToHackeratiColors()
+        
         view.addSubview(centerNavigationController.view)
         addChildViewController(centerNavigationController)
         centerNavigationController.didMoveToParentViewController(self)
@@ -109,8 +109,9 @@ class ContainerViewController : UIViewController, LoginScreenDelegate, MainViewC
     private func animateToSideMenu(animateIn: Bool)
     {
         let targetTransform: CGAffineTransform
+        let newXPosition = centerViewController.view.frame.size.width - kMinimumSlideoutOffset
+
         if animateIn {
-            let newXPosition = centerViewController.view.frame.size.width - kMinimumSlideoutOffset
             targetTransform = CGAffineTransformMakeTranslation(newXPosition, 0.0)
         }
         else {
@@ -119,7 +120,6 @@ class ContainerViewController : UIViewController, LoginScreenDelegate, MainViewC
         
         UIView.animateWithDuration(0.3, delay: 0.0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.6, options: .CurveEaseInOut, animations: {
                 self.centerNavigationController.view.transform = targetTransform
-            
             }, completion: { finished in
                 self.tapToReturnGesture.enabled = animateIn
                 self.currentMenuState = animateIn ? .Showing : .NotShowing
@@ -207,6 +207,8 @@ class ContainerViewController : UIViewController, LoginScreenDelegate, MainViewC
         centerNavigationController = nil
         
         centerNavigationController = UINavigationController(rootViewController: centerViewController)
+        centerViewController.setNavUIToHackeratiColors()
+        
         view.addSubview(centerNavigationController.view)
         addChildViewController(centerNavigationController)
         centerNavigationController.didMoveToParentViewController(self)
@@ -219,7 +221,7 @@ class ContainerViewController : UIViewController, LoginScreenDelegate, MainViewC
         //TB: seems like animateToSideMenu is necessary to get rid of the "ghost view bug" that blocked didSelectRow from homeVC, removeSnapshot is not neccesary though?
         
         animateToSideMenu(false)
-//        removeSnapshotView()
+        removeSnapshotView()
     }
     
     // MARK: Gesture Recognizer Selectors
@@ -327,7 +329,7 @@ class ContainerViewController : UIViewController, LoginScreenDelegate, MainViewC
             currentShowingPage = selection
             
             centerNavigationController = UINavigationController(rootViewController: centerViewController)
-
+            centerViewController.setNavUIToHackeratiColors()
 
             view.addSubview(centerNavigationController.view)
             addChildViewController(centerNavigationController)
