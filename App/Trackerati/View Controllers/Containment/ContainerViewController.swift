@@ -30,6 +30,8 @@ class ContainerViewController : UIViewController, LoginScreenDelegate, MainViewC
     private weak var snapshotView: UIView?
     private var hideStatusBar = false
     
+    private var grayMask: UIView?
+    
     init(centerViewController: MainViewController, sideMenuViewController: SideMenuViewController)
     {
         super.init(nibName: nil, bundle: nil)
@@ -119,6 +121,12 @@ class ContainerViewController : UIViewController, LoginScreenDelegate, MainViewC
         }
         
         UIView.animateWithDuration(0.3, delay: 0.0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.6, options: .CurveEaseInOut, animations: {
+                if (animateIn) {
+                    self.grayMask = UIView(frame:self.centerNavigationController.view.frame)
+                    self.grayMask!.backgroundColor = UIColor.grayColor()
+                    self.grayMask!.alpha = 0.80
+                    self.centerNavigationController.view.addSubview(self.grayMask!)
+                }
                 self.centerNavigationController.view.transform = targetTransform
             }, completion: { finished in
                 self.tapToReturnGesture.enabled = animateIn
@@ -268,6 +276,7 @@ class ContainerViewController : UIViewController, LoginScreenDelegate, MainViewC
     {
         if self.currentMenuState == .Showing {
             animateToSideMenu(false)
+            grayMask?.removeFromSuperview()
             removeSnapshotView()
         }
     }
@@ -298,6 +307,7 @@ class ContainerViewController : UIViewController, LoginScreenDelegate, MainViewC
     
     func didMakePageSelection(selection: SideMenuSelection)
     {
+        grayMask?.removeFromSuperview()
         if currentShowingPage != selection {
             centerNavigationController.removeFromParentViewController()
             centerNavigationController.view.removeFromSuperview()
