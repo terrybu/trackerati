@@ -40,8 +40,6 @@ CGFloat buttonToScreenHeight;
         
         _menuTable = [[UITableView alloc]initWithFrame:CGRectMake(SCREEN_WIDTH/4, 0, 0.75*SCREEN_WIDTH,SCREEN_HEIGHT - (SCREEN_HEIGHT - CGRectGetMaxY(self.frame)) )];
         _menuTable.scrollEnabled = NO;
-        
-        
         _menuTable.tableHeaderView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH/2, CGRectGetHeight(frame))];
         
         _menuTable.delegate = self;
@@ -141,19 +139,29 @@ CGFloat buttonToScreenHeight;
     self.pressedImageView.transform = CGAffineTransformMakeRotation(M_PI);
     [UIView animateWithDuration:animationTime/2 animations:^
      {
-         self.normalImageView.transform = CGAffineTransformMakeRotation(-M_PI);
+//         self.normalImageView.transform = CGAffineTransformMakeRotation(M_PI);
+         self.normalImageView.transform = CGAffineTransformRotate(self.normalImageView.transform, M_PI);
          self.pressedImageView.transform = CGAffineTransformIdentity;
          self.pressedImageView.alpha = 1;
          
      }
                      completion:^(BOOL finished)
      {
+         self.normalImageView.transform = CGAffineTransformIdentity;
          [self.delegate floatingButtonWasPressed];
      }];
 }
 
-
-
+- (void)rotateSpinningView: (UIView*) spiningView
+{
+    [UIView animateWithDuration:1.5 delay:0 options:UIViewAnimationOptionCurveLinear animations:^{
+        [spiningView setTransform:CGAffineTransformRotate(spiningView.transform, M_PI_2)];
+    } completion:^(BOOL finished) {
+        if (finished && !CGAffineTransformEqualToTransform(spiningView.transform, CGAffineTransformIdentity)) {
+            [self rotateSpinningView:spiningView];
+        }
+    }];
+}
 
 #pragma mark -- Animations
 #pragma mark ---- button tap Animations
@@ -170,7 +178,6 @@ CGFloat buttonToScreenHeight;
         
          self.normalImageView.transform = CGAffineTransformMakeRotation(-M_PI);
          self.normalImageView.alpha = 0.0; //0.7
-
          
          self.pressedImageView.transform = CGAffineTransformIdentity;
          self.pressedImageView.alpha = 1;

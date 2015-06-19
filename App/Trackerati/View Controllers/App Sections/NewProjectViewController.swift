@@ -19,7 +19,7 @@ class NewProjectViewController: UIViewController, MPGTextFieldDelegate {
     init()
     {
         super.init(nibName: "NewProjectViewController", bundle: nil)
-        self.title = "Add New Project"
+        self.title = "Create New Project"
     }
 
     required init(coder aDecoder: NSCoder) {
@@ -28,7 +28,7 @@ class NewProjectViewController: UIViewController, MPGTextFieldDelegate {
     
     
     override func viewDidLoad() {
-        self.navigationItem.prompt = "Input both fields and press Save to add new project"
+        self.navigationItem.prompt = "Input both fields and press Save to create new project"
         
         setNavUIToHackeratiColors()
         
@@ -106,7 +106,7 @@ class NewProjectViewController: UIViewController, MPGTextFieldDelegate {
     }
     
     func textFieldDidEndEditing(textField: MPGTextField_Swift, withSelection data: Dictionary<String, AnyObject>) {
-        println(data)
+//        println(data)
     }
     
     func textFieldShouldSelect(textField: MPGTextField_Swift) -> Bool {

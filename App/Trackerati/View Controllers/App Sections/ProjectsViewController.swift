@@ -6,7 +6,7 @@
 //  Copyright (c) 2015 The Hackerati. All rights reserved.
 //
 
-class ProjectsViewController : UIViewController, UITableViewDelegate, UITableViewDataSource, floatMenuDelegate
+class ProjectsViewController : UIViewController, UITableViewDelegate, UITableViewDataSource
 {
     private let kViewControllerTitle = "Projects"
     private let kCellReuseIdentifier = "cell"
@@ -42,13 +42,14 @@ class ProjectsViewController : UIViewController, UITableViewDelegate, UITableVie
 
         view = UIView(frame: UIScreen.mainScreen().bounds)
         
-        var backHomeButton = UIBarButtonItem(title: "Home", style: UIBarButtonItemStyle.Plain, target: self, action: "closeViewController");
+        var backHomeButton = UIBarButtonItem(title: "Home", style: UIBarButtonItemStyle.Plain, target: self, action: "closeViewController")
         navigationItem.leftBarButtonItem = backHomeButton;
         
+        var plusButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Add, target: self, action: "openNewProjectViewController")
+        navigationItem.rightBarButtonItem = plusButton;
+        
         setNavUIToHackeratiColors()
-
         setupTableView()
-        setupFloatingActionButtonWithPlus()
     }
     
     
@@ -61,14 +62,6 @@ class ProjectsViewController : UIViewController, UITableViewDelegate, UITableVie
         projectsTableView.dataSource = self
         view.addSubview(projectsTableView)
         self.projectsTableView = projectsTableView
-    }
-    
-    private func setupFloatingActionButtonWithPlus() {
-        let floatFrame = CGRectMake(UIScreen.mainScreen().bounds.size.width-44-22, UIScreen.mainScreen().bounds.size.height-44-22, 40, 44)
-        var floatingButton = VCFloatingActionButton(frame: floatFrame, normalImage: UIImage(named: "plus"), andPressedImage: UIImage(named:"plus"), withScrollview: projectsTableView)
-        floatingButton.delegate = self;
-        floatingButton.hideWhileScrolling = true;
-        self.view.addSubview(floatingButton);
     }
     
     @objc
@@ -133,7 +126,7 @@ class ProjectsViewController : UIViewController, UITableViewDelegate, UITableVie
     func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         var header:UITableViewHeaderFooterView = view as! UITableViewHeaderFooterView
         
-        view.tintColor = UIColor(rgba: "#F47C2E")
+        view.tintColor = UIColor(rgba: "#2D2D2D")
         header.textLabel.textColor = UIColor.whiteColor()
         header.textLabel.font = UIFont.boldSystemFontOfSize(25)
         //        header.textLabel.frame = header.frame
@@ -165,9 +158,10 @@ class ProjectsViewController : UIViewController, UITableViewDelegate, UITableVie
         return cell
     }
     
-    // MARK: FloatButton Delegate
+    // MARK: Nav Button Selectors
     
-    func floatingButtonWasPressed() {
+    @objc
+    private func openNewProjectViewController() {
         let newProjectVC = NewProjectViewController()
         let navCtrl = UINavigationController(rootViewController: newProjectVC)
         newProjectVC.onDismiss = {
@@ -176,8 +170,6 @@ class ProjectsViewController : UIViewController, UITableViewDelegate, UITableVie
         }
         presentViewController(navCtrl, animated: true, completion: nil);
     }
-    
-    // MARK: UIBarButtonItem Selectors
     
     @objc
     private func closeViewController()
