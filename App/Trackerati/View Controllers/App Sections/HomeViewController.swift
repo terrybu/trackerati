@@ -6,7 +6,7 @@
 //  Copyright (c) 2015 The Hackerati. All rights reserved.
 //
 
-class HomeViewController : MainViewController, UITableViewDelegate, UITableViewDataSource
+class HomeViewController : MainViewController, UITableViewDelegate, UITableViewDataSource, floatMenuDelegate
 {
     private let kCellReuseIdentifier = "cell"
     
@@ -33,15 +33,24 @@ class HomeViewController : MainViewController, UITableViewDelegate, UITableViewD
         self.navigationItem.prompt = "Tap on project name to record your hours"
         setNavUIToHackeratiColors()
 
-        let addProjectButton = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: "displayProjects")
-        navigationItem.rightBarButtonItem = addProjectButton
+//        let addProjectButton = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: "displayProjects")
+//        navigationItem.rightBarButtonItem = addProjectButton
         
         setupTableView()
+        setupFloatingActionButtonWithPinImage()
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(true)
         pinnedProjectsTableView.reloadData()
+    }
+
+    private func setupFloatingActionButtonWithPinImage() {
+        let floatFrame = CGRectMake(UIScreen.mainScreen().bounds.size.width-44-22, UIScreen.mainScreen().bounds.size.height-44-22, 40, 44)
+        var floatingButton = VCFloatingActionButton(frame: floatFrame, normalImage: UIImage(named: "plus"), andPressedImage: UIImage(named:"plus"), withScrollview: pinnedProjectsTableView)
+        floatingButton.delegate = self;
+        floatingButton.hideWhileScrolling = true;
+        self.view.addSubview(floatingButton);
     }
     
     private func setupTableView()
@@ -63,7 +72,6 @@ class HomeViewController : MainViewController, UITableViewDelegate, UITableViewD
         let projectsViewController = ProjectsViewController(projects: FirebaseManager.sharedManager.allClientProjects)
         let navController = UINavigationController(rootViewController: projectsViewController)
         presentViewController(navController, animated: true, completion: nil)
-//        self.navigationController?.pushViewController(projectsViewController, animated: true);
     }
     
     @objc
@@ -101,13 +109,29 @@ class HomeViewController : MainViewController, UITableViewDelegate, UITableViewD
         return pinnedProjects[section].companyName
     }
     
+    func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        var header:UITableViewHeaderFooterView = view as! UITableViewHeaderFooterView
+        
+        view.tintColor = UIColor(rgba: "#2D2D2D")
+        header.textLabel.textColor = UIColor.whiteColor()
+        header.textLabel.font = UIFont.boldSystemFontOfSize(25)
+//        header.textLabel.frame = header.frame
+//        header.textLabel.textAlignment = NSTextAlignment.Center
+    }
+    
+    func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 45
+    }
+    
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return pinnedProjects.count
     }
     
+    
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return pinnedProjects[section].projects.count
     }
+    
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(kCellReuseIdentifier, forIndexPath: indexPath) as! UITableViewCell
@@ -118,6 +142,12 @@ class HomeViewController : MainViewController, UITableViewDelegate, UITableViewD
 //        plusButton.addTarget(self, action: "presentNewRecordFormVC:", forControlEvents: UIControlEvents.TouchUpInside)
         cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
         return cell
+    }
+    
+    // MARK: FloatButton Delegate
+    
+    func floatingButtonWasPressed() {
+        displayProjects()
     }
     
 }
