@@ -54,6 +54,8 @@
 		BFC762EDEA775168E0305151 /* libPods-Trackerati.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 049E7FC2BC2B1D9187CEFDEC /* libPods-Trackerati.a */; };
 		D94B66691B2F332600288B01 /* MPGTextField-Swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = D94B66681B2F332600288B01 /* MPGTextField-Swift.swift */; };
 		D94B666F1B2F412E00288B01 /* NewProjectViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D94B666D1B2F412E00288B01 /* NewProjectViewController.xib */; };
+		D96980741B38480300889EAB /* floatTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D96980721B38480300889EAB /* floatTableViewCell.m */; };
+		D96980751B38480300889EAB /* floatTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D96980731B38480300889EAB /* floatTableViewCell.xib */; };
 		D9D2A4821B31C388005DDA70 /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9D2A4811B31C388005DDA70 /* UIColorExtension.swift */; };
 		D9D2A4861B31CF95005DDA70 /* UIViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9D2A4851B31CF95005DDA70 /* UIViewControllerExtension.swift */; };
 		D9E536161B2A1FE100A1400B /* VCFloatingActionButton.m in Sources */ = {isa = PBXBuildFile; fileRef = D9E536131B2A1FE100A1400B /* VCFloatingActionButton.m */; };
@@ -124,6 +126,9 @@
 		3587A3B08253D04AD27B6510 /* Pods-Trackerati.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Trackerati.release.xcconfig"; path = "../Pods/Target Support Files/Pods-Trackerati/Pods-Trackerati.release.xcconfig"; sourceTree = "<group>"; };
 		D94B66681B2F332600288B01 /* MPGTextField-Swift.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MPGTextField-Swift.swift"; sourceTree = "<group>"; };
 		D94B666D1B2F412E00288B01 /* NewProjectViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NewProjectViewController.xib; sourceTree = "<group>"; };
+		D96980711B38480300889EAB /* floatTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = floatTableViewCell.h; sourceTree = "<group>"; };
+		D96980721B38480300889EAB /* floatTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = floatTableViewCell.m; sourceTree = "<group>"; };
+		D96980731B38480300889EAB /* floatTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = floatTableViewCell.xib; sourceTree = "<group>"; };
 		D9D2A4811B31C388005DDA70 /* UIColorExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColorExtension.swift; sourceTree = "<group>"; };
 		D9D2A4851B31CF95005DDA70 /* UIViewControllerExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewControllerExtension.swift; sourceTree = "<group>"; };
 		D9E536121B2A1FE100A1400B /* VCFloatingActionButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCFloatingActionButton.h; sourceTree = "<group>"; };
@@ -427,6 +432,9 @@
 		D9E5360E1B2A1FE100A1400B /* VCFloatingActionButton */ = {
 			isa = PBXGroup;
 			children = (
+				D96980711B38480300889EAB /* floatTableViewCell.h */,
+				D96980721B38480300889EAB /* floatTableViewCell.m */,
+				D96980731B38480300889EAB /* floatTableViewCell.xib */,
 				D9E536121B2A1FE100A1400B /* VCFloatingActionButton.h */,
 				D9E536131B2A1FE100A1400B /* VCFloatingActionButton.m */,
 			);
@@ -519,6 +527,7 @@
 				D94B666F1B2F412E00288B01 /* NewProjectViewController.xib in Resources */,
 				01EE0C521B0E301A00AA4C10 /* HockeySDK.xcconfig in Resources */,
 				01498B211B01027E00C7C395 /* Images.xcassets in Resources */,
+				D96980751B38480300889EAB /* floatTableViewCell.xib in Resources */,
 				01EE0C531B0E301A00AA4C10 /* HockeySDKResources.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -578,6 +587,7 @@
 				01498B1A1B01027E00C7C395 /* AppDelegate.swift in Sources */,
 				0170E44C1B0526CD00D593C3 /* SettingsViewController.swift in Sources */,
 				0170E44A1B04EDE800D593C3 /* ContainerViewController.swift in Sources */,
+				D96980741B38480300889EAB /* floatTableViewCell.m in Sources */,
 				0170E43E1B026D8000D593C3 /* FirebaseManager.swift in Sources */,
 				0190BF361B0CD53700E508CF /* Record.swift in Sources */,
 				013C5A131B012E06002C4020 /* GoogleLoginManager.swift in Sources */,

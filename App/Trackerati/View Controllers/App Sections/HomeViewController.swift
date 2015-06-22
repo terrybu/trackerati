@@ -47,7 +47,11 @@ class HomeViewController : MainViewController, UITableViewDelegate, UITableViewD
 
     private func setupFloatingActionButtonWithPinImage() {
         let floatFrame = CGRectMake(UIScreen.mainScreen().bounds.size.width-44-22, UIScreen.mainScreen().bounds.size.height-44-22, 40, 44)
-        var floatingButton = VCFloatingActionButton(frame: floatFrame, normalImage: UIImage(named: "plus"), andPressedImage: UIImage(named:"plus"), withScrollview: pinnedProjectsTableView)
+        var floatingButton = VCFloatingActionButton(frame: floatFrame, normalImage: UIImage(named: "plus"), andPressedImage: UIImage(named:"cross"), withScrollview: pinnedProjectsTableView)
+        
+        floatingButton.imageArray = ["floatingBluePlusCircle", "floatingBluePlusCircle", "floatingBluePlusCircle", "floatingPinCircle" ]
+        floatingButton.labelArray = ["Hackerati-Internal", "Carforo-MVP", "BAM-X-MVP", "Pin New Project"]
+        
         floatingButton.delegate = self;
         floatingButton.hideWhileScrolling = true;
         self.view.addSubview(floatingButton);
@@ -147,7 +151,11 @@ class HomeViewController : MainViewController, UITableViewDelegate, UITableViewD
     // MARK: FloatButton Delegate
     
     func floatingButtonWasPressed() {
-        displayProjects()
+//        displayProjects()
+    }
+    
+    func didSelectMenuOptionAtIndex(row: Int) {
+        println("row at index \(row) was pressed")
     }
     
 }
