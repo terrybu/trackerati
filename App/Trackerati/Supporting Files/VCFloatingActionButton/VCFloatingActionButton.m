@@ -39,7 +39,7 @@ CGFloat buttonToScreenHeight;
         
         buttonToScreenHeight = SCREEN_HEIGHT - CGRectGetMaxY(self.frame);
         
-        _menuTable = [[UITableView alloc]initWithFrame:CGRectMake(SCREEN_WIDTH/4, 0, 0.75*SCREEN_WIDTH,SCREEN_HEIGHT - (SCREEN_HEIGHT - CGRectGetMaxY(self.frame)) )];
+        _menuTable = [[UITableView alloc]initWithFrame:CGRectMake(SCREEN_WIDTH/18, 0, 0.95 * SCREEN_WIDTH,SCREEN_HEIGHT - (SCREEN_HEIGHT - CGRectGetMaxY(self.frame)) )];
         _menuTable.scrollEnabled = NO;
         
         

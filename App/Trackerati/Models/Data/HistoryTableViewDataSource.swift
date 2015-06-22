@@ -21,7 +21,7 @@ class HistoryTableViewDataSource : NSObject, UITableViewDataSource
         self.tableView = tableView
         self.tableView.registerClass(HistoryTableViewCell.self, forCellReuseIdentifier: kCellReuseIdentifier)
         
-        userHistory = FirebaseManager.sharedManager.userRecordsSortedByDate()
+        userHistory = FirebaseManager.sharedManager.userRecordsSortedByDateInTuples!
     }
     
     func recordForIndexPath(indexPath: NSIndexPath) -> Record

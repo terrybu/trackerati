@@ -63,12 +63,14 @@ class HomeViewController : MainViewController, UITableViewDelegate, UITableViewD
         var floatingButton = VCFloatingActionButton(frame: floatFrame, normalImage: UIImage(named: "plus"), andPressedImage: UIImage(named:"cross"), withScrollview: pinnedProjectsTableView)
         
         floatingButton.imageArray = ["floatingBluePlusCircle", "floatingBluePlusCircle", "floatingBluePlusCircle", "floatingPinCircle" ]
-        floatingButton.labelArray = ["Hackerati-Internal", "Carforo-MVP", "BAM-X-MVP", "Pin New Project"]
         
-        floatingButton.delegate = self;
-        floatingButton.hideWhileScrolling = true;
-        self.view.addSubview(floatingButton);
+        floatingButton.labelArray = FirebaseManager.sharedManager.returnThreeLatestUniqueProjectNamesFromUserRecords()
+        
+        floatingButton.delegate = self
+        floatingButton.hideWhileScrolling = true
+        self.view.addSubview(floatingButton)
     }
+
     
     private func setupTableView()
     {
@@ -171,8 +173,9 @@ class HomeViewController : MainViewController, UITableViewDelegate, UITableViewD
         }
         else {
             audioPlayer = AVAudioPlayer(contentsOfURL: dingSound, error: nil)
+            audioPlayer.play()
         }
-        audioPlayer.play()
+//        audioPlayer.play()
         println("row at index \(row) was pressed")
         
         switch (row) {

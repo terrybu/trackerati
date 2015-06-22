@@ -40,6 +40,7 @@ class FirebaseManager : NSObject
     
     var allClientProjects: [Client]?
     var allUserRecords: [Record]?
+    var userRecordsSortedByDateInTuples: [(String, [Record])]?
     var pinnedProjects: [Client]?
     
     func configureWithDatabaseURL(url: String)
@@ -81,7 +82,6 @@ class FirebaseManager : NSObject
     */
     func getAllDataOfType(type: DataInfoType, completion: (() -> Void)?)
     {
-        
         self.firebaseDB.observeSingleEventOfType(.Value, withBlock: { snapshot in
             var notificationName = ""
             
@@ -93,6 +93,7 @@ class FirebaseManager : NSObject
             case .User:
                 notificationName = kUserInfoDownloadedNotificationName
                 self.allUserRecords = self.getRecordsForUser(snapshot.value, name: GoogleLoginManager.sharedManager.currentUser.firebaseID)
+                self.userRecordsSortedByDateInTuples = self.userRecordsSortedByDate()
                 self.pinnedProjects = self.pinnedProjectsForLoggedInUser()
             }
             
@@ -232,10 +233,10 @@ class FirebaseManager : NSObject
         }
     }
     
-    // MARK: Projects Saving & Deleting
+    // MARK: Projects Saving & Deleting & Filtering
     
     func validateProjectNameBeforeSendingToFirebase(clientString: String, projectString: String) -> Bool {
-        //TODO: need lowercase/uppercase check ex) to prevenet "hackerati" vs "Hackerati"
+        //TODO: Extra validation if we want to --> lowercase/uppercase check ex) prevent "hackerati" vs "Hackerati"
         return true
     }
     
@@ -274,8 +275,27 @@ class FirebaseManager : NSObject
             })
         }
     }
-
-
+    
+    func returnThreeLatestUniqueProjectNamesFromUserRecords() -> [String] {
+        
+        var threeUniqueProjectsSet = NSMutableOrderedSet()
+        
+        for i in 0..<self.userRecordsSortedByDateInTuples!.count {
+            var currentTuple = self.userRecordsSortedByDateInTuples![i]
+            //iterate over every single project in the project array
+            for record:Record in currentTuple.1 {
+                threeUniqueProjectsSet.addObject("\(record.client): \(record.project)")
+            }
+            if threeUniqueProjectsSet.count >= 3 {
+                break
+            }
+        }
+        
+        threeUniqueProjectsSet.addObject("Pin New Project")
+        let threeUniqueProjectsArrayWithPinProjectString = threeUniqueProjectsSet.array as! [String]
+        
+        return threeUniqueProjectsArrayWithPinProjectString
+    }
     
     
     // MARK: Private
