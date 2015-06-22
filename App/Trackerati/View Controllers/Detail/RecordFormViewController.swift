@@ -126,7 +126,7 @@ class RecordFormViewController : UIViewController, UITableViewDelegate, UITableV
             if error == nil {
                 FirebaseManager.sharedManager.getAllDataOfType(.User, completion: {
                     
-                    MBProgressHUD.showCompletionHUD(onView: self.view, duration: 2.0, completion: {
+                    MBProgressHUD.showCompletionHUD(onView: self.view, duration: 2.0, customDoneText: "Completed!", completion: {
                         if let containerVC = UIApplication.sharedApplication().keyWindow?.rootViewController as? ContainerViewController
                         {
                             containerVC.centerNavigationController.dismissViewControllerAnimated(true, completion: nil);

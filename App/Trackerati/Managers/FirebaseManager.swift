@@ -236,7 +236,7 @@ class FirebaseManager : NSObject
     }
     
 
-    func saveSelectedDefaultRecord(pastRecord: Record) {
+    func saveSelectedDefaultRecord(pastRecord: Record, completion:((error: NSError!) -> Void)?) {
         
         var newRecord = Record(client: pastRecord.client, project: pastRecord.project)
         newRecord.hours = pastRecord.hours
@@ -256,6 +256,9 @@ class FirebaseManager : NSObject
             else {
                 self.getAllDataOfType(DataInfoType.User, completion: { () -> Void in
                     println("getting all records completed after defaults action from float buton")
+                    if let closure = completion {
+                        closure(error: error)
+                    }
                 })
             }
         })

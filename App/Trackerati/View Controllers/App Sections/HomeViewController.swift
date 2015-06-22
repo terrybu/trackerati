@@ -44,7 +44,7 @@ class HomeViewController : MainViewController, UITableViewDelegate, UITableViewD
         audioPlayer = AVAudioPlayer(contentsOfURL: dingSound, error: nil)
         audioPlayer.prepareToPlay()
         
-        self.navigationItem.prompt = "Tap on project name to record your hours"
+        self.navigationItem.prompt = "Tap pinned project or use plus button to record hours"
         setNavUIToHackeratiColors()
         
         setupTableView()
@@ -185,13 +185,21 @@ class HomeViewController : MainViewController, UITableViewDelegate, UITableViewD
     func didSelectMenuOptionAtIndex(row: Int) {
         if (row == FloatingButtonCellIndex.PinNewprojectButton.rawValue) {
             displayProjects()
-            audioPlayer = AVAudioPlayer(contentsOfURL: tapSound, error: nil)
+//            audioPlayer = AVAudioPlayer(contentsOfURL: tapSound, error: nil)
             //Not sure if I like this particular sound - couldn't find a good sound for it
         }
         else {
-            audioPlayer = AVAudioPlayer(contentsOfURL: dingSound, error: nil)
-            audioPlayer.play()
-            FirebaseManager.sharedManager.saveSelectedDefaultRecord(tuplesForFloatingDefaultsLabelsArray![row].1)
+            self.audioPlayer = AVAudioPlayer(contentsOfURL: self.dingSound, error: nil)
+            self.audioPlayer.play()
+            let hud = MBProgressHUD.showHUDAddedTo(view, animated: true)
+            let displayName = tuplesForFloatingDefaultsLabelsArray![row].0
+            hud.labelText = "Logging \(displayName)"
+            
+            FirebaseManager.sharedManager.saveSelectedDefaultRecord(tuplesForFloatingDefaultsLabelsArray![row].1, completion: { (error) -> Void in
+                if (error == nil) {
+                    MBProgressHUD.showCompletionHUD(onView: self.view, duration: 2, customDoneText: "\(displayName) logged!", completion: nil)
+                }
+            })
         }
 //        audioPlayer.play()
     }

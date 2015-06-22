@@ -155,7 +155,7 @@ class NewProjectViewController: UIViewController, MPGTextFieldDelegate {
                 hud.hide(true)
             }
             else {
-                MBProgressHUD.showCompletionHUD(onView: self.view, duration: 1.5, completion: {
+                MBProgressHUD.showCompletionHUD(onView: self.view, duration: 1.5, customDoneText: "New Project Save Complete!" ,completion: {
                     self.closeViewController()
                 })
             }
