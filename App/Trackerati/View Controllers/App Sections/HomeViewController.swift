@@ -8,6 +8,10 @@
 
 import AVFoundation
 
+enum FloatingButtonLocation: Int {
+    case FirstButtonFromBottom = 0, SecondButtonFromBottom, ThirdButtonFromBottom, PinNewprojectButton
+}
+
 class HomeViewController : MainViewController, UITableViewDelegate, UITableViewDataSource, floatMenuDelegate
 {
     
@@ -149,7 +153,9 @@ class HomeViewController : MainViewController, UITableViewDelegate, UITableViewD
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(kCellReuseIdentifier, forIndexPath: indexPath) as! UITableViewCell
         cell.textLabel?.text = pinnedProjects[indexPath.section].projects[indexPath.row].name
-        //Do we want to standardize as plus button like Android?
+        
+        //TODO: Standardize black arrow or plus button for cell click?
+        //Do we want to standardize as plus button like Android? instead of Apple stock DisclosureIndicator > arrow?
 //        var plusButton: UIButton  = UIButton.buttonWithType(UIButtonType.ContactAdd) as! UIButton
 //        plusButton.tag = indexPath.row
 //        plusButton.addTarget(self, action: "presentNewRecordFormVC:", forControlEvents: UIControlEvents.TouchUpInside)
@@ -160,16 +166,28 @@ class HomeViewController : MainViewController, UITableViewDelegate, UITableViewD
     // MARK: FloatButton Delegate
     
     func didSelectMenuOptionAtIndex(row: Int) {
-        if (row == 3) {
+        if (row == FloatingButtonLocation.PinNewprojectButton.rawValue) {
             audioPlayer = AVAudioPlayer(contentsOfURL: tapSound, error: nil)
         }
         else {
             audioPlayer = AVAudioPlayer(contentsOfURL: dingSound, error: nil)
         }
-        
         audioPlayer.play()
-
         println("row at index \(row) was pressed")
+        
+        switch (row) {
+            case FloatingButtonLocation.FirstButtonFromBottom.rawValue:
+                break
+            case FloatingButtonLocation.SecondButtonFromBottom.rawValue:
+                break
+            case FloatingButtonLocation.ThirdButtonFromBottom.rawValue:
+                break
+            case FloatingButtonLocation.PinNewprojectButton.rawValue:
+                displayProjects()
+                break
+            default:
+                break
+        }
     }
     
 }
