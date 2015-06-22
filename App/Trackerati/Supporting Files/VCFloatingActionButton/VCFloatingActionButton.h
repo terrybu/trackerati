@@ -10,8 +10,6 @@
 
 @protocol floatMenuDelegate <NSObject>
 
--(void) floatingButtonWasPressed;
-
 @optional
 -(void) didSelectMenuOptionAtIndex:(NSInteger)row;
 

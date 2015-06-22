@@ -20,8 +20,7 @@ class HistoryTableViewDataSource : NSObject, UITableViewDataSource
         super.init()
         self.tableView = tableView
         self.tableView.registerClass(HistoryTableViewCell.self, forCellReuseIdentifier: kCellReuseIdentifier)
-        
-        userHistory = FirebaseManager.sharedManager.userRecordsSortedByDate()
+        userHistory = FirebaseManager.sharedManager.userRecordsSortedByDateInTuples!
     }
     
     func recordForIndexPath(indexPath: NSIndexPath) -> Record
@@ -44,6 +43,10 @@ class HistoryTableViewDataSource : NSObject, UITableViewDataSource
     func deleteRecordFirebaseDataSourceAndViewAtIndexPath(indexPath: NSIndexPath) {
         var deleteThisRecord = recordForIndexPath(indexPath) //point to it before you lose it in userHistory
         FirebaseManager.sharedManager.deleteRecord(deleteThisRecord, completion: { (error) -> Void in
+            FirebaseManager.sharedManager.userRecordsSortedByDateInTuples![indexPath.section].1.removeAtIndex(indexPath.row)
+            if (FirebaseManager.sharedManager.userRecordsSortedByDateInTuples![indexPath.section].1.isEmpty) {
+                FirebaseManager.sharedManager.userRecordsSortedByDateInTuples!.removeAtIndex(indexPath.section)
+            }
             self.userHistory[indexPath.section].1.removeAtIndex(indexPath.row)
             if (self.userHistory[indexPath.section].1.isEmpty) {
                 self.userHistory.removeAtIndex(indexPath.section);
@@ -53,7 +56,6 @@ class HistoryTableViewDataSource : NSObject, UITableViewDataSource
                 self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
             }
         })
-
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {

@@ -6,8 +6,20 @@
 //  Copyright (c) 2015 The Hackerati. All rights reserved.
 //
 
+import AVFoundation
+
+enum FloatingButtonCellIndex: Int {
+    case FirstButtonFromBottom = 0, SecondButtonFromBottom, ThirdButtonFromBottom, PinNewprojectButton
+}
+
 class HomeViewController : MainViewController, UITableViewDelegate, UITableViewDataSource, floatMenuDelegate
 {
+    var tapSound = NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("tap-professional", ofType: "aif")!)
+    var dingSound = NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("Ding", ofType: "wav")!)
+    var audioPlayer = AVAudioPlayer()
+    var floatingActionButton: VCFloatingActionButton?
+    var tuplesForFloatingDefaultsLabelsArray: [(String, Record)]?
+    
     private let kCellReuseIdentifier = "cell"
     
     private weak var pinnedProjectsTableView: UITableView!
@@ -29,29 +41,51 @@ class HomeViewController : MainViewController, UITableViewDelegate, UITableViewD
     
     override func loadView() {
         super.loadView()
+        audioPlayer = AVAudioPlayer(contentsOfURL: dingSound, error: nil)
+        audioPlayer.prepareToPlay()
         
         self.navigationItem.prompt = "Tap on project name to record your hours"
         setNavUIToHackeratiColors()
-
-//        let addProjectButton = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: "displayProjects")
-//        navigationItem.rightBarButtonItem = addProjectButton
         
         setupTableView()
         setupFloatingActionButtonWithPinImage()
+        refreshFloatingDefaultsLabelsFromUserRecords()
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "userRecordsRedownloaded", name: kUserInfoDownloadedNotificationName, object: nil)
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(true)
         pinnedProjectsTableView.reloadData()
+        refreshFloatingDefaultsLabelsFromUserRecords()
+    }
+    
+    @objc
+    private func userRecordsRedownloaded() {
+        refreshFloatingDefaultsLabelsFromUserRecords()
     }
 
     private func setupFloatingActionButtonWithPinImage() {
         let floatFrame = CGRectMake(UIScreen.mainScreen().bounds.size.width-44-22, UIScreen.mainScreen().bounds.size.height-44-22, 40, 44)
-        var floatingButton = VCFloatingActionButton(frame: floatFrame, normalImage: UIImage(named: "plus"), andPressedImage: UIImage(named:"plus"), withScrollview: pinnedProjectsTableView)
-        floatingButton.delegate = self;
-        floatingButton.hideWhileScrolling = true;
-        self.view.addSubview(floatingButton);
+        floatingActionButton = VCFloatingActionButton(frame: floatFrame, normalImage: UIImage(named: "plus"), andPressedImage: UIImage(named:"cross"), withScrollview: pinnedProjectsTableView)
+        
+        floatingActionButton!.imageArray = ["floatingBluePlusCircle", "floatingBluePlusCircle", "floatingBluePlusCircle", "floatingPinCircle" ]
+        
+        floatingActionButton!.delegate = self
+        floatingActionButton!.hideWhileScrolling = true
+        self.view.addSubview(floatingActionButton!)
     }
+    
+    private func refreshFloatingDefaultsLabelsFromUserRecords() {
+        tuplesForFloatingDefaultsLabelsArray = FirebaseManager.sharedManager.returnThreeLatestUniqueClientProjectsFromUserRecords()
+        floatingActionButton!.labelArray = [
+            tuplesForFloatingDefaultsLabelsArray![FloatingButtonCellIndex.FirstButtonFromBottom.rawValue].0,
+            tuplesForFloatingDefaultsLabelsArray![FloatingButtonCellIndex.SecondButtonFromBottom.rawValue].0,
+            tuplesForFloatingDefaultsLabelsArray![FloatingButtonCellIndex.ThirdButtonFromBottom.rawValue].0,
+            "Pin or Remove Projects"
+        ]
+    }
+
     
     private func setupTableView()
     {
@@ -136,7 +170,9 @@ class HomeViewController : MainViewController, UITableViewDelegate, UITableViewD
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(kCellReuseIdentifier, forIndexPath: indexPath) as! UITableViewCell
         cell.textLabel?.text = pinnedProjects[indexPath.section].projects[indexPath.row].name
-        //Do we want to standardize as plus button like Android?
+        
+        //TODO: Standardize black arrow or plus button for cell click?
+        //Do we want to standardize as plus button like Android? instead of Apple stock DisclosureIndicator > arrow?
 //        var plusButton: UIButton  = UIButton.buttonWithType(UIButtonType.ContactAdd) as! UIButton
 //        plusButton.tag = indexPath.row
 //        plusButton.addTarget(self, action: "presentNewRecordFormVC:", forControlEvents: UIControlEvents.TouchUpInside)
@@ -144,10 +180,22 @@ class HomeViewController : MainViewController, UITableViewDelegate, UITableViewD
         return cell
     }
     
-    // MARK: FloatButton Delegate
+    // MARK: Floating Action Button Delegate
     
-    func floatingButtonWasPressed() {
-        displayProjects()
+    func didSelectMenuOptionAtIndex(row: Int) {
+        if (row == FloatingButtonCellIndex.PinNewprojectButton.rawValue) {
+            displayProjects()
+            audioPlayer = AVAudioPlayer(contentsOfURL: tapSound, error: nil)
+            //Not sure if I like this particular sound - couldn't find a good sound for it
+        }
+        else {
+            audioPlayer = AVAudioPlayer(contentsOfURL: dingSound, error: nil)
+            audioPlayer.play()
+            FirebaseManager.sharedManager.saveSelectedDefaultRecord(tuplesForFloatingDefaultsLabelsArray![row].1)
+        }
+//        audioPlayer.play()
     }
+
+    
     
 }

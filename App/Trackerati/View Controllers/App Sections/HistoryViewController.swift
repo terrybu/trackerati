@@ -23,9 +23,18 @@ class HistoryViewController : MainViewController, UITableViewDelegate, HistoryTa
         historyTableView.dataSource = historyTableViewDataSource
         view.addSubview(historyTableView)
         self.historyTableView = historyTableView
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "userRecordsRedownloaded", name: kUserInfoDownloadedNotificationName, object: nil)
     }
     
+    
     // MARK: Private
+    @objc
+    private func userRecordsRedownloaded() {
+        historyTableViewDataSource = HistoryTableViewDataSource(tableView: historyTableView)
+        self.historyTableView.reloadData()
+    }
+    
     
     private func displayFormForRecordAtIndexPath(indexPath: NSIndexPath, editing: Bool)
     {
