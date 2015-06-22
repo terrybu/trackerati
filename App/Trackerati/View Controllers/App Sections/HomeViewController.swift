@@ -8,16 +8,17 @@
 
 import AVFoundation
 
-enum FloatingButtonLocation: Int {
+enum FloatingButtonCellIndex: Int {
     case FirstButtonFromBottom = 0, SecondButtonFromBottom, ThirdButtonFromBottom, PinNewprojectButton
 }
 
 class HomeViewController : MainViewController, UITableViewDelegate, UITableViewDataSource, floatMenuDelegate
 {
-    
     var tapSound = NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("tap-professional", ofType: "aif")!)
     var dingSound = NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("Ding", ofType: "wav")!)
     var audioPlayer = AVAudioPlayer()
+    var floatingActionButton: VCFloatingActionButton?
+    var tuplesForFloatingDefaultsLabelsArray: [(String, Record)]?
     
     private let kCellReuseIdentifier = "cell"
     
@@ -45,30 +46,44 @@ class HomeViewController : MainViewController, UITableViewDelegate, UITableViewD
         
         self.navigationItem.prompt = "Tap on project name to record your hours"
         setNavUIToHackeratiColors()
-
-//        let addProjectButton = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: "displayProjects")
-//        navigationItem.rightBarButtonItem = addProjectButton
         
         setupTableView()
         setupFloatingActionButtonWithPinImage()
+        refreshFloatingDefaultsLabelsFromUserRecords()
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "userRecordsRedownloaded", name: kUserInfoDownloadedNotificationName, object: nil)
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(true)
         pinnedProjectsTableView.reloadData()
+        refreshFloatingDefaultsLabelsFromUserRecords()
+    }
+    
+    @objc
+    private func userRecordsRedownloaded() {
+        refreshFloatingDefaultsLabelsFromUserRecords()
     }
 
     private func setupFloatingActionButtonWithPinImage() {
         let floatFrame = CGRectMake(UIScreen.mainScreen().bounds.size.width-44-22, UIScreen.mainScreen().bounds.size.height-44-22, 40, 44)
-        var floatingButton = VCFloatingActionButton(frame: floatFrame, normalImage: UIImage(named: "plus"), andPressedImage: UIImage(named:"cross"), withScrollview: pinnedProjectsTableView)
+        floatingActionButton = VCFloatingActionButton(frame: floatFrame, normalImage: UIImage(named: "plus"), andPressedImage: UIImage(named:"cross"), withScrollview: pinnedProjectsTableView)
         
-        floatingButton.imageArray = ["floatingBluePlusCircle", "floatingBluePlusCircle", "floatingBluePlusCircle", "floatingPinCircle" ]
+        floatingActionButton!.imageArray = ["floatingBluePlusCircle", "floatingBluePlusCircle", "floatingBluePlusCircle", "floatingPinCircle" ]
         
-        floatingButton.labelArray = FirebaseManager.sharedManager.returnThreeLatestUniqueProjectNamesFromUserRecords()
-        
-        floatingButton.delegate = self
-        floatingButton.hideWhileScrolling = true
-        self.view.addSubview(floatingButton)
+        floatingActionButton!.delegate = self
+        floatingActionButton!.hideWhileScrolling = true
+        self.view.addSubview(floatingActionButton!)
+    }
+    
+    private func refreshFloatingDefaultsLabelsFromUserRecords() {
+        tuplesForFloatingDefaultsLabelsArray = FirebaseManager.sharedManager.returnThreeLatestUniqueClientProjectsFromUserRecords()
+        floatingActionButton!.labelArray = [
+            tuplesForFloatingDefaultsLabelsArray![FloatingButtonCellIndex.FirstButtonFromBottom.rawValue].0,
+            tuplesForFloatingDefaultsLabelsArray![FloatingButtonCellIndex.SecondButtonFromBottom.rawValue].0,
+            tuplesForFloatingDefaultsLabelsArray![FloatingButtonCellIndex.ThirdButtonFromBottom.rawValue].0,
+            "Pin or Remove Projects"
+        ]
     }
 
     
@@ -165,32 +180,22 @@ class HomeViewController : MainViewController, UITableViewDelegate, UITableViewD
         return cell
     }
     
-    // MARK: FloatButton Delegate
+    // MARK: Floating Action Button Delegate
     
     func didSelectMenuOptionAtIndex(row: Int) {
-        if (row == FloatingButtonLocation.PinNewprojectButton.rawValue) {
+        if (row == FloatingButtonCellIndex.PinNewprojectButton.rawValue) {
+            displayProjects()
             audioPlayer = AVAudioPlayer(contentsOfURL: tapSound, error: nil)
+            //Not sure if I like this particular sound - couldn't find a good sound for it
         }
         else {
             audioPlayer = AVAudioPlayer(contentsOfURL: dingSound, error: nil)
             audioPlayer.play()
+            FirebaseManager.sharedManager.saveSelectedDefaultRecord(tuplesForFloatingDefaultsLabelsArray![row].1)
         }
 //        audioPlayer.play()
-        println("row at index \(row) was pressed")
-        
-        switch (row) {
-            case FloatingButtonLocation.FirstButtonFromBottom.rawValue:
-                break
-            case FloatingButtonLocation.SecondButtonFromBottom.rawValue:
-                break
-            case FloatingButtonLocation.ThirdButtonFromBottom.rawValue:
-                break
-            case FloatingButtonLocation.PinNewprojectButton.rawValue:
-                displayProjects()
-                break
-            default:
-                break
-        }
     }
+
+    
     
 }

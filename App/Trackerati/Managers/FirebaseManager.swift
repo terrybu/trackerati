@@ -224,6 +224,8 @@ class FirebaseManager : NSObject
     
     func deleteRecord(record: Record, completion: ((error: NSError!) -> Void)?)
     {
+        println("record id: \(record.id)")
+        
         let userURL = "Users/\(GoogleLoginManager.sharedManager.currentUser.firebaseID)/records"
         let recordRef = firebaseDB.childByAppendingPath(userURL + "/" + record.id)
         recordRef.removeValueWithCompletionBlock { error, firebaseRef in
@@ -232,6 +234,33 @@ class FirebaseManager : NSObject
             }
         }
     }
+    
+
+    func saveSelectedDefaultRecord(pastRecord: Record) {
+        
+        var newRecord = Record(client: pastRecord.client, project: pastRecord.project)
+        newRecord.hours = pastRecord.hours
+        newRecord.type = pastRecord.type
+        newRecord.status = pastRecord.status
+        
+        //Date is the only one that's different for this default record selection from floating action buttons
+        let dateFormatter = NSDateFormatter()
+        dateFormatter.dateFormat = "MM/dd/yyyy"
+        var todaysDate = dateFormatter.stringFromDate(NSDate())
+        newRecord.date = todaysDate
+        
+        saveNewRecord(newRecord, completion: { (error) -> Void in
+            if (error != nil) {
+                println(error)
+            }
+            else {
+                self.getAllDataOfType(DataInfoType.User, completion: { () -> Void in
+                    println("getting all records completed after defaults action from float buton")
+                })
+            }
+        })
+    }
+    
     
     // MARK: Projects Saving & Deleting & Filtering
     
@@ -276,25 +305,26 @@ class FirebaseManager : NSObject
         }
     }
     
-    func returnThreeLatestUniqueProjectNamesFromUserRecords() -> [String] {
+    func returnThreeLatestUniqueClientProjectsFromUserRecords() -> [(String, Record)] {
         
-        var threeUniqueProjectsSet = NSMutableOrderedSet()
+        var threeUniqueProjectNamesSet = NSMutableOrderedSet()
+        var resultsTuplesArray = [(String, Record)]()
         
         for i in 0..<self.userRecordsSortedByDateInTuples!.count {
             var currentTuple = self.userRecordsSortedByDateInTuples![i]
-            //iterate over every single project in the project array
             for record:Record in currentTuple.1 {
-                threeUniqueProjectsSet.addObject("\(record.client): \(record.project)")
-            }
-            if threeUniqueProjectsSet.count >= 3 {
-                break
+                if threeUniqueProjectNamesSet.count >= 3 {
+                    break
+                }
+                var newString = "\(record.client)" + ": \(record.project)"
+                if !threeUniqueProjectNamesSet.containsObject(newString) {
+                    threeUniqueProjectNamesSet.addObject(newString)
+                    resultsTuplesArray.append((newString, record))
+                }
             }
         }
         
-        threeUniqueProjectsSet.addObject("Pin New Project")
-        let threeUniqueProjectsArrayWithPinProjectString = threeUniqueProjectsSet.array as! [String]
-        
-        return threeUniqueProjectsArrayWithPinProjectString
+        return resultsTuplesArray
     }
     
     
