@@ -362,8 +362,17 @@ CGFloat buttonToScreenHeight;
 -(void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     //    NSLog(@"selected CEll: %tu",indexPath.row);
-    [delegate didSelectMenuOptionAtIndex:indexPath.row];
     
+    floatTableViewCell *cell = (floatTableViewCell*) [tableView cellForRowAtIndexPath:indexPath];
+    [UIView animateWithDuration:animationTime/2 animations:^
+     {
+         cell.imgView.transform = CGAffineTransformMakeRotation(M_PI);
+     }
+                     completion:^(BOOL finished)
+     {
+         cell.imgView.transform = CGAffineTransformMakeRotation(M_PI * 2);
+         [delegate didSelectMenuOptionAtIndex:indexPath.row];
+     }];
 }
 
 @end

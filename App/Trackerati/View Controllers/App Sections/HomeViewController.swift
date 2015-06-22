@@ -6,8 +6,15 @@
 //  Copyright (c) 2015 The Hackerati. All rights reserved.
 //
 
+import AVFoundation
+
 class HomeViewController : MainViewController, UITableViewDelegate, UITableViewDataSource, floatMenuDelegate
 {
+    
+    var tapSound = NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("tap-professional", ofType: "aif")!)
+    var dingSound = NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("Ding", ofType: "wav")!)
+    var audioPlayer = AVAudioPlayer()
+    
     private let kCellReuseIdentifier = "cell"
     
     private weak var pinnedProjectsTableView: UITableView!
@@ -29,6 +36,8 @@ class HomeViewController : MainViewController, UITableViewDelegate, UITableViewD
     
     override func loadView() {
         super.loadView()
+        audioPlayer = AVAudioPlayer(contentsOfURL: dingSound, error: nil)
+        audioPlayer.prepareToPlay()
         
         self.navigationItem.prompt = "Tap on project name to record your hours"
         setNavUIToHackeratiColors()
@@ -150,11 +159,16 @@ class HomeViewController : MainViewController, UITableViewDelegate, UITableViewD
     
     // MARK: FloatButton Delegate
     
-    func floatingButtonWasPressed() {
-//        displayProjects()
-    }
-    
     func didSelectMenuOptionAtIndex(row: Int) {
+        if (row == 3) {
+            audioPlayer = AVAudioPlayer(contentsOfURL: tapSound, error: nil)
+        }
+        else {
+            audioPlayer = AVAudioPlayer(contentsOfURL: dingSound, error: nil)
+        }
+        
+        audioPlayer.play()
+
         println("row at index \(row) was pressed")
     }
     
