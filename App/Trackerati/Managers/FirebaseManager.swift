@@ -224,8 +224,6 @@ class FirebaseManager : NSObject
     
     func deleteRecord(record: Record, completion: ((error: NSError!) -> Void)?)
     {
-        println("record id: \(record.id)")
-        
         let userURL = "Users/\(GoogleLoginManager.sharedManager.currentUser.firebaseID)/records"
         let recordRef = firebaseDB.childByAppendingPath(userURL + "/" + record.id)
         recordRef.removeValueWithCompletionBlock { error, firebaseRef in

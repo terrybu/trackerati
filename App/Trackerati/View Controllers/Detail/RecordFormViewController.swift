@@ -8,6 +8,20 @@
 
 class RecordFormViewController : UIViewController, UITableViewDelegate, UITableViewDataSource, RecordDetailTableViewCellDelegate
 {
+    
+    @IBOutlet weak var clientLabel: UILabel!
+    @IBOutlet weak var projectLabel: UILabel!
+    
+    @IBOutlet weak var dateTextField: UITextField!
+    
+    @IBOutlet weak var statusButton: UIButton!
+    @IBOutlet weak var typeButton: UIButton!
+    
+    @IBOutlet weak var hoursTextField: UITextField!
+    
+    @IBOutlet weak var commentsTextField: UITextField!
+    
+    
     private let kCellReuseIdentifier = "cell"
     private let kCellDefaultHeight: CGFloat = 44.0
     private let record: Record
@@ -24,7 +38,7 @@ class RecordFormViewController : UIViewController, UITableViewDelegate, UITableV
         editingForm = editing
         self.record = record
         tempRecord = record
-        super.init(nibName: nil, bundle: nil)
+        super.init(nibName: "RecordFormViewController", bundle: nil)
         title = record.date
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardDidShow:", name: UIKeyboardDidShowNotification, object: nil)
@@ -41,10 +55,24 @@ class RecordFormViewController : UIViewController, UITableViewDelegate, UITableV
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func loadView() {
-        view = UIView(frame: UIScreen.mainScreen().bounds)
-        
-        setupTableView()
+//    override func loadView() {
+//        view = UIView(frame: UIScreen.mainScreen().bounds)
+//        
+//        setupTableView()
+//        
+//        if saveOnly {
+//            setupSaveButton()
+//        }
+//        else if editingForm {
+//            setupDoneButton()
+//        }
+//        else {
+//            setupEditButton()
+//        }
+//    }
+    
+    override func viewDidLoad() {
+        setNavUIToHackeratiColors()
         
         if saveOnly {
             setupSaveButton()
