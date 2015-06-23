@@ -17,7 +17,6 @@ let kUserAuthenticatedFirebaseUnsuccessfullyNotificationName = "userAutheticated
 let kAllDataDownloadedNotificationName = "allDataDownloaded"
 let kUserInfoDownloadedNotificationName = "userInfoDownloaded"
 let kAllProjectsDownloadedNotificationName = "allProjectsDownloaded"
-
 let kNotificationDownloadedInfoKey = "downloadedData"
 
 class FirebaseManager : NSObject
@@ -41,6 +40,7 @@ class FirebaseManager : NSObject
     var allClientProjects: [Client]?
     var allUserRecords: [Record]?
     var userRecordsSortedByDateInTuples: [(String, [Record])]?
+    var tuplesForFloatingDefaultsLabelsArray: [(String, Record)]?
     var pinnedProjects: [Client]?
     
     func configureWithDatabaseURL(url: String)
@@ -329,6 +329,18 @@ class FirebaseManager : NSObject
         
         return resultsTuplesArray
     }
+    
+    func findRecordThatCorrespondsToFloatingCell(string: String, indexPath: NSIndexPath) -> Record? {
+        
+        if (tuplesForFloatingDefaultsLabelsArray != nil) && (indexPath.row < tuplesForFloatingDefaultsLabelsArray!.count) {
+            if let tuple = tuplesForFloatingDefaultsLabelsArray![indexPath.row] as? (String, Record)  {
+                return tuple.1
+            }
+        }
+        return nil
+    }
+    
+    
     
     
     // MARK: Private
