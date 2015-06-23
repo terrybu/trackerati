@@ -8,6 +8,8 @@
 
 #import "VCFloatingActionButton.h"
 #import "floatTableViewCell.h"
+#import "Trackerati-Swift.h"
+#import <QuartzCore/QuartzCore.h>
 
 #define SCREEN_WIDTH     [UIScreen mainScreen].bounds.size.width
 #define SCREEN_HEIGHT     [UIScreen mainScreen].bounds.size.height
@@ -18,7 +20,12 @@ NSInteger noOfRows = 0;
 NSInteger tappedRow;
 CGFloat previousOffset;
 CGFloat buttonToScreenHeight;
-@implementation VCFloatingActionButton
+
+
+
+@implementation VCFloatingActionButton {
+    int countOfAlreadyPostedFloatingDefaults;
+}
 
 @synthesize windowView;
 //@synthesize hideWhileScrolling;
@@ -44,7 +51,7 @@ CGFloat buttonToScreenHeight;
         
         
         _menuTable.tableHeaderView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH/2, CGRectGetHeight(frame))];
-        
+
         _menuTable.delegate = self;
         _menuTable.dataSource = self;
         _menuTable.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -356,6 +363,34 @@ CGFloat buttonToScreenHeight;
     cell.title.text    = [_labelArray objectAtIndex:indexPath.row];
     
     
+    //TRAC_66 (Grayout cell if selected already for today Logic)
+    
+    //take labelArray objectatindexpath.row (probably like "Hackerati: Marketing")
+    FirebaseManager *firebaseManager = [FirebaseManager sharedManager];
+    Record *record = [firebaseManager findRecordThatCorrespondsToFloatingCell:[_labelArray objectAtIndex:indexPath.row] indexPath: indexPath];
+    //now we take this record and see if that record has the same date as today --> which means it was posted already for today and don't need to be selected
+    
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc]init];
+    dateFormatter.dateFormat = @"MM/dd/yyyy";
+    NSString *todaysDate = [dateFormatter stringFromDate: [NSDate date]];
+
+    //Custom UI for defaults that have already been posted
+    if (record != nil && [record.date isEqualToString:todaysDate]) {
+        cell.backgroundColor = [UIColor blackColor];
+        [cell.layer setCornerRadius:30.0f];
+        [cell.layer setMasksToBounds:YES];
+        cell.title.textColor = [UIColor grayColor];
+        cell.imgView.image = [UIImage imageNamed:@"floatingGrayEmptyCircle"];
+//        if (countOfAlreadyPostedFloatingDefaults > 0) {
+            //this is to add a white divider between our cells so when floating defaults get repeated twice or more, their divisions look beter. Otherwise, the backgrounds of cells overlap and look ugly
+            UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, cell.contentView.bounds.size.width, 1)];
+            lineView.backgroundColor = [UIColor whiteColor];
+            lineView.autoresizingMask = 0x3f;
+            [cell.contentView addSubview:lineView];
+//        }
+//        countOfAlreadyPostedFloatingDefaults++;
+        cell.alreadyUsedThisFloatingDefaultForTodayFlag = true;
+    }
     return cell;
 }
 
@@ -364,6 +399,9 @@ CGFloat buttonToScreenHeight;
     //    NSLog(@"selected CEll: %tu",indexPath.row);
     
     floatTableViewCell *cell = (floatTableViewCell*) [tableView cellForRowAtIndexPath:indexPath];
+    if (cell.alreadyUsedThisFloatingDefaultForTodayFlag)
+        return;
+    
     [UIView animateWithDuration:animationTime/2 animations:^
      {
          cell.imgView.transform = CGAffineTransformMakeRotation(M_PI);

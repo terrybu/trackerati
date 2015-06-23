@@ -18,7 +18,7 @@ class HomeViewController : MainViewController, UITableViewDelegate, UITableViewD
     var dingSound = NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("Ding", ofType: "wav")!)
     var audioPlayer = AVAudioPlayer()
     var floatingActionButton: VCFloatingActionButton?
-    var tuplesForFloatingDefaultsLabelsArray: [(String, Record)]?
+
     
     private let kCellReuseIdentifier = "cell"
     
@@ -62,6 +62,7 @@ class HomeViewController : MainViewController, UITableViewDelegate, UITableViewD
     
     @objc
     private func userRecordsRedownloaded() {
+        //We need to redownload records from firebase after we post our floating defaults so then we refresh the buttons
         refreshFloatingDefaultsLabelsFromUserRecords()
     }
 
@@ -77,11 +78,11 @@ class HomeViewController : MainViewController, UITableViewDelegate, UITableViewD
     }
     
     private func refreshFloatingDefaultsLabelsFromUserRecords() {
-        tuplesForFloatingDefaultsLabelsArray = FirebaseManager.sharedManager.returnThreeLatestUniqueClientProjectsFromUserRecords()
+        FirebaseManager.sharedManager.tuplesForFloatingDefaultsLabelsArray = FirebaseManager.sharedManager.returnThreeLatestUniqueClientProjectsFromUserRecords()
         floatingActionButton!.labelArray = [
-            tuplesForFloatingDefaultsLabelsArray![FloatingButtonCellIndex.FirstButtonFromBottom.rawValue].0,
-            tuplesForFloatingDefaultsLabelsArray![FloatingButtonCellIndex.SecondButtonFromBottom.rawValue].0,
-            tuplesForFloatingDefaultsLabelsArray![FloatingButtonCellIndex.ThirdButtonFromBottom.rawValue].0,
+            FirebaseManager.sharedManager.tuplesForFloatingDefaultsLabelsArray![FloatingButtonCellIndex.FirstButtonFromBottom.rawValue].0,
+            FirebaseManager.sharedManager.tuplesForFloatingDefaultsLabelsArray![FloatingButtonCellIndex.SecondButtonFromBottom.rawValue].0,
+            FirebaseManager.sharedManager.tuplesForFloatingDefaultsLabelsArray![FloatingButtonCellIndex.ThirdButtonFromBottom.rawValue].0,
             "Pin or Remove Projects"
         ]
     }
@@ -192,10 +193,10 @@ class HomeViewController : MainViewController, UITableViewDelegate, UITableViewD
             self.audioPlayer = AVAudioPlayer(contentsOfURL: self.dingSound, error: nil)
             self.audioPlayer.play()
             let hud = MBProgressHUD.showHUDAddedTo(view, animated: true)
-            let displayName = tuplesForFloatingDefaultsLabelsArray![row].0
+            let displayName = FirebaseManager.sharedManager.tuplesForFloatingDefaultsLabelsArray![row].0
             hud.labelText = "Logging \(displayName)"
             
-            FirebaseManager.sharedManager.saveSelectedDefaultRecord(tuplesForFloatingDefaultsLabelsArray![row].1, completion: { (error) -> Void in
+            FirebaseManager.sharedManager.saveSelectedDefaultRecord(FirebaseManager.sharedManager.tuplesForFloatingDefaultsLabelsArray![row].1, completion: { (error) -> Void in
                 if (error == nil) {
                     MBProgressHUD.showCompletionHUD(onView: self.view, duration: 2, customDoneText: "\(displayName) logged!", completion: nil)
                 }
