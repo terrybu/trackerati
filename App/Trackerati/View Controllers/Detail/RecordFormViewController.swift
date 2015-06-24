@@ -16,10 +16,13 @@ class RecordFormViewController : UIViewController, UITextFieldDelegate, UIPicker
     @IBOutlet weak var dateTextField: UITextField!
     @IBOutlet weak var statusButton: UIButton!
     @IBOutlet weak var typeButton: UIButton!
+    
+
     @IBOutlet weak var hoursTextField: UITextField!
     @IBOutlet weak var commentsTextField: UITextField!
     
     @IBOutlet weak var saveRecordButton: UIButton!
+
     
     private let kCellReuseIdentifier = "cell"
     private let kCellDefaultHeight: CGFloat = 44.0
@@ -43,7 +46,6 @@ class RecordFormViewController : UIViewController, UITextFieldDelegate, UIPicker
         tempRecord = record
         super.init(nibName: "RecordFormViewController", bundle: nil)
         title = record.date
-//        
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardDidShow:", name: UIKeyboardDidShowNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillHide:", name: UIKeyboardWillHideNotification, object: nil)
     }
@@ -75,11 +77,13 @@ class RecordFormViewController : UIViewController, UITextFieldDelegate, UIPicker
         let worktypeRecordType = RecordKey.editableValues[RecordKeyIndex.WorkType.rawValue]
         typeButton.setTitle(record.valueForType(worktypeRecordType, rawValue: false), forState: .Normal)
         
+        hoursTextField.text = record.hours
         hoursTextField.delegate = self
         hoursTextField.tintColor = UIColor.clearColor() // hides blinking cursor
         hoursTextField.inputView = pickerViewForType(.Hours)
         
         commentsTextField.delegate = self
+        commentsTextField.text = record.comment
         
         if saveOnly {
             setupSaveButton()
@@ -116,6 +120,36 @@ class RecordFormViewController : UIViewController, UITextFieldDelegate, UIPicker
         navigationItem.rightBarButtonItem = saveButton
     }
     
+    // MARK: IB Actions
+    
+    
+    @IBAction func statusButtonPressed(sender: UIButton) {
+        if record.status == "0" {
+            record.status = "1"
+        }
+        else if record.status == "1" {
+            record.status = "0"
+        }
+        
+        statusButton.setTitle(record.valueForType(RecordKey.Status, rawValue: false), forState: .Normal)
+    }
+    
+    @IBAction func typeButtonPressed(sender: UIButton) {
+        if record.type == "0" {
+            record.type = "1"
+        }
+        else if record.type == "1" {
+            record.type = "0"
+        }
+        
+        typeButton.setTitle(record.valueForType(RecordKey.WorkType, rawValue: false), forState: .Normal)
+    }
+    
+    
+    @IBAction func saveRecordButtonPressed(sender: UIButton) {
+        saveRecord()
+    }
+    
     // MARK: UITextField Delegate methods 
     
     func textFieldDidBeginEditing(textField: UITextField) {
@@ -137,7 +171,7 @@ class RecordFormViewController : UIViewController, UITextFieldDelegate, UIPicker
         return true
     }
     
-    // MARK: Picker-Views related
+    // MARK: Private
     
     private func datePickerViewForEditing() -> UIDatePicker
     {
@@ -256,6 +290,13 @@ class RecordFormViewController : UIViewController, UITextFieldDelegate, UIPicker
         disableEditing()
         let hud = MBProgressHUD.showHUDAddedTo(view, animated: true)
         hud.labelText = "Saving Record"
+        
+        tempRecord.date = dateTextField.text
+        tempRecord.status = record.status
+        tempRecord.type = record.type
+        tempRecord.hours = hoursTextField.text
+        tempRecord.comment = commentsTextField.text
+        
         FirebaseManager.sharedManager.saveNewRecord(tempRecord, completion: { error in
             if error == nil {
                 FirebaseManager.sharedManager.getAllDataOfType(.User, completion: {
@@ -279,26 +320,12 @@ class RecordFormViewController : UIViewController, UITextFieldDelegate, UIPicker
         if let keyboardDict = notification.userInfo {
             if let keyboardRect = keyboardDict[UIKeyboardFrameBeginUserInfoKey]?.CGRectValue() {
                 
-//                let newContentInsets: UIEdgeInsets
-//                if let navBarHeight = navigationController?.navigationBar.frame.size.height {
-//                    newContentInsets = UIEdgeInsets(top: navBarHeight+22, left: 0.0, bottom: keyboardRect.size.height, right: 0.0)
-//                }
-//                else {
-//                    newContentInsets = UIEdgeInsets(top: 0.0, left: 0.0, bottom: keyboardRect.size.height, right: 0.0)
-//                }
-//                
-//                self.scrollView.contentInset = newContentInsets
-//                self.scrollView.scrollIndicatorInsets = newContentInsets
-//                self.scrollView.setContentOffset(CGPointMake(0.0, 100), animated: true)
-                
                 if let navBarHeight = navigationController?.navigationBar.frame.size.height {
                     var aRect = self.view.frame
-                    aRect.size.height = self.view.frame.size.height - keyboardRect.height - navBarHeight-22
-                    
-                    println("saverecordbutton frame origin y \(saveRecordButton.frame.origin.y)")
+                    aRect.size.height = self.view.frame.size.height - keyboardRect.height - navBarHeight - 22
                     
                     if !CGRectContainsPoint(aRect, saveRecordButton.frame.origin) {
-                        var scrollPoint = CGPointMake(0.0, saveRecordButton.frame.origin.y-keyboardRect.height-navBarHeight-22)
+                        var scrollPoint = CGPointMake(0.0, saveRecordButton.frame.origin.y-keyboardRect.height-navBarHeight - 22)
                         self.scrollView.setContentOffset(scrollPoint, animated: true)
                     }
                 }
