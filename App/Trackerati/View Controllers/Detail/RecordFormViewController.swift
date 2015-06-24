@@ -92,6 +92,7 @@ class RecordFormViewController : UIViewController, UITextFieldDelegate, UIPicker
             setupDoneButton()
         }
         else {
+            disableAllInputFieldsAndControls()
             setupEditButton()
         }
         
@@ -101,6 +102,14 @@ class RecordFormViewController : UIViewController, UITextFieldDelegate, UIPicker
         self.view.addGestureRecognizer(tapGestureRecognizer)
     }
     
+    private func disableAllInputFieldsAndControls() {
+        dateTextField.enabled = false
+        statusButton.enabled = false
+        typeButton.enabled = false
+        hoursTextField.enabled = false
+        commentsTextField.enabled = false
+        saveRecordButton.enabled = false
+    }
     
     private func setupEditButton()
     {
@@ -274,6 +283,12 @@ class RecordFormViewController : UIViewController, UITextFieldDelegate, UIPicker
     private func enableEditing()
     {
         editingForm = true
+        dateTextField.enabled = true
+        statusButton.enabled = true
+        typeButton.enabled = true
+        hoursTextField.enabled = true
+        commentsTextField.enabled = true
+        saveRecordButton.enabled = true
         setupDoneButton()
     }
     
@@ -281,6 +296,7 @@ class RecordFormViewController : UIViewController, UITextFieldDelegate, UIPicker
     private func disableEditing()
     {
         editingForm = false
+        disableAllInputFieldsAndControls()
         setupEditButton()
     }
     
