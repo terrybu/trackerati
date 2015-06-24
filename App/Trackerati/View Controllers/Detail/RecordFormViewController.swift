@@ -8,6 +8,8 @@
 
 class RecordFormViewController : UIViewController, UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource
 {
+    @IBOutlet weak var scrollView: UIScrollView!
+    @IBOutlet weak var containerView: UIView!
     
     @IBOutlet weak var clientLabel: UILabel!
     @IBOutlet weak var projectLabel: UILabel!
@@ -16,6 +18,8 @@ class RecordFormViewController : UIViewController, UITextFieldDelegate, UIPicker
     @IBOutlet weak var typeButton: UIButton!
     @IBOutlet weak var hoursTextField: UITextField!
     @IBOutlet weak var commentsTextField: UITextField!
+    
+    @IBOutlet weak var saveRecordButton: UIButton!
     
     private let kCellReuseIdentifier = "cell"
     private let kCellDefaultHeight: CGFloat = 44.0
@@ -40,8 +44,8 @@ class RecordFormViewController : UIViewController, UITextFieldDelegate, UIPicker
         super.init(nibName: "RecordFormViewController", bundle: nil)
         title = record.date
 //        
-//        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardDidShow:", name: UIKeyboardDidShowNotification, object: nil)
-//        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillHide:", name: UIKeyboardWillHideNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardDidShow:", name: UIKeyboardDidShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillHide:", name: UIKeyboardWillHideNotification, object: nil)
     }
 
     convenience init(record: Record, saveOnly: Bool)
@@ -269,43 +273,53 @@ class RecordFormViewController : UIViewController, UITextFieldDelegate, UIPicker
     
     // MARK: UIKeyboard Notification Selectors
     
-//    @objc
-//    private func keyboardDidShow(notification: NSNotification)
-//    {
-//        if let keyboardDict = notification.userInfo {
-//            if let keyboardRect = keyboardDict[UIKeyboardFrameBeginUserInfoKey]?.CGRectValue() {
-//                
+    @objc
+    private func keyboardDidShow(notification: NSNotification)
+    {
+        if let keyboardDict = notification.userInfo {
+            if let keyboardRect = keyboardDict[UIKeyboardFrameBeginUserInfoKey]?.CGRectValue() {
+                
 //                let newContentInsets: UIEdgeInsets
 //                if let navBarHeight = navigationController?.navigationBar.frame.size.height {
-//                    newContentInsets = UIEdgeInsets(top: navBarHeight, left: 0.0, bottom: keyboardRect.size.height, right: 0.0)
+//                    newContentInsets = UIEdgeInsets(top: navBarHeight+22, left: 0.0, bottom: keyboardRect.size.height, right: 0.0)
 //                }
 //                else {
 //                    newContentInsets = UIEdgeInsets(top: 0.0, left: 0.0, bottom: keyboardRect.size.height, right: 0.0)
 //                }
 //                
-//                recordFormTableView.contentInset = newContentInsets
-//                recordFormTableView.scrollIndicatorInsets = newContentInsets
-//                
-//                if let activeRect = activeCell?.frame {
-//                    recordFormTableView.scrollRectToVisible(activeRect, animated: true)
-//                }
-//            }
-//        }
-//    }
-//    
-//    @objc
-//    private func keyboardWillHide(notification: NSNotification)
-//    {
+//                self.scrollView.contentInset = newContentInsets
+//                self.scrollView.scrollIndicatorInsets = newContentInsets
+//                self.scrollView.setContentOffset(CGPointMake(0.0, 100), animated: true)
+                
+                if let navBarHeight = navigationController?.navigationBar.frame.size.height {
+                    var aRect = self.view.frame
+                    aRect.size.height = self.view.frame.size.height - keyboardRect.height - navBarHeight-22
+                    
+                    println("saverecordbutton frame origin y \(saveRecordButton.frame.origin.y)")
+                    
+                    if !CGRectContainsPoint(aRect, saveRecordButton.frame.origin) {
+                        var scrollPoint = CGPointMake(0.0, saveRecordButton.frame.origin.y-keyboardRect.height-navBarHeight-22)
+                        self.scrollView.setContentOffset(scrollPoint, animated: true)
+                    }
+                }
+            }
+        }
+    }
+    
+    @objc
+    private func keyboardWillHide(notification: NSNotification)
+    {
 //        if let navBarHeight = navigationController?.navigationBar.frame.size.height {
-//            recordFormTableView.contentInset = UIEdgeInsets(top: navBarHeight, left: 0.0, bottom: 0.0, right: 0.0)
-//            recordFormTableView.scrollIndicatorInsets = UIEdgeInsets(top: navBarHeight, left: 0.0, bottom: 0.0, right: 0.0)
+//            self.scrollView.contentInset = UIEdgeInsets(top: navBarHeight+22, left: 0.0, bottom: 0.0, right: 0.0)
+//            self.scrollView.scrollIndicatorInsets = UIEdgeInsets(top: navBarHeight+22, left: 0.0, bottom: 0.0, right: 0.0)
 //        }
 //        else {
-//            recordFormTableView.contentInset = UIEdgeInsetsZero
-//            recordFormTableView.scrollIndicatorInsets = UIEdgeInsetsZero
+//            self.scrollView.contentInset = UIEdgeInsetsZero
+//            self.scrollView.scrollIndicatorInsets = UIEdgeInsetsZero
 //        }
-//    }
-//    
+        self.scrollView.setContentOffset(CGPointMake(0, -self.scrollView.contentInset.top), animated: true)
+    }
+    
     
     // MARK: UIGestureRecognizer Selectors
     @objc
