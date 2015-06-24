@@ -20,6 +20,11 @@ enum RecordKey: String
     static let editableValues = [Client, Date, Hours, Project, Status, WorkType, Comment]
 }
 
+enum RecordKeyIndex: Int {
+    case Client = 0, Date, Hours, Project, Status, WorkType, Comment
+}
+
+
 class Record : NSObject
 {
     let id: String
