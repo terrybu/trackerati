@@ -85,11 +85,8 @@ class RecordFormViewController : UIViewController, UITextFieldDelegate, UIPicker
         commentsTextField.delegate = self
         commentsTextField.text = record.comment
         
-        if saveOnly {
+        if saveOnly || editingForm{
             setupSaveButton()
-        }
-        else if editingForm {
-            setupDoneButton()
         }
         else {
             disableAllInputFieldsAndControls()
@@ -115,12 +112,6 @@ class RecordFormViewController : UIViewController, UITextFieldDelegate, UIPicker
     {
         let editButton = UIBarButtonItem(barButtonSystemItem: .Edit, target: self, action: "enableEditing")
         navigationItem.rightBarButtonItem = editButton
-    }
-    
-    private func setupDoneButton()
-    {
-        let doneButton = UIBarButtonItem(barButtonSystemItem: .Done, target: self, action: "disableEditing")
-        navigationItem.rightBarButtonItem = doneButton
     }
     
     private func setupSaveButton()
@@ -289,7 +280,7 @@ class RecordFormViewController : UIViewController, UITextFieldDelegate, UIPicker
         hoursTextField.enabled = true
         commentsTextField.enabled = true
         saveRecordButton.enabled = true
-        setupDoneButton()
+        setupSaveButton()
     }
     
     @objc
@@ -338,10 +329,10 @@ class RecordFormViewController : UIViewController, UITextFieldDelegate, UIPicker
                 
                 if let navBarHeight = navigationController?.navigationBar.frame.size.height {
                     var aRect = self.view.frame
-                    aRect.size.height = self.view.frame.size.height - keyboardRect.height - navBarHeight - 22
+                    aRect.size.height = self.view.frame.size.height - keyboardRect.height - navBarHeight - 50
                     
                     if !CGRectContainsPoint(aRect, saveRecordButton.frame.origin) {
-                        var scrollPoint = CGPointMake(0.0, saveRecordButton.frame.origin.y-keyboardRect.height-navBarHeight - 22)
+                        var scrollPoint = CGPointMake(0.0, saveRecordButton.frame.origin.y-keyboardRect.height-navBarHeight - 50)
                         self.scrollView.setContentOffset(scrollPoint, animated: true)
                     }
                 }
