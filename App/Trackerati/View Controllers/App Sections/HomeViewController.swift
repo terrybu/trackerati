@@ -25,7 +25,7 @@ class HomeViewController : MainViewController, UITableViewDelegate, UITableViewD
     private weak var pinnedProjectsTableView: UITableView!
     private var pinnedProjects: [Client] {
         get {
-            return FirebaseManager.sharedManager.pinnedProjects!
+            return FirebaseManager.sharedManager.clientsByPinnedProj!
         }
     }
 
@@ -79,6 +79,7 @@ class HomeViewController : MainViewController, UITableViewDelegate, UITableViewD
     
     private func refreshFloatingDefaultsLabelsFromUserRecords() {
         FirebaseManager.sharedManager.tuplesForFloatingDefaultsLabelsArray = FirebaseManager.sharedManager.returnThreeLatestUniqueClientProjectsFromUserRecords()
+        var whatever = FirebaseManager.sharedManager.tuplesForFloatingDefaultsLabelsArray
         floatingActionButton!.labelArray = [
             FirebaseManager.sharedManager.tuplesForFloatingDefaultsLabelsArray![FloatingButtonCellIndex.FirstButtonFromBottom.rawValue].0,
             FirebaseManager.sharedManager.tuplesForFloatingDefaultsLabelsArray![FloatingButtonCellIndex.SecondButtonFromBottom.rawValue].0,
