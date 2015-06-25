@@ -40,8 +40,8 @@ class HistoryTableViewCell : UITableViewCell, UIGestureRecognizerDelegate
     
     weak var delegate: HistoryTableViewCellDelegate?
     
-    private weak var deleteButton: UIButton!
-    private weak var editButton: UIButton!
+    weak var deleteButton: UIButton!
+    weak var editButton: UIButton!
     private weak var infoContainerView: UIView!
     private weak var clientLabel: UILabel!
     private weak var projectLabel: UILabel!
@@ -54,7 +54,7 @@ class HistoryTableViewCell : UITableViewCell, UIGestureRecognizerDelegate
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        selectionStyle = .None
+        selectionStyle = UITableViewCellSelectionStyle.None
         
         setupActionButtons()
         setupInfoContainerView()
@@ -189,6 +189,9 @@ class HistoryTableViewCell : UITableViewCell, UIGestureRecognizerDelegate
     @objc
     private func panInfoView(gesture: UIPanGestureRecognizer)
     {
+//        deleteButton.hidden = false
+//        editButton.hidden = false
+        
         switch gesture.state
         {
         case .Began:

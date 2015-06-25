@@ -69,6 +69,14 @@ class HistoryViewController : MainViewController, UITableViewDelegate, HistoryTa
     }
     
     // MARK: UITableView Delegate
+    func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        var header:UITableViewHeaderFooterView = view as! UITableViewHeaderFooterView
+        
+        view.tintColor = UIColor(rgba: "#2D2D2D")
+        header.textLabel.textColor = UIColor.whiteColor()
+//        header.textLabel.font = UIFont.boldSystemFontOfSize(25)
+    }
+    
     
     func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
         // Set delegate of cell here since datasource is separated out
@@ -85,9 +93,15 @@ class HistoryViewController : MainViewController, UITableViewDelegate, HistoryTa
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        let cell = tableView.cellForRowAtIndexPath(indexPath) as! HistoryTableViewCell
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
-        let selectedCell = tableView.cellForRowAtIndexPath(indexPath) as! HistoryTableViewCell
-        if selectedCell.currentState == .NotShowingMenu {
+        //The reason that history tableview cells don't light up upon touch is as follows:
+        //HistoryTableViewCell's selection style is intentionally set to None
+        //if we light up the cell based on touch, those clear buttons get exposed against the gray background
+        //if we try to hide those two buttons initially, there's no easy way to hide them again after the user engages in swipe motion
+        //leave it for now. see if this is actually a ux problem before trying to fix
+
+        if cell.currentState == .NotShowingMenu {
             displayFormForRecordAtIndexPath(indexPath, editing: false)
         }
     }

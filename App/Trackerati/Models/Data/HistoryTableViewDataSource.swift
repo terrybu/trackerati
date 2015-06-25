@@ -74,6 +74,10 @@ class HistoryTableViewDataSource : NSObject, UITableViewDataSource
         let cell = tableView.dequeueReusableCellWithIdentifier(kCellReuseIdentifier, forIndexPath: indexPath) as! HistoryTableViewCell
         cell.setValuesForRecord(recordForIndexPath(indexPath))
         cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
+        
+//        cell.deleteButton.hidden = true
+//        cell.editButton.hidden = true
+        
         return cell
     }
     

@@ -44,7 +44,7 @@ class HomeViewController : MainViewController, UITableViewDelegate, UITableViewD
         audioPlayer = AVAudioPlayer(contentsOfURL: dingSound, error: nil)
         audioPlayer.prepareToPlay()
         
-        self.navigationItem.prompt = "Tap pinned project or use plus button to record hours"
+        self.navigationItem.prompt = "Tap pinned project or orange button to record hours"
         setNavUIToHackeratiColors()
         
         setupTableView()
@@ -172,12 +172,19 @@ class HomeViewController : MainViewController, UITableViewDelegate, UITableViewD
         let cell = tableView.dequeueReusableCellWithIdentifier(kCellReuseIdentifier, forIndexPath: indexPath) as! UITableViewCell
         cell.textLabel?.text = pinnedProjects[indexPath.section].projects[indexPath.row].name
         
-        //TODO: Standardize black arrow or plus button for cell click?
-        //Do we want to standardize as plus button like Android? instead of Apple stock DisclosureIndicator > arrow?
-//        var plusButton: UIButton  = UIButton.buttonWithType(UIButtonType.ContactAdd) as! UIButton
-//        plusButton.tag = indexPath.row
-//        plusButton.addTarget(self, action: "presentNewRecordFormVC:", forControlEvents: UIControlEvents.TouchUpInside)
-        cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
+        
+        //gray android button version
+        
+//        var plusImage = UIImage(named: "ic_action_add")
+//        cell.accessoryView = UIImageView(image: plusImage)
+
+        // current blue default button version
+        var plusButton: UIButton  = UIButton.buttonWithType(UIButtonType.ContactAdd) as! UIButton
+        plusButton.userInteractionEnabled = false
+        cell.accessoryView = plusButton
+        
+        // black arrows
+//        cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
         return cell
     }
     

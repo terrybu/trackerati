@@ -3,11 +3,12 @@
     {
       "idiom" : "universal",
       "scale" : "1x",
-      "filename" : "floatingGrayEmptyCircle.png"
+      "filename" : "ic_action_add_grey.png"
     },
     {
       "idiom" : "universal",
-      "scale" : "2x"
+      "scale" : "2x",
+      "filename" : "ic_action_add_grey-2.png"
     },
     {
       "idiom" : "universal",
