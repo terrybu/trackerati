@@ -17,21 +17,25 @@ class HistoryViewController : MainViewController, UITableViewDelegate, HistoryTa
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Trash, target: self, action: "editTableView")
         setNavUIToHackeratiColors()
 
-        let historyTableView = UITableView(frame: view.frame, style: .Plain)
-        historyTableView.delegate = self
-        historyTableViewDataSource = HistoryTableViewDataSource(tableView: historyTableView)
-        historyTableView.dataSource = historyTableViewDataSource
-        view.addSubview(historyTableView)
-        self.historyTableView = historyTableView
+        setupTableView()
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "userRecordsRedownloaded", name: kUserInfoDownloadedNotificationName, object: nil)
     }
     
     
+    
     // MARK: Private
+    private func setupTableView() {
+        let historyTableView = UITableView(frame: view.frame, style: .Plain)
+        historyTableView.delegate = self
+        historyTableViewDataSource = HistoryTableViewDataSource(tableView: historyTableView)
+        historyTableView.dataSource = historyTableViewDataSource
+        self.historyTableView = historyTableView
+        view.addSubview(self.historyTableView)
+    }
+    
     @objc
     private func userRecordsRedownloaded() {
-        historyTableViewDataSource = HistoryTableViewDataSource(tableView: historyTableView)
         self.historyTableView.reloadData()
     }
     
