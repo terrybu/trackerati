@@ -41,7 +41,12 @@ class FirebaseManager : NSObject
     var allUserRecords: [Record]?
     var userRecordsSortedByDateInTuples: [(String, [Record])]?
     var tuplesForFloatingDefaultsLabelsArray: [(String, Record)]?
-    var pinnedProjects: [Client]?
+    
+    /*
+    This array of client objects contains only clients that contain a project the user has pinned
+    Additionally, the client objects ONLY contains those projects that have been pinned (others have been filtered out)
+    */
+    var clientsByPinnedProj: [Client]?
     
     func configureWithDatabaseURL(url: String)
     {
@@ -94,13 +99,13 @@ class FirebaseManager : NSObject
                 notificationName = kUserInfoDownloadedNotificationName
                 self.allUserRecords = self.getRecordsForUser(snapshot.value, name: GoogleLoginManager.sharedManager.currentUser.firebaseID)
                 self.userRecordsSortedByDateInTuples = self.userRecordsSortedByDate()
-                self.pinnedProjects = self.pinnedProjectsForLoggedInUser()
+                self.clientsByPinnedProj = self.getClientsFilteredByPinnedProjects()
             }
             
             dispatch_async(dispatch_get_main_queue(), {
                 NSNotificationCenter.defaultCenter().postNotificationName(notificationName, object: nil)
                 
-                if self.allUserRecords != nil && self.allClientProjects != nil && self.pinnedProjects != nil {
+                if self.allUserRecords != nil && self.allClientProjects != nil && self.clientsByPinnedProj != nil {
                     NSNotificationCenter.defaultCenter().postNotificationName(kAllDataDownloadedNotificationName, object: nil)
                 }
                 
@@ -421,7 +426,12 @@ class FirebaseManager : NSObject
         return clients
     }
     
-    private func pinnedProjectsForLoggedInUser() -> [Client]
+    /**
+    This method creates an array of client objects with only partial project arrays within them.
+    The projects in those array are the one's that the user has pinned.
+    */
+    
+    private func getClientsFilteredByPinnedProjects() -> [Client]
     {
         var pinnedProjects: [Client] = []
         for client in allClientProjects! {

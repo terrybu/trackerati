@@ -91,11 +91,11 @@ class ProjectsViewController : UIViewController, UITableViewDelegate, UITableVie
                 
                 let indexOfPinnedProject = clientPinned(atIndexPath: indexPath)
                 if indexOfPinnedProject != -1 {
-                    FirebaseManager.sharedManager.pinnedProjects![indexOfPinnedProject].projects.append(project)
+                    FirebaseManager.sharedManager.clientsByPinnedProj![indexOfPinnedProject].projects.append(project)
                 }
                 else {
                     let newPinnedClient = Client(companyName: clientProjects[indexPath.section].companyName, projects: [project])
-                    FirebaseManager.sharedManager.pinnedProjects!.append(newPinnedClient)
+                    FirebaseManager.sharedManager.clientsByPinnedProj!.append(newPinnedClient)
                 }
                 
                 hud.labelText = "Saving to Pinned Projects"
@@ -110,12 +110,12 @@ class ProjectsViewController : UIViewController, UITableViewDelegate, UITableVie
                 //check where the client is in our pinned Projects Array
                 
                 let indexOfClientThatHasProjectToRemove = clientPinned(atIndexPath: indexPath)
-                var client = FirebaseManager.sharedManager.pinnedProjects![indexOfClientThatHasProjectToRemove]
-                var pinnedProjects = FirebaseManager.sharedManager.pinnedProjects!
+                var client = FirebaseManager.sharedManager.clientsByPinnedProj![indexOfClientThatHasProjectToRemove]
+                var pinnedProjects = FirebaseManager.sharedManager.clientsByPinnedProj!
                 
                 var arrayOfProjectNames = (client.projects as AnyObject).valueForKeyPath("name") as! [String]
                 if client.projects.count == 1 {
-                    FirebaseManager.sharedManager.pinnedProjects!.removeAtIndex(indexOfClientThatHasProjectToRemove) //remove the whole client object
+                    FirebaseManager.sharedManager.clientsByPinnedProj!.removeAtIndex(indexOfClientThatHasProjectToRemove) //remove the whole client object
                 }
                 else if client.projects.count > 1 {
                     var indexOfProjectToRemoveInTheClientsProjects = find(arrayOfProjectNames, selectedCell.textLabel!.text!)
@@ -161,7 +161,7 @@ class ProjectsViewController : UIViewController, UITableViewDelegate, UITableVie
         cell.selectionStyle = .None
         cell.accessoryView = nil
         
-        for client in FirebaseManager.sharedManager.pinnedProjects!
+        for client in FirebaseManager.sharedManager.clientsByPinnedProj!
         {
             if contains(client.projects, projectForIndexPath(indexPath)) {
                 cell.accessoryView = UIImageView(image: UIImage(named: kCheckMarkImageName))
@@ -196,7 +196,7 @@ class ProjectsViewController : UIViewController, UITableViewDelegate, UITableVie
     private func clientPinned(atIndexPath indexPath:NSIndexPath) -> Int
     {
         var i = 0
-        for client in FirebaseManager.sharedManager.pinnedProjects! {
+        for client in FirebaseManager.sharedManager.clientsByPinnedProj! {
             if client.companyName == clientProjects[indexPath.section].companyName {
                 return i
             }
