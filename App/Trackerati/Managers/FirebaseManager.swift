@@ -211,10 +211,9 @@ class FirebaseManager : NSObject
             })
         }
         else { // we're editing a previous record
-            println(record.id)
-            let recordRef = firebaseDB.childByAppendingPath(record.id)
+            let recordRef = firebaseDB.childByAppendingPath(userURL).childByAppendingPath(record.id)
             recordRef.updateChildValues(recordToSave as [NSObject : AnyObject], withCompletionBlock: { error, firebaseRef in
-                println(firebaseRef.key)
+                println("updating child values completed \(firebaseRef.key)")
                 if let closure = completion {
                     closure(error: error)
                 }
@@ -224,8 +223,6 @@ class FirebaseManager : NSObject
     
     func deleteRecord(record: Record, completion: ((error: NSError!) -> Void)?)
     {
-        println("record id: \(record.id)")
-        
         let userURL = "Users/\(GoogleLoginManager.sharedManager.currentUser.firebaseID)/records"
         let recordRef = firebaseDB.childByAppendingPath(userURL + "/" + record.id)
         recordRef.removeValueWithCompletionBlock { error, firebaseRef in

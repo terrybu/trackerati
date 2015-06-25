@@ -9,7 +9,8 @@
 class RecordFormTableView : UITableView
 {
     convenience override init(frame: CGRect) {
-        self.init(frame: frame, style: .Grouped)
+//        self.init(frame: frame, style: .Grouped)
+        self.init(frame: frame, style: .Plain)
     }
     
     override init(frame: CGRect, style: UITableViewStyle) {

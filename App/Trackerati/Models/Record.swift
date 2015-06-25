@@ -20,6 +20,11 @@ enum RecordKey: String
     static let editableValues = [Client, Date, Hours, Project, Status, WorkType, Comment]
 }
 
+enum RecordKeyIndex: Int {
+    case Client = 0, Date, Hours, Project, Status, WorkType, Comment
+}
+
+
 class Record : NSObject
 {
     let id: String
@@ -51,6 +56,8 @@ class Record : NSObject
     {
         let dateFormatter = NSDateFormatter()
         dateFormatter.dateFormat = "MM/dd/yyyy"
+        
+        //default values when you are using the Form to submit a new record 
         self.init(id: "", client: client, date: dateFormatter.stringFromDate(NSDate()), hours: "8.0", project: project, status: "1", type: "1", comment: nil)
     }
     
@@ -72,10 +79,13 @@ class Record : NSObject
             
         case .Status:
             if rawValue {
+                //this means with rawValue true, it will return a string like "0" or "1" because that's how we save in Firebase
+                //"0" part time and "1" full-time
                 return status
             }
             
             if let statusAsInt = status.toInt() {
+                //when rawValue is false, if the Record object had status "0", then it will correctly return "Part-Time Employee"
                 return kRecordStatusNames[statusAsInt]
             }
             else {
