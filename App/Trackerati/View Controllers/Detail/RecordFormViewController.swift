@@ -203,6 +203,16 @@ class RecordFormViewController : UIViewController, UITextFieldDelegate, UIPicker
                 pickerView.dataSource = self
                 infoType = cellType
                 activeHourPickerView = pickerView
+                
+                //picker for hours needs to default to a certain value instead of all the way down in 0.5
+                var indexOfCurrentRecord = find(kRecordHoursNames, record.hours)
+                if let index = indexOfCurrentRecord as Int! {
+                    pickerView.selectRow(index, inComponent: 0, animated: false)
+                }
+                else {
+                    pickerView.selectRow(find(kRecordHoursNames, "8.0")!, inComponent:0, animated: false)
+                }
+                
                 return pickerView
             default:
                 return nil

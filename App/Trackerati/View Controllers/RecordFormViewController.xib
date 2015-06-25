@@ -118,7 +118,7 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="GIV-dN-CCQ">
-                                    <rect key="frame" x="118" y="112" width="250" height="33"/>
+                                    <rect key="frame" x="118" y="112" width="99" height="33"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="250" id="eLf-1u-5sw"/>
                                     </constraints>
@@ -126,12 +126,17 @@
                                     <state key="normal" title="statusButton">
                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
+                                    <variation key="default">
+                                        <mask key="constraints">
+                                            <exclude reference="eLf-1u-5sw"/>
+                                        </mask>
+                                    </variation>
                                     <connections>
                                         <action selector="statusButtonPressed:" destination="-1" eventType="touchUpInside" id="VyS-UY-hmN"/>
                                     </connections>
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="NA1-5m-Ev9">
-                                    <rect key="frame" x="118" y="144" width="250" height="33"/>
+                                    <rect key="frame" x="118" y="144" width="85" height="33"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="250" id="L0D-F6-yB2"/>
                                     </constraints>
@@ -139,6 +144,11 @@
                                     <state key="normal" title="typeButton">
                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
+                                    <variation key="default">
+                                        <mask key="constraints">
+                                            <exclude reference="L0D-F6-yB2"/>
+                                        </mask>
+                                    </variation>
                                     <connections>
                                         <action selector="typeButtonPressed:" destination="-1" eventType="touchUpInside" id="Fbz-qT-aac"/>
                                     </connections>
