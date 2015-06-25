@@ -123,9 +123,13 @@ class ContainerViewController : UIViewController, LoginScreenDelegate, MainViewC
         UIView.animateWithDuration(0.3, delay: 0.0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.6, options: .CurveEaseInOut, animations: {
                 if (animateIn) {
                     self.grayMask = UIView(frame:self.centerNavigationController.view.frame)
+                    self.grayMask?.backgroundColor = UIColor.clearColor()
+                    self.centerNavigationController.view.addSubview(self.grayMask!)
+                    UIView.beginAnimations(nil, context: nil)
+                    UIView.setAnimationDuration(0.25)
                     self.grayMask!.backgroundColor = UIColor.grayColor()
                     self.grayMask!.alpha = 0.80
-                    self.centerNavigationController.view.addSubview(self.grayMask!)
+                    UIView.commitAnimations()
                 }
                 self.centerNavigationController.view.transform = targetTransform
             }, completion: { finished in
