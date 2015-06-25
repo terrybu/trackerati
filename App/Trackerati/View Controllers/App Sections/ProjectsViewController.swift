@@ -100,18 +100,31 @@ class ProjectsViewController : UIViewController, UITableViewDelegate, UITableVie
                 
                 hud.labelText = "Saving to Pinned Projects"
                 FirebaseManager.sharedManager.pinCurrentUserToProject(clientProjects[indexPath.section].companyName, projectName: projectNameForIndexPath(indexPath), completion:{
-                    MBProgressHUD.showCompletionHUD(onView: self.view, duration: 2.0, customDoneText: "Completed!", completion: nil)
+                    MBProgressHUD.showCompletionHUD(onView: self.view, duration: 1.0, customDoneText: "Completed!", completion: nil)
                 })
             }
             else {
+                //Removing Pin Logic
                 selectedCell.accessoryView = nil
                 
-                let indexOfPinnedProject = clientPinned(atIndexPath: indexPath)
-                FirebaseManager.sharedManager.pinnedProjects!.removeAtIndex(indexOfPinnedProject)
+                //check where the client is in our pinned Projects Array
+                
+                let indexOfClientThatHasProjectToRemove = clientPinned(atIndexPath: indexPath)
+                var client = FirebaseManager.sharedManager.pinnedProjects![indexOfClientThatHasProjectToRemove]
+                var pinnedProjects = FirebaseManager.sharedManager.pinnedProjects!
+                
+                var arrayOfProjectNames = (client.projects as AnyObject).valueForKeyPath("name") as! [String]
+                if client.projects.count == 1 {
+                    FirebaseManager.sharedManager.pinnedProjects!.removeAtIndex(indexOfClientThatHasProjectToRemove) //remove the whole client object
+                }
+                else if client.projects.count > 1 {
+                    var indexOfProjectToRemoveInTheClientsProjects = find(arrayOfProjectNames, selectedCell.textLabel!.text!)
+                    client.projects.removeAtIndex(indexOfProjectToRemoveInTheClientsProjects!) //remove just the project from the client object's projects array
+                }
                 
                 hud.labelText = "Removing Pinned Project"
                 FirebaseManager.sharedManager.removeCurrentUserFromProject(clientProjects[indexPath.section].companyName, projectName: projectNameForIndexPath(indexPath), completion: {
-                    MBProgressHUD.showCompletionHUD(onView: self.view, duration: 2.0, customDoneText: "Completed!", completion: nil)
+                    MBProgressHUD.showCompletionHUD(onView: self.view, duration: 1.0, customDoneText: "Completed!", completion: nil)
                 })
             }
         }
