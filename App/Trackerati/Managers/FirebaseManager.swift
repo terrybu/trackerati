@@ -211,10 +211,9 @@ class FirebaseManager : NSObject
             })
         }
         else { // we're editing a previous record
-            println(record.id)
-            let recordRef = firebaseDB.childByAppendingPath(record.id)
+            let recordRef = firebaseDB.childByAppendingPath(userURL).childByAppendingPath(record.id)
             recordRef.updateChildValues(recordToSave as [NSObject : AnyObject], withCompletionBlock: { error, firebaseRef in
-                println(firebaseRef.key)
+                println("updating child values completed \(firebaseRef.key)")
                 if let closure = completion {
                     closure(error: error)
                 }
