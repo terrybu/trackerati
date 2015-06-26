@@ -1,14 +1,14 @@
 //
-//  floatTableViewCell.m
-//  floatingButtonTrial
+//  FloatTableViewCell.m
+//  FloatingButtonTrial
 //
 //  Created by Giridhar on 26/03/15.
 //  Copyright (c) 2015 Giridhar. All rights reserved.
 //
 
-#import "floatTableViewCell.h"
+#import "FloatTableViewCell.h"
 
-@implementation floatTableViewCell
+@implementation FloatTableViewCell
 @synthesize imgView, title,overlay;
 
 - (void)awakeFromNib

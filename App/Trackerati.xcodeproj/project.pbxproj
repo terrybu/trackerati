@@ -53,8 +53,8 @@
 		BFC762EDEA775168E0305151 /* libPods-Trackerati.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 049E7FC2BC2B1D9187CEFDEC /* libPods-Trackerati.a */; };
 		D94B66691B2F332600288B01 /* MPGTextField-Swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = D94B66681B2F332600288B01 /* MPGTextField-Swift.swift */; };
 		D94B666F1B2F412E00288B01 /* NewProjectViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D94B666D1B2F412E00288B01 /* NewProjectViewController.xib */; };
-		D96980741B38480300889EAB /* floatTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D96980721B38480300889EAB /* floatTableViewCell.m */; };
-		D96980751B38480300889EAB /* floatTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D96980731B38480300889EAB /* floatTableViewCell.xib */; };
+		D96980741B38480300889EAB /* FloatTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D96980721B38480300889EAB /* FloatTableViewCell.m */; };
+		D96980751B38480300889EAB /* FloatTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D96980731B38480300889EAB /* FloatTableViewCell.xib */; };
 		D96980771B38587300889EAB /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D96980761B38587300889EAB /* AVFoundation.framework */; };
 		D96980791B3858E500889EAB /* tap-professional.aif in Resources */ = {isa = PBXBuildFile; fileRef = D96980781B3858E500889EAB /* tap-professional.aif */; };
 		D96980801B385DA300889EAB /* Ding.wav in Resources */ = {isa = PBXBuildFile; fileRef = D969807F1B385DA300889EAB /* Ding.wav */; };
@@ -129,9 +129,9 @@
 		3587A3B08253D04AD27B6510 /* Pods-Trackerati.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Trackerati.release.xcconfig"; path = "../Pods/Target Support Files/Pods-Trackerati/Pods-Trackerati.release.xcconfig"; sourceTree = "<group>"; };
 		D94B66681B2F332600288B01 /* MPGTextField-Swift.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MPGTextField-Swift.swift"; sourceTree = "<group>"; };
 		D94B666D1B2F412E00288B01 /* NewProjectViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NewProjectViewController.xib; sourceTree = "<group>"; };
-		D96980711B38480300889EAB /* floatTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = floatTableViewCell.h; sourceTree = "<group>"; };
-		D96980721B38480300889EAB /* floatTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = floatTableViewCell.m; sourceTree = "<group>"; };
-		D96980731B38480300889EAB /* floatTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = floatTableViewCell.xib; sourceTree = "<group>"; };
+		D96980711B38480300889EAB /* FloatTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FloatTableViewCell.h; sourceTree = "<group>"; };
+		D96980721B38480300889EAB /* FloatTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FloatTableViewCell.m; sourceTree = "<group>"; };
+		D96980731B38480300889EAB /* FloatTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FloatTableViewCell.xib; sourceTree = "<group>"; };
 		D96980761B38587300889EAB /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		D96980781B3858E500889EAB /* tap-professional.aif */ = {isa = PBXFileReference; lastKnownFileType = file; path = "tap-professional.aif"; sourceTree = "<group>"; };
 		D969807F1B385DA300889EAB /* Ding.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = Ding.wav; sourceTree = "<group>"; };
@@ -443,9 +443,9 @@
 		D9E5360E1B2A1FE100A1400B /* VCFloatingActionButton */ = {
 			isa = PBXGroup;
 			children = (
-				D96980711B38480300889EAB /* floatTableViewCell.h */,
-				D96980721B38480300889EAB /* floatTableViewCell.m */,
-				D96980731B38480300889EAB /* floatTableViewCell.xib */,
+				D96980711B38480300889EAB /* FloatTableViewCell.h */,
+				D96980721B38480300889EAB /* FloatTableViewCell.m */,
+				D96980731B38480300889EAB /* FloatTableViewCell.xib */,
 				D9E536121B2A1FE100A1400B /* VCFloatingActionButton.h */,
 				D9E536131B2A1FE100A1400B /* VCFloatingActionButton.m */,
 			);
@@ -539,7 +539,7 @@
 				D96980791B3858E500889EAB /* tap-professional.aif in Resources */,
 				01EE0C521B0E301A00AA4C10 /* HockeySDK.xcconfig in Resources */,
 				01498B211B01027E00C7C395 /* Images.xcassets in Resources */,
-				D96980751B38480300889EAB /* floatTableViewCell.xib in Resources */,
+				D96980751B38480300889EAB /* FloatTableViewCell.xib in Resources */,
 				D96980801B385DA300889EAB /* Ding.wav in Resources */,
 				01EE0C531B0E301A00AA4C10 /* HockeySDKResources.bundle in Resources */,
 				D9C46F2F1B39EC2100A0954D /* RecordFormViewController.xib in Resources */,
@@ -601,7 +601,7 @@
 				01498B1A1B01027E00C7C395 /* AppDelegate.swift in Sources */,
 				0170E44C1B0526CD00D593C3 /* SettingsViewController.swift in Sources */,
 				0170E44A1B04EDE800D593C3 /* ContainerViewController.swift in Sources */,
-				D96980741B38480300889EAB /* floatTableViewCell.m in Sources */,
+				D96980741B38480300889EAB /* FloatTableViewCell.m in Sources */,
 				0170E43E1B026D8000D593C3 /* FirebaseManager.swift in Sources */,
 				0190BF361B0CD53700E508CF /* Record.swift in Sources */,
 				013C5A131B012E06002C4020 /* GoogleLoginManager.swift in Sources */,

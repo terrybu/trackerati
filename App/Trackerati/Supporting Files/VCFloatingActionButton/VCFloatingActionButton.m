@@ -7,7 +7,7 @@
 //
 
 #import "VCFloatingActionButton.h"
-#import "floatTableViewCell.h"
+#import "FloatTableViewCell.h"
 #import "Trackerati-Swift.h"
 #import <QuartzCore/QuartzCore.h>
 
@@ -304,7 +304,7 @@ CGFloat buttonToScreenHeight;
 }
 
 
--(void)tableView:(UITableView *)tableView willDisplayCell:(floatTableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+-(void)tableView:(UITableView *)tableView willDisplayCell:(FloatTableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
     
@@ -346,10 +346,10 @@ CGFloat buttonToScreenHeight;
 -(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSString *identifier = @"cell";
-    floatTableViewCell *cell = [_menuTable dequeueReusableCellWithIdentifier:identifier];
+    FloatTableViewCell *cell = [_menuTable dequeueReusableCellWithIdentifier:identifier];
     if (!cell)
     {
-        [_menuTable registerNib:[UINib nibWithNibName:@"floatTableViewCell" bundle:nil]forCellReuseIdentifier:identifier];
+        [_menuTable registerNib:[UINib nibWithNibName:@"FloatTableViewCell" bundle:nil]forCellReuseIdentifier:identifier];
         cell = [_menuTable dequeueReusableCellWithIdentifier:identifier];
     }
     
@@ -398,7 +398,7 @@ CGFloat buttonToScreenHeight;
 {
     //    NSLog(@"selected CEll: %tu",indexPath.row);
     
-    floatTableViewCell *cell = (floatTableViewCell*) [tableView cellForRowAtIndexPath:indexPath];
+    FloatTableViewCell *cell = (FloatTableViewCell*) [tableView cellForRowAtIndexPath:indexPath];
     if (cell.alreadyUsedThisFloatingDefaultForTodayFlag)
         return;
     

@@ -12,7 +12,7 @@ enum FloatingButtonCellIndex: Int {
     case FirstButtonFromBottom = 0, SecondButtonFromBottom, ThirdButtonFromBottom, PinNewprojectButton
 }
 
-class HomeViewController : MainViewController, UITableViewDelegate, UITableViewDataSource, floatMenuDelegate
+class HomeViewController : MainViewController, UITableViewDelegate, UITableViewDataSource, FloatMenuDelegate
 {
     var tapSound = NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("tap-professional", ofType: "aif")!)
     var dingSound = NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("Ding", ofType: "wav")!)

@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@protocol floatMenuDelegate <NSObject>
+@protocol FloatMenuDelegate <NSObject>
 
 @optional
 -(void) didSelectMenuOptionAtIndex:(NSInteger)row;
@@ -21,7 +21,7 @@
 @property NSArray      *imageArray,*labelArray;
 @property UITableView  *menuTable;
 @property UIView       *buttonView;
-@property id<floatMenuDelegate> delegate;
+@property id<FloatMenuDelegate> delegate;
 
 @property (nonatomic) BOOL hideWhileScrolling;
 
