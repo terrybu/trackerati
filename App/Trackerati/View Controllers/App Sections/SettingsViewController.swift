@@ -6,8 +6,8 @@
 //  Copyright (c) 2015 The Hackerati. All rights reserved.
 //
 
-enum SettingType: String {
-    case Date = "Date"
+enum SettingType {
+    case Status, Notifications
 }
 
 class SettingsViewController : MainViewController, UITableViewDelegate, UITableViewDataSource, SwitchDatePickerCellDelegate
@@ -17,13 +17,13 @@ class SettingsViewController : MainViewController, UITableViewDelegate, UITableV
     private weak var settingsTableView: UITableView!
     private weak var datePicker: UIDatePicker!
     
-    private var settings: [String:[String]] = [:]
+    private var settings: [(String, SettingType)]!
     
     override func loadView() {
         super.loadView()
         setNavUIToHackeratiColors()
-
-        settings = ["Notifications": [SettingType.Date.rawValue]]
+        
+        settings = [("Status", SettingType.Status), ("Notifications", SettingType.Notifications)]
         
         let settingsTableView = UITableView(frame: view.frame, style: .Grouped)
         settingsTableView.delegate = self
@@ -31,25 +31,16 @@ class SettingsViewController : MainViewController, UITableViewDelegate, UITableV
         settingsTableView.allowsSelection = false
         view.addSubview(settingsTableView)
         self.settingsTableView = settingsTableView
-        
-        
     }
     
-    // MARK: UITableView Delegate
-
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        let sectionKey = settings.keys.array[indexPath.section]
-        let cellType = settings[sectionKey]?[indexPath.row]
-        if cellType == SettingType.Date.rawValue && TrackeratiUserDefaults.standardDefaults.notificationsOn() {
-            return defaultTableViewCellHeight * 6.0
-        }
-        return defaultTableViewCellHeight
-    }
     
     // MARK: UITableView Datasource
     
     func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return settings.keys.array[section]
+        if (settings[section].0 == "Status") {
+            return "Employment Status"
+        }
+        return settings[section].0
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -57,30 +48,48 @@ class SettingsViewController : MainViewController, UITableViewDelegate, UITableV
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let currentGroup = settings.keys.array[section]
-        if let groupCells = settings[currentGroup] {
-            return groupCells.count
-        }
-        else {
-            return 0
-        }
+        return 1
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell = SwitchDatePickerCell(style: .Default, reuseIdentifier: "cell")
-        cell.onOffSwitch.setOn(TrackeratiUserDefaults.standardDefaults.notificationsOn(), animated: false)
-        
-        if cell.onOffSwitch.on {
-            if let savedTime = TrackeratiUserDefaults.standardDefaults.notificationTime() {
-                cell.datePickerView.setDate(savedTime, animated: false)
+        if settings[indexPath.section].1 == SettingType.Notifications {
+            var cell = SwitchDatePickerCell(style: .Default, reuseIdentifier: "cell")
+            cell.onOffSwitch.setOn(TrackeratiUserDefaults.standardDefaults.notificationsOn(), animated: false)
+            if cell.onOffSwitch.on {
+                if let savedTime = TrackeratiUserDefaults.standardDefaults.notificationTime() {
+                    cell.datePickerView.setDate(savedTime, animated: false)
+                }
             }
+            cell.delegate = self
+            return cell
         }
-        cell.delegate = self
+        
+        var cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "cell")
+        var statusButton = UIButton(frame: CGRect(x: 45, y: 0, width: 250, height: 25))
+        statusButton.setTitle("Full-Time Employee", forState: UIControlState.Normal)
+        statusButton.setTitleColor(UIColor.blueColor(), forState: .Normal)
+        statusButton.addTarget(self, action: "pressedStatusButton", forControlEvents: .TouchUpInside)
+
+        cell.addSubview(statusButton)
         return cell
     }
-
-    // MARK: SwitchDatePickerCell Delegate
     
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        let cellType = settings[indexPath.row].1
+        if cellType == SettingType.Notifications && TrackeratiUserDefaults.standardDefaults.notificationsOn() {
+            return defaultTableViewCellHeight * 6.0
+        }
+        return defaultTableViewCellHeight
+    }
+    
+    // Private
+    @objc
+    private func pressedStatusButton() {
+        println("pressed button")
+    }
+    
+    
+    // MARK: SwitchDatePickerCell Delegate
     func switchValueDidChange(cell: SwitchDatePickerCell, on: Bool) {
         TrackeratiUserDefaults.standardDefaults.setNotificationsOn(on)
         

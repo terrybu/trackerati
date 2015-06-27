@@ -34,11 +34,11 @@ class SwitchDatePickerCell : UITableViewCell
     {
         let cellWidth = contentView.frame.size.width
         let cellHeight = contentView.frame.size.height
-        let leftMargin = layoutMargins.left
+        let leftMargin = layoutMargins.left + 8.0
         let titleLabelRect = CGRect(x: leftMargin, y: 0.0, width: contentView.frame.size.width, height: contentView.frame.size.height)
         
         let titleLabel = UILabel(frame: titleLabelRect)
-        titleLabel.text = "Notifications"
+        titleLabel.text = "Turn on daily notifications"
         contentView.addSubview(titleLabel)
         self.titleLabel = titleLabel
         
