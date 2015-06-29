@@ -23,7 +23,11 @@ class SettingsViewController : MainViewController, UITableViewDelegate, UITableV
         super.loadView()
         setNavUIToHackeratiColors()
         
-        settings = [("Status", SettingType.Status), ("Notifications", SettingType.Notifications)]
+        settings = [
+            ("Notifications", SettingType.Notifications),
+            ("Status", SettingType.Status)
+            
+        ]
         
         let settingsTableView = UITableView(frame: view.frame, style: .Grouped)
         settingsTableView.delegate = self
@@ -55,45 +59,63 @@ class SettingsViewController : MainViewController, UITableViewDelegate, UITableV
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if settings[indexPath.section].1 == SettingType.Notifications {
-            var cell = SwitchDatePickerCell(style: .Default, reuseIdentifier: "switchDatePickerCell")
-            cell.onOffSwitch.setOn(TrackeratiUserDefaults.standardDefaults.notificationsOn(), animated: false)
-            if cell.onOffSwitch.on {
+            var switchDatePickercell = SwitchDatePickerCell(style: .Default, reuseIdentifier: "switchDatePickerCell")
+            
+            //set up cell UI considering what was saved in Defaults
+            switchDatePickercell.onOffSwitch.setOn(TrackeratiUserDefaults.standardDefaults.notificationsOn(), animated: false)
+            if switchDatePickercell.onOffSwitch.on {
                 if let savedTime = TrackeratiUserDefaults.standardDefaults.notificationTime() {
-                    cell.datePickerView.setDate(savedTime, animated: false)
+                    switchDatePickercell.datePickerView.setDate(savedTime, animated: false)
                 }
             }
-            cell.delegate = self
-            return cell
+            switchDatePickercell.delegate = self
+            return switchDatePickercell
         }
         
-        let cell = tableView.dequeueReusableCellWithIdentifier("employmentStatusCell", forIndexPath: indexPath) as! EmploymentStatusCellTableViewCell
-        cell.delegate = self
-//        var statusButton = UIButton(frame: CGRect(x: 45, y: 0, width: 250, height: 25))
-//        statusButton.setTitle("Full-Time Employee", forState: UIControlState.Normal)
-//        statusButton.setTitleColor(UIColor.blueColor(), forState: .Normal)
-//        statusButton.addTarget(self, action: "pressedStatusButton", forControlEvents: .TouchUpInside)
-//        cell.addSubview(statusButton)
-        return cell
+        let employmentStatusCell = tableView.dequeueReusableCellWithIdentifier("employmentStatusCell", forIndexPath: indexPath) as! EmploymentStatusCellTableViewCell
+        //set up cell UI considering what was saved in Defaults
+        let savedDefaultEmploymentStatus = TrackeratiUserDefaults.standardDefaults.getEmploymentStatus()
+        employmentStatusCell.segmentedControl.selectedSegmentIndex = savedDefaultEmploymentStatus.rawValue
+        
+        employmentStatusCell.delegate = self
+        return employmentStatusCell
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         let cellType = settings[indexPath.row].1
         if cellType == SettingType.Notifications && TrackeratiUserDefaults.standardDefaults.notificationsOn() {
+            println("notifications cell is really tall")
             return defaultTableViewCellHeight * 6.0
         }
+        println("employment status cell is not that tall")
         return defaultTableViewCellHeight
     }
+  
+    func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        if section == 0 && TrackeratiUserDefaults.standardDefaults.notificationsOn() {
+            return 44
+        }
+        else if section == 1 {
+            return 0
+        }
+        return 0
+    }
     
-    // Private
-    @objc
-    private func pressedStatusButton() {
-        println("pressed button")
+    func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        if section == 1 {
+            var view = UIView(frame: CGRectMake(0, 0, 100, 100))
+            view.backgroundColor = UIColor.yellowColor()
+            return view
+        }
+        return nil
     }
     
     
     // MARK: SwitchDatePickerCell Delegate
     func switchValueDidChange(cell: SwitchDatePickerCell, on: Bool) {
+        
         TrackeratiUserDefaults.standardDefaults.setNotificationsOn(on)
+        self.settingsTableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: UITableViewRowAnimation.Automatic)
         
         if on && UIApplication.sharedApplication().currentUserNotificationSettings() != .None {
             UIApplication.sharedApplication().registerUserNotificationSettings(UIUserNotificationSettings(forTypes: .Alert | .Badge , categories: nil))
@@ -108,12 +130,14 @@ class SettingsViewController : MainViewController, UITableViewDelegate, UITableV
     
     func segmentControlValueChanged(cell: EmploymentStatusCellTableViewCell) {
         switch cell.segmentedControl.selectedSegmentIndex {
-        case 0:
-            println("fulltime")
-        case 1:
-            println("part-time")
-        default:
-            break
+            case 0:
+                println("fulltime")
+                TrackeratiUserDefaults.standardDefaults.setEmploymentStatus(EmploymentStatusEnum.FullTime)
+            case 1:
+                println("part-time")
+                TrackeratiUserDefaults.standardDefaults.setEmploymentStatus(EmploymentStatusEnum.PartTime)
+            default:
+                break
         }
     }
     

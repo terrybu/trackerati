@@ -9,6 +9,11 @@
 enum DefaultsKey: String {
     case Notifications = "notifications"
     case NotificationsTime = "notifications time"
+    case EmploymentStatus = "employment status"
+}
+
+enum EmploymentStatusEnum: Int {
+    case FullTime = 0, PartTime
 }
 
 class TrackeratiUserDefaults : NSObject
@@ -30,11 +35,16 @@ class TrackeratiUserDefaults : NSObject
     
     func registerDefaults()
     {
-        let initialDefaults = [DefaultsKey.Notifications.rawValue: NSNumber(bool: false)]
+        let initialDefaults = [
+            DefaultsKey.Notifications.rawValue: NSNumber(bool: false),
+            DefaultsKey.EmploymentStatus.rawValue: EmploymentStatusEnum.FullTime.rawValue
+        
+        ]
         NSUserDefaults.standardUserDefaults().registerDefaults(initialDefaults)
         NSUserDefaults.standardUserDefaults().synchronize()
     }
     
+    // MARK: Notifications Related Defaults
     func setNotificationsOn(on: Bool)
     {
         NSUserDefaults.standardUserDefaults().setBool(on, forKey: DefaultsKey.Notifications.rawValue)
@@ -56,4 +66,16 @@ class TrackeratiUserDefaults : NSObject
     {
         return NSUserDefaults.standardUserDefaults().objectForKey(DefaultsKey.NotificationsTime.rawValue) as? NSDate
     }
+    
+    // MARK: Employment Status Related Defaults
+    func setEmploymentStatus(status: EmploymentStatusEnum) {
+        NSUserDefaults.standardUserDefaults().setInteger(status.rawValue, forKey: DefaultsKey.EmploymentStatus.rawValue)
+        NSUserDefaults.standardUserDefaults().synchronize()
+    }
+    
+    func getEmploymentStatus () -> EmploymentStatusEnum {
+        let statusIntValue: Int = NSUserDefaults.standardUserDefaults().objectForKey(DefaultsKey.EmploymentStatus.rawValue) as! Int
+        return statusIntValue == 0 ? EmploymentStatusEnum.FullTime : EmploymentStatusEnum.PartTime
+    }
+    
 }

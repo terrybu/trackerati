@@ -65,7 +65,7 @@ class SwitchDatePickerCell : UITableViewCell
         self.datePickerView = datePickerView
     }
     
-    private func showTimePicker(show: Bool, animated: Bool) {
+    func showTimePicker(show: Bool, animated: Bool) {
         
         let animationDuration: NSTimeInterval = animated ? 0.2 : 0.0
         let animationHeight = datePickerView.intrinsicContentSize().height
