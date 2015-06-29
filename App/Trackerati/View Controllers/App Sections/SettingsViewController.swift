@@ -26,7 +26,6 @@ class SettingsViewController : MainViewController, UITableViewDelegate, UITableV
         settings = [
             ("Notifications", SettingType.Notifications),
             ("Status", SettingType.Status)
-            
         ]
         
         let settingsTableView = UITableView(frame: view.frame, style: .Grouped)
@@ -58,6 +57,7 @@ class SettingsViewController : MainViewController, UITableViewDelegate, UITableV
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        println("cell for row at indexpath called")
         if settings[indexPath.section].1 == SettingType.Notifications {
             var switchDatePickercell = SwitchDatePickerCell(style: .Default, reuseIdentifier: "switchDatePickerCell")
             
@@ -82,12 +82,11 @@ class SettingsViewController : MainViewController, UITableViewDelegate, UITableV
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        let cellType = settings[indexPath.row].1
+        let cellType = settings[indexPath.section].1
         if cellType == SettingType.Notifications && TrackeratiUserDefaults.standardDefaults.notificationsOn() {
-            println("notifications cell is really tall")
             return defaultTableViewCellHeight * 6.0
         }
-        println("employment status cell is not that tall")
+
         return defaultTableViewCellHeight
     }
   
@@ -96,20 +95,24 @@ class SettingsViewController : MainViewController, UITableViewDelegate, UITableV
             return 44
         }
         else if section == 1 {
-            return 0
+            return 44
         }
         return 0
     }
     
     func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         if section == 1 {
-            var view = UIView(frame: CGRectMake(0, 0, 100, 100))
-            view.backgroundColor = UIColor.yellowColor()
-            return view
+            var label = UILabel(frame: CGRectMake(50, 0, 50, 200))
+            label.text = "*This allows all your future record forms to default to above"
+            label.textColor = UIColor.grayColor()
+            label.numberOfLines = 0
+            label.font =  UIFont.systemFontOfSize(13)
+            label.textAlignment = NSTextAlignment.Center
+            
+            return label
         }
         return nil
     }
-    
     
     // MARK: SwitchDatePickerCell Delegate
     func switchValueDidChange(cell: SwitchDatePickerCell, on: Bool) {
