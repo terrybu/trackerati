@@ -128,7 +128,7 @@ class HomeViewController : MainViewController, UITableViewDelegate, UITableViewD
         let projectName = pinnedProjects[indexPath.section].projects[indexPath.row].name
         let newRecord = Record(client: companyName, project: projectName)
         
-        let newForm = RecordFormViewController(record: newRecord, saveOnly: true)
+        let newForm = RecordFormViewController(record: newRecord, saveOnlyFormForAddingNewRecord: true)
         newForm.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Cancel, target: self, action: "dismissNewForm")
         newForm.title = "New Record"
         let newFormNavController = UINavigationController(rootViewController: newForm)

@@ -13,7 +13,7 @@ enum DefaultsKey: String {
 }
 
 enum EmploymentStatusEnum: Int {
-    case FullTime = 0, PartTime
+    case PartTime = 0, FullTime
 }
 
 class TrackeratiUserDefaults : NSObject
@@ -75,7 +75,7 @@ class TrackeratiUserDefaults : NSObject
     
     func getEmploymentStatus () -> EmploymentStatusEnum {
         let statusIntValue: Int = NSUserDefaults.standardUserDefaults().objectForKey(DefaultsKey.EmploymentStatus.rawValue) as! Int
-        return statusIntValue == 0 ? EmploymentStatusEnum.FullTime : EmploymentStatusEnum.PartTime
+        return statusIntValue == 0 ? EmploymentStatusEnum.PartTime : EmploymentStatusEnum.FullTime
     }
     
 }

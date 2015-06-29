@@ -57,7 +57,6 @@ class SettingsViewController : MainViewController, UITableViewDelegate, UITableV
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        println("cell for row at indexpath called")
         if settings[indexPath.section].1 == SettingType.Notifications {
             var switchDatePickercell = SwitchDatePickerCell(style: .Default, reuseIdentifier: "switchDatePickerCell")
             
@@ -75,8 +74,13 @@ class SettingsViewController : MainViewController, UITableViewDelegate, UITableV
         let employmentStatusCell = tableView.dequeueReusableCellWithIdentifier("employmentStatusCell", forIndexPath: indexPath) as! EmploymentStatusCellTableViewCell
         //set up cell UI considering what was saved in Defaults
         let savedDefaultEmploymentStatus = TrackeratiUserDefaults.standardDefaults.getEmploymentStatus()
-        employmentStatusCell.segmentedControl.selectedSegmentIndex = savedDefaultEmploymentStatus.rawValue
-        
+        if savedDefaultEmploymentStatus == EmploymentStatusEnum.FullTime {
+            employmentStatusCell.segmentedControl.selectedSegmentIndex = 0
+        }
+        else if savedDefaultEmploymentStatus == EmploymentStatusEnum.PartTime {
+            employmentStatusCell.segmentedControl.selectedSegmentIndex = 1
+        }
+
         employmentStatusCell.delegate = self
         return employmentStatusCell
     }
@@ -134,10 +138,8 @@ class SettingsViewController : MainViewController, UITableViewDelegate, UITableV
     func segmentControlValueChanged(cell: EmploymentStatusCellTableViewCell) {
         switch cell.segmentedControl.selectedSegmentIndex {
             case 0:
-                println("fulltime")
                 TrackeratiUserDefaults.standardDefaults.setEmploymentStatus(EmploymentStatusEnum.FullTime)
             case 1:
-                println("part-time")
                 TrackeratiUserDefaults.standardDefaults.setEmploymentStatus(EmploymentStatusEnum.PartTime)
             default:
                 break
