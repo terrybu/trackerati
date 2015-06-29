@@ -37,7 +37,7 @@ class RecordFormViewController : UIViewController, UITextFieldDelegate, UIPicker
     private var datePicker: UIDatePicker?
     
     private var editingForm: Bool
-    private var saveOnly = false
+    private var saveOnlyFormForAddingNewRecord = false
     
     init(record: Record, editing: Bool)
     {
@@ -50,10 +50,10 @@ class RecordFormViewController : UIViewController, UITextFieldDelegate, UIPicker
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillHide:", name: UIKeyboardWillHideNotification, object: nil)
     }
 
-    convenience init(record: Record, saveOnly: Bool)
+    convenience init(record: Record, saveOnlyFormForAddingNewRecord: Bool)
     {
         self.init(record: record, editing: true)
-        self.saveOnly = saveOnly
+        self.saveOnlyFormForAddingNewRecord = saveOnlyFormForAddingNewRecord
     }
     
     required init(coder aDecoder: NSCoder) {
@@ -72,6 +72,11 @@ class RecordFormViewController : UIViewController, UITextFieldDelegate, UIPicker
         dateTextField.inputView = datePickerViewForEditing()
         
         let statusRecordType = RecordKey.editableValues[RecordKeyIndex.Status.rawValue]
+        if saveOnlyFormForAddingNewRecord {
+            //if its a whole new form for a new record, we are going to use our saved employment defaults
+            let savedEmploymentStatus = TrackeratiUserDefaults.standardDefaults.getEmploymentStatus()
+            record.status = "\(savedEmploymentStatus.rawValue)"
+        }
         statusButton.setTitle(record.valueForType(statusRecordType, rawValue: false), forState: .Normal)
         
         let worktypeRecordType = RecordKey.editableValues[RecordKeyIndex.WorkType.rawValue]
@@ -85,7 +90,7 @@ class RecordFormViewController : UIViewController, UITextFieldDelegate, UIPicker
         commentsTextField.delegate = self
         commentsTextField.text = record.comment
         
-        if saveOnly || editingForm{
+        if saveOnlyFormForAddingNewRecord || editingForm{
             setupSaveButton()
         }
         else {

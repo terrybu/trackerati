@@ -58,6 +58,8 @@
 		D96980771B38587300889EAB /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D96980761B38587300889EAB /* AVFoundation.framework */; };
 		D96980791B3858E500889EAB /* tap-professional.aif in Resources */ = {isa = PBXBuildFile; fileRef = D96980781B3858E500889EAB /* tap-professional.aif */; };
 		D96980801B385DA300889EAB /* Ding.wav in Resources */ = {isa = PBXBuildFile; fileRef = D969807F1B385DA300889EAB /* Ding.wav */; };
+		D9B422151B41986800EAFB6D /* EmploymentStatusCellTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9B422131B41986800EAFB6D /* EmploymentStatusCellTableViewCell.swift */; };
+		D9B422161B41986800EAFB6D /* EmploymentStatusCellTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D9B422141B41986800EAFB6D /* EmploymentStatusCellTableViewCell.xib */; };
 		D9C46F2F1B39EC2100A0954D /* RecordFormViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D9C46F2E1B39EC2100A0954D /* RecordFormViewController.xib */; };
 		D9D2A4821B31C388005DDA70 /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9D2A4811B31C388005DDA70 /* UIColorExtension.swift */; };
 		D9D2A4861B31CF95005DDA70 /* UIViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9D2A4851B31CF95005DDA70 /* UIViewControllerExtension.swift */; };
@@ -135,6 +137,8 @@
 		D96980761B38587300889EAB /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		D96980781B3858E500889EAB /* tap-professional.aif */ = {isa = PBXFileReference; lastKnownFileType = file; path = "tap-professional.aif"; sourceTree = "<group>"; };
 		D969807F1B385DA300889EAB /* Ding.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = Ding.wav; sourceTree = "<group>"; };
+		D9B422131B41986800EAFB6D /* EmploymentStatusCellTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmploymentStatusCellTableViewCell.swift; sourceTree = "<group>"; };
+		D9B422141B41986800EAFB6D /* EmploymentStatusCellTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EmploymentStatusCellTableViewCell.xib; sourceTree = "<group>"; };
 		D9C46F2E1B39EC2100A0954D /* RecordFormViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RecordFormViewController.xib; sourceTree = "<group>"; };
 		D9D2A4811B31C388005DDA70 /* UIColorExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColorExtension.swift; sourceTree = "<group>"; };
 		D9D2A4851B31CF95005DDA70 /* UIViewControllerExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewControllerExtension.swift; sourceTree = "<group>"; };
@@ -355,6 +359,8 @@
 		01EE0C4B1B0E2F4300AA4C10 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				D9B422131B41986800EAFB6D /* EmploymentStatusCellTableViewCell.swift */,
+				D9B422141B41986800EAFB6D /* EmploymentStatusCellTableViewCell.xib */,
 				0170E4531B0542A900D593C3 /* SwitchDatePickerCell.swift */,
 			);
 			path = Settings;
@@ -539,6 +545,7 @@
 				D96980791B3858E500889EAB /* tap-professional.aif in Resources */,
 				01EE0C521B0E301A00AA4C10 /* HockeySDK.xcconfig in Resources */,
 				01498B211B01027E00C7C395 /* Images.xcassets in Resources */,
+				D9B422161B41986800EAFB6D /* EmploymentStatusCellTableViewCell.xib in Resources */,
 				D96980751B38480300889EAB /* FloatTableViewCell.xib in Resources */,
 				D96980801B385DA300889EAB /* Ding.wav in Resources */,
 				01EE0C531B0E301A00AA4C10 /* HockeySDKResources.bundle in Resources */,
@@ -612,6 +619,7 @@
 				D9D2A4821B31C388005DDA70 /* UIColorExtension.swift in Sources */,
 				0170E4401B02962F00D593C3 /* Constants.swift in Sources */,
 				0170E4481B04E37C00D593C3 /* SideMenuViewController.swift in Sources */,
+				D9B422151B41986800EAFB6D /* EmploymentStatusCellTableViewCell.swift in Sources */,
 				D9E536161B2A1FE100A1400B /* VCFloatingActionButton.m in Sources */,
 				0170E4541B0542A900D593C3 /* LoginScreen.swift in Sources */,
 				D9E536181B2A2BB700A1400B /* NewProjectViewController.swift in Sources */,
