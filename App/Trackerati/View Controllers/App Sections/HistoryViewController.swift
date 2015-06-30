@@ -16,13 +16,10 @@ class HistoryViewController : MainViewController, UITableViewDelegate, HistoryTa
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Trash, target: self, action: "editTableView")
         setNavUIToHackeratiColors()
-
         setupTableView()
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "userRecordsRedownloaded", name: kUserInfoDownloadedNotificationName, object: nil)
     }
-    
-    
     
     // MARK: Private
     private func setupTableView() {
@@ -114,7 +111,7 @@ class HistoryViewController : MainViewController, UITableViewDelegate, HistoryTa
     
     func didPressDeleteButton(cell: HistoryTableViewCell) {
         if let cellIndexPath = self.historyTableView.indexPathForCell(cell) {
-            historyTableViewDataSource.deleteRecordFirebaseDataSourceAndViewAtIndexPath(cellIndexPath);
+            historyTableViewDataSource.deleteRecordFromFirebaseDataAndViewAtIndexPath(cellIndexPath);
         }
     }
     
