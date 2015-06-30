@@ -100,7 +100,8 @@ class ProjectsViewController : UIViewController, UITableViewDelegate, UITableVie
                 
                 hud.labelText = "Saving to Pinned Projects"
                 FirebaseManager.sharedManager.pinCurrentUserToProject(clientProjects[indexPath.section].companyName, projectName: projectNameForIndexPath(indexPath), completion:{
-                    MBProgressHUD.showCompletionHUD(onView: self.view, duration: 1.0, customDoneText: "Completed!", completion: nil)
+//                    MBProgressHUD.showCompletionHUD(onView: self.view, duration: 1.0, customDoneText: "Completed!", completion: nil)
+                    hud.hide(true)
                 })
             }
             else {
@@ -124,7 +125,9 @@ class ProjectsViewController : UIViewController, UITableViewDelegate, UITableVie
                 
                 hud.labelText = "Removing Pinned Project"
                 FirebaseManager.sharedManager.removeCurrentUserFromProject(clientProjects[indexPath.section].companyName, projectName: projectNameForIndexPath(indexPath), completion: {
-                    MBProgressHUD.showCompletionHUD(onView: self.view, duration: 1.0, customDoneText: "Completed!", completion: nil)
+//                    MBProgressHUD.showCompletionHUD(onView: self.view, duration: 1.0, customDoneText: "Completed!", completion: nil)
+                    hud.hide(true)
+
                 })
             }
         }
