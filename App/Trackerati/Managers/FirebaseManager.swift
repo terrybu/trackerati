@@ -18,6 +18,7 @@ let kAllDataDownloadedNotificationName = "allDataDownloaded"
 let kUserInfoDownloadedNotificationName = "userInfoDownloaded"
 let kAllProjectsDownloadedNotificationName = "allProjectsDownloaded"
 let kNotificationDownloadedInfoKey = "downloadedData"
+let kUserJustPinnedOrUnpinnedNotificationName = "userPinnedOrUnpinnedProject"
 
 class FirebaseManager : NSObject
 {
