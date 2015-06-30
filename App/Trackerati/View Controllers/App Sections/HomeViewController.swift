@@ -56,8 +56,12 @@ class HomeViewController : MainViewController, UITableViewDelegate, UITableViewD
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(true)
-        pinnedProjectsTableView.reloadData()
-        refreshFloatingDefaultsLabelsFromUserRecords()
+        if pinnedProjectsTableView != nil {
+            pinnedProjectsTableView.reloadData()
+        }
+        if floatingActionButton != nil {
+            refreshFloatingDefaultsLabelsFromUserRecords()
+        }
     }
     
     @objc

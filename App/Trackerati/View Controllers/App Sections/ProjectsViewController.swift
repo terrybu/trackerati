@@ -186,8 +186,19 @@ class ProjectsViewController : UIViewController, UITableViewDelegate, UITableVie
     
     func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if editingStyle == .Delete {
-            deleteProjectFromFirebaseAndViewAtIndexPath(indexPath);
+            showWarningBeforeConfirmingDeletion(indexPath)
         }
+    }
+    
+    func showWarningBeforeConfirmingDeletion(indexPath: NSIndexPath) {
+        let alertController = UIAlertController(title: "Warning", message: "Are you sure you want to delete this project from the database? This will affect all other users using Trackerati", preferredStyle: UIAlertControllerStyle.Alert)
+        let cancelAction = UIAlertAction(title: "Cancel", style: .Cancel, handler: nil)
+        let confirmAction = UIAlertAction(title: "Confirm", style: .Default) { (action) -> Void in
+            self.deleteProjectFromFirebaseAndViewAtIndexPath(indexPath)
+        }
+        alertController.addAction(cancelAction)
+        alertController.addAction(confirmAction)
+        presentViewController(alertController, animated: true, completion: nil)
     }
     
     

@@ -312,6 +312,8 @@ class FirebaseManager : NSObject
                 closure(error: error)
             }
         }
+        //also refresh the pinned projects just in case a pinned project got deleted. we don't want that locally showing afterwards
+        self.clientsByPinnedProj = self.getClientsFilteredByPinnedProjects()
     }
     
     func validateProjectNameBeforeSendingToFirebase(clientString: String, projectString: String) -> Bool {
