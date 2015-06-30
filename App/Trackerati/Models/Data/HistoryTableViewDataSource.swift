@@ -36,17 +36,21 @@ class HistoryTableViewDataSource : NSObject, UITableViewDataSource
     
     func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if editingStyle == .Delete {
-            deleteRecordFirebaseDataSourceAndViewAtIndexPath(indexPath);
+            deleteRecordFromFirebaseDataAndViewAtIndexPath(indexPath);
         }
     }
     
-    func deleteRecordFirebaseDataSourceAndViewAtIndexPath(indexPath: NSIndexPath) {
+    func deleteRecordFromFirebaseDataAndViewAtIndexPath(indexPath: NSIndexPath) {
         var deleteThisRecord = recordForIndexPath(indexPath) //point to it before you lose it in userHistory
+        
+        //we delete from firebase first
+        //then we delete local record object from firebase singleton instance
         FirebaseManager.sharedManager.deleteRecord(deleteThisRecord, completion: { (error) -> Void in
             FirebaseManager.sharedManager.userRecordsSortedByDateInTuples![indexPath.section].1.removeAtIndex(indexPath.row)
             if (FirebaseManager.sharedManager.userRecordsSortedByDateInTuples![indexPath.section].1.isEmpty) {
                 FirebaseManager.sharedManager.userRecordsSortedByDateInTuples!.removeAtIndex(indexPath.section)
             }
+            //then we also delete record object from this vc
             self.userHistory[indexPath.section].1.removeAtIndex(indexPath.row)
             if (self.userHistory[indexPath.section].1.isEmpty) {
                 self.userHistory.removeAtIndex(indexPath.section);

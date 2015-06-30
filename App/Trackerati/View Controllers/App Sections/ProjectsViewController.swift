@@ -46,12 +46,22 @@ class ProjectsViewController : UIViewController, UITableViewDelegate, UITableVie
         navigationItem.leftBarButtonItem = backHomeButton;
         
         var plusButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Add, target: self, action: "openNewProjectViewController")
-        navigationItem.rightBarButtonItem = plusButton;
+        var trashButton = UIBarButtonItem(barButtonSystemItem: .Trash, target: self, action: "editTableView")
+
+        navigationItem.rightBarButtonItems = [plusButton, trashButton]
         
         setNavUIToHackeratiColors()
         setupTableView()
     }
     
+    
+    // MARK: Private methods
+    
+    @objc
+    private func editTableView()
+    {
+        projectsTableView.setEditing(!projectsTableView.editing, animated: true)
+    }
     
     
     private func setupTableView()
@@ -172,6 +182,40 @@ class ProjectsViewController : UIViewController, UITableViewDelegate, UITableVie
         }
         
         return cell
+    }
+    
+    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        if editingStyle == .Delete {
+            deleteProjectFromFirebaseAndViewAtIndexPath(indexPath);
+        }
+    }
+    
+    
+    private func deleteProjectFromFirebaseAndViewAtIndexPath(indexPath: NSIndexPath) {
+        var projectToDelete = projectForIndexPath(indexPath)
+        var indexOfClientWithProjectToDelete = indexPath.section
+        var clientWithProjectToDelete: Client? = self.clientProjects[indexOfClientWithProjectToDelete]
+        
+        FirebaseManager.sharedManager.deleteProject(clientWithProjectToDelete!.companyName, projectName: projectToDelete.name, completion: { (error) -> Void in
+            
+            if let client = clientWithProjectToDelete {
+                //deleting locally from firebase singleton instance
+                FirebaseManager.sharedManager.allClientProjects![indexOfClientWithProjectToDelete].projects.removeAtIndex(indexPath.row)
+                if (FirebaseManager.sharedManager.allClientProjects![indexOfClientWithProjectToDelete].projects.isEmpty) {
+                    FirebaseManager.sharedManager.allClientProjects!.removeAtIndex(indexPath.section)
+                }
+                
+                //deleting locally from this vc
+//                client.projects.removeAtIndex(indexPath.row)
+                if client.projects.isEmpty {
+                    self.clientProjects.removeAtIndex(indexOfClientWithProjectToDelete)
+                    self.projectsTableView.deleteSections(NSIndexSet(index: indexPath.section), withRowAnimation: UITableViewRowAnimation.Automatic)
+                }
+                else {
+                    self.projectsTableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
+                }
+            }
+        })
     }
     
     // MARK: Nav Button Selectors

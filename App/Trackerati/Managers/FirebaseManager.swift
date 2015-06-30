@@ -257,7 +257,6 @@ class FirebaseManager : NSObject
             }
             else {
                 self.getAllDataOfType(DataInfoType.User, completion: { () -> Void in
-                    println("getting all records completed after defaults action from float buton")
                     if let closure = completion {
                         closure(error: error)
                     }
@@ -268,11 +267,6 @@ class FirebaseManager : NSObject
     
     
     // MARK: Projects Saving & Deleting & Filtering
-    
-    func validateProjectNameBeforeSendingToFirebase(clientString: String, projectString: String) -> Bool {
-        //TODO: Extra validation if we want to --> lowercase/uppercase check ex) prevent "hackerati" vs "Hackerati"
-        return true
-    }
     
     func saveNewProject (clientString: String, projectString: String, completion: ((error: NSError!, duplicateFound: Bool) -> Void)?)
     {
@@ -308,6 +302,21 @@ class FirebaseManager : NSObject
                 }
             })
         }
+    }
+    
+    func deleteProject (clientName: String, projectName: String, completion: ((error: NSError!) -> Void)?) {
+        let userURL = "Projects/\(clientName)/\(projectName)"
+        let recordRef = firebaseDB.childByAppendingPath(userURL)
+        recordRef.removeValueWithCompletionBlock { error, firebaseRef in
+            if let closure = completion {
+                closure(error: error)
+            }
+        }
+    }
+    
+    func validateProjectNameBeforeSendingToFirebase(clientString: String, projectString: String) -> Bool {
+        //Extra validation if we want to --> lowercase/uppercase check ex) prevent "hackerati" vs "Hackerati"
+        return true
     }
     
     func returnThreeLatestUniqueClientProjectsFromUserRecords() -> [(String, Record)] {
