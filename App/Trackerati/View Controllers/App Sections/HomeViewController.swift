@@ -210,9 +210,14 @@ class HomeViewController : MainViewController, UITableViewDelegate, UITableViewD
         cell.textLabel?.text = pinnedProjects[indexPath.section].projects[indexPath.row].name
 
         // current blue default button version
-        var plusButton: UIButton  = UIButton.buttonWithType(UIButtonType.ContactAdd) as! UIButton
-        plusButton.userInteractionEnabled = false
-        cell.accessoryView = plusButton
+//        var plusButton: UIButton  = UIButton.buttonWithType(UIButtonType.ContactAdd) as! UIButton
+//        plusButton.userInteractionEnabled = false
+//        cell.accessoryView = plusButton
+        
+        // android style time clock patrick
+        var imageView = UIImageView(image: UIImage(named: "ic_action_add_time"))
+        imageView.contentMode = UIViewContentMode.ScaleAspectFill
+        cell.accessoryView = imageView
         
         // black arrows
 //        cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
