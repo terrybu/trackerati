@@ -52,24 +52,24 @@ class HomeViewController : MainViewController, UITableViewDelegate, UITableViewD
         refreshFloatingDefaultsLabelsFromUserRecords()
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "userRecordsRedownloaded", name: kUserInfoDownloadedNotificationName, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "userJustPinnedOrUnpinnedSomething", name: kUserJustPinnedOrUnpinnedNotificationName, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "userJustDeletedSomething", name: kUserJustDeletedNotificationName, object: nil)
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(true)
-        if pinnedProjectsTableView != nil {
-            pinnedProjectsTableView.reloadData()
-        }
+    
+//        if pinnedProjectsTableView != nil {
+//            pinnedProjectsTableView.reloadData()
+//        }
         if floatingActionButton != nil {
             refreshFloatingDefaultsLabelsFromUserRecords()
         }
     }
     
-    @objc
-    private func userRecordsRedownloaded() {
-        //We need to redownload records from firebase after we post our floating defaults so then we refresh the buttons
-        refreshFloatingDefaultsLabelsFromUserRecords()
-    }
-
+    
+    
+    // MARK: SET-UP
     private func setupFloatingActionButtonWithPinImage() {
         let floatFrame = CGRectMake(UIScreen.mainScreen().bounds.size.width-44-22, UIScreen.mainScreen().bounds.size.height-44-22, 40, 44)
         floatingActionButton = VCFloatingActionButton(frame: floatFrame, normalImage: UIImage(named: "plus"), andPressedImage: UIImage(named:"cross"), withScrollview: pinnedProjectsTableView)
@@ -104,12 +104,44 @@ class HomeViewController : MainViewController, UITableViewDelegate, UITableViewD
         self.pinnedProjectsTableView = pinnedProjectsTableView
     }
     
-    // MARK: UIBarButtonItem Selectors
+    
+    // MARK: Private Methods
+
+    @objc
+    private func userJustDeletedSomething() {
+        //if a user deleted a project, it might have been a pinned project that got deleted, so to prevent a user from seeing a pinned project in the home vc right after getting deleted, let's refresh tableview
+        //reloadingData will get clientsByPinnedProject again from Firebase
+        self.pinnedProjectsTableView.reloadData()
+    }
     
     @objc
-    private func displayProjects()
+    private func userRecordsRedownloaded() {
+        //We need to redownload records from firebase after we post our floating defaults so then we refresh the buttons
+        refreshFloatingDefaultsLabelsFromUserRecords()
+    }
+    
+    @objc
+    private func userJustPinnedOrUnpinnedSomething() {
+        FirebaseManager.sharedManager.clientsByPinnedProj!.sort({ $0.companyName.uppercaseString < $1.companyName.uppercaseString })
+        for client:Client in self.pinnedProjects {
+            client.projects.sort({ $0.name.uppercaseString < $1.name.uppercaseString })
+        }
+        self.pinnedProjectsTableView.reloadData()
+    }
+    
+    @objc
+    private func displayProjectsViewController()
     {
         let projectsViewController = ProjectsViewController(projects: FirebaseManager.sharedManager.allClientProjects)
+        projectsViewController.onDismiss = {
+            //this is for the case of user coming back to HomeVC after pinning something
+            //without this, all the client names and project names will be sorted out of wack, and not alphabetical
+//            FirebaseManager.sharedManager.clientsByPinnedProj!.sort({ $0.companyName.uppercaseString < $1.companyName.uppercaseString })
+//            for client:Client in self.pinnedProjects {
+//                client.projects.sort({ $0.name.uppercaseString < $1.name.uppercaseString })
+//            }
+//            self.pinnedProjectsTableView.reloadData()
+        }
         let navController = UINavigationController(rootViewController: projectsViewController)
         presentViewController(navController, animated: true, completion: nil)
     }
@@ -176,12 +208,6 @@ class HomeViewController : MainViewController, UITableViewDelegate, UITableViewD
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(kCellReuseIdentifier, forIndexPath: indexPath) as! UITableViewCell
         cell.textLabel?.text = pinnedProjects[indexPath.section].projects[indexPath.row].name
-        
-        
-        //gray android button version
-        
-//        var plusImage = UIImage(named: "ic_action_add")
-//        cell.accessoryView = UIImageView(image: plusImage)
 
         // current blue default button version
         var plusButton: UIButton  = UIButton.buttonWithType(UIButtonType.ContactAdd) as! UIButton
@@ -197,7 +223,7 @@ class HomeViewController : MainViewController, UITableViewDelegate, UITableViewD
     
     func didSelectMenuOptionAtIndex(row: Int) {
         if (row == FloatingButtonCellIndex.PinNewprojectButton.rawValue) {
-            displayProjects()
+            displayProjectsViewController()
 //            audioPlayer = AVAudioPlayer(contentsOfURL: tapSound, error: nil)
             //Not sure if I like this particular sound - couldn't find a good sound for it
         }
@@ -217,6 +243,8 @@ class HomeViewController : MainViewController, UITableViewDelegate, UITableViewD
 //        audioPlayer.play()
     }
 
-    
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+    }
     
 }

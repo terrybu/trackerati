@@ -366,4 +366,8 @@ class ContainerViewController : UIViewController, LoginScreenDelegate, MainViewC
         return hideStatusBar
     }
     
+    
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+    }
 }

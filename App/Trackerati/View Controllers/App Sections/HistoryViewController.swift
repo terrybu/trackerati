@@ -121,4 +121,8 @@ class HistoryViewController : MainViewController, UITableViewDelegate, HistoryTa
         }
     }
     
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+    }
+    
 }

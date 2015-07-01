@@ -18,6 +18,8 @@ let kAllDataDownloadedNotificationName = "allDataDownloaded"
 let kUserInfoDownloadedNotificationName = "userInfoDownloaded"
 let kAllProjectsDownloadedNotificationName = "allProjectsDownloaded"
 let kNotificationDownloadedInfoKey = "downloadedData"
+let kUserJustPinnedOrUnpinnedNotificationName = "userPinnedOrUnpinnedProject"
+let kUserJustDeletedNotificationName = "userJustDeletedSomething"
 
 class FirebaseManager : NSObject
 {
@@ -287,10 +289,12 @@ class FirebaseManager : NSObject
                     newProjectRefWithID.setValue(placeHolder as [NSObject: AnyObject], withCompletionBlock: { error, firebaseRef in
                         
                         if error == nil {
-                            FirebaseManager.sharedManager.getAllDataOfType(.Projects, completion: { () -> Void in
-                                if let closure = completion {
-                                    closure(error: error, duplicateFound: false)
-                                }
+                            FirebaseManager.sharedManager.getAllDataOfType(.Projects, completion: {
+                                FirebaseManager.sharedManager.getAllDataOfType(.User, completion: {
+                                    if let closure = completion {
+                                        closure(error: error, duplicateFound: false)
+                                    }
+                                })
                             })
                         }
                         else {
@@ -312,8 +316,6 @@ class FirebaseManager : NSObject
                 closure(error: error)
             }
         }
-        //also refresh the pinned projects just in case a pinned project got deleted. we don't want that locally showing afterwards
-        self.clientsByPinnedProj = self.getClientsFilteredByPinnedProjects()
     }
     
     func validateProjectNameBeforeSendingToFirebase(clientString: String, projectString: String) -> Bool {
@@ -442,7 +444,7 @@ class FirebaseManager : NSObject
     The projects in those array are the one's that the user has pinned.
     */
     
-    private func getClientsFilteredByPinnedProjects() -> [Client]
+    func getClientsFilteredByPinnedProjects() -> [Client]
     {
         var pinnedProjects: [Client] = []
         for client in allClientProjects! {
@@ -451,6 +453,9 @@ class FirebaseManager : NSObject
                 let pinnedClient = Client(companyName: client.companyName, projects: newProjectArray)
                 pinnedProjects.append(pinnedClient)
             }
+        }
+        for client:Client in pinnedProjects {
+            client.projects.sort({ $0.name.uppercaseString < $1.name.uppercaseString })
         }
         
         return pinnedProjects

@@ -321,14 +321,19 @@ class RecordFormViewController : UIViewController, UITextFieldDelegate, UIPicker
         
         FirebaseManager.sharedManager.saveNewRecord(tempRecord, completion: { error in
             if error == nil {
-                FirebaseManager.sharedManager.getAllDataOfType(.User, completion: {
-                    
-                    MBProgressHUD.showCompletionHUD(onView: self.view, duration: 2.0, customDoneText: "Completed!", completion: {
-                        if let containerVC = UIApplication.sharedApplication().keyWindow?.rootViewController as? ContainerViewController
-                        {
-                            containerVC.centerNavigationController.dismissViewControllerAnimated(true, completion: nil);
-                        }
+                FirebaseManager.sharedManager.getAllDataOfType(.Projects, completion: {
+                    //the reason I get all projects again is because all pinned projects essentially get calculated from there
+                    //and then getAllDataofType(.User) will use that data to make the clientsByPinnedProject property in Firebase Singleton
+                    //this will help essentially refresh the Pinned Projects list and make sure no funky bugs occur
+                    FirebaseManager.sharedManager.getAllDataOfType(.User, completion: {
+                        MBProgressHUD.showCompletionHUD(onView: self.view, duration: 1.5, customDoneText: "Completed!", completion: {
+                            if let containerVC = UIApplication.sharedApplication().keyWindow?.rootViewController as? ContainerViewController
+                            {
+                                containerVC.centerNavigationController.dismissViewControllerAnimated(true, completion: nil);
+                            }
+                        })
                     })
+                    
                 })
             }
         })
@@ -383,6 +388,10 @@ class RecordFormViewController : UIViewController, UITextFieldDelegate, UIPicker
         else if activeTextField == commentsTextField  {
             commentsTextField.resignFirstResponder()
         }
+    }
+    
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
     }
     
 }

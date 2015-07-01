@@ -13,8 +13,8 @@ class ProjectsViewController : UIViewController, UITableViewDelegate, UITableVie
     private let kCheckMarkImageName = "CheckMark"
     
     private weak var projectsTableView: UITableView!
-    
     private var clientProjects: [Client] = []
+    var onDismiss: (() -> ())?
     
     init(projects: [Client]?)
     {
@@ -111,6 +111,7 @@ class ProjectsViewController : UIViewController, UITableViewDelegate, UITableVie
                 hud.labelText = "Saving to Pinned Projects"
                 FirebaseManager.sharedManager.pinCurrentUserToProject(clientProjects[indexPath.section].companyName, projectName: projectNameForIndexPath(indexPath), completion:{
 //                    MBProgressHUD.showCompletionHUD(onView: self.view, duration: 1.0, customDoneText: "Completed!", completion: nil)
+                    NSNotificationCenter.defaultCenter().postNotificationName(kUserJustPinnedOrUnpinnedNotificationName, object: nil)
                     hud.hide(true)
                 })
             }
@@ -119,10 +120,8 @@ class ProjectsViewController : UIViewController, UITableViewDelegate, UITableVie
                 selectedCell.accessoryView = nil
                 
                 //check where the client is in our pinned Projects Array
-                
                 let indexOfClientThatHasProjectToRemove = clientPinned(atIndexPath: indexPath)
                 var client = FirebaseManager.sharedManager.clientsByPinnedProj![indexOfClientThatHasProjectToRemove]
-                var pinnedProjects = FirebaseManager.sharedManager.clientsByPinnedProj!
                 
                 var arrayOfProjectNames = (client.projects as AnyObject).valueForKeyPath("name") as! [String]
                 if client.projects.count == 1 {
@@ -136,8 +135,8 @@ class ProjectsViewController : UIViewController, UITableViewDelegate, UITableVie
                 hud.labelText = "Removing Pinned Project"
                 FirebaseManager.sharedManager.removeCurrentUserFromProject(clientProjects[indexPath.section].companyName, projectName: projectNameForIndexPath(indexPath), completion: {
 //                    MBProgressHUD.showCompletionHUD(onView: self.view, duration: 1.0, customDoneText: "Completed!", completion: nil)
+                    NSNotificationCenter.defaultCenter().postNotificationName(kUserJustPinnedOrUnpinnedNotificationName, object: nil)
                     hud.hide(true)
-
                 })
             }
         }
@@ -184,6 +183,8 @@ class ProjectsViewController : UIViewController, UITableViewDelegate, UITableVie
         return cell
     }
     
+    // MARK: Project/Client Deletion Logic
+    
     func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if editingStyle == .Delete {
             showWarningBeforeConfirmingDeletion(indexPath)
@@ -217,7 +218,7 @@ class ProjectsViewController : UIViewController, UITableViewDelegate, UITableVie
                 }
                 
                 //deleting locally from this vc
-//                client.projects.removeAtIndex(indexPath.row)
+                //client.projects.removeAtIndex(indexPath.row)
                 if client.projects.isEmpty {
                     self.clientProjects.removeAtIndex(indexOfClientWithProjectToDelete)
                     self.projectsTableView.deleteSections(NSIndexSet(index: indexPath.section), withRowAnimation: UITableViewRowAnimation.Automatic)
@@ -225,8 +226,33 @@ class ProjectsViewController : UIViewController, UITableViewDelegate, UITableVie
                 else {
                     self.projectsTableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
                 }
+                
+                self.refreshPinnedProjects()
+                
+                NSNotificationCenter.defaultCenter().postNotificationName(kUserJustDeletedNotificationName, object: nil)
             }
         })
+    }
+    
+    private func refreshPinnedProjects(){
+        //also refresh the pinned projects just in case a pinned project got deleted. we don't want that locally showing afterwards
+        FirebaseManager.sharedManager.clientsByPinnedProj = FirebaseManager.sharedManager.getClientsFilteredByPinnedProjects()
+    }
+    
+    private func removeDeletedProjectFromPinnedProjects(indexPath: NSIndexPath, project: Project) {
+        //check where the client is in our pinned Projects Array
+        let indexOfClientThatHasProjectToRemove = clientPinned(atIndexPath: indexPath)
+        var client = FirebaseManager.sharedManager.clientsByPinnedProj![indexOfClientThatHasProjectToRemove]
+        
+        var arrayOfProjectNames = (client.projects as AnyObject).valueForKeyPath("name") as! [String]
+        if client.projects.count == 1 {
+            FirebaseManager.sharedManager.clientsByPinnedProj!.removeAtIndex(indexOfClientThatHasProjectToRemove) //remove the whole client object
+        }
+        else if client.projects.count > 1 {
+            var indexOfProjectToRemoveInTheClientsProjects = find(arrayOfProjectNames, project.name)
+            client.projects.removeAtIndex(indexOfProjectToRemoveInTheClientsProjects!) //remove just the project from the client object's projects array
+        }
+
     }
     
     // MARK: Nav Button Selectors
@@ -245,7 +271,9 @@ class ProjectsViewController : UIViewController, UITableViewDelegate, UITableVie
     @objc
     private func closeViewController()
     {
-        self.dismissViewControllerAnimated(true, completion: nil)
+        self.dismissViewControllerAnimated(true, completion: {
+            self.onDismiss!()
+        })
     }
     
     
@@ -274,5 +302,11 @@ class ProjectsViewController : UIViewController, UITableViewDelegate, UITableVie
         return clientProjects[indexPath.section].projects[indexPath.row].name
     }
     
+    
+    
+    
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+    }
     
 }
