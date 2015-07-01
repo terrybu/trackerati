@@ -120,10 +120,8 @@ class ProjectsViewController : UIViewController, UITableViewDelegate, UITableVie
                 selectedCell.accessoryView = nil
                 
                 //check where the client is in our pinned Projects Array
-                
                 let indexOfClientThatHasProjectToRemove = clientPinned(atIndexPath: indexPath)
                 var client = FirebaseManager.sharedManager.clientsByPinnedProj![indexOfClientThatHasProjectToRemove]
-                var pinnedProjects = FirebaseManager.sharedManager.clientsByPinnedProj!
                 
                 var arrayOfProjectNames = (client.projects as AnyObject).valueForKeyPath("name") as! [String]
                 if client.projects.count == 1 {
@@ -210,8 +208,6 @@ class ProjectsViewController : UIViewController, UITableViewDelegate, UITableVie
         var indexOfClientWithProjectToDelete = indexPath.section
         var clientWithProjectToDelete: Client? = self.clientProjects[indexOfClientWithProjectToDelete]
         
-        
-        
         FirebaseManager.sharedManager.deleteProject(clientWithProjectToDelete!.companyName, projectName: projectToDelete.name, completion: { (error) -> Void in
             
             if let client = clientWithProjectToDelete {
@@ -230,8 +226,33 @@ class ProjectsViewController : UIViewController, UITableViewDelegate, UITableVie
                 else {
                     self.projectsTableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: UITableViewRowAnimation.Automatic)
                 }
+                
+                self.refreshPinnedProjects()
+                
+                NSNotificationCenter.defaultCenter().postNotificationName(kUserJustDeletedNotificationName, object: nil)
             }
         })
+    }
+    
+    private func refreshPinnedProjects(){
+        //also refresh the pinned projects just in case a pinned project got deleted. we don't want that locally showing afterwards
+        FirebaseManager.sharedManager.clientsByPinnedProj = FirebaseManager.sharedManager.getClientsFilteredByPinnedProjects()
+    }
+    
+    private func removeDeletedProjectFromPinnedProjects(indexPath: NSIndexPath, project: Project) {
+        //check where the client is in our pinned Projects Array
+        let indexOfClientThatHasProjectToRemove = clientPinned(atIndexPath: indexPath)
+        var client = FirebaseManager.sharedManager.clientsByPinnedProj![indexOfClientThatHasProjectToRemove]
+        
+        var arrayOfProjectNames = (client.projects as AnyObject).valueForKeyPath("name") as! [String]
+        if client.projects.count == 1 {
+            FirebaseManager.sharedManager.clientsByPinnedProj!.removeAtIndex(indexOfClientThatHasProjectToRemove) //remove the whole client object
+        }
+        else if client.projects.count > 1 {
+            var indexOfProjectToRemoveInTheClientsProjects = find(arrayOfProjectNames, project.name)
+            client.projects.removeAtIndex(indexOfProjectToRemoveInTheClientsProjects!) //remove just the project from the client object's projects array
+        }
+
     }
     
     // MARK: Nav Button Selectors

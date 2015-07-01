@@ -53,6 +53,7 @@ class HomeViewController : MainViewController, UITableViewDelegate, UITableViewD
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "userRecordsRedownloaded", name: kUserInfoDownloadedNotificationName, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "userJustPinnedOrUnpinnedSomething", name: kUserJustPinnedOrUnpinnedNotificationName, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "userJustDeletedSomething", name: kUserJustDeletedNotificationName, object: nil)
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -103,7 +104,15 @@ class HomeViewController : MainViewController, UITableViewDelegate, UITableViewD
         self.pinnedProjectsTableView = pinnedProjectsTableView
     }
     
+    
     // MARK: Private Methods
+
+    @objc
+    private func userJustDeletedSomething() {
+        //if a user deleted a project, it might have been a pinned project that got deleted, so to prevent a user from seeing a pinned project in the home vc right after getting deleted, let's refresh tableview
+        //reloadingData will get clientsByPinnedProject again from Firebase
+        self.pinnedProjectsTableView.reloadData()
+    }
     
     @objc
     private func userRecordsRedownloaded() {

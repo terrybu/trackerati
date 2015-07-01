@@ -81,8 +81,10 @@ class MPGTextField_Swift: UITextField, UITextFieldDelegate, UITableViewDelegate,
                     }),
                 completion:{
                         (finished : Bool) in
-                        self.tableViewController!.tableView.removeFromSuperview()
-                        self.tableViewController = nil
+                        if (self.tableViewController != nil) {
+                            self.tableViewController!.tableView.removeFromSuperview()
+                            self.tableViewController = nil
+                        }
                     })
             self.handleExit()
         }
