@@ -56,14 +56,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     {
         if TrackeratiUserDefaults.standardDefaults.notificationsOn() && UIApplication.sharedApplication().scheduledLocalNotifications.count < 1 {
             if let fireTime = TrackeratiUserDefaults.standardDefaults.notificationTime() {
-                
                 let localNotification = UILocalNotification()
                 localNotification.repeatInterval = .CalendarUnitDay
                 localNotification.timeZone = NSTimeZone.defaultTimeZone()
                 localNotification.fireDate = fireTime
-                // TODO: Put "better" alert body
-                localNotification.alertBody = "Ain't nobody got time for that... except for you!"
-                localNotification.applicationIconBadgeNumber = 1
+                localNotification.alertBody = "Did you record your hours on Trackerati today?"
+                localNotification.alertAction = "Record"
+                localNotification.soundName = UILocalNotificationDefaultSoundName
                 UIApplication.sharedApplication().scheduleLocalNotification(localNotification)
             }
         }
