@@ -46,7 +46,6 @@
 		01DD394B1B0A70FD000D925D /* SideMenuUserHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01DD394A1B0A70FD000D925D /* SideMenuUserHeaderView.swift */; };
 		01EE0C441B0E2B7800AA4C10 /* HistoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01EE0C431B0E2B7800AA4C10 /* HistoryTableViewCell.swift */; };
 		01EE0C481B0E2F0200AA4C10 /* HockeySDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01EE0C461B0E2F0200AA4C10 /* HockeySDK.framework */; };
-		01EE0C521B0E301A00AA4C10 /* HockeySDK.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 01EE0C501B0E301A00AA4C10 /* HockeySDK.xcconfig */; };
 		01EE0C531B0E301A00AA4C10 /* HockeySDKResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 01EE0C511B0E301A00AA4C10 /* HockeySDKResources.bundle */; };
 		01EE0C561B0F7ADA00AA4C10 /* RecordFormViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01EE0C551B0F7ADA00AA4C10 /* RecordFormViewController.swift */; };
 		01EE0C591B0F865E00AA4C10 /* HistoryTableViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01EE0C581B0F865E00AA4C10 /* HistoryTableViewDataSource.swift */; };
@@ -505,7 +504,7 @@
 		01498B0C1B01027E00C7C395 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0630;
+				LastUpgradeCheck = 0640;
 				ORGANIZATIONNAME = "The Hackerati";
 				TargetAttributes = {
 					01498B131B01027E00C7C395 = {
@@ -545,7 +544,6 @@
 			files = (
 				D94B666F1B2F412E00288B01 /* NewProjectViewController.xib in Resources */,
 				D96980791B3858E500889EAB /* tap-professional.aif in Resources */,
-				01EE0C521B0E301A00AA4C10 /* HockeySDK.xcconfig in Resources */,
 				01498B211B01027E00C7C395 /* Images.xcassets in Resources */,
 				D9B422161B41986800EAFB6D /* EmploymentStatusCellTableViewCell.xib in Resources */,
 				D96980751B38480300889EAB /* FloatTableViewCell.xib in Resources */,

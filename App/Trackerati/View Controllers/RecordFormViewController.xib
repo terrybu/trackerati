@@ -118,8 +118,9 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="GIV-dN-CCQ">
-                                    <rect key="frame" x="118" y="112" width="99" height="33"/>
+                                    <rect key="frame" x="118" y="112" width="300" height="33"/>
                                     <constraints>
+                                        <constraint firstAttribute="width" constant="300" id="K4X-Y8-0WV"/>
                                         <constraint firstAttribute="width" constant="250" id="eLf-1u-5sw"/>
                                     </constraints>
                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -136,8 +137,9 @@
                                     </connections>
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="NA1-5m-Ev9">
-                                    <rect key="frame" x="118" y="144" width="85" height="33"/>
+                                    <rect key="frame" x="118" y="144" width="150" height="33"/>
                                     <constraints>
+                                        <constraint firstAttribute="width" constant="150" id="D3N-6Q-yvR"/>
                                         <constraint firstAttribute="width" constant="250" id="L0D-F6-yB2"/>
                                     </constraints>
                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
