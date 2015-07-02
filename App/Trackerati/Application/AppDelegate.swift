@@ -14,7 +14,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     private let googleAPIKey = "478294020811-80olfgevlg8q14vo74lmmiu3nu7q75m5.apps.googleusercontent.com"
     private let firebaseAbsoluteURLDebug = "https://trackerati-dev.firebaseio.com"
     private let firebaseAbsoluteURLRelease = "https://blazing-torch-6772.firebaseio.com"
-    private let hockeySDKIdentifier = "3aa549db112abed50654d253ecec9aa7"
+//    private let hockeySDKIdentifier = "3aa549db112abed50654d253ecec9aa7" old one
+    private let hockeySDKIdentifier = "64f4b2404dc31b38296a2a89eaaf23b7"
+
     
     var window: UIWindow?
 
