@@ -58,10 +58,6 @@ class HomeViewController : MainViewController, UITableViewDelegate, UITableViewD
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(true)
-    
-//        if pinnedProjectsTableView != nil {
-//            pinnedProjectsTableView.reloadData()
-//        }
         if floatingActionButton != nil {
             refreshFloatingDefaultsLabelsFromUserRecords()
         }
@@ -74,22 +70,31 @@ class HomeViewController : MainViewController, UITableViewDelegate, UITableViewD
         let floatFrame = CGRectMake(UIScreen.mainScreen().bounds.size.width-44-22, UIScreen.mainScreen().bounds.size.height-44-22, 40, 44)
         floatingActionButton = VCFloatingActionButton(frame: floatFrame, normalImage: UIImage(named: "plus"), andPressedImage: UIImage(named:"cross"), withScrollview: pinnedProjectsTableView)
         
-        floatingActionButton!.imageArray = ["floatingBluePlusCircle", "floatingBluePlusCircle", "floatingBluePlusCircle", "floatingPinCircle" ]
-        
-        floatingActionButton!.delegate = self
-        floatingActionButton!.hideWhileScrolling = true
-        self.view.addSubview(floatingActionButton!)
+        if let actionButton = floatingActionButton {
+            actionButton.imageArray = ["floatingBluePlusCircle", "floatingBluePlusCircle", "floatingBluePlusCircle", "floatingPinCircle" ]
+            
+            actionButton.delegate = self
+            actionButton.hideWhileScrolling  = true
+            self.view.addSubview(floatingActionButton!)
+        }
     }
     
     private func refreshFloatingDefaultsLabelsFromUserRecords() {
         FirebaseManager.sharedManager.tuplesForFloatingDefaultsLabelsArray = FirebaseManager.sharedManager.returnThreeLatestUniqueClientProjectsFromUserRecords()
-        var whatever = FirebaseManager.sharedManager.tuplesForFloatingDefaultsLabelsArray
-        floatingActionButton!.labelArray = [
-            FirebaseManager.sharedManager.tuplesForFloatingDefaultsLabelsArray![FloatingButtonCellIndex.FirstButtonFromBottom.rawValue].0,
-            FirebaseManager.sharedManager.tuplesForFloatingDefaultsLabelsArray![FloatingButtonCellIndex.SecondButtonFromBottom.rawValue].0,
-            FirebaseManager.sharedManager.tuplesForFloatingDefaultsLabelsArray![FloatingButtonCellIndex.ThirdButtonFromBottom.rawValue].0,
-            "Pin or Remove Projects"
-        ]
+        if let actionButton = floatingActionButton {
+            if let tuplesArray = FirebaseManager.sharedManager.tuplesForFloatingDefaultsLabelsArray {
+                println(tuplesArray.description)
+                if tuplesArray.count >= 3 {
+                    actionButton.labelArray = [
+                        tuplesArray[FloatingButtonCellIndex.FirstButtonFromBottom.rawValue].0,
+                        tuplesArray[FloatingButtonCellIndex.SecondButtonFromBottom.rawValue].0,
+                        tuplesArray[FloatingButtonCellIndex.ThirdButtonFromBottom.rawValue].0,
+                        "Pin or Remove Projects"
+                    ]
+                }
+
+            }
+        }
     }
 
     

@@ -328,19 +328,26 @@ class FirebaseManager : NSObject
         var threeUniqueProjectNamesSet = NSMutableOrderedSet()
         var resultsTuplesArray = [(String, Record)]()
         
-        for i in 0..<self.userRecordsSortedByDateInTuples!.count {
-            var currentTuple = self.userRecordsSortedByDateInTuples![i]
-            for record:Record in currentTuple.1 {
-                if threeUniqueProjectNamesSet.count >= 3 {
-                    break
-                }
-                var newString = "\(record.client)" + ": \(record.project)"
-                if !threeUniqueProjectNamesSet.containsObject(newString) {
-                    threeUniqueProjectNamesSet.addObject(newString)
-                    resultsTuplesArray.append((newString, record))
+        println("count of user records: \(self.userRecordsSortedByDateInTuples!.count)")
+        
+        if self.userRecordsSortedByDateInTuples!.count > 0 {
+            for i in 0..< self.userRecordsSortedByDateInTuples!.count {
+                var currentTuple = userRecords[i]
+                for record:Record in currentTuple.1 {
+                    if threeUniqueProjectNamesSet.count >= 3 {
+                        break
+                    }
+                    var newString = "\(record.client)" + ": \(record.project)"
+                    if !threeUniqueProjectNamesSet.containsObject(newString) {
+                        threeUniqueProjectNamesSet.addObject(newString)
+                        resultsTuplesArray.append((newString, record))
+                    }
                 }
             }
         }
+        
+        
+
         
         return resultsTuplesArray
     }
