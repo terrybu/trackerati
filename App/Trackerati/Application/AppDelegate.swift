@@ -91,8 +91,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         #if DEBUG
             FirebaseManager.sharedManager.configureWithDatabaseURL(firebaseAbsoluteURLDebug)
+            println("debug mode")
         #else
             FirebaseManager.sharedManager.configureWithDatabaseURL(firebaseAbsoluteURLRelease)
+            println("using production db")
         #endif
         
     }

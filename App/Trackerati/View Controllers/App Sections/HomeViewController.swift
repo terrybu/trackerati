@@ -8,9 +8,9 @@
 
 import AVFoundation
 
-enum FloatingButtonCellIndex: Int {
-    case FirstButtonFromBottom = 0, SecondButtonFromBottom, ThirdButtonFromBottom, PinNewprojectButton
-}
+private let kFloatingBluePlusIcon = "floatingBluePlusCircle"
+private let kFloatingOrangePinIcon = "floatingPinCircle"
+private let kPinOrRemoveString = "Pin or Remove Projects"
 
 class HomeViewController : MainViewController, UITableViewDelegate, UITableViewDataSource, FloatMenuDelegate
 {
@@ -41,6 +41,7 @@ class HomeViewController : MainViewController, UITableViewDelegate, UITableViewD
     
     override func loadView() {
         super.loadView()
+        println("loadview hit from homevc")
         audioPlayer = AVAudioPlayer(contentsOfURL: dingSound, error: nil)
         audioPlayer.prepareToPlay()
         
@@ -51,20 +52,18 @@ class HomeViewController : MainViewController, UITableViewDelegate, UITableViewD
         setupFloatingActionButtonWithPinImage()
         refreshFloatingDefaultsLabelsFromUserRecords()
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "userRecordsRedownloaded", name: kUserInfoDownloadedNotificationName, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "userJustPinnedOrUnpinnedSomething", name: kUserJustPinnedOrUnpinnedNotificationName, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "userRecordsRedownloaded", name: kUserInfoDownloadedNotificationName, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "userJustDeletedSomething", name: kUserJustDeletedNotificationName, object: nil)
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(true)
-    
-//        if pinnedProjectsTableView != nil {
-//            pinnedProjectsTableView.reloadData()
+//        if floatingActionButton != nil {
+//            println("view will appear hit from homevc")
+//            refreshFloatingDefaultsLabelsFromUserRecords()
+//            //i had this as a way to make sure the floating default action cells get refreshed but since it gets hit on notification already, do I not need this?
 //        }
-        if floatingActionButton != nil {
-            refreshFloatingDefaultsLabelsFromUserRecords()
-        }
     }
     
     
@@ -74,22 +73,39 @@ class HomeViewController : MainViewController, UITableViewDelegate, UITableViewD
         let floatFrame = CGRectMake(UIScreen.mainScreen().bounds.size.width-44-22, UIScreen.mainScreen().bounds.size.height-44-22, 40, 44)
         floatingActionButton = VCFloatingActionButton(frame: floatFrame, normalImage: UIImage(named: "plus"), andPressedImage: UIImage(named:"cross"), withScrollview: pinnedProjectsTableView)
         
-        floatingActionButton!.imageArray = ["floatingBluePlusCircle", "floatingBluePlusCircle", "floatingBluePlusCircle", "floatingPinCircle" ]
-        
-        floatingActionButton!.delegate = self
-        floatingActionButton!.hideWhileScrolling = true
-        self.view.addSubview(floatingActionButton!)
+        if let actionButton = floatingActionButton {
+            actionButton.delegate = self
+            actionButton.hideWhileScrolling  = true
+            self.view.addSubview(floatingActionButton!)
+        }
     }
     
     private func refreshFloatingDefaultsLabelsFromUserRecords() {
-        FirebaseManager.sharedManager.tuplesForFloatingDefaultsLabelsArray = FirebaseManager.sharedManager.returnThreeLatestUniqueClientProjectsFromUserRecords()
-        var whatever = FirebaseManager.sharedManager.tuplesForFloatingDefaultsLabelsArray
-        floatingActionButton!.labelArray = [
-            FirebaseManager.sharedManager.tuplesForFloatingDefaultsLabelsArray![FloatingButtonCellIndex.FirstButtonFromBottom.rawValue].0,
-            FirebaseManager.sharedManager.tuplesForFloatingDefaultsLabelsArray![FloatingButtonCellIndex.SecondButtonFromBottom.rawValue].0,
-            FirebaseManager.sharedManager.tuplesForFloatingDefaultsLabelsArray![FloatingButtonCellIndex.ThirdButtonFromBottom.rawValue].0,
-            "Pin or Remove Projects"
-        ]
+        FirebaseManager.sharedManager.tuplesForFloatingDefaultsLabelsArray = FirebaseManager.sharedManager.returnLatestUniqueClientProjectsFromUserRecords()
+        if let actionButton = floatingActionButton {
+            if let tuplesArray = FirebaseManager.sharedManager.tuplesForFloatingDefaultsLabelsArray {
+                
+                //we found 3 unique records from history
+                //pinning icon goes up top, 3 other rows below
+                if tuplesArray.count == 3 {
+                    actionButton.imageArray = [kFloatingBluePlusIcon, kFloatingBluePlusIcon, kFloatingBluePlusIcon, kFloatingOrangePinIcon]
+                    actionButton.labelArray = [tuplesArray[0].0, tuplesArray[1].0, tuplesArray[2].0, kPinOrRemoveString]
+                }
+                else if tuplesArray.count == 2 {
+                    actionButton.imageArray = [kFloatingBluePlusIcon, kFloatingBluePlusIcon, kFloatingOrangePinIcon]
+                    actionButton.labelArray = [tuplesArray[0].0, tuplesArray[1].0,kPinOrRemoveString]
+                }
+                else if tuplesArray.count == 1 {
+                    actionButton.imageArray = [kFloatingBluePlusIcon, kFloatingOrangePinIcon]
+                    actionButton.labelArray = [tuplesArray[0].0, kPinOrRemoveString]
+                }
+            }
+            else {
+                //if no tuples came back, that means no records found
+                actionButton.imageArray = [kFloatingOrangePinIcon]
+                actionButton.labelArray = [kPinOrRemoveString]
+            }
+        }
     }
 
     
@@ -116,7 +132,7 @@ class HomeViewController : MainViewController, UITableViewDelegate, UITableViewD
     
     @objc
     private func userRecordsRedownloaded() {
-        //We need to redownload records from firebase after we post our floating defaults so then we refresh the buttons
+        //We need to redownload records from firebase AFTER we use our floating defaults so that we can refresh the what the button cells show right afterewards
         refreshFloatingDefaultsLabelsFromUserRecords()
     }
     
@@ -227,25 +243,25 @@ class HomeViewController : MainViewController, UITableViewDelegate, UITableViewD
     // MARK: Floating Action Button Delegate
     
     func didSelectMenuOptionAtIndex(row: Int) {
-        if (row == FloatingButtonCellIndex.PinNewprojectButton.rawValue) {
+        
+        if (floatingActionButton!.labelArray[row] as! String == kPinOrRemoveString) {
             displayProjectsViewController()
 //            audioPlayer = AVAudioPlayer(contentsOfURL: tapSound, error: nil)
             //Not sure if I like this particular sound - couldn't find a good sound for it
         }
         else {
             self.audioPlayer = AVAudioPlayer(contentsOfURL: self.dingSound, error: nil)
-            self.audioPlayer.play()
             let hud = MBProgressHUD.showHUDAddedTo(view, animated: true)
             let displayName = FirebaseManager.sharedManager.tuplesForFloatingDefaultsLabelsArray![row].0
             hud.labelText = "Logging \(displayName)"
             
             FirebaseManager.sharedManager.saveSelectedDefaultRecord(FirebaseManager.sharedManager.tuplesForFloatingDefaultsLabelsArray![row].1, completion: { (error) -> Void in
                 if (error == nil) {
-                    MBProgressHUD.showCompletionHUD(onView: self.view, duration: 2, customDoneText: "\(displayName) logged!", completion: nil)
+                    self.audioPlayer.play()
+                    MBProgressHUD.showCompletionHUD(onView: self.view, duration: 1.5, customDoneText: "\(displayName) logged!", completion: nil)
                 }
             })
         }
-//        audioPlayer.play()
     }
 
     deinit {

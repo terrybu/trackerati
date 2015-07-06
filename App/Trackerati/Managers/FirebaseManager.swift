@@ -323,25 +323,41 @@ class FirebaseManager : NSObject
         return true
     }
     
-    func returnThreeLatestUniqueClientProjectsFromUserRecords() -> [(String, Record)] {
+    func returnLatestUniqueClientProjectsFromUserRecords() -> [(String, Record)]? {
         
-        var threeUniqueProjectNamesSet = NSMutableOrderedSet()
+        var uniqueProjectNamesSet = NSMutableOrderedSet()
         var resultsTuplesArray = [(String, Record)]()
         
-        for i in 0..<self.userRecordsSortedByDateInTuples!.count {
-            var currentTuple = self.userRecordsSortedByDateInTuples![i]
-            for record:Record in currentTuple.1 {
-                if threeUniqueProjectNamesSet.count >= 3 {
-                    break
-                }
-                var newString = "\(record.client)" + ": \(record.project)"
-                if !threeUniqueProjectNamesSet.containsObject(newString) {
-                    threeUniqueProjectNamesSet.addObject(newString)
-                    resultsTuplesArray.append((newString, record))
+        println("count of user records: \(self.userRecordsSortedByDateInTuples!.count)")
+        
+        //we need to find how many unique project names are in there
+        //if it's 3 or more, then we show the latest 3
+        //if it's 2, then we show the two
+        //if it's 1, then we show the only one
+        //if it's 0, we return nil
+        
+        if let userRecords = self.userRecordsSortedByDateInTuples {
+            if userRecords.count > 0 {
+                for i in 0...userRecords.count - 1 {
+                    var currentTuple = userRecords[i]
+                    for record:Record in currentTuple.1 {
+                        if uniqueProjectNamesSet.count >= 3 {
+                            break
+                        }
+                        var newString = "\(record.client)" + ": \(record.project)"
+                        if !uniqueProjectNamesSet.containsObject(newString) {
+                            uniqueProjectNamesSet.addObject(newString)
+                            resultsTuplesArray.append((newString, record))
+                        }
+                    }
                 }
             }
+            else {
+                println("user records was nil")
+                return nil
+            }
         }
-        
+
         return resultsTuplesArray
     }
     
@@ -371,24 +387,28 @@ class FirebaseManager : NSObject
                 
                 if let loggedInUserInfo = users.objectForKey(firebaseUsername) as? NSDictionary { // get dictionary associated with loggin in user
                     
-                    if let recordsKey = loggedInUserInfo.allKeys.first as? String { // get the key, "records", for getting dictionary of all of the user's records
-                        
-                        if let firebaseRecords = loggedInUserInfo.objectForKey(recordsKey) as? NSDictionary { // get dictionary of all records for user
-                            
-                            for recordKey in firebaseRecords.allKeys { // loop through all hashes
+                    //before having this loop, we would check for the records key by looking at allKeys.first but if a user ever input profile info to Firebase through Android app, profile will be the first key and not records. 
+                    //Instead, we just needed to make sure to use "records" as a key and loop over the keys instead of assuming it will be the first key
+                    for key in loggedInUserInfo.allKeys {
+                        let keyString = key as! String
+                        if keyString == "records" {
+                            if let firebaseRecords = loggedInUserInfo.objectForKey(keyString) as? NSDictionary { // get dictionary of all records for user
                                 
-                                if let recordDictionary = firebaseRecords.objectForKey(recordKey) as? NSDictionary { // get dictionary for individual record for specific hash
+                                for recordKey in firebaseRecords.allKeys { // loop through all hashes
                                     
-                                    let id = recordKey as! String
-                                    let client = recordDictionary.objectForKey(RecordKey.Client.rawValue) as! String
-                                    let date = recordDictionary.objectForKey(RecordKey.Date.rawValue) as! String
-                                    let hours = recordDictionary.objectForKey(RecordKey.Hours.rawValue) as! String
-                                    let project = recordDictionary.objectForKey(RecordKey.Project.rawValue) as! String
-                                    let status = recordDictionary.objectForKey(RecordKey.Status.rawValue) as! String
-                                    let type = recordDictionary.objectForKey(RecordKey.WorkType.rawValue) as! String
-                                    let comment = recordDictionary.objectForKey(RecordKey.Comment.rawValue) as? String
-                                    let newRecord = Record(id: id, client: client, date: date, hours: hours, project: project, status: status, type: type, comment: comment)
-                                    records.append(newRecord)
+                                    if let recordDictionary = firebaseRecords.objectForKey(recordKey) as? NSDictionary { // get dictionary for individual record for specific hash
+                                        
+                                        let id = recordKey as! String
+                                        let client = recordDictionary.objectForKey(RecordKey.Client.rawValue) as! String
+                                        let date = recordDictionary.objectForKey(RecordKey.Date.rawValue) as! String
+                                        let hours = recordDictionary.objectForKey(RecordKey.Hours.rawValue) as! String
+                                        let project = recordDictionary.objectForKey(RecordKey.Project.rawValue) as! String
+                                        let status = recordDictionary.objectForKey(RecordKey.Status.rawValue) as! String
+                                        let type = recordDictionary.objectForKey(RecordKey.WorkType.rawValue) as! String
+                                        let comment = recordDictionary.objectForKey(RecordKey.Comment.rawValue) as? String
+                                        let newRecord = Record(id: id, client: client, date: date, hours: hours, project: project, status: status, type: type, comment: comment)
+                                        records.append(newRecord)
+                                    }
                                 }
                             }
                         }

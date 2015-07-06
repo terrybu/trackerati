@@ -362,7 +362,6 @@ CGFloat buttonToScreenHeight;
     cell.imgView.image = [UIImage imageNamed:[_imageArray objectAtIndex:indexPath.row]];
     cell.title.text    = [_labelArray objectAtIndex:indexPath.row];
     
-    
     //TRAC_66 (Grayout cell if selected already for today Logic)
     
     //take labelArray objectatindexpath.row (probably like "Hackerati: Marketing")
