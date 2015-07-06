@@ -53,6 +53,7 @@ class HomeViewController : MainViewController, UITableViewDelegate, UITableViewD
         refreshFloatingDefaultsLabelsFromUserRecords()
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "userJustPinnedOrUnpinnedSomething", name: kUserJustPinnedOrUnpinnedNotificationName, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "userRecordsRedownloaded", name: kUserInfoDownloadedNotificationName, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "userJustDeletedSomething", name: kUserJustDeletedNotificationName, object: nil)
     }
     
@@ -131,7 +132,7 @@ class HomeViewController : MainViewController, UITableViewDelegate, UITableViewD
     
     @objc
     private func userRecordsRedownloaded() {
-        //We need to redownload records from firebase AFTER we use our floating defaults so that we can refresh the what the button cells show
+        //We need to redownload records from firebase AFTER we use our floating defaults so that we can refresh the what the button cells show right afterewards
         refreshFloatingDefaultsLabelsFromUserRecords()
     }
     
@@ -256,9 +257,8 @@ class HomeViewController : MainViewController, UITableViewDelegate, UITableViewD
             
             FirebaseManager.sharedManager.saveSelectedDefaultRecord(FirebaseManager.sharedManager.tuplesForFloatingDefaultsLabelsArray![row].1, completion: { (error) -> Void in
                 if (error == nil) {
-                    NSNotificationCenter.defaultCenter().addObserver(self, selector: "userRecordsRedownloaded", name: kUserInfoDownloadedNotificationName, object: nil)
                     self.audioPlayer.play()
-                    MBProgressHUD.showCompletionHUD(onView: self.view, duration: 2, customDoneText: "\(displayName) logged!", completion: nil)
+                    MBProgressHUD.showCompletionHUD(onView: self.view, duration: 1.5, customDoneText: "\(displayName) logged!", completion: nil)
                 }
             })
         }

@@ -388,7 +388,7 @@ class FirebaseManager : NSObject
                 if let loggedInUserInfo = users.objectForKey(firebaseUsername) as? NSDictionary { // get dictionary associated with loggin in user
                     
                     //before having this loop, we would check for the records key by looking at allKeys.first but if a user ever input profile info to Firebase through Android app, profile will be the first key and not records. 
-                    //Instead, we just needed to make sure to use "records" as a key and loop over the keys instead of assuming it will be the first key 
+                    //Instead, we just needed to make sure to use "records" as a key and loop over the keys instead of assuming it will be the first key
                     for key in loggedInUserInfo.allKeys {
                         let keyString = key as! String
                         if keyString == "records" {
