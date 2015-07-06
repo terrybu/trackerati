@@ -80,7 +80,7 @@ class HomeViewController : MainViewController, UITableViewDelegate, UITableViewD
     }
     
     private func refreshFloatingDefaultsLabelsFromUserRecords() {
-        FirebaseManager.sharedManager.tuplesForFloatingDefaultsLabelsArray = FirebaseManager.sharedManager.returnThreeLatestUniqueClientProjectsFromUserRecords()
+        FirebaseManager.sharedManager.tuplesForFloatingDefaultsLabelsArray = FirebaseManager.sharedManager.returnLatestUniqueClientProjectsFromUserRecords()
         if let actionButton = floatingActionButton {
             if let tuplesArray = FirebaseManager.sharedManager.tuplesForFloatingDefaultsLabelsArray {
                 
@@ -91,13 +91,16 @@ class HomeViewController : MainViewController, UITableViewDelegate, UITableViewD
                     actionButton.labelArray = [tuplesArray[0].0, tuplesArray[1].0, tuplesArray[2].0, kPinOrRemoveString]
                 }
                 else if tuplesArray.count == 2 {
-                    
+                    actionButton.imageArray = [kFloatingBluePlusIcon, kFloatingBluePlusIcon, kFloatingOrangePinIcon]
+                    actionButton.labelArray = [tuplesArray[0].0, tuplesArray[1].0,kPinOrRemoveString]
                 }
                 else if tuplesArray.count == 1 {
-                    
+                    actionButton.imageArray = [kFloatingBluePlusIcon, kFloatingOrangePinIcon]
+                    actionButton.labelArray = [tuplesArray[0].0, kPinOrRemoveString]
                 }
             }
             else {
+                //if no tuples came back, that means no records found
                 actionButton.imageArray = [kFloatingOrangePinIcon]
                 actionButton.labelArray = [kPinOrRemoveString]
             }
