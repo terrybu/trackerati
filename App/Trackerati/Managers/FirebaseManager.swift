@@ -323,32 +323,35 @@ class FirebaseManager : NSObject
         return true
     }
     
-    func returnThreeLatestUniqueClientProjectsFromUserRecords() -> [(String, Record)] {
+    func returnThreeLatestUniqueClientProjectsFromUserRecords() -> [(String, Record)]? {
         
         var threeUniqueProjectNamesSet = NSMutableOrderedSet()
         var resultsTuplesArray = [(String, Record)]()
         
         println("count of user records: \(self.userRecordsSortedByDateInTuples!.count)")
         
-        if self.userRecordsSortedByDateInTuples!.count > 0 {
-            for i in 0..< self.userRecordsSortedByDateInTuples!.count {
-                var currentTuple = userRecords[i]
-                for record:Record in currentTuple.1 {
-                    if threeUniqueProjectNamesSet.count >= 3 {
-                        break
-                    }
-                    var newString = "\(record.client)" + ": \(record.project)"
-                    if !threeUniqueProjectNamesSet.containsObject(newString) {
-                        threeUniqueProjectNamesSet.addObject(newString)
-                        resultsTuplesArray.append((newString, record))
+        if let userRecords = self.userRecordsSortedByDateInTuples {
+            if userRecords.count > 0 {
+                for i in 0...userRecords.count - 1 {
+                    var currentTuple = userRecords[i]
+                    for record:Record in currentTuple.1 {
+                        if threeUniqueProjectNamesSet.count >= 3 {
+                            break
+                        }
+                        var newString = "\(record.client)" + ": \(record.project)"
+                        if !threeUniqueProjectNamesSet.containsObject(newString) {
+                            threeUniqueProjectNamesSet.addObject(newString)
+                            resultsTuplesArray.append((newString, record))
+                        }
                     }
                 }
             }
+            else {
+                println("user records was nil")
+                return nil
+            }
         }
-        
-        
 
-        
         return resultsTuplesArray
     }
     
