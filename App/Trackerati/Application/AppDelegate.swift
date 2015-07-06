@@ -8,6 +8,11 @@
 
 import HockeySDK
 
+enum WeekDayType: Int {
+    case Sunday = 1, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday
+}
+
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
@@ -28,6 +33,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         #endif
     
         configureSingletons()
+        
+        //you need to register for local notifications like below before using them (to play sounds, show badge, etc)
+        application.registerUserNotificationSettings(UIUserNotificationSettings(forTypes: .Sound | .Alert | .Badge, categories: nil))
         resetNotification()
         
         window = UIWindow(frame: UIScreen.mainScreen().bounds)
@@ -42,7 +50,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func applicationDidEnterBackground(application: UIApplication) {
-        configureLocalNotification()
+        configureLocalNotifications()
     }
     
     func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject?) -> Bool {
@@ -50,26 +58,106 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func application(application: UIApplication, didReceiveLocalNotification notification: UILocalNotification) {
-        resetNotification()
+//        resetNotification()
         // TODO: Bring them to new draft for default projects
     }
     
-    private func configureLocalNotification()
+    private func configureLocalNotifications()
     {
-        if TrackeratiUserDefaults.standardDefaults.notificationsOn() && UIApplication.sharedApplication().scheduledLocalNotifications.count < 1 {
-            if let fireTime = TrackeratiUserDefaults.standardDefaults.notificationTime() {
-                
-                let localNotification = UILocalNotification()
-                localNotification.repeatInterval = .CalendarUnitDay
-                localNotification.timeZone = NSTimeZone.defaultTimeZone()
-                localNotification.fireDate = fireTime
-                // TODO: Put "better" alert body
-                localNotification.alertBody = "Ain't nobody got time for that... except for you!"
-                localNotification.applicationIconBadgeNumber = 1
-                UIApplication.sharedApplication().scheduleLocalNotification(localNotification)
-            }
+        if TrackeratiUserDefaults.standardDefaults.notificationsOn() && UIApplication.sharedApplication().scheduledLocalNotifications.count == 0 {
+            fireNotificationsForMonToFri()
+        }
+//        println(UIApplication.sharedApplication().scheduledLocalNotifications)
+    }
+    
+    private func fireNotificationsForMonToFri() {
+        fireNotificationForDay(.Monday)
+        fireNotificationForDay(.Tuesday)
+        fireNotificationForDay(.Wednesday)
+        fireNotificationForDay(.Thursday)
+        fireNotificationForDay(.Friday)
+    }
+    
+    private func fireNotificationForDay(day: WeekDayType) {
+        var fireTime = TrackeratiUserDefaults.standardDefaults.notificationTime()
+        let calendar = NSCalendar.currentCalendar()
+        let comp = calendar.components((.CalendarUnitHour | .CalendarUnitMinute), fromDate: fireTime!)
+        let hour = comp.hour
+        let minute = comp.minute
+        
+        switch (day) {
+        
+        case .Monday:
+            self.fireThisNotificationWeekly(self.setDateComponents(2015, month: 2, day: 23, hour: hour, minute: minute))
+            break
+        
+        case .Tuesday:
+            self.fireThisNotificationWeekly(self.setDateComponents(2015, month: 2, day: 24, hour: hour, minute: minute))
+            break
+        
+        case .Wednesday:
+            self.fireThisNotificationWeekly(self.setDateComponents(2015, month: 2, day: 25, hour: hour, minute: minute))
+            break
+            
+        case .Thursday:
+            self.fireThisNotificationWeekly(self.setDateComponents(2015, month: 2, day: 26, hour: hour, minute: minute))
+            break
+            
+        case .Friday:
+            self.fireThisNotificationWeekly(self.setDateComponents(2015, month: 2, day: 27, hour: hour, minute: minute))
+            break
+        
+        default:
+            break
         }
     }
+    
+    private func setDateComponents(year: Int, month: Int, day: Int, hour: Int, minute: Int) -> NSDateComponents {
+        var dateComponents = NSDateComponents()
+        dateComponents.year = year
+        dateComponents.month = month
+        dateComponents.day = day
+        dateComponents.hour = hour
+        dateComponents.minute = minute
+        return dateComponents
+    }
+    
+    private func fireThisNotificationWeekly(dateComponents: NSDateComponents) {
+        let localNotification = UILocalNotification()
+        localNotification.repeatInterval = NSCalendarUnit.WeekCalendarUnit
+        localNotification.timeZone = NSTimeZone.defaultTimeZone()
+        localNotification.fireDate = NSCalendar.currentCalendar().dateFromComponents(dateComponents)
+        localNotification.alertBody = "Did you record your hours on Trackerati today?"
+        localNotification.alertAction = "Record"
+        localNotification.soundName = UILocalNotificationDefaultSoundName
+        
+//        println(localNotification.description)
+        UIApplication.sharedApplication().scheduleLocalNotification(localNotification)
+    }
+    
+    
+    
+    
+    //To-DO: we need this below to find if we are trying to fire on a Holiday later
+    private func findNextNotificationDate(notification: UILocalNotification)  -> NSDate {
+        var calendar = NSCalendar.currentCalendar()
+        var difference = calendar.components(notification.repeatInterval, fromDate: notification.fireDate!, toDate: NSDate(), options: NSCalendarOptions.allZeros)
+        var nextFireDate:NSDate! = calendar.dateByAddingComponents(difference, toDate: notification.fireDate!, options: NSCalendarOptions.allZeros)
+        if (nextFireDate.timeIntervalSinceDate(NSDate()) < 0) {
+            var extraDay = NSDateComponents()
+            extraDay.day = 1
+            nextFireDate = calendar.dateByAddingComponents(extraDay, toDate: nextFireDate!, options: NSCalendarOptions.allZeros)
+        }
+        return nextFireDate
+    }
+    
+    private func findWeekdayFrom(date: NSDate) -> Int {
+        var calendar = NSCalendar.currentCalendar()
+        var components:NSDateComponents = calendar.components(NSCalendarUnit.CalendarUnitWeekday, fromDate: date)
+        return components.weekday
+        //Sunday 1 Monday 2 Tuesday 3 Wed 4 Thurs 5 Friday 6 Saturday 7
+    }
+    
     
     private func resetNotification()
     {
