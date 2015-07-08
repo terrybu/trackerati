@@ -470,6 +470,7 @@
 				01498B111B01027E00C7C395 /* Frameworks */,
 				01498B121B01027E00C7C395 /* Resources */,
 				BAE4BBF613F21C416523835B /* Copy Pods Resources */,
+				D9ECCD0B1B4DAD5200045867 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -592,6 +593,18 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/../Pods/Target Support Files/Pods-Trackerati/Pods-Trackerati-resources.sh\"\n";
 			showEnvVarsInLog = 0;
+		};
+		D9ECCD0B1B4DAD5200045867 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 8;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+			shellScript = "SCRIPT=`/usr/bin/find \"${SRCROOT}\" -name newrelic_postbuild.sh | head -n 1`\n\n/bin/sh \"${SCRIPT}\" \"AAd558e763f773d7bb68194513db0dcdac6aeff656\"";
 		};
 /* End PBXShellScriptBuildPhase section */
 

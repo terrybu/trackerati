@@ -6,4 +6,6 @@ target 'Trackerati' do
 	pod 'Firebase'
 	pod 'google-plus-ios-sdk'
 	pod 'MBProgressHUD'
+        pod 'NewRelicAgent'
+
 end
