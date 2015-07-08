@@ -31,7 +31,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         #if RELEASE
         configureHockeySDK()
         #endif
-    
+
+        NewRelicAgent.startWithApplicationToken("AAd558e763f773d7bb68194513db0dcdac6aeff656")
+
         configureSingletons()
         
         //you need to register for local notifications like below before using them (to play sounds, show badge, etc)

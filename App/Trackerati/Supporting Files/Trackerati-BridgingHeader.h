@@ -16,5 +16,6 @@
 #import <AFNetworking/AFNetworking.h>
 #import "MBProgressHUD.h"
 #import "VCFloatingActionButton.h"
+#import <NewRelicAgent/NewRelic.h>
 
 #endif
