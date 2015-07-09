@@ -11,6 +11,8 @@
 @interface FloatTableViewCell : UITableViewCell
 @property (weak, nonatomic) IBOutlet UIImageView *imgView;
 @property (weak, nonatomic) IBOutlet UILabel *title;
+@property (weak, nonatomic) IBOutlet UILabel *hoursLabel;
+
 @property (strong,nonatomic) UIView *overlay;
 
 @property BOOL alreadyUsedThisFloatingDefaultForTodayFlag;

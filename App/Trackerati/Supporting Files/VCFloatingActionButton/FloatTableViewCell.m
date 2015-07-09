@@ -30,6 +30,7 @@
 
 -(void)setTitle:(NSString*)txt andImage:(UIImage*)img
 {
+    
 //    self.title.text = txt;
 //    
 //    CGFloat width = ceil([self.title.text sizeWithAttributes:@{NSFontAttributeName: self.title.font}].width);
