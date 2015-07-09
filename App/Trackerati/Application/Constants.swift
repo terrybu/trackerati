@@ -21,3 +21,6 @@ let kRecordHoursNames = ["0.5", "1.0", "1.5", "2.0", "2.5", "3.0", "3.5", "4.0",
 // MARK: Hackerati Colors
 let kHackeratiOrange = "#F47C2E"
 let kHackeratiBlue = "#337CB7"
+
+// MARK: Last Saved Record System
+let kLastSavedRecord = "lastSavedRecordKey"

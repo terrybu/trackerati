@@ -44,6 +44,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let containerViewController = ContainerViewController(centerViewController: HomeViewController(), sideMenuViewController: SideMenuViewController(items: SideMenuSelection.AllSelections))
         window?.rootViewController = containerViewController
         window?.makeKeyAndVisible()
+
         return true
     }
     

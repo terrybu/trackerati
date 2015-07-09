@@ -25,9 +25,9 @@ enum RecordKeyIndex: Int {
 }
 
 
-class Record : NSObject
+class Record : NSObject, NSCoding
 {
-    let id: String
+    var id: String
     var client: String
     var date: String
     var hours: String
@@ -60,6 +60,29 @@ class Record : NSObject
         //default values when you are using the Form to submit a new record 
         self.init(id: "", client: client, date: dateFormatter.stringFromDate(NSDate()), hours: "8.0", project: project, status: "1", type: "1", comment: nil)
     }
+    
+    required init(coder decoder: NSCoder) {
+        self.id = decoder.decodeObjectForKey("id") as! String
+        self.client = decoder.decodeObjectForKey("client") as! String
+        self.date = decoder.decodeObjectForKey("date") as! String
+        self.hours = decoder.decodeObjectForKey("hours") as! String
+        self.project = decoder.decodeObjectForKey("project") as! String
+        self.status = decoder.decodeObjectForKey("status") as! String
+        self.type = decoder.decodeObjectForKey("type") as! String
+        self.comment = decoder.decodeObjectForKey("comment") as? String
+    }
+    
+    func encodeWithCoder(coder: NSCoder) {
+        coder.encodeObject(self.id, forKey: "id")
+        coder.encodeObject(self.client, forKey: "client")
+        coder.encodeObject(self.date, forKey: "date")
+        coder.encodeObject(self.hours, forKey: "hours")
+        coder.encodeObject(self.project, forKey: "project")
+        coder.encodeObject(self.status, forKey: "status")
+        coder.encodeObject(self.type, forKey: "type")
+        coder.encodeObject(self.comment, forKey: "comment")
+    }
+    
     
     func valueForType(recordType: RecordKey, rawValue: Bool) -> String?
     {
