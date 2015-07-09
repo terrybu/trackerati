@@ -57,16 +57,6 @@ class HomeViewController : MainViewController, UITableViewDelegate, UITableViewD
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "userJustDeletedSomething", name: kUserJustDeletedNotificationName, object: nil)
     }
     
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(true)
-//        if floatingActionButton != nil {
-//            println("view will appear hit from homevc")
-//            refreshFloatingDefaultsLabelsFromUserRecords()
-//            //i had this as a way to make sure the floating default action cells get refreshed but since it gets hit on notification already, do I not need this?
-//        }
-    }
-    
-    
     
     // MARK: SET-UP
     private func setupFloatingActionButtonWithPinImage() {

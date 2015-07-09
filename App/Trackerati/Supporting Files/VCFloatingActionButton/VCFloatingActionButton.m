@@ -359,14 +359,29 @@ CGFloat buttonToScreenHeight;
     //    cell.imgView.image = [UIImage imageNamed:[[_menuItemSet allKeys]objectAtIndex:indexPath.row]];
     //        cell.title.text = [[_menuItemSet allValues]objectAtIndex:indexPath.row];
     
-    cell.imgView.image = [UIImage imageNamed:[_imageArray objectAtIndex:indexPath.row]];
-    cell.title.text    = [_labelArray objectAtIndex:indexPath.row];
     
-    //TRAC_66 (Grayout cell if selected already for today Logic)
-    
-    //take labelArray objectatindexpath.row (probably like "Hackerati: Marketing")
     FirebaseManager *firebaseManager = [FirebaseManager sharedManager];
     Record *record = [firebaseManager findRecordThatCorrespondsToFloatingCell:[_labelArray objectAtIndex:indexPath.row] indexPath: indexPath];
+    
+    NSString *imageString = [_imageArray objectAtIndex:indexPath.row];
+    cell.imgView.image = [UIImage imageNamed:imageString];
+    
+    NSString *labelString = [_labelArray objectAtIndex:indexPath.row];
+    if ([imageString isEqualToString:@"floatingPinCircle"]) {
+        cell.title.text = labelString;
+    }
+    else {
+        cell.title.text = [NSString stringWithFormat:@"Quick-log %@", labelString];
+        [cell.title setFont:[UIFont systemFontOfSize:16]];
+        UILabel *newHoursLabel = [[UILabel alloc]initWithFrame:CGRectMake(cell.frame.size.width - 100, 40, 60, 10)];
+        newHoursLabel.text = [NSString stringWithFormat:@"%@ hours", record.hours];
+        [newHoursLabel setFont:[UIFont systemFontOfSize:12]];
+        newHoursLabel.textColor = [UIColor whiteColor];
+        [cell.contentView addSubview:newHoursLabel];
+    }
+    
+
+    //TRAC_66 (Grayout cell if selected already for today Logic)
     //now we take this record and see if that record has the same date as today --> which means it was posted already for today and don't need to be selected
     
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc]init];
