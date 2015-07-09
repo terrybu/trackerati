@@ -8,7 +8,6 @@
 
 class LastSavedManager {
     
-    
     class var sharedManager : LastSavedManager {
         struct Static {
             static var instance : LastSavedManager?
@@ -24,8 +23,27 @@ class LastSavedManager {
         var data = NSUserDefaults.standardUserDefaults().dataForKey(kLastSavedRecord)
         if let recordsArrayData = data {
             var unarchivedRecordsArray: AnyObject? = NSKeyedUnarchiver.unarchiveObjectWithData(recordsArrayData)
-            println(unarchivedRecordsArray!.description)
             return unarchivedRecordsArray as? NSMutableArray
+        }
+        return nil
+    }
+    
+    func getRecordForClient(clientString: String, projectString: String) -> Record? {
+        var resultRecord = Record?()
+        var array = getLastSavedRecordsArrayFromDefaults()
+        if let lastRecordsArray = array {
+            lastRecordsArray.enumerateObjectsUsingBlock({ (object: AnyObject!, idx: Int, stop: UnsafeMutablePointer<ObjCBool>) -> Void in
+                var thisRecord = object as! Record
+                println("\(thisRecord.client) \(thisRecord.project)")
+                if thisRecord.client == clientString && thisRecord.project == projectString {
+                    resultRecord = thisRecord
+                    var shouldStop: ObjCBool = true
+                    stop.initialize(shouldStop)
+                }
+            })
+        }
+        if let result = resultRecord {
+            return result
         }
         return nil
     }
