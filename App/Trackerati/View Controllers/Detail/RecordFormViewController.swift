@@ -90,6 +90,18 @@ class RecordFormViewController : UIViewController, UITextFieldDelegate, UIPicker
         commentsTextField.delegate = self
         commentsTextField.text = record.comment
         
+        if saveOnlyFormForAddingNewRecord {
+            //Last Saved Manager into play
+            var lastSavedData = LastSavedManager.sharedManager.getRecordForClient(self.record.client, projectString: self.record.project)
+            if let lastSavedRecordForProject = lastSavedData {
+                println(lastSavedRecordForProject)
+                record.type = lastSavedRecordForProject.type
+                typeButton.setTitle(record.valueForType(worktypeRecordType, rawValue: false), forState: .Normal)
+                hoursTextField.text = lastSavedRecordForProject.hours
+                commentsTextField.text = lastSavedRecordForProject.comment
+            }
+        }
+        
         if saveOnlyFormForAddingNewRecord || editingForm{
             setupSaveButton()
         }
@@ -210,12 +222,24 @@ class RecordFormViewController : UIViewController, UITextFieldDelegate, UIPicker
                 activeHourPickerView = pickerView
                 
                 //picker for hours needs to default to a certain value instead of all the way down in 0.5
-                var indexOfCurrentRecord = find(kRecordHoursNames, record.hours)
-                if let index = indexOfCurrentRecord as Int! {
-                    pickerView.selectRow(index, inComponent: 0, animated: false)
+                if saveOnlyFormForAddingNewRecord {
+                    //this is for all other cases (making a new form). This should now use last saved record
+                    var lastSavedRecord = LastSavedManager.sharedManager.getRecordForClient(self.record.client, projectString: self.record.project)
+                    if let lastSaved = lastSavedRecord {
+                        pickerView.selectRow(find(kRecordHoursNames, lastSaved.hours)!, inComponent:0, animated: false)
+                    }
+                    else {
+                        //If there was no last saved record, default to 8.0
+                        pickerView.selectRow(find(kRecordHoursNames, "8.0")!, inComponent:0, animated: false)
+                    }
                 }
                 else {
-                    pickerView.selectRow(find(kRecordHoursNames, "8.0")!, inComponent:0, animated: false)
+                    //we are editing
+                    var indexOfCurrentRecord = find(kRecordHoursNames, record.hours)
+                    if let index = indexOfCurrentRecord as Int! {
+                        //this is when we are editing form. Picker should start with the already inputted hour
+                        pickerView.selectRow(index, inComponent: 0, animated: false)
+                    }
                 }
                 
                 return pickerView
@@ -318,6 +342,9 @@ class RecordFormViewController : UIViewController, UITextFieldDelegate, UIPicker
         tempRecord.type = record.type
         tempRecord.hours = hoursTextField.text
         tempRecord.comment = commentsTextField.text
+        
+        //Last Saved Record must save this
+        LastSavedManager.sharedManager.saveRecordForLastSavedRecords(tempRecord)
         
         FirebaseManager.sharedManager.saveNewRecord(tempRecord, completion: { error in
             if error == nil {

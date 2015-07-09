@@ -41,7 +41,7 @@ class HomeViewController : MainViewController, UITableViewDelegate, UITableViewD
     
     override func loadView() {
         super.loadView()
-        println("loadview hit from homevc")
+//        println("loadview hit from homevc")
         audioPlayer = AVAudioPlayer(contentsOfURL: dingSound, error: nil)
         audioPlayer.prepareToPlay()
         

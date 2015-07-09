@@ -64,6 +64,7 @@
 		D9D2A4861B31CF95005DDA70 /* UIViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9D2A4851B31CF95005DDA70 /* UIViewControllerExtension.swift */; };
 		D9E536161B2A1FE100A1400B /* VCFloatingActionButton.m in Sources */ = {isa = PBXBuildFile; fileRef = D9E536131B2A1FE100A1400B /* VCFloatingActionButton.m */; };
 		D9E536181B2A2BB700A1400B /* NewProjectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9E536171B2A2BB700A1400B /* NewProjectViewController.swift */; };
+		D9ECCD0E1B4DB5FC00045867 /* LastSavedManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9ECCD0D1B4DB5FC00045867 /* LastSavedManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -144,6 +145,7 @@
 		D9E536121B2A1FE100A1400B /* VCFloatingActionButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VCFloatingActionButton.h; sourceTree = "<group>"; };
 		D9E536131B2A1FE100A1400B /* VCFloatingActionButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VCFloatingActionButton.m; sourceTree = "<group>"; };
 		D9E536171B2A2BB700A1400B /* NewProjectViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NewProjectViewController.swift; path = "App Sections/NewProjectViewController.swift"; sourceTree = "<group>"; };
+		D9ECCD0D1B4DB5FC00045867 /* LastSavedManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LastSavedManager.swift; sourceTree = "<group>"; };
 		FC4437DDCAA1EBF64F6F5D62 /* Pods-Trackerati.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Trackerati.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-Trackerati/Pods-Trackerati.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -186,6 +188,7 @@
 			children = (
 				013C5A121B012E06002C4020 /* GoogleLoginManager.swift */,
 				0170E43D1B026D8000D593C3 /* FirebaseManager.swift */,
+				D9ECCD0D1B4DB5FC00045867 /* LastSavedManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -634,6 +637,7 @@
 				0170E4481B04E37C00D593C3 /* SideMenuViewController.swift in Sources */,
 				D9B422151B41986800EAFB6D /* EmploymentStatusCellTableViewCell.swift in Sources */,
 				D9E536161B2A1FE100A1400B /* VCFloatingActionButton.m in Sources */,
+				D9ECCD0E1B4DB5FC00045867 /* LastSavedManager.swift in Sources */,
 				0170E4541B0542A900D593C3 /* LoginScreen.swift in Sources */,
 				D9E536181B2A2BB700A1400B /* NewProjectViewController.swift in Sources */,
 				0170E4441B02985100D593C3 /* User.swift in Sources */,

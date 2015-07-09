@@ -328,7 +328,7 @@ class FirebaseManager : NSObject
         var uniqueProjectNamesSet = NSMutableOrderedSet()
         var resultsTuplesArray = [(String, Record)]()
         
-        println("count of user records: \(self.userRecordsSortedByDateInTuples!.count)")
+//        println("count of user records: \(self.userRecordsSortedByDateInTuples!.count)")
         
         //we need to find how many unique project names are in there
         //if it's 3 or more, then we show the latest 3
