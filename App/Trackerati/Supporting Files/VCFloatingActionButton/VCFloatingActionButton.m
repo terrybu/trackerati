@@ -8,6 +8,7 @@
 
 #import "VCFloatingActionButton.h"
 #import "FloatTableViewCell.h"
+#import "PinButtonCell.h"
 #import "Trackerati-Swift.h"
 #import <QuartzCore/QuartzCore.h>
 
@@ -345,86 +346,105 @@ CGFloat buttonToScreenHeight;
 
 -(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSString *identifier = @"cell";
-    FloatTableViewCell *cell = [_menuTable dequeueReusableCellWithIdentifier:identifier];
-    if (!cell)
-    {
-        [_menuTable registerNib:[UINib nibWithNibName:@"FloatTableViewCell" bundle:nil]forCellReuseIdentifier:identifier];
-        cell = [_menuTable dequeueReusableCellWithIdentifier:identifier];
-    }
-    
-    //    NSLog(@"%@",[_menuItemSet allKeys]);
-    //    NSLog(@"%@",[_menuItemSet allValues]);
-    
-    //    cell.imgView.image = [UIImage imageNamed:[[_menuItemSet allKeys]objectAtIndex:indexPath.row]];
-    //        cell.title.text = [[_menuItemSet allValues]objectAtIndex:indexPath.row];
-    
+    static NSString *pinIdentifier = @"pinIdentifier";
+    static NSString *floatingIdentifier = @"floatingIdentifier";
     
     FirebaseManager *firebaseManager = [FirebaseManager sharedManager];
     Record *record = [firebaseManager findRecordThatCorrespondsToFloatingCell:[_labelArray objectAtIndex:indexPath.row] indexPath: indexPath];
-    
     NSString *imageString = [_imageArray objectAtIndex:indexPath.row];
-    cell.imgView.image = [UIImage imageNamed:imageString];
-    
     NSString *labelString = [_labelArray objectAtIndex:indexPath.row];
+
     if ([imageString isEqualToString:@"floatingPinCircle"]) {
+        PinButtonCell *cell = [_menuTable dequeueReusableCellWithIdentifier:pinIdentifier];
+        if (!cell)
+        {
+            [_menuTable registerNib:[UINib nibWithNibName:@"PinButtonCell" bundle:nil]forCellReuseIdentifier:pinIdentifier];
+            cell = [_menuTable dequeueReusableCellWithIdentifier:pinIdentifier];
+        }
+        cell.imgView.image = [UIImage imageNamed:imageString];
         cell.title.text = labelString;
+        return cell;
     }
     else {
+        FloatTableViewCell *cell = [_menuTable dequeueReusableCellWithIdentifier:floatingIdentifier];
+        if (!cell)
+        {
+            [_menuTable registerNib:[UINib nibWithNibName:@"FloatTableViewCell" bundle:nil]forCellReuseIdentifier:floatingIdentifier];
+            cell = [_menuTable dequeueReusableCellWithIdentifier:floatingIdentifier];
+        }
+        cell.imgView.image = [UIImage imageNamed:imageString];
         cell.title.text = [NSString stringWithFormat:@"Quick-log %@", labelString];
         [cell.title setFont:[UIFont systemFontOfSize:16]];
-        UILabel *newHoursLabel = [[UILabel alloc]initWithFrame:CGRectMake(cell.frame.size.width - 100, 40, 60, 10)];
-        newHoursLabel.text = [NSString stringWithFormat:@"%@ hours", record.hours];
-        [newHoursLabel setFont:[UIFont systemFontOfSize:12]];
-        newHoursLabel.textColor = [UIColor whiteColor];
-        [cell.contentView addSubview:newHoursLabel];
-    }
-    
-
-    //TRAC_66 (Grayout cell if selected already for today Logic)
-    //now we take this record and see if that record has the same date as today --> which means it was posted already for today and don't need to be selected
-    
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc]init];
-    dateFormatter.dateFormat = @"MM/dd/yyyy";
-    NSString *todaysDate = [dateFormatter stringFromDate: [NSDate date]];
-
-    //Custom UI for defaults that have already been posted
-    if (record != nil && [record.date isEqualToString:todaysDate]) {
-        cell.backgroundColor = [UIColor blackColor];
-        [cell.layer setCornerRadius:30.0f];
-        [cell.layer setMasksToBounds:YES];
-        cell.title.textColor = [UIColor grayColor];
-        cell.imgView.image = [UIImage imageNamed:@"floatingGrayEmptyCircle"];
-//        if (countOfAlreadyPostedFloatingDefaults > 0) {
+        cell.hoursLabel.text = [NSString stringWithFormat:@"%@ hours", record.hours];
+        
+        //manually adding in hourslabel
+//        UILabel *newHoursLabel = [[UILabel alloc]initWithFrame:CGRectMake(cell.frame.size.width - 100, 40, 60, 10)];
+//        newHoursLabel.text = [NSString stringWithFormat:@"%@ hours", record.hours];
+//        [newHoursLabel setFont:[UIFont systemFontOfSize:12]];
+//        newHoursLabel.textColor = [UIColor whiteColor];
+//        [cell.contentView addSubview:newHoursLabel];
+        
+        //TRAC_66 (Grayout cell if selected already for today Logic)
+        //now we take this record and see if that record has the same date as today --> which means it was posted already for today and don't need to be selected
+        
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc]init];
+        dateFormatter.dateFormat = @"MM/dd/yyyy";
+        NSString *todaysDate = [dateFormatter stringFromDate: [NSDate date]];
+        
+        //Custom UI for defaults that have already been posted
+        if (record != nil && [record.date isEqualToString:todaysDate]) {
+            cell.backgroundColor = [UIColor blackColor];
+            [cell.layer setCornerRadius:30.0f];
+            [cell.layer setMasksToBounds:YES];
+            cell.title.textColor = [UIColor grayColor];
+            cell.imgView.image = [UIImage imageNamed:@"floatingGrayEmptyCircle"];
+            //        if (countOfAlreadyPostedFloatingDefaults > 0) {
             //this is to add a white divider between our cells so when floating defaults get repeated twice or more, their divisions look beter. Otherwise, the backgrounds of cells overlap and look ugly
             UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, cell.contentView.bounds.size.width, 1)];
             lineView.backgroundColor = [UIColor whiteColor];
             lineView.autoresizingMask = 0x3f;
             [cell.contentView addSubview:lineView];
-//        }
-//        countOfAlreadyPostedFloatingDefaults++;
-        cell.alreadyUsedThisFloatingDefaultForTodayFlag = true;
+            //        }
+            //        countOfAlreadyPostedFloatingDefaults++;
+            cell.alreadyUsedThisFloatingDefaultForTodayFlag = true;
+        }
+        return cell;
     }
-    return cell;
+
+    return nil;
 }
 
 -(void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    //    NSLog(@"selected CEll: %tu",indexPath.row);
     
-    FloatTableViewCell *cell = (FloatTableViewCell*) [tableView cellForRowAtIndexPath:indexPath];
-    if (cell.alreadyUsedThisFloatingDefaultForTodayFlag)
-        return;
-    
-    [UIView animateWithDuration:animationTime/2 animations:^
-     {
-         cell.imgView.transform = CGAffineTransformMakeRotation(M_PI);
-     }
-                     completion:^(BOOL finished)
-     {
-         cell.imgView.transform = CGAffineTransformMakeRotation(M_PI * 2);
-         [delegate didSelectMenuOptionAtIndex:indexPath.row];
-     }];
+    NSString *imageString = [_imageArray objectAtIndex:indexPath.row];
+    if ([imageString isEqualToString:@"floatingPinCircle"]) {
+        PinButtonCell *cell = (PinButtonCell*) [tableView cellForRowAtIndexPath:indexPath];
+        [UIView animateWithDuration:animationTime/2 animations:^
+         {
+             cell.imgView.transform = CGAffineTransformMakeRotation(M_PI);
+         }
+                         completion:^(BOOL finished)
+         {
+             cell.imgView.transform = CGAffineTransformMakeRotation(M_PI * 2);
+             [delegate didSelectMenuOptionAtIndex:indexPath.row];
+         }];
+    }
+    else {
+        FloatTableViewCell *cell = (FloatTableViewCell*) [tableView cellForRowAtIndexPath:indexPath];
+        if (cell.alreadyUsedThisFloatingDefaultForTodayFlag) {
+            return;
+        }
+        [UIView animateWithDuration:animationTime/2 animations:^
+         {
+             cell.imgView.transform = CGAffineTransformMakeRotation(M_PI);
+         }
+                         completion:^(BOOL finished)
+         {
+             cell.imgView.transform = CGAffineTransformMakeRotation(M_PI * 2);
+             [delegate didSelectMenuOptionAtIndex:indexPath.row];
+         }];
+    }
 }
 
 @end
