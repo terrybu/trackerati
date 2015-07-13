@@ -397,6 +397,8 @@ CGFloat buttonToScreenHeight;
             [cell.layer setCornerRadius:30.0f];
             [cell.layer setMasksToBounds:YES];
             cell.title.textColor = [UIColor grayColor];
+            cell.hoursLabel.textColor = [UIColor grayColor];
+
             cell.imgView.image = [UIImage imageNamed:@"floatingGrayEmptyCircle"];
             //        if (countOfAlreadyPostedFloatingDefaults > 0) {
             //this is to add a white divider between our cells so when floating defaults get repeated twice or more, their divisions look beter. Otherwise, the backgrounds of cells overlap and look ugly
