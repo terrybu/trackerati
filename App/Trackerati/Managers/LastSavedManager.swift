@@ -79,6 +79,20 @@ class LastSavedManager {
         defaults.synchronize()
     }
     
+    func getLastRecordForActionableNotification() -> Record? {
+        var lastSavedRecords = getLastSavedRecordsArrayFromDefaults()
+        if let lastSaveds = lastSavedRecords {
+            var lastRecord = lastSaveds.lastObject as! Record
+            return lastRecord
+        }
+        return nil
+    }
     
+    func submitLastRecordForActionableNotification() {
+        var lastRecord = getLastRecordForActionableNotification()
+        if let record = lastRecord {
+
+        }
+    }
     
 }
