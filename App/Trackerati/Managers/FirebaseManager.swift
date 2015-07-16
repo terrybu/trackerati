@@ -240,18 +240,14 @@ class FirebaseManager : NSObject
     }
     
 
-    func saveSelectedDefaultRecord(pastRecord: Record, completion:((error: NSError!) -> Void)?) {
+    func saveNewRecordBasedOnPastRecord(pastRecord: Record, completion:((error: NSError!) -> Void)?) {
         
         var newRecord = Record(client: pastRecord.client, project: pastRecord.project)
+        //date is already filled in by above convenience init method to Today
         newRecord.hours = pastRecord.hours
         newRecord.type = pastRecord.type
         newRecord.status = pastRecord.status
-        
-        //Date is the only one that's different for this default record selection from floating action buttons
-        let dateFormatter = NSDateFormatter()
-        dateFormatter.dateFormat = "MM/dd/yyyy"
-        var todaysDate = dateFormatter.stringFromDate(NSDate())
-        newRecord.date = todaysDate
+        newRecord.comment = pastRecord.comment
         
         saveNewRecord(newRecord, completion: { (error) -> Void in
             if (error != nil) {

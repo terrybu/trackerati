@@ -89,9 +89,39 @@ class LastSavedManager {
     }
     
     func submitLastRecordForActionableNotification() {
-        var lastRecord = getLastRecordForActionableNotification()
-        if let record = lastRecord {
-
+        if let latestRecordFromDefaults = getLastRecordForActionableNotification() {
+            
+            //check if today already had that same record submitted by project name. If so, don't put it in again through actionable notification
+            //actionable notification cannot be prevented from firing because we are repeating at weekly interval
+            //instead for the time being, we are having it silently do nothing if this case happens
+            
+            if let userRecords = FirebaseManager.sharedManager.userRecordsSortedByDateInTuples {
+                
+               let firstTupleFromlatestRecordsInHistory = userRecords[0] //this gets first tuple, gets [Record]
+                
+                //get today's date
+                //see if latest record's date is the same as today's date
+                //ok that means you logged something today
+                let dateFormatter = NSDateFormatter()
+                dateFormatter.dateFormat = "MM/dd/yyyy"
+                let today = dateFormatter.stringFromDate(NSDate())
+                if today == firstTupleFromlatestRecordsInHistory.0 {
+                    //then check if the array of records has same name and project as the last thing from saved defaults
+                    for loggedRecord in firstTupleFromlatestRecordsInHistory.1 {
+                        if loggedRecord.client == latestRecordFromDefaults.client && loggedRecord.project == latestRecordFromDefaults.project {
+                            //if it is, don't send anything
+                            return
+                        }
+                    }
+                    
+                }
+            }
+            
+            FirebaseManager.sharedManager.saveNewRecordBasedOnPastRecord(latestRecordFromDefaults, completion: { (error) -> Void in
+                if (error != nil) {
+                    println(error)
+                }
+            })
         }
     }
     

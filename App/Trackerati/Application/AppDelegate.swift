@@ -39,8 +39,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         //you need to register for local notifications like below before using them (to play sounds, show badge, etc)
         if(self.isiOS8()) {
-            println("ios 8")
-            self.registerForNotification()
+            self.registerForActionableNotification()
         }
         else {
             application.registerUserNotificationSettings(UIUserNotificationSettings(forTypes: .Sound | .Alert | .Badge, categories: nil))
@@ -65,7 +64,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return false
     }
     
-    private func registerForNotification() {
+    private func registerForActionableNotification() {
         let submitAction = UIMutableUserNotificationAction()
         submitAction.activationMode = UIUserNotificationActivationMode.Background
         submitAction.title = "Yes, submit"
@@ -87,10 +86,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(application: UIApplication, handleActionWithIdentifier identifier: String?, forLocalNotification notification: UILocalNotification, completionHandler: () -> Void) {
         if identifier == kSubmitActionIdentifier {
-            println("handle the action callback terry")
             LastSavedManager.sharedManager.submitLastRecordForActionableNotification()
+            application.applicationIconBadgeNumber = 0
         }
-        
+        completionHandler()
     }
     
     func applicationWillEnterForeground(application: UIApplication) {
@@ -115,7 +114,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if TrackeratiUserDefaults.standardDefaults.notificationsOn() && UIApplication.sharedApplication().scheduledLocalNotifications.count == 0 {
             fireNotificationsForMonToFri()
         }
-//        println(UIApplication.sharedApplication().scheduledLocalNotifications)
+        println(UIApplication.sharedApplication().scheduledLocalNotifications)
     }
     
     private func fireNotificationsForMonToFri() {
@@ -177,7 +176,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         localNotification.fireDate = NSCalendar.currentCalendar().dateFromComponents(dateComponents)
         if isiOS8() && LastSavedManager.sharedManager.getLastRecordForActionableNotification() != nil {
             localNotification.category = kMutableNotificationCategory
-            localNotification.alertBody = composeMutableNotificationMessage()
+            localNotification.alertBody = composeActionableNotificationMessage()
         }
         else {
             localNotification.alertBody = "Did you record your hours on Trackerati today?"
@@ -189,10 +188,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UIApplication.sharedApplication().scheduleLocalNotification(localNotification)
     }
     
-    private func composeMutableNotificationMessage() -> String? {
+    private func composeActionableNotificationMessage() -> String? {
         var lastSavedRecord = LastSavedManager.sharedManager.getLastRecordForActionableNotification()
         if let record = lastSavedRecord {
-            var message = "Did you work on \(record.client): \(record.project) for \(record.hours) hours today?"
+            var message = "Want to submit \(record.client): \(record.project) for \(record.hours) hours today?"
             return message
         }
         return nil
@@ -201,6 +200,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     
     //To-DO: we need this below to find if we are trying to fire on a Holiday later
+    //we don't use this method anywhere for the time being
     private func findNextNotificationDate(notification: UILocalNotification)  -> NSDate {
         var calendar = NSCalendar.currentCalendar()
         var difference = calendar.components(notification.repeatInterval, fromDate: notification.fireDate!, toDate: NSDate(), options: NSCalendarOptions.allZeros)

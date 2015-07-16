@@ -245,7 +245,7 @@ class HomeViewController : MainViewController, UITableViewDelegate, UITableViewD
             let displayName = FirebaseManager.sharedManager.tuplesForFloatingDefaultsLabelsArray![row].0
             hud.labelText = "Logging \(displayName)"
             
-            FirebaseManager.sharedManager.saveSelectedDefaultRecord(FirebaseManager.sharedManager.tuplesForFloatingDefaultsLabelsArray![row].1, completion: { (error) -> Void in
+            FirebaseManager.sharedManager.saveNewRecordBasedOnPastRecord(FirebaseManager.sharedManager.tuplesForFloatingDefaultsLabelsArray![row].1, completion: { (error) -> Void in
                 if (error == nil) {
                     self.audioPlayer.play()
                     MBProgressHUD.showCompletionHUD(onView: self.view, duration: 1.5, customDoneText: "\(displayName) logged!", completion: nil)
