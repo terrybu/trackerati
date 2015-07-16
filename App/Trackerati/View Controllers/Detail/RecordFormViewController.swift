@@ -89,6 +89,9 @@ class RecordFormViewController : UIViewController, UITextFieldDelegate, UIPicker
         
         commentsTextField.delegate = self
         commentsTextField.text = record.comment
+        if record.comment == nil || record.comment == "" {
+            commentsTextField.placeholder = nil
+        }
         
         if saveOnlyFormForAddingNewRecord {
             //Last Saved Manager into play
@@ -318,6 +321,7 @@ class RecordFormViewController : UIViewController, UITextFieldDelegate, UIPicker
         typeButton.enabled = true
         hoursTextField.enabled = true
         commentsTextField.enabled = true
+        commentsTextField.placeholder = "Comment (optional)"
         saveRecordButton.enabled = true
         setupSaveButton()
     }
@@ -326,6 +330,7 @@ class RecordFormViewController : UIViewController, UITextFieldDelegate, UIPicker
     private func disableEditing()
     {
         editingForm = false
+        commentsTextField.placeholder = nil
         disableAllInputFieldsAndControls()
         setupEditButton()
     }
