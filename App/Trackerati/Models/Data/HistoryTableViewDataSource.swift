@@ -13,7 +13,7 @@ class HistoryTableViewDataSource : NSObject, UITableViewDataSource
     private let kCellReuseIdentifier = "cell"
     
     private weak var tableView: UITableView!
-    private var userHistory: [(String, [Record])] = []
+    var userHistory: [(String, [Record])] = []
     
     init(tableView: UITableView)
     {

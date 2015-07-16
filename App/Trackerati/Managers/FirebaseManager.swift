@@ -197,7 +197,7 @@ class FirebaseManager : NSObject
     
     //MARK: Records Saving & Deleting
     
-    func saveNewRecord(record: Record, completion: ((error: NSError!) -> Void)?)
+    func saveRecord(record: Record, completion: ((error: NSError!) -> Void)?)
     {
         let userURL = "Users/\(GoogleLoginManager.sharedManager.currentUser.firebaseID)/records"
         
@@ -207,7 +207,6 @@ class FirebaseManager : NSObject
                 recordToSave.setValue(NSString(string: value), forKey: field.rawValue)
             }
         }
-        println(recordToSave)
         if record.id == "" { // we're adding a new record
             let recordRef = firebaseDB.childByAppendingPath(userURL).childByAutoId()
             recordRef.setValue(recordToSave as [NSObject: AnyObject], withCompletionBlock: { error, firebaseRef in
@@ -240,20 +239,16 @@ class FirebaseManager : NSObject
     }
     
 
-    func saveSelectedDefaultRecord(pastRecord: Record, completion:((error: NSError!) -> Void)?) {
+    func saveNewRecordBasedOnPastRecord(pastRecord: Record, completion:((error: NSError!) -> Void)?) {
         
         var newRecord = Record(client: pastRecord.client, project: pastRecord.project)
+        //date is already filled in by above convenience init method to Today
         newRecord.hours = pastRecord.hours
         newRecord.type = pastRecord.type
         newRecord.status = pastRecord.status
+        newRecord.comment = pastRecord.comment
         
-        //Date is the only one that's different for this default record selection from floating action buttons
-        let dateFormatter = NSDateFormatter()
-        dateFormatter.dateFormat = "MM/dd/yyyy"
-        var todaysDate = dateFormatter.stringFromDate(NSDate())
-        newRecord.date = todaysDate
-        
-        saveNewRecord(newRecord, completion: { (error) -> Void in
+        saveRecord(newRecord, completion: { (error) -> Void in
             if (error != nil) {
                 println(error)
             }

@@ -47,7 +47,9 @@ CGFloat buttonToScreenHeight;
         
         buttonToScreenHeight = SCREEN_HEIGHT - CGRectGetMaxY(self.frame);
         
-        _menuTable = [[UITableView alloc]initWithFrame:CGRectMake(SCREEN_WIDTH/18, 0, 0.95 * SCREEN_WIDTH,SCREEN_HEIGHT - (SCREEN_HEIGHT - CGRectGetMaxY(self.frame)) )];
+        _menuTable = [[UITableView alloc]initWithFrame:CGRectMake(12, 0, 0.99 * SCREEN_WIDTH,SCREEN_HEIGHT - (SCREEN_HEIGHT - CGRectGetMaxY(self.frame)) )];
+        //originally this was Screenwidth/18 and 0.95 * screen width for width but left side of label was getting truncated
+        
         _menuTable.scrollEnabled = NO;
         
         
@@ -57,6 +59,7 @@ CGFloat buttonToScreenHeight;
         _menuTable.dataSource = self;
         _menuTable.separatorStyle = UITableViewCellSeparatorStyleNone;
         _menuTable.backgroundColor = [UIColor clearColor];
+
         _menuTable.transform = CGAffineTransformMakeRotation(-M_PI); //Rotate the table
         
         previousOffset = scrView.contentOffset.y;

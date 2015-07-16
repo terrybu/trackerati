@@ -12,6 +12,8 @@ enum WeekDayType: Int {
     case Sunday = 1, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday
 }
 
+let kSubmitActionIdentifier = "kMutableNotificationSubmitActionIdentifier"
+let kMutableNotificationCategory = "kMutableNotificationCategory"
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -21,7 +23,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     private let firebaseAbsoluteURLRelease = "https://blazing-torch-6772.firebaseio.com"
 //    private let hockeySDKIdentifier = "3aa549db112abed50654d253ecec9aa7" old one
     private let hockeySDKIdentifier = "64f4b2404dc31b38296a2a89eaaf23b7"
-
     
     var window: UIWindow?
 
@@ -37,8 +38,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         configureSingletons()
         
         //you need to register for local notifications like below before using them (to play sounds, show badge, etc)
-        application.registerUserNotificationSettings(UIUserNotificationSettings(forTypes: .Sound | .Alert | .Badge, categories: nil))
-        resetNotification()
+        if(self.isiOS8()) {
+            self.registerForActionableNotification()
+        }
+        else {
+            application.registerUserNotificationSettings(UIUserNotificationSettings(forTypes: .Sound | .Alert | .Badge, categories: nil))
+        }
+  
+//        resetNotification()
         
         window = UIWindow(frame: UIScreen.mainScreen().bounds)
         let containerViewController = ContainerViewController(centerViewController: HomeViewController(), sideMenuViewController: SideMenuViewController(items: SideMenuSelection.AllSelections))
@@ -46,6 +53,43 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.makeKeyAndVisible()
 
         return true
+    }
+    
+    private func isiOS8() -> Bool {
+        let Device = UIDevice.currentDevice()
+        let iosVersion = NSString(string: Device.systemVersion).doubleValue
+        if iosVersion >= 8 {
+            return true
+        }
+        return false
+    }
+    
+    private func registerForActionableNotification() {
+        let submitAction = UIMutableUserNotificationAction()
+        submitAction.activationMode = UIUserNotificationActivationMode.Background
+        submitAction.title = "Yes, submit"
+        submitAction.identifier = kSubmitActionIdentifier
+        submitAction.destructive = false
+        submitAction.authenticationRequired = false
+        
+        //next time you make a UILocalNotification object's category, you set it to this category so that it will have this action associated with it 
+        //and the submit acton's identifier will be passed to the delegate method in appdelegate once user clicks on the action
+        let actionCategory = UIMutableUserNotificationCategory()
+        actionCategory.identifier = kMutableNotificationCategory
+        actionCategory.setActions([submitAction], forContext: UIUserNotificationActionContext.Default)
+        
+        var categories = NSSet(object: actionCategory)
+        var types = UIUserNotificationSettings(forTypes: .Sound | .Alert | .Badge, categories: categories as Set<NSObject>)
+
+        UIApplication.sharedApplication().registerUserNotificationSettings(types)
+    }
+    
+    func application(application: UIApplication, handleActionWithIdentifier identifier: String?, forLocalNotification notification: UILocalNotification, completionHandler: () -> Void) {
+        if identifier == kSubmitActionIdentifier {
+            LastSavedManager.sharedManager.submitLastRecordForActionableNotification()
+            application.applicationIconBadgeNumber = 0
+        }
+        completionHandler()
     }
     
     func applicationWillEnterForeground(application: UIApplication) {
@@ -70,7 +114,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if TrackeratiUserDefaults.standardDefaults.notificationsOn() && UIApplication.sharedApplication().scheduledLocalNotifications.count == 0 {
             fireNotificationsForMonToFri()
         }
-//        println(UIApplication.sharedApplication().scheduledLocalNotifications)
+        println(UIApplication.sharedApplication().scheduledLocalNotifications)
     }
     
     private func fireNotificationsForMonToFri() {
@@ -130,7 +174,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         localNotification.repeatInterval = NSCalendarUnit.WeekCalendarUnit
         localNotification.timeZone = NSTimeZone.defaultTimeZone()
         localNotification.fireDate = NSCalendar.currentCalendar().dateFromComponents(dateComponents)
-        localNotification.alertBody = "Did you record your hours on Trackerati today?"
+        if isiOS8() && LastSavedManager.sharedManager.getLastRecordForActionableNotification() != nil {
+            localNotification.category = kMutableNotificationCategory
+            localNotification.alertBody = composeActionableNotificationMessage()
+        }
+        else {
+            localNotification.alertBody = "Did you record your hours on Trackerati today?"
+        }
         localNotification.alertAction = "Record"
         localNotification.soundName = UILocalNotificationDefaultSoundName
         
@@ -138,10 +188,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UIApplication.sharedApplication().scheduleLocalNotification(localNotification)
     }
     
+    private func composeActionableNotificationMessage() -> String? {
+        var lastSavedRecord = LastSavedManager.sharedManager.getLastRecordForActionableNotification()
+        if let record = lastSavedRecord {
+            var message = "Want to submit \(record.client): \(record.project) for \(record.hours) hours today?"
+            return message
+        }
+        return nil
+    }
     
     
     
     //To-DO: we need this below to find if we are trying to fire on a Holiday later
+    //we don't use this method anywhere for the time being
     private func findNextNotificationDate(notification: UILocalNotification)  -> NSDate {
         var calendar = NSCalendar.currentCalendar()
         var difference = calendar.components(notification.repeatInterval, fromDate: notification.fireDate!, toDate: NSDate(), options: NSCalendarOptions.allZeros)
