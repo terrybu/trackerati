@@ -197,7 +197,7 @@ class FirebaseManager : NSObject
     
     //MARK: Records Saving & Deleting
     
-    func saveNewRecord(record: Record, completion: ((error: NSError!) -> Void)?)
+    func saveRecord(record: Record, completion: ((error: NSError!) -> Void)?)
     {
         let userURL = "Users/\(GoogleLoginManager.sharedManager.currentUser.firebaseID)/records"
         
@@ -207,7 +207,6 @@ class FirebaseManager : NSObject
                 recordToSave.setValue(NSString(string: value), forKey: field.rawValue)
             }
         }
-        println(recordToSave)
         if record.id == "" { // we're adding a new record
             let recordRef = firebaseDB.childByAppendingPath(userURL).childByAutoId()
             recordRef.setValue(recordToSave as [NSObject: AnyObject], withCompletionBlock: { error, firebaseRef in
@@ -249,7 +248,7 @@ class FirebaseManager : NSObject
         newRecord.status = pastRecord.status
         newRecord.comment = pastRecord.comment
         
-        saveNewRecord(newRecord, completion: { (error) -> Void in
+        saveRecord(newRecord, completion: { (error) -> Void in
             if (error != nil) {
                 println(error)
             }

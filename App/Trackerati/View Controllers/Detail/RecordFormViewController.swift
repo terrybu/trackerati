@@ -171,11 +171,11 @@ class RecordFormViewController : UIViewController, UITextFieldDelegate, UIPicker
     
     func textFieldDidBeginEditing(textField: UITextField) {
         if (textField == dateTextField) {
-            println("date text field")
+//            println("date text field")
             activeTextField = dateTextField
         }
         else if (textField == hoursTextField) {
-            println("hours text field")
+//            println("hours text field")
             activeTextField = hoursTextField
         }
         else if (textField == commentsTextField) {
@@ -346,7 +346,7 @@ class RecordFormViewController : UIViewController, UITextFieldDelegate, UIPicker
         //Last Saved Record must save this
         LastSavedManager.sharedManager.saveRecordForLastSavedRecords(tempRecord)
         
-        FirebaseManager.sharedManager.saveNewRecord(tempRecord, completion: { error in
+        FirebaseManager.sharedManager.saveRecord(tempRecord, completion: { error in
             if error == nil {
                 FirebaseManager.sharedManager.getAllDataOfType(.Projects, completion: {
                     //the reason I get all projects again is because all pinned projects essentially get calculated from there

@@ -33,6 +33,7 @@ class HistoryViewController : MainViewController, UITableViewDelegate, HistoryTa
     
     @objc
     private func userRecordsRedownloaded() {
+        historyTableViewDataSource.userHistory = FirebaseManager.sharedManager.userRecordsSortedByDateInTuples!
         self.historyTableView.reloadData()
     }
     
