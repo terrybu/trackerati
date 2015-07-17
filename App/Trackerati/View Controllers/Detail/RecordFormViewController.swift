@@ -251,7 +251,7 @@ class RecordFormViewController : UIViewController, UITextFieldDelegate, UIPicker
     // MARK: THDatePickerViewController Delegate Methods
     
     func datePickerDonePressed(datePicker: THDatePickerViewController!) {
-        dateButton.titleLabel!.text = CustomDateFormatter.formatDateToOurStringFormat(datePicker.date)
+        dateButton.setTitle(CustomDateFormatter.formatDateToOurStringFormat(datePicker.date), forState: .Normal)
         dismissSemiModalView()
     }
     
