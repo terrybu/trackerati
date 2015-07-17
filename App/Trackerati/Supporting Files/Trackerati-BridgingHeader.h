@@ -17,5 +17,6 @@
 #import "MBProgressHUD.h"
 #import "VCFloatingActionButton.h"
 #import <NewRelicAgent/NewRelic.h>
+#import <THCalendarDatePicker/THDatePickerViewController.h>
 
 #endif

@@ -6,18 +6,16 @@
 //  Copyright (c) 2015 The Hackerati. All rights reserved.
 //
 
-class RecordFormViewController : UIViewController, UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource
+class RecordFormViewController : UIViewController, UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource, THDatePickerDelegate
 {
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var containerView: UIView!
     
     @IBOutlet weak var clientLabel: UILabel!
     @IBOutlet weak var projectLabel: UILabel!
-    @IBOutlet weak var dateTextField: UITextField!
+    @IBOutlet weak var dateButton: UIButton!
     @IBOutlet weak var statusButton: UIButton!
     @IBOutlet weak var typeButton: UIButton!
-    
-
     @IBOutlet weak var hoursTextField: UITextField!
     @IBOutlet weak var commentsTextField: UITextField!
     
@@ -32,7 +30,6 @@ class RecordFormViewController : UIViewController, UITextFieldDelegate, UIPicker
     
     private var infoType: RecordKey?
     
-    private var activeHourPickerView: UIPickerView?
     private var activeTextField: UITextField?
     private var datePicker: UIDatePicker?
     
@@ -66,10 +63,13 @@ class RecordFormViewController : UIViewController, UITextFieldDelegate, UIPicker
         clientLabel.text = self.record.client
         projectLabel.text = self.record.project
         
-        dateTextField.text = self.record.date
-        dateTextField.delegate = self
-        dateTextField.tintColor = UIColor.clearColor()
-        dateTextField.inputView = datePickerViewForEditing()
+        if !self.record.date.isEmpty {
+            dateButton.setTitle(self.record.date, forState: UIControlState.Normal)
+        }
+        else {
+            //if its empty, we put today's date on there in a string
+            dateButton.setTitle(CustomDateFormatter.returnTodaysDateStringInFormat(), forState: UIControlState.Normal)
+        }
         
         let statusRecordType = RecordKey.editableValues[RecordKeyIndex.Status.rawValue]
         if saveOnlyFormForAddingNewRecord {
@@ -97,7 +97,7 @@ class RecordFormViewController : UIViewController, UITextFieldDelegate, UIPicker
             //Last Saved Manager into play
             var lastSavedData = LastSavedManager.sharedManager.getRecordForClient(self.record.client, projectString: self.record.project)
             if let lastSavedRecordForProject = lastSavedData {
-                println(lastSavedRecordForProject)
+//                println(lastSavedRecordForProject)
                 record.type = lastSavedRecordForProject.type
                 typeButton.setTitle(record.valueForType(worktypeRecordType, rawValue: false), forState: .Normal)
                 hoursTextField.text = lastSavedRecordForProject.hours
@@ -119,8 +119,49 @@ class RecordFormViewController : UIViewController, UITextFieldDelegate, UIPicker
         self.view.addGestureRecognizer(tapGestureRecognizer)
     }
     
+    
+    // MARK: Private
+    
+   private func pickerViewForType(cellType: RecordKey) -> UIView?
+    {
+        switch cellType {
+        case .Hours:
+            let pickerView = UIPickerView()
+            pickerView.backgroundColor = UIColor.whiteColor()
+            pickerView.delegate = self
+            pickerView.dataSource = self
+            infoType = cellType
+            
+            //picker for hours needs to default to a certain value instead of all the way down in 0.5
+            if saveOnlyFormForAddingNewRecord {
+                //this is for all other cases (making a new form). This should now use last saved record
+                var lastSavedRecord = LastSavedManager.sharedManager.getRecordForClient(self.record.client, projectString: self.record.project)
+                if let lastSaved = lastSavedRecord {
+                    pickerView.selectRow(find(kRecordHoursNames, lastSaved.hours)!, inComponent:0, animated: false)
+                }
+                else {
+                    //If there was no last saved record, default to 8.0
+                    pickerView.selectRow(find(kRecordHoursNames, "8.0")!, inComponent:0, animated: false)
+                }
+            }
+            else {
+                //we are editing
+                var indexOfCurrentRecord = find(kRecordHoursNames, record.hours)
+                if let index = indexOfCurrentRecord as Int! {
+                    //this is when we are editing form. Picker should start with the already inputted hour
+                    pickerView.selectRow(index, inComponent: 0, animated: false)
+                }
+            }
+            
+            return pickerView
+        default:
+            return nil
+        }
+    }
+    
+    
     private func disableAllInputFieldsAndControls() {
-        dateTextField.enabled = false
+        dateButton.enabled = false
         statusButton.enabled = false
         typeButton.enabled = false
         hoursTextField.enabled = false
@@ -141,6 +182,26 @@ class RecordFormViewController : UIViewController, UITextFieldDelegate, UIPicker
     }
     
     // MARK: IB Actions
+    
+    @IBAction func dateButtonPressed(sender: UIButton) {
+        let calendarPicker = THDatePickerViewController()
+        calendarPicker.date = NSDate()
+        calendarPicker.delegate = self
+        calendarPicker.setAllowClearDate(false)
+        calendarPicker.setClearAsToday(true)
+        calendarPicker.setAutoCloseOnSelectDate(false)
+        calendarPicker.setAllowSelectionOfSelectedDate(true)
+        calendarPicker.setDisableHistorySelection(false)
+        calendarPicker.setDisableFutureSelection(false)
+        calendarPicker.selectedBackgroundColor = UIColor(red: 125/255.0, green: 208/255.0, blue: 0/255.0, alpha: 1.0)
+        calendarPicker.currentDateColor = UIColor(red: 242/255.0, green: 121/255.0, blue: 53/255.0, alpha: 1.0)
+        calendarPicker.currentDateColorSelected = UIColor.yellowColor()
+        presentSemiViewController(calendarPicker, withOptions:
+            [KNSemiModalOptionKeys.pushParentBack    : NSNumber(bool: false),
+                KNSemiModalOptionKeys.animationDuration : NSNumber(float: 0.1),
+                KNSemiModalOptionKeys.shadowOpacity     : NSNumber(float: 0.3)]
+        )
+    }
     
     
     @IBAction func statusButtonPressed(sender: UIButton) {
@@ -173,16 +234,11 @@ class RecordFormViewController : UIViewController, UITextFieldDelegate, UIPicker
     // MARK: UITextField Delegate methods 
     
     func textFieldDidBeginEditing(textField: UITextField) {
-        if (textField == dateTextField) {
-//            println("date text field")
-            activeTextField = dateTextField
+        if (textField == commentsTextField) {
+            activeTextField = commentsTextField
         }
         else if (textField == hoursTextField) {
-//            println("hours text field")
             activeTextField = hoursTextField
-        }
-        else if (textField == commentsTextField) {
-            activeTextField = commentsTextField
         }
     }
     
@@ -190,77 +246,19 @@ class RecordFormViewController : UIViewController, UITextFieldDelegate, UIPicker
         textField.resignFirstResponder()
         return true
     }
+
     
-    // MARK: Private
+    // MARK: THDatePickerViewController Delegate Methods
     
-    private func datePickerViewForEditing() -> UIDatePicker
-    {
-        datePicker = UIDatePicker()
-        datePicker!.backgroundColor = UIColor.whiteColor()
-        datePicker!.datePickerMode = .Date
-        let dateFormatter = NSDateFormatter()
-        dateFormatter.dateFormat = "MM/dd/yyyy"
-        
-        if let date = dateFormatter.dateFromString(record.date) {
-            datePicker!.date = date
-        }
-        else {
-            datePicker!.date = NSDate()
-        }
-        
-        datePicker!.addTarget(self, action: "datePickerChanged:", forControlEvents: .ValueChanged)
-        
-        return datePicker!
+    func datePickerDonePressed(datePicker: THDatePickerViewController!) {
+        dateButton.titleLabel!.text = CustomDateFormatter.formatDateToOurStringFormat(datePicker.date)
+        dismissSemiModalView()
     }
     
-    private func pickerViewForType(cellType: RecordKey) -> UIView?
-    {
-        switch cellType {
-            case .Hours:
-                let pickerView = UIPickerView()
-                pickerView.backgroundColor = UIColor.whiteColor()
-                pickerView.delegate = self
-                pickerView.dataSource = self
-                infoType = cellType
-                activeHourPickerView = pickerView
-                
-                //picker for hours needs to default to a certain value instead of all the way down in 0.5
-                if saveOnlyFormForAddingNewRecord {
-                    //this is for all other cases (making a new form). This should now use last saved record
-                    var lastSavedRecord = LastSavedManager.sharedManager.getRecordForClient(self.record.client, projectString: self.record.project)
-                    if let lastSaved = lastSavedRecord {
-                        pickerView.selectRow(find(kRecordHoursNames, lastSaved.hours)!, inComponent:0, animated: false)
-                    }
-                    else {
-                        //If there was no last saved record, default to 8.0
-                        pickerView.selectRow(find(kRecordHoursNames, "8.0")!, inComponent:0, animated: false)
-                    }
-                }
-                else {
-                    //we are editing
-                    var indexOfCurrentRecord = find(kRecordHoursNames, record.hours)
-                    if let index = indexOfCurrentRecord as Int! {
-                        //this is when we are editing form. Picker should start with the already inputted hour
-                        pickerView.selectRow(index, inComponent: 0, animated: false)
-                    }
-                }
-                
-                return pickerView
-            default:
-                return nil
-        }
+    func datePickerCancelPressed(datePicker: THDatePickerViewController!) {
+        dismissSemiModalView()
     }
     
-    
-    // MARK: UIDatePicker Selectors
-    
-    @objc
-    private func datePickerChanged(datePicker: UIDatePicker)
-    {
-        let dateFormatter = NSDateFormatter()
-        dateFormatter.dateFormat = "MM/dd/yyyy"
-        dateTextField.text = dateFormatter.stringFromDate(datePicker.date)
-    }
     
     // MARK: UIPickerView Datasource
     
@@ -269,14 +267,7 @@ class RecordFormViewController : UIViewController, UITextFieldDelegate, UIPicker
     }
     
     func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        switch infoType! {
-            
-        case .Hours:
-            return kRecordHoursNames.count
-            
-        default:
-            return 0
-        }
+        return kRecordHoursNames.count
     }
     
     // MARK: UIPickerView Delegate
@@ -284,28 +275,15 @@ class RecordFormViewController : UIViewController, UITextFieldDelegate, UIPicker
     func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         let options: [String]
         let newValue: String
-        switch infoType! {
-        case RecordKey.Hours:
-            options = kRecordHoursNames
-            newValue = String(format: "%.1f", (Double(row) + 1.0) / 2.0)
-            
-        default:
-            options = []
-            newValue = ""
-        }
+        options = kRecordHoursNames
+        newValue = String(format: "%.1f", (Double(row) + 1.0) / 2.0)
         
         hoursTextField.text = options[row]
     }
     
     func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String! {
         let options: [String]
-        switch infoType! {
-        case RecordKey.Hours:
-            options = kRecordHoursNames
-            
-        default:
-            options = []
-        }
+        options = kRecordHoursNames
         return options[row]
     }
     
@@ -316,7 +294,7 @@ class RecordFormViewController : UIViewController, UITextFieldDelegate, UIPicker
     private func enableEditing()
     {
         editingForm = true
-        dateTextField.enabled = true
+        dateButton.enabled = true
         statusButton.enabled = true
         typeButton.enabled = true
         hoursTextField.enabled = true
@@ -342,7 +320,7 @@ class RecordFormViewController : UIViewController, UITextFieldDelegate, UIPicker
         let hud = MBProgressHUD.showHUDAddedTo(view, animated: true)
         hud.labelText = "Saving Record"
         
-        tempRecord.date = dateTextField.text
+        tempRecord.date = dateButton.titleLabel!.text!
         tempRecord.status = record.status
         tempRecord.type = record.type
         tempRecord.hours = hoursTextField.text
@@ -411,14 +389,11 @@ class RecordFormViewController : UIViewController, UITextFieldDelegate, UIPicker
     @objc
     private func tapToDismissKeyboard(gesture: UITapGestureRecognizer)
     {
-        if activeTextField == dateTextField {
-            dateTextField.resignFirstResponder()
+        if activeTextField == commentsTextField  {
+            commentsTextField.resignFirstResponder()
         }
         else if activeTextField == hoursTextField  {
             hoursTextField.resignFirstResponder()
-        }
-        else if activeTextField == commentsTextField  {
-            commentsTextField.resignFirstResponder()
         }
     }
     

@@ -34,7 +34,7 @@ class LastSavedManager {
         if let lastRecordsArray = array {
             lastRecordsArray.enumerateObjectsUsingBlock({ (object: AnyObject!, idx: Int, stop: UnsafeMutablePointer<ObjCBool>) -> Void in
                 var thisRecord = object as! Record
-                println("\(thisRecord.client) \(thisRecord.project)")
+//                println("\(thisRecord.client) \(thisRecord.project)")
                 if thisRecord.client == clientString && thisRecord.project == projectString {
                     resultRecord = thisRecord
                     var shouldStop: ObjCBool = true
@@ -92,8 +92,9 @@ class LastSavedManager {
         if let latestRecordFromDefaults = getLastRecordForActionableNotification() {
             
             //check if today already had that same record submitted by project name. If so, don't put it in again through actionable notification
-            //actionable notification cannot be prevented from firing because we are repeating at weekly interval
-            //instead for the time being, we are having it silently do nothing if this case happens
+            //actionable notification cannot be prevented from firing at this time because we are repeating at weekly interval
+            //we can improve this by firing notification daily and checking for weekends and also if todays record has already been submitted ... but daily firing complicates app because then we need a solution to work around weekends when we fire on Friday.
+            //For the time being, we are having it do nothing if this case happens
             
             if let userRecords = FirebaseManager.sharedManager.userRecordsSortedByDateInTuples {
                 
@@ -102,9 +103,7 @@ class LastSavedManager {
                 //get today's date
                 //see if latest record's date is the same as today's date
                 //ok that means you logged something today
-                let dateFormatter = NSDateFormatter()
-                dateFormatter.dateFormat = "MM/dd/yyyy"
-                let today = dateFormatter.stringFromDate(NSDate())
+                let today = CustomDateFormatter.returnTodaysDateStringInFormat()
                 if today == firstTupleFromlatestRecordsInHistory.0 {
                     //then check if the array of records has same name and project as the last thing from saved defaults
                     for loggedRecord in firstTupleFromlatestRecordsInHistory.1 {

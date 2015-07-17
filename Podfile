@@ -6,6 +6,6 @@ target 'Trackerati' do
 	pod 'Firebase'
 	pod 'google-plus-ios-sdk'
 	pod 'MBProgressHUD'
-        pod 'NewRelicAgent'
-
-end
+    pod 'NewRelicAgent'
+    pod 'THCalendarDatePicker', '~> 1.2.0'
+end	
