@@ -6,7 +6,7 @@
 //  Copyright (c) 2015 The Hackerati. All rights reserved.
 //
 
-class RecordFormViewController : UIViewController, UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource
+class RecordFormViewController : UIViewController, UITextFieldDelegate, UIPickerViewDelegate, UIPickerViewDataSource, THDatePickerDelegate
 {
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var containerView: UIView!
@@ -69,7 +69,8 @@ class RecordFormViewController : UIViewController, UITextFieldDelegate, UIPicker
         dateTextField.text = self.record.date
         dateTextField.delegate = self
         dateTextField.tintColor = UIColor.clearColor()
-        dateTextField.inputView = datePickerViewForEditing()
+        dateTextField.inputView = nil
+        
         
         let statusRecordType = RecordKey.editableValues[RecordKeyIndex.Status.rawValue]
         if saveOnlyFormForAddingNewRecord {
@@ -174,11 +175,26 @@ class RecordFormViewController : UIViewController, UITextFieldDelegate, UIPicker
     
     func textFieldDidBeginEditing(textField: UITextField) {
         if (textField == dateTextField) {
-//            println("date text field")
+            let calendarPicker = THDatePickerViewController()
+            calendarPicker.date = NSDate()
+            calendarPicker.delegate = self
+            calendarPicker.setAllowClearDate(false)
+            calendarPicker.setClearAsToday(true)
+            calendarPicker.setAutoCloseOnSelectDate(false)
+            calendarPicker.setAllowSelectionOfSelectedDate(true)
+            calendarPicker.setDisableHistorySelection(true)
+            calendarPicker.setDisableFutureSelection(false)
+            calendarPicker.selectedBackgroundColor = UIColor(red: 125/255.0, green: 208/255.0, blue: 0/255.0, alpha: 1.0)
+            calendarPicker.currentDateColor = UIColor(red: 242/255.0, green: 121/255.0, blue: 53/255.0, alpha: 1.0)
+            calendarPicker.currentDateColorSelected = UIColor.yellowColor()
+            presentSemiViewController(calendarPicker, withOptions:
+                [KNSemiModalOptionKeys.pushParentBack    : NSNumber(bool: false),
+                KNSemiModalOptionKeys.animationDuration : NSNumber(float: 0.1),
+                KNSemiModalOptionKeys.shadowOpacity     : NSNumber(float: 0.3)]
+            )
             activeTextField = dateTextField
         }
         else if (textField == hoursTextField) {
-//            println("hours text field")
             activeTextField = hoursTextField
         }
         else if (textField == commentsTextField) {
@@ -191,27 +207,10 @@ class RecordFormViewController : UIViewController, UITextFieldDelegate, UIPicker
         return true
     }
     
-    // MARK: Private
     
-    private func datePickerViewForEditing() -> UIDatePicker
-    {
-        datePicker = UIDatePicker()
-        datePicker!.backgroundColor = UIColor.whiteColor()
-        datePicker!.datePickerMode = .Date
-        let dateFormatter = NSDateFormatter()
-        dateFormatter.dateFormat = "MM/dd/yyyy"
-        
-        if let date = dateFormatter.dateFromString(record.date) {
-            datePicker!.date = date
-        }
-        else {
-            datePicker!.date = NSDate()
-        }
-        
-        datePicker!.addTarget(self, action: "datePickerChanged:", forControlEvents: .ValueChanged)
-        
-        return datePicker!
-    }
+    
+    
+
     
     private func pickerViewForType(cellType: RecordKey) -> UIView?
     {
@@ -252,15 +251,22 @@ class RecordFormViewController : UIViewController, UITextFieldDelegate, UIPicker
     }
     
     
-    // MARK: UIDatePicker Selectors
+    // MARK: THDatePickerViewController Delegate Methods
     
-    @objc
-    private func datePickerChanged(datePicker: UIDatePicker)
-    {
+    
+    func datePickerDonePressed(datePicker: THDatePickerViewController!) {
+        println("done pressed delegate method")
         let dateFormatter = NSDateFormatter()
         dateFormatter.dateFormat = "MM/dd/yyyy"
         dateTextField.text = dateFormatter.stringFromDate(datePicker.date)
+        dismissSemiModalView()
     }
+    
+    func datePickerCancelPressed(datePicker: THDatePickerViewController!) {
+        println("date picker cancel")
+        dismissSemiModalView()
+    }
+    
     
     // MARK: UIPickerView Datasource
     
