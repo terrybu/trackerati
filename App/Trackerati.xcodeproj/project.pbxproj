@@ -50,6 +50,7 @@
 		01EE0C561B0F7ADA00AA4C10 /* RecordFormViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01EE0C551B0F7ADA00AA4C10 /* RecordFormViewController.swift */; };
 		01EE0C591B0F865E00AA4C10 /* HistoryTableViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01EE0C581B0F865E00AA4C10 /* HistoryTableViewDataSource.swift */; };
 		BFC762EDEA775168E0305151 /* libPods-Trackerati.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 049E7FC2BC2B1D9187CEFDEC /* libPods-Trackerati.a */; };
+		D939CE4B1B59753A008F69D9 /* CustomDateFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D939CE4A1B59753A008F69D9 /* CustomDateFormatter.swift */; };
 		D94B66691B2F332600288B01 /* MPGTextField-Swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = D94B66681B2F332600288B01 /* MPGTextField-Swift.swift */; };
 		D94B666F1B2F412E00288B01 /* NewProjectViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D94B666D1B2F412E00288B01 /* NewProjectViewController.xib */; };
 		D96980741B38480300889EAB /* FloatTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D96980721B38480300889EAB /* FloatTableViewCell.m */; };
@@ -131,6 +132,7 @@
 		01EE0C581B0F865E00AA4C10 /* HistoryTableViewDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HistoryTableViewDataSource.swift; path = ../Models/Data/HistoryTableViewDataSource.swift; sourceTree = "<group>"; };
 		049E7FC2BC2B1D9187CEFDEC /* libPods-Trackerati.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Trackerati.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3587A3B08253D04AD27B6510 /* Pods-Trackerati.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Trackerati.release.xcconfig"; path = "../Pods/Target Support Files/Pods-Trackerati/Pods-Trackerati.release.xcconfig"; sourceTree = "<group>"; };
+		D939CE4A1B59753A008F69D9 /* CustomDateFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomDateFormatter.swift; sourceTree = "<group>"; };
 		D94B66681B2F332600288B01 /* MPGTextField-Swift.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MPGTextField-Swift.swift"; sourceTree = "<group>"; };
 		D94B666D1B2F412E00288B01 /* NewProjectViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NewProjectViewController.xib; sourceTree = "<group>"; };
 		D96980711B38480300889EAB /* FloatTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FloatTableViewCell.h; sourceTree = "<group>"; };
@@ -437,6 +439,7 @@
 			children = (
 				D9D2A4851B31CF95005DDA70 /* UIViewControllerExtension.swift */,
 				D9D2A4811B31C388005DDA70 /* UIColorExtension.swift */,
+				D939CE4A1B59753A008F69D9 /* CustomDateFormatter.swift */,
 				019FCA0E1B1E372A007E7E8B /* MBProgressHUDExtension.swift */,
 			);
 			name = Extensions;
@@ -641,6 +644,7 @@
 				019FCA0F1B1E372A007E7E8B /* MBProgressHUDExtension.swift in Sources */,
 				0170E43C1B0259C400D593C3 /* TrackeratiUserDefaults.swift in Sources */,
 				0190BF321B0B899800E508CF /* Client.swift in Sources */,
+				D939CE4B1B59753A008F69D9 /* CustomDateFormatter.swift in Sources */,
 				D9D2A4821B31C388005DDA70 /* UIColorExtension.swift in Sources */,
 				0170E4401B02962F00D593C3 /* Constants.swift in Sources */,
 				0170E4481B04E37C00D593C3 /* SideMenuViewController.swift in Sources */,
