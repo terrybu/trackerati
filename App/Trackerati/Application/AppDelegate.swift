@@ -44,9 +44,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         else {
             application.registerUserNotificationSettings(UIUserNotificationSettings(forTypes: .Sound | .Alert | .Badge, categories: nil))
         }
-  
-//        resetNotification()
-        
+          
         window = UIWindow(frame: UIScreen.mainScreen().bounds)
         let containerViewController = ContainerViewController(centerViewController: HomeViewController(), sideMenuViewController: SideMenuViewController(items: SideMenuSelection.AllSelections))
         window?.rootViewController = containerViewController
