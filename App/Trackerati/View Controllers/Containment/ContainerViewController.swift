@@ -122,20 +122,24 @@ class ContainerViewController : UIViewController, LoginScreenDelegate, MainViewC
         
         UIView.animateWithDuration(0.3, delay: 0.0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.6, options: .CurveEaseInOut, animations: {
                 if (animateIn) {
-                    self.grayMask = UIView(frame:self.centerNavigationController.view.frame)
-                    self.grayMask?.backgroundColor = UIColor.clearColor()
-                    self.centerNavigationController.view.addSubview(self.grayMask!)
-                    UIView.beginAnimations(nil, context: nil)
-                    UIView.setAnimationDuration(0.25)
-                    self.grayMask!.backgroundColor = UIColor.grayColor()
-                    self.grayMask!.alpha = 0.80
-                    UIView.commitAnimations()
+                    self.grayMaskAnimation()
                 }
                 self.centerNavigationController.view.transform = targetTransform
             }, completion: { finished in
                 self.tapToReturnGesture.enabled = animateIn
                 self.currentMenuState = animateIn ? .Showing : .NotShowing
         })
+    }
+    
+    private func grayMaskAnimation() {
+        self.grayMask = UIView(frame:self.centerNavigationController.view.frame)
+        self.grayMask?.backgroundColor = UIColor.clearColor()
+        self.centerNavigationController.view.addSubview(self.grayMask!)
+        UIView.beginAnimations(nil, context: nil)
+        UIView.setAnimationDuration(0.25)
+        self.grayMask!.backgroundColor = UIColor.grayColor()
+        self.grayMask!.alpha = 0.80
+        UIView.commitAnimations()
     }
     
     private func displayLoadingHUD(display: Bool)
@@ -241,6 +245,7 @@ class ContainerViewController : UIViewController, LoginScreenDelegate, MainViewC
     @objc
     private func translateTopView(edgePanGesture: UIPanGestureRecognizer)
     {
+        
         switch edgePanGesture.state
         {
         case .Began:
@@ -254,21 +259,28 @@ class ContainerViewController : UIViewController, LoginScreenDelegate, MainViewC
                 edgePanGesture.enabled = false
                 edgePanGesture.enabled = true
             }
+            println("began block")
         case .Changed:
             let newXPosition = edgePanGesture.locationInView(view).x
             let translation = CGAffineTransformMakeTranslation(newXPosition, 0.0)
             centerNavigationController.view.transform = translation
-            
+            println("changed block")
+
         case .Ended:
             let distanceNeededToAnimateFromLeft = UIScreen.mainScreen().bounds.size.width / 4.0
             let distanceNeededToAnimateFromRight =  distanceNeededToAnimateFromLeft * 3.0
             if centerNavigationController.view.frame.origin.x < distanceNeededToAnimateFromLeft || (centerNavigationController.view.frame.origin.x < distanceNeededToAnimateFromRight && currentMenuState == .Showing) {
+                grayMask?.removeFromSuperview()
                 animateToSideMenu(false)
                 removeSnapshotView()
+                println("ended 1")
             }
             else {
                 animateToSideMenu(true)
+                println("ended 2")
             }
+            println("ended block")
+
         default:
             removeSnapshotView()
             break
@@ -279,8 +291,8 @@ class ContainerViewController : UIViewController, LoginScreenDelegate, MainViewC
     private func returnToMainScreen(tapGesture: UITapGestureRecognizer)
     {
         if self.currentMenuState == .Showing {
-            animateToSideMenu(false)
             grayMask?.removeFromSuperview()
+            animateToSideMenu(false)
             removeSnapshotView()
         }
     }
