@@ -121,9 +121,6 @@ class ContainerViewController : UIViewController, LoginScreenDelegate, MainViewC
         }
         
         UIView.animateWithDuration(0.3, delay: 0.0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.6, options: .CurveEaseInOut, animations: {
-                if (animateIn) {
-                    self.grayMaskAnimation()
-                }
                 self.centerNavigationController.view.transform = targetTransform
             }, completion: { finished in
                 self.tapToReturnGesture.enabled = animateIn
@@ -273,11 +270,11 @@ class ContainerViewController : UIViewController, LoginScreenDelegate, MainViewC
                 grayMask?.removeFromSuperview()
                 animateToSideMenu(false)
                 removeSnapshotView()
-                println("ended 1")
+                println("ended 1 - side menu disappeared")
             }
             else {
                 animateToSideMenu(true)
-                println("ended 2")
+                println("ended 2 - side menu now showing fully")
             }
             println("ended block")
 
@@ -311,6 +308,7 @@ class ContainerViewController : UIViewController, LoginScreenDelegate, MainViewC
         let sideMenuNotShowing = currentMenuState == .NotShowing
         if sideMenuNotShowing {
             displaySnapshotView()
+            self.grayMaskAnimation()
             animateToSideMenu(sideMenuNotShowing)
         }
         else {
