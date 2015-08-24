@@ -33,9 +33,9 @@ class RecordFormViewController : UIViewController, UITextFieldDelegate, UIPicker
     private var activeTextField: UITextField?
     private var datePicker: UIDatePicker?
     
-    private var editingForm: Bool
     private var saveOnlyFormForAddingNewRecord = false
-    
+    private var editingForm: Bool
+
     init(record: Record, editing: Bool)
     {
         editingForm = editing
@@ -68,7 +68,7 @@ class RecordFormViewController : UIViewController, UITextFieldDelegate, UIPicker
         }
         else {
             //if its empty, we put today's date on there in a string
-            dateButton.setTitle(CustomDateFormatter.returnTodaysDateStringInFormat(), forState: UIControlState.Normal)
+            dateButton.setTitle(CustomDateFormatter.sharedInstance.returnTodaysDateStringInFormat(), forState: UIControlState.Normal)
         }
         
         let statusRecordType = RecordKey.editableValues[RecordKeyIndex.Status.rawValue]
@@ -97,7 +97,6 @@ class RecordFormViewController : UIViewController, UITextFieldDelegate, UIPicker
             //Last Saved Manager into play
             var lastSavedData = LastSavedManager.sharedManager.getRecordForClient(self.record.client, projectString: self.record.project)
             if let lastSavedRecordForProject = lastSavedData {
-//                println(lastSavedRecordForProject)
                 record.type = lastSavedRecordForProject.type
                 typeButton.setTitle(record.valueForType(worktypeRecordType, rawValue: false), forState: .Normal)
                 hoursTextField.text = lastSavedRecordForProject.hours
@@ -185,7 +184,9 @@ class RecordFormViewController : UIViewController, UITextFieldDelegate, UIPicker
     
     @IBAction func dateButtonPressed(sender: UIButton) {
         let calendarPicker = THDatePickerViewController()
-        calendarPicker.date = NSDate()
+        
+        calendarPicker.date = CustomDateFormatter.sharedInstance.dateFormatter.dateFromString(dateButton.titleLabel!.text!)
+        
         calendarPicker.delegate = self
         calendarPicker.setAllowClearDate(false)
         calendarPicker.setClearAsToday(true)
@@ -249,13 +250,24 @@ class RecordFormViewController : UIViewController, UITextFieldDelegate, UIPicker
 
     
     // MARK: THDatePickerViewController Delegate Methods
+    func datePicker(datePicker: THDatePickerViewController!, selectedDate: NSDate!) {
+        dateButton.setTitle(CustomDateFormatter.sharedInstance.formatDateToOurStringFormat(datePicker.date), forState: .Normal)
+    }
     
     func datePickerDonePressed(datePicker: THDatePickerViewController!) {
-        dateButton.setTitle(CustomDateFormatter.formatDateToOurStringFormat(datePicker.date), forState: .Normal)
         dismissSemiModalView()
     }
     
     func datePickerCancelPressed(datePicker: THDatePickerViewController!) {
+        //if you pressed cancel, then we don't make any changes to dateButton's title and reset
+        if (saveOnlyFormForAddingNewRecord) {
+            //then we just reset back to today's date
+        dateButton.setTitle(CustomDateFormatter.sharedInstance.returnTodaysDateStringInFormat(), forState: UIControlState.Normal)
+        }
+        else {
+            //this case is editing an old record, we set dateButton to whatever record date was
+            dateButton.setTitle(self.record.date, forState: UIControlState.Normal)
+        }
         dismissSemiModalView()
     }
     

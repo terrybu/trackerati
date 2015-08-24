@@ -10,15 +10,19 @@ import UIKit
 
 class CustomDateFormatter {
     
-    class func formatDateToOurStringFormat(date: NSDate) -> String {
-        let dateFormatter = NSDateFormatter()
-        dateFormatter.dateFormat = "MM/dd/yyyy"
+    static let sharedInstance = CustomDateFormatter()
+    
+    let dateFormatter = NSDateFormatter()
+    
+    init() {
+        self.dateFormatter.dateFormat = "MM/dd/yyyy"
+    }
+    
+    func formatDateToOurStringFormat(date: NSDate) -> String {
         return dateFormatter.stringFromDate(date)
     }
     
-    class func returnTodaysDateStringInFormat() -> String {
-        let dateFormatter = NSDateFormatter()
-        dateFormatter.dateFormat = "MM/dd/yyyy"
+    func returnTodaysDateStringInFormat() -> String {
         let today = dateFormatter.stringFromDate(NSDate())
         return today
     }

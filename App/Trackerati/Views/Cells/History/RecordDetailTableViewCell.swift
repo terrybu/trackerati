@@ -96,12 +96,10 @@ class RecordDetailTableViewCell : UITableViewCell, UITextFieldDelegate, UIPicker
         let datePicker = UIDatePicker()
         datePicker.backgroundColor = UIColor.whiteColor()
         datePicker.datePickerMode = .Date
-        let dateFormatter = NSDateFormatter()
         
         if let info = information {
-            dateFormatter.dateFormat = "MM/dd/yyyy"
             
-            if let date = dateFormatter.dateFromString(info) {
+            if let date = CustomDateFormatter.sharedInstance.dateFormatter.dateFromString(info) {
                 datePicker.date = date
             }
             else {

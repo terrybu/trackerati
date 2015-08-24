@@ -103,7 +103,7 @@ class LastSavedManager {
                 //get today's date
                 //see if latest record's date is the same as today's date
                 //ok that means you logged something today
-                let today = CustomDateFormatter.returnTodaysDateStringInFormat()
+                let today = CustomDateFormatter.sharedInstance.returnTodaysDateStringInFormat()
                 if today == firstTupleFromlatestRecordsInHistory.0 {
                     //then check if the array of records has same name and project as the last thing from saved defaults
                     for loggedRecord in firstTupleFromlatestRecordsInHistory.1 {

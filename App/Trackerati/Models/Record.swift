@@ -55,7 +55,7 @@ class Record : NSObject, NSCoding
     convenience init(client: String, project: String)
     {
         //default values when you are using the Form to submit a new record 
-        self.init(id: "", client: client, date: CustomDateFormatter.returnTodaysDateStringInFormat(), hours: "8.0", project: project, status: "1", type: "1", comment: nil)
+        self.init(id: "", client: client, date: CustomDateFormatter.sharedInstance.returnTodaysDateStringInFormat(), hours: "8.0", project: project, status: "1", type: "1", comment: nil)
     }
     
     required init(coder decoder: NSCoder) {
