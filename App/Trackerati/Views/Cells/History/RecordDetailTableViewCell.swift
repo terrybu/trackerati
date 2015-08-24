@@ -98,7 +98,6 @@ class RecordDetailTableViewCell : UITableViewCell, UITextFieldDelegate, UIPicker
         datePicker.datePickerMode = .Date
         
         if let info = information {
-            
             if let date = CustomDateFormatter.sharedInstance.dateFormatter.dateFromString(info) {
                 datePicker.date = date
             }

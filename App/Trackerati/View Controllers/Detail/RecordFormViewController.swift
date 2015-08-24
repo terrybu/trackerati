@@ -186,7 +186,6 @@ class RecordFormViewController : UIViewController, UITextFieldDelegate, UIPicker
         let calendarPicker = THDatePickerViewController()
         
         calendarPicker.date = CustomDateFormatter.sharedInstance.dateFormatter.dateFromString(dateButton.titleLabel!.text!)
-        
         calendarPicker.delegate = self
         calendarPicker.setAllowClearDate(false)
         calendarPicker.setClearAsToday(true)
@@ -197,6 +196,20 @@ class RecordFormViewController : UIViewController, UITextFieldDelegate, UIPicker
         calendarPicker.selectedBackgroundColor = UIColor(red: 125/255.0, green: 208/255.0, blue: 0/255.0, alpha: 1.0)
         calendarPicker.currentDateColor = UIColor(red: 242/255.0, green: 121/255.0, blue: 53/255.0, alpha: 1.0)
         calendarPicker.currentDateColorSelected = UIColor.yellowColor()
+        
+        let dateStringsArray = (FirebaseManager.sharedManager.allUserRecords! as NSArray).valueForKeyPath("date") as! [String]
+        println(dateStringsArray.description)
+        
+        //this is the little dots logic for calendar picker view
+        //set a little dot below every date that has a Record in history associated with it
+        //to display "Hey, you already did a record on that date!"
+        calendarPicker.setDateHasItemsCallback({ (date: NSDate!) -> Bool in
+            if (find(dateStringsArray, (CustomDateFormatter.sharedInstance.dateFormatter.stringFromDate(date))) != nil) {
+                    return true
+            }
+            return false
+        })
+        
         presentSemiViewController(calendarPicker, withOptions:
             [KNSemiModalOptionKeys.pushParentBack    : NSNumber(bool: false),
                 KNSemiModalOptionKeys.animationDuration : NSNumber(float: 0.1),
