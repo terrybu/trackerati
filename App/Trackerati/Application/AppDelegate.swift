@@ -53,6 +53,29 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
     
+    
+    private func configureHockeySDK()
+    {
+        BITHockeyManager.sharedHockeyManager().configureWithIdentifier(hockeySDKIdentifier);
+        BITHockeyManager.sharedHockeyManager().startManager();
+        BITHockeyManager.sharedHockeyManager().authenticator.authenticateInstallation();
+    }
+    
+    private func configureSingletons()
+    {
+        TrackeratiUserDefaults.standardDefaults.registerDefaults()
+        GoogleLoginManager.sharedManager.configureWithAPIKey(googleAPIKey)
+        
+        #if DEBUG
+            FirebaseManager.sharedManager.configureWithDatabaseURL(firebaseAbsoluteURLDebug)
+            println("debug mode")
+            #else
+            FirebaseManager.sharedManager.configureWithDatabaseURL(firebaseAbsoluteURLRelease)
+            println("using production db")
+        #endif
+        
+    }
+    
     private func isiOS8() -> Bool {
         let Device = UIDevice.currentDevice()
         let iosVersion = NSString(string: Device.systemVersion).doubleValue
@@ -60,35 +83,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             return true
         }
         return false
-    }
-    
-    private func registerForActionableNotification() {
-        println("register for actionable notifications");
-        let submitAction = UIMutableUserNotificationAction()
-        submitAction.activationMode = UIUserNotificationActivationMode.Background
-        submitAction.title = "Yes, submit"
-        submitAction.identifier = kSubmitActionIdentifier
-        submitAction.destructive = false
-        submitAction.authenticationRequired = false
-        
-        //next time you make a UILocalNotification object's category, you set it to this category so that it will have this action associated with it 
-        //and the submit acton's identifier will be passed to the delegate method in appdelegate once user clicks on the action
-        let actionCategory = UIMutableUserNotificationCategory()
-        actionCategory.identifier = kMutableNotificationCategory
-        actionCategory.setActions([submitAction], forContext: UIUserNotificationActionContext.Default)
-        
-        var categories = NSSet(object: actionCategory)
-        var types = UIUserNotificationSettings(forTypes: .Sound | .Alert | .Badge, categories: categories as Set<NSObject>)
-
-        UIApplication.sharedApplication().registerUserNotificationSettings(types)
-    }
-    
-    func application(application: UIApplication, handleActionWithIdentifier identifier: String?, forLocalNotification notification: UILocalNotification, completionHandler: () -> Void) {
-        if identifier == kSubmitActionIdentifier {
-            LastSavedManager.sharedManager.submitLastRecordForActionableNotification()
-            application.applicationIconBadgeNumber = 0
-        }
-        completionHandler()
     }
     
     func applicationWillEnterForeground(application: UIApplication) {
@@ -104,9 +98,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func application(application: UIApplication, didReceiveLocalNotification notification: UILocalNotification) {
-//        resetNotification()
-        // TODO: Bring them to new draft for default projects
+        //        resetNotification()
     }
+    
+    //MARK: Notifications Setup and Fire
     
     private func configureLocalNotifications()
     {
@@ -114,6 +109,35 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             fireNotificationsForMonToFri()
         }
         println(UIApplication.sharedApplication().scheduledLocalNotifications)
+    }
+    
+    private func registerForActionableNotification() {
+        println("register for actionable notifications");
+        let submitAction = UIMutableUserNotificationAction()
+        submitAction.activationMode = UIUserNotificationActivationMode.Background
+        submitAction.title = "Yes, submit"
+        submitAction.identifier = kSubmitActionIdentifier
+        submitAction.destructive = false
+        submitAction.authenticationRequired = false
+        
+        //next time you make a UILocalNotification object's category, you set it to this category so that it will have this action associated with it
+        //and the submit acton's identifier will be passed to the delegate method in appdelegate once user clicks on the action
+        let actionCategory = UIMutableUserNotificationCategory()
+        actionCategory.identifier = kMutableNotificationCategory
+        actionCategory.setActions([submitAction], forContext: UIUserNotificationActionContext.Default)
+        
+        var categories = NSSet(object: actionCategory)
+        var types = UIUserNotificationSettings(forTypes: .Sound | .Alert | .Badge, categories: categories as Set<NSObject>)
+        
+        UIApplication.sharedApplication().registerUserNotificationSettings(types)
+    }
+    
+    func application(application: UIApplication, handleActionWithIdentifier identifier: String?, forLocalNotification notification: UILocalNotification, completionHandler: () -> Void) {
+        if identifier == kSubmitActionIdentifier {
+            LastSavedManager.sharedManager.submitLastRecordForActionableNotification()
+            application.applicationIconBadgeNumber = 0
+        }
+        completionHandler()
     }
     
     private func fireNotificationsForMonToFri() {
@@ -184,7 +208,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         localNotification.alertAction = "Record"
         localNotification.soundName = UILocalNotificationDefaultSoundName
         
-//        println(localNotification.description)
         UIApplication.sharedApplication().scheduleLocalNotification(localNotification)
     }
     
@@ -225,28 +248,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     {
         UIApplication.sharedApplication().applicationIconBadgeNumber = 0
         UIApplication.sharedApplication().cancelAllLocalNotifications()
-    }
-    
-    private func configureHockeySDK()
-    {
-        BITHockeyManager.sharedHockeyManager().configureWithIdentifier(hockeySDKIdentifier);
-        BITHockeyManager.sharedHockeyManager().startManager();
-        BITHockeyManager.sharedHockeyManager().authenticator.authenticateInstallation();
-    }
-    
-    private func configureSingletons()
-    {
-        TrackeratiUserDefaults.standardDefaults.registerDefaults()
-        GoogleLoginManager.sharedManager.configureWithAPIKey(googleAPIKey)
-        
-        #if DEBUG
-            FirebaseManager.sharedManager.configureWithDatabaseURL(firebaseAbsoluteURLDebug)
-            println("debug mode")
-        #else
-            FirebaseManager.sharedManager.configureWithDatabaseURL(firebaseAbsoluteURLRelease)
-            println("using production db")
-        #endif
-        
     }
 }
 

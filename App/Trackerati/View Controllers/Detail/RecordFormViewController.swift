@@ -301,7 +301,6 @@ class RecordFormViewController : UIViewController, UITextFieldDelegate, UIPicker
         
         //Last Saved Record must save this
         LastSavedManager.sharedManager.saveRecordForLastSavedRecords(tempRecord)
-        
         FirebaseManager.sharedManager.saveRecord(tempRecord, completion: { error in
             if error == nil {
                 FirebaseManager.sharedManager.getAllDataOfType(.Projects, completion: {

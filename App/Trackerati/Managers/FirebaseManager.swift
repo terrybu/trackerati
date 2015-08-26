@@ -197,6 +197,11 @@ class FirebaseManager : NSObject
     
     //MARK: Records Saving & Deleting
     
+    func saveRecordAfterSameDayDuplicateRecordNameChecking(record: Record) {
+        
+        
+    }
+    
     func saveRecord(record: Record, completion: ((error: NSError!) -> Void)?)
     {
         let userURL = "Users/\(GoogleLoginManager.sharedManager.currentUser.firebaseID)/records"
@@ -238,7 +243,7 @@ class FirebaseManager : NSObject
         }
     }
     
-
+    //this is for floating action button specific
     func saveNewRecordBasedOnPastRecord(pastRecord: Record, completion:((error: NSError!) -> Void)?) {
         
         var newRecord = Record(client: pastRecord.client, project: pastRecord.project)
@@ -276,8 +281,7 @@ class FirebaseManager : NSObject
                     if let closure = completion {
                         closure(error: nil, duplicateFound: true)
                     }
-                }
-                else {
+                } else {
                     //safe to write
                     let newProjectRefWithID = newProjectRef.childByAutoId()
                     let placeHolder = [ "name" : "placeholder" ]
@@ -291,8 +295,7 @@ class FirebaseManager : NSObject
                                     }
                                 })
                             })
-                        }
-                        else {
+                        } else {
                             if let closure = completion {
                                 closure(error: error, duplicateFound: false)
                             }
