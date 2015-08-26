@@ -236,8 +236,6 @@ class HomeViewController : MainViewController, UITableViewDelegate, UITableViewD
         
         if (floatingActionButton!.labelArray[row] as! String == kPinOrRemoveString) {
             displayProjectsViewController()
-//            audioPlayer = AVAudioPlayer(contentsOfURL: tapSound, error: nil)
-            //Not sure if I like this particular sound - couldn't find a good sound for it
         }
         else {
             self.audioPlayer = AVAudioPlayer(contentsOfURL: self.dingSound, error: nil)

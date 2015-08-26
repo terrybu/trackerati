@@ -246,7 +246,7 @@ class FirebaseManager : NSObject
         newRecord.hours = pastRecord.hours
         newRecord.type = pastRecord.type
         newRecord.status = pastRecord.status
-        newRecord.comment = pastRecord.comment
+//        newRecord.comment = pastRecord.comment --> the new record might not always be the same comments based on past record. Just leave it empty to let user fill it out afterwards
         
         saveRecord(newRecord, completion: { (error) -> Void in
             if (error != nil) {

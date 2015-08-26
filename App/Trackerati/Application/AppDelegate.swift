@@ -63,6 +63,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     private func registerForActionableNotification() {
+        println("register for actionable notifications");
         let submitAction = UIMutableUserNotificationAction()
         submitAction.activationMode = UIUserNotificationActivationMode.Background
         submitAction.title = "Yes, submit"
@@ -173,6 +174,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         localNotification.timeZone = NSTimeZone.defaultTimeZone()
         localNotification.fireDate = NSCalendar.currentCalendar().dateFromComponents(dateComponents)
         if isiOS8() && LastSavedManager.sharedManager.getLastRecordForActionableNotification() != nil {
+            println("actually fire actionable notification");
             localNotification.category = kMutableNotificationCategory
             localNotification.alertBody = composeActionableNotificationMessage()
         }
