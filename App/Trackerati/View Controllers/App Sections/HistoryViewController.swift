@@ -44,7 +44,7 @@ class HistoryViewController : MainViewController, UITableViewDelegate, HistoryTa
         
         if let containerVC = UIApplication.sharedApplication().keyWindow?.rootViewController as? ContainerViewController
         {
-            let recordForm = RecordFormViewController(record: selectedRecord, editing: editing)
+            let recordForm = RecordFormViewController(record: selectedRecord)
             recordForm.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Cancel, target: self, action: "dismissForm")
             recordForm.title = selectedRecord.date
             let newFormNavController = UINavigationController(rootViewController: recordForm)

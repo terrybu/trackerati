@@ -10,7 +10,6 @@ class RecordFormViewController : UIViewController, UITextFieldDelegate, UIPicker
 {
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var containerView: UIView!
-    
     @IBOutlet weak var clientLabel: UILabel!
     @IBOutlet weak var projectLabel: UILabel!
     @IBOutlet weak var dateButton: UIButton!
@@ -18,27 +17,19 @@ class RecordFormViewController : UIViewController, UITextFieldDelegate, UIPicker
     @IBOutlet weak var typeButton: UIButton!
     @IBOutlet weak var hoursTextField: UITextField!
     @IBOutlet weak var commentsTextField: UITextField!
-    
     @IBOutlet weak var saveRecordButton: UIButton!
 
-    
     private let kCellReuseIdentifier = "cell"
     private let kCellDefaultHeight: CGFloat = 44.0
     private let record: Record
-    
     private let tempRecord: Record
-    
     private var infoType: RecordKey?
-    
     private var activeTextField: UITextField?
     private var datePicker: UIDatePicker?
-    
     private var saveOnlyFormForAddingNewRecord = false
-    private var editingForm: Bool
 
-    init(record: Record, editing: Bool)
+    init(record: Record)
     {
-        editingForm = editing
         self.record = record
         tempRecord = record
         super.init(nibName: "RecordFormViewController", bundle: nil)
@@ -49,7 +40,7 @@ class RecordFormViewController : UIViewController, UITextFieldDelegate, UIPicker
 
     convenience init(record: Record, saveOnlyFormForAddingNewRecord: Bool)
     {
-        self.init(record: record, editing: true)
+        self.init(record: record)
         self.saveOnlyFormForAddingNewRecord = saveOnlyFormForAddingNewRecord
     }
     
@@ -65,8 +56,7 @@ class RecordFormViewController : UIViewController, UITextFieldDelegate, UIPicker
         
         if !self.record.date.isEmpty {
             dateButton.setTitle(self.record.date, forState: UIControlState.Normal)
-        }
-        else {
+        } else {
             //if its empty, we put today's date on there in a string
             dateButton.setTitle(CustomDateFormatter.sharedInstance.returnTodaysDateStringInFormat(), forState: UIControlState.Normal)
         }
@@ -104,13 +94,7 @@ class RecordFormViewController : UIViewController, UITextFieldDelegate, UIPicker
             }
         }
         
-        if saveOnlyFormForAddingNewRecord || editingForm{
-            setupSaveButton()
-        }
-        else {
-            disableAllInputFieldsAndControls()
-            setupEditButton()
-        }
+        setupSaveButton()
         
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: "tapToDismissKeyboard:")
         tapGestureRecognizer.numberOfTouchesRequired = 1
@@ -137,13 +121,11 @@ class RecordFormViewController : UIViewController, UITextFieldDelegate, UIPicker
                 var lastSavedRecord = LastSavedManager.sharedManager.getRecordForClient(self.record.client, projectString: self.record.project)
                 if let lastSaved = lastSavedRecord {
                     pickerView.selectRow(find(kRecordHoursNames, lastSaved.hours)!, inComponent:0, animated: false)
-                }
-                else {
+                } else {
                     //If there was no last saved record, default to 8.0
                     pickerView.selectRow(find(kRecordHoursNames, "8.0")!, inComponent:0, animated: false)
                 }
-            }
-            else {
+            } else {
                 //we are editing
                 var indexOfCurrentRecord = find(kRecordHoursNames, record.hours)
                 if let index = indexOfCurrentRecord as Int! {
@@ -168,11 +150,6 @@ class RecordFormViewController : UIViewController, UITextFieldDelegate, UIPicker
         saveRecordButton.enabled = false
     }
     
-    private func setupEditButton()
-    {
-        let editButton = UIBarButtonItem(barButtonSystemItem: .Edit, target: self, action: "enableEditing")
-        navigationItem.rightBarButtonItem = editButton
-    }
     
     private func setupSaveButton()
     {
@@ -221,8 +198,7 @@ class RecordFormViewController : UIViewController, UITextFieldDelegate, UIPicker
     @IBAction func statusButtonPressed(sender: UIButton) {
         if record.status == "0" {
             record.status = "1"
-        }
-        else if record.status == "1" {
+        } else if record.status == "1" {
             record.status = "0"
         }
         
@@ -232,8 +208,7 @@ class RecordFormViewController : UIViewController, UITextFieldDelegate, UIPicker
     @IBAction func typeButtonPressed(sender: UIButton) {
         if record.type == "0" {
             record.type = "1"
-        }
-        else if record.type == "1" {
+        } else if record.type == "1" {
             record.type = "0"
         }
         
@@ -250,8 +225,7 @@ class RecordFormViewController : UIViewController, UITextFieldDelegate, UIPicker
     func textFieldDidBeginEditing(textField: UITextField) {
         if (textField == commentsTextField) {
             activeTextField = commentsTextField
-        }
-        else if (textField == hoursTextField) {
+        } else if (textField == hoursTextField) {
             activeTextField = hoursTextField
         }
     }
@@ -276,8 +250,7 @@ class RecordFormViewController : UIViewController, UITextFieldDelegate, UIPicker
         if (saveOnlyFormForAddingNewRecord) {
             //then we just reset back to today's date
         dateButton.setTitle(CustomDateFormatter.sharedInstance.returnTodaysDateStringInFormat(), forState: UIControlState.Normal)
-        }
-        else {
+        } else {
             //this case is editing an old record, we set dateButton to whatever record date was
             dateButton.setTitle(self.record.date, forState: UIControlState.Normal)
         }
@@ -316,35 +289,10 @@ class RecordFormViewController : UIViewController, UITextFieldDelegate, UIPicker
     // MARK: UIBarButtonItem Selectors
     
     @objc
-    private func enableEditing()
-    {
-        editingForm = true
-        dateButton.enabled = true
-        statusButton.enabled = true
-        typeButton.enabled = true
-        hoursTextField.enabled = true
-        commentsTextField.enabled = true
-        commentsTextField.placeholder = "Comment (optional)"
-        saveRecordButton.enabled = true
-        setupSaveButton()
-    }
-    
-    @objc
-    private func disableEditing()
-    {
-        editingForm = false
-        commentsTextField.placeholder = nil
-        disableAllInputFieldsAndControls()
-        setupEditButton()
-    }
-    
-    @objc
     private func saveRecord()
     {
-        disableEditing()
         let hud = MBProgressHUD.showHUDAddedTo(view, animated: true)
         hud.labelText = "Saving Record"
-        
         tempRecord.date = dateButton.titleLabel!.text!
         tempRecord.status = record.status
         tempRecord.type = record.type
@@ -416,8 +364,7 @@ class RecordFormViewController : UIViewController, UITextFieldDelegate, UIPicker
     {
         if activeTextField == commentsTextField  {
             commentsTextField.resignFirstResponder()
-        }
-        else if activeTextField == hoursTextField  {
+        } else if activeTextField == hoursTextField  {
             hoursTextField.resignFirstResponder()
         }
     }
