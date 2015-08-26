@@ -694,7 +694,8 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Terry Bu (7G76665ZHJ)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: The Hackerati, Inc. (63LVAGD552)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: The Hackerati, Inc. (63LVAGD552)";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -718,7 +719,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				PROVISIONING_PROFILE = "9a33801b-98cc-4f58-8071-7073308ed299";
+				PROVISIONING_PROFILE = "0514eec4-0be1-405b-82a3-af565365d8f4";
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -742,7 +743,8 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: The Hackerati, Inc. (63LVAGD552)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: The Hackerati, Inc. (63LVAGD552)";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
@@ -759,7 +761,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PROVISIONING_PROFILE = "9a33801b-98cc-4f58-8071-7073308ed299";
+				PROVISIONING_PROFILE = "0514eec4-0be1-405b-82a3-af565365d8f4";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -772,8 +774,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Terry Bu (7G76665ZHJ)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: The Hackerati, Inc. (63LVAGD552)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: The Hackerati, Inc. (63LVAGD552)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Trackerati/HockeySDK-iOS/HockeySDK.embeddedframework",
@@ -789,7 +791,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_SWIFT_FLAGS = "-DDEBUG";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "9a33801b-98cc-4f58-8071-7073308ed299";
+				PROVISIONING_PROFILE = "0514eec4-0be1-405b-82a3-af565365d8f4";
 				SWIFT_OBJC_BRIDGING_HEADER = "Trackerati/Supporting Files/Trackerati-BridgingHeader.h";
 			};
 			name = Debug;
@@ -800,7 +802,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: The Hackerati, Inc. (63LVAGD552)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: The Hackerati, Inc. (63LVAGD552)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Trackerati/HockeySDK-iOS/HockeySDK.embeddedframework",
@@ -816,7 +819,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_SWIFT_FLAGS = "-DRELEASE";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "9a33801b-98cc-4f58-8071-7073308ed299";
+				PROVISIONING_PROFILE = "0514eec4-0be1-405b-82a3-af565365d8f4";
 				SWIFT_OBJC_BRIDGING_HEADER = "Trackerati/Supporting Files/Trackerati-BridgingHeader.h";
 			};
 			name = Release;
