@@ -195,13 +195,7 @@ class FirebaseManager : NSObject
         })
     }
     
-    //MARK: Records Saving & Deleting
-    
-    func saveRecordAfterSameDayDuplicateRecordNameChecking(record: Record) {
-        
-        
-    }
-    
+    //MARK: Records Saving & Deleting & Filtering
     func saveRecord(record: Record, completion: ((error: NSError!) -> Void)?)
     {
         let userURL = "Users/\(GoogleLoginManager.sharedManager.currentUser.firebaseID)/records"
@@ -242,6 +236,21 @@ class FirebaseManager : NSObject
             }
         }
     }
+    
+    func getTodaysRecords() -> [Record]? {
+        //check what today is
+        let today = NSDate()
+        //check the user records tuples array's most recent entry, and if thats today
+        let dateStringLatestRecord = userRecordsSortedByDateInTuples![0].0
+        let dateLastestRecord = CustomDateFormatter.sharedInstance.dateFormatter.dateFromString(dateStringLatestRecord)
+        println(dateStringLatestRecord)
+        println(CustomDateFormatter.sharedInstance.returnTodaysDateStringInFormat())
+        if dateStringLatestRecord == CustomDateFormatter.sharedInstance.returnTodaysDateStringInFormat() {
+                return userRecordsSortedByDateInTuples![0].1
+        }
+        return nil
+    }
+    
     
     //this is for floating action button specific
     func saveNewRecordBasedOnPastRecord(pastRecord: Record, completion:((error: NSError!) -> Void)?) {
@@ -362,9 +371,7 @@ class FirebaseManager : NSObject
     func findRecordThatCorrespondsToFloatingCell(string: String, indexPath: NSIndexPath) -> Record? {
         
         if (tuplesForFloatingDefaultsLabelsArray != nil) && (indexPath.row < tuplesForFloatingDefaultsLabelsArray!.count) {
-            if let tuple = tuplesForFloatingDefaultsLabelsArray![indexPath.row] as? (String, Record)  {
-                return tuple.1
-            }
+            return tuplesForFloatingDefaultsLabelsArray![indexPath.row].1
         }
         return nil
     }

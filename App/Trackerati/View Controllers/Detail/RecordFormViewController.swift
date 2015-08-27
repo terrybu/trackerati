@@ -58,7 +58,7 @@ class RecordFormViewController : UIViewController, UITextFieldDelegate, UIPicker
             dateButton.setTitle(self.record.date, forState: UIControlState.Normal)
         } else {
             //if its empty, we put today's date on there in a string
-            dateButton.setTitle(CustomDateFormatter.sharedInstance.returnTodaysDateStringInFormat(), forState: UIControlState.Normal)
+        dateButton.setTitle(CustomDateFormatter.sharedInstance.returnTodaysDateStringInFormat(), forState: UIControlState.Normal)
         }
         
         let statusRecordType = RecordKey.editableValues[RecordKeyIndex.Status.rawValue]
@@ -291,14 +291,29 @@ class RecordFormViewController : UIViewController, UITextFieldDelegate, UIPicker
     @objc
     private func saveRecord()
     {
-        let hud = MBProgressHUD.showHUDAddedTo(view, animated: true)
-        hud.labelText = "Saving Record"
         tempRecord.date = dateButton.titleLabel!.text!
         tempRecord.status = record.status
         tempRecord.type = record.type
         tempRecord.hours = hoursTextField.text
         tempRecord.comment = commentsTextField.text
         
+        if sameProjectAlreadyPostedToday(tempRecord) {
+            println("same project was already posted today")
+            let alertController = UIAlertController(title: "Same project was already posted today", message:
+                "Would you like to submit this project more than once in one day?", preferredStyle: UIAlertControllerStyle.Alert)
+            alertController.addAction(UIAlertAction(title: "Yes, submit again", style: UIAlertActionStyle.Default,handler: { (actionSheetController) -> Void in
+                    self.submit()
+            }))
+            alertController.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: nil))
+            self.presentViewController(alertController, animated: true, completion: nil)
+        } else {
+            submit()
+        }
+    }
+    
+    private func submit() {
+        let hud = MBProgressHUD.showHUDAddedTo(view, animated: true)
+        hud.labelText = "Saving Record"
         //Last Saved Record must save this
         LastSavedManager.sharedManager.saveRecordForLastSavedRecords(tempRecord)
         FirebaseManager.sharedManager.saveRecord(tempRecord, completion: { error in
@@ -319,6 +334,21 @@ class RecordFormViewController : UIViewController, UITextFieldDelegate, UIPicker
                 })
             }
         })
+    }
+
+        
+    
+    private func sameProjectAlreadyPostedToday(tempRecord: Record) -> Bool {
+        let possibleRecords = FirebaseManager.sharedManager.getTodaysRecords()
+        if let todaysRecords = possibleRecords {
+            //iterate through Record objects in today's Records array, check if contain the same client and project name of tempRecord
+            for record in todaysRecords {
+                if record.client == tempRecord.client && record.project == tempRecord.project {
+                    return true
+                }
+            }
+        }
+        return false
     }
     
     // MARK: UIKeyboard Notification Selectors
