@@ -35,6 +35,19 @@ class FirebaseManager : NSObject {
             return userRecordsSortedByDateInTuples![0].1.last
         }
     }
+    var todayHasRecord: Bool {
+        get {
+            let today = NSDate()
+            //check the user records tuples array's most recent entry, and if thats today
+            let dateStringLatestRecord = userRecordsSortedByDateInTuples![0].0
+            let dateLastestRecord = CustomDateFormatter.sharedInstance.dateFormatter.dateFromString(dateStringLatestRecord)
+            if dateStringLatestRecord == CustomDateFormatter.sharedInstance.returnTodaysDateStringInFormat() {
+                
+                return true
+            }
+            return false
+        }
+    }
     
     /*
     This array of client objects contains only clients that contain a project the user has pinned

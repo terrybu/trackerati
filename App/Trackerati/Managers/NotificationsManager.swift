@@ -19,10 +19,14 @@ class NotificationsManager {
     }
 
     func configureLocalNotifications() {
-        if TrackeratiUserDefaults.standardDefaults.notificationsOn() && UIApplication.sharedApplication().scheduledLocalNotifications.count == 0 {
+        if TrackeratiUserDefaults.standardDefaults.notificationsOn()
+            && UIApplication.sharedApplication().scheduledLocalNotifications.count == 0 {
             fireNotificationsForMonToFri()
         }
         println(UIApplication.sharedApplication().scheduledLocalNotifications)
+        println(UIApplication.sharedApplication().scheduledLocalNotifications.count)
+        println(UIApplication.sharedApplication().scheduledLocalNotifications.last?.description)
+
     }
     
     func registerForActionableNotification() {
@@ -46,53 +50,105 @@ class NotificationsManager {
     }
     
     private func fireNotificationsForMonToFri() {
-        fireNotificationForDay(.Monday)
-        fireNotificationForDay(.Tuesday)
-        fireNotificationForDay(.Wednesday)
-        fireNotificationForDay(.Thursday)
-        fireNotificationForDay(.Friday)
-    }
-    
-    private func fireNotificationForDay(day: WeekDayType) {
         var fireTime = TrackeratiUserDefaults.standardDefaults.notificationTime()
         let calendar = NSCalendar.currentCalendar()
         let comp = calendar.components((.CalendarUnitHour | .CalendarUnitMinute), fromDate: fireTime!)
         let hour = comp.hour
         let minute = comp.minute
+
+        //we are going to check if we already posted earlier today (any record)
+        //if we did, we are going to assume we don't have to remind user again on same day
+        //**although we might have to update in future for cases like Donny that has multiple records to be posted on a single day ... one post earlier doesn't mean he's done posting for the day .. but for majority of cases, this will work
         
-        switch (day) {
-            case .Monday:
-                self.fireThisNotificationWeekly(self.setDateComponents(2015, month: 2, day: 23, hour: hour, minute: minute))
+        if FirebaseManager.sharedManager.todayHasRecord {
+            //today we already posted record. Then we shouldn't fire notif for today when we go to background
+            //check what day of week today is
+            println("today already has posted record")
+            let today = NSDate()
+            let calendar = NSCalendar(calendarIdentifier: NSCalendarIdentifierGregorian)
+            let todayComponents = calendar?.components(.CalendarUnitWeekday, fromDate: today)
+            let todaysWeekDay = todayComponents!.weekday //Sunday is 1
+            //day + 7 ... just for Monday's firing, and override the below switch statement
+            let nextWeekDate = NSCalendar.currentCalendar().dateByAddingUnit(NSCalendarUnit.CalendarUnitDay, value: 7, toDate: today, options: NSCalendarOptions(0))!
+            println(nextWeekDate.description)
+            switch(todaysWeekDay) {
+            case WeekDayType.Monday.rawValue:
+                fireNotificationsForWeekExceptForThis(WeekDayType.Monday, nextWeekDate: nextWeekDate, comp: comp, calendar: calendar!)
                 break
-                
-            case .Tuesday:
-                self.fireThisNotificationWeekly(self.setDateComponents(2015, month: 2, day: 24, hour: hour, minute: minute))
+            case WeekDayType.Tuesday.rawValue:
+                fireNotificationsForWeekExceptForThis(WeekDayType.Tuesday, nextWeekDate: nextWeekDate, comp: comp, calendar: calendar!)
                 break
-                
-            case .Wednesday:
-                self.fireThisNotificationWeekly(self.setDateComponents(2015, month: 2, day: 25, hour: hour, minute: minute))
+            case WeekDayType.Wednesday.rawValue:
+                fireNotificationsForWeekExceptForThis(WeekDayType.Wednesday, nextWeekDate: nextWeekDate, comp: comp, calendar: calendar!)
                 break
-                
-            case .Thursday:
-                self.fireThisNotificationWeekly(self.setDateComponents(2015, month: 2, day: 26, hour: hour, minute: minute))
+            case WeekDayType.Thursday.rawValue:
+                fireNotificationsForWeekExceptForThis(WeekDayType.Thursday, nextWeekDate: nextWeekDate, comp: comp,calendar: calendar!)
                 break
-                
-            case .Friday:
-                self.fireThisNotificationWeekly(self.setDateComponents(2015, month: 2, day: 27, hour: hour, minute: minute))
+            case WeekDayType.Friday.rawValue:
+                fireNotificationsForWeekExceptForThis(WeekDayType.Friday, nextWeekDate: nextWeekDate, comp: comp,calendar: calendar!)
                 break
-                
             default:
                 break
+            }
+        } else { //else proceed as normal
+            fireNotificationForDay(.Monday, comp: comp)
+            fireNotificationForDay(.Tuesday, comp: comp)
+            fireNotificationForDay(.Wednesday, comp: comp)
+            fireNotificationForDay(.Thursday, comp: comp)
+            fireNotificationForDay(.Friday, comp: comp)
         }
     }
     
-    private func setDateComponents(year: Int, month: Int, day: Int, hour: Int, minute: Int) -> NSDateComponents {
+    private func fireNotificationsForWeekExceptForThis(weekDay: WeekDayType, nextWeekDate: NSDate, comp: NSDateComponents, calendar: NSCalendar) {
+        println("fire notifications for week except for day \(weekDay.rawValue)")
+        var daysSet : Set<WeekDayType> = [WeekDayType.Monday, .Tuesday, .Wednesday, .Thursday, .Friday]
+        //first, fire off this thing for next week
+        let flags = NSCalendarUnit.CalendarUnitDay | .CalendarUnitMonth | .CalendarUnitYear
+        let nextWeekDateComponents = calendar.components(flags, fromDate: nextWeekDate)
+        let year = nextWeekDateComponents.year
+        let month = nextWeekDateComponents.month
+        let day = nextWeekDateComponents.day
+        println("\(year) \(month) and \(day)")
+        nextWeekDateComponents.hour = comp.hour
+        nextWeekDateComponents.minute = comp.minute
+        self.fireThisNotificationWeekly(nextWeekDateComponents)
+        //then get rid of it from daysSet
+        daysSet.remove(weekDay)
+        //then iterate over daysSet and send notification for all the other days
+        for weekday in daysSet {
+            fireNotificationForDay(weekday, comp: comp)
+        }
+    }
+    
+    private func fireNotificationForDay(day: WeekDayType, comp: NSDateComponents) {
+        switch (day) {
+        case .Monday:
+            self.fireThisNotificationWeekly(returnDateComponents(2015, month: 2, day: 23, comp: comp))
+            break
+        case .Tuesday:
+            self.fireThisNotificationWeekly(returnDateComponents(2015, month: 2, day: 24, comp: comp))
+            break
+        case .Wednesday:
+            self.fireThisNotificationWeekly(returnDateComponents(2015, month: 2, day: 25, comp: comp))
+            break
+        case .Thursday:
+            self.fireThisNotificationWeekly(returnDateComponents(2015, month: 2, day: 26, comp: comp))
+            break
+        case .Friday:
+            self.fireThisNotificationWeekly(returnDateComponents(2015, month: 2, day: 27, comp: comp))
+            break
+        default:
+            break
+        }
+    }
+    
+    private func returnDateComponents(year: Int, month: Int, day: Int, comp: NSDateComponents ) -> NSDateComponents {
         var dateComponents = NSDateComponents()
         dateComponents.year = year
         dateComponents.month = month
         dateComponents.day = day
-        dateComponents.hour = hour
-        dateComponents.minute = minute
+        dateComponents.hour = comp.hour
+        dateComponents.minute = comp.minute
         return dateComponents
     }
     
