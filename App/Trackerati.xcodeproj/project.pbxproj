@@ -53,6 +53,7 @@
 		D939CE4B1B59753A008F69D9 /* CustomDateFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D939CE4A1B59753A008F69D9 /* CustomDateFormatter.swift */; };
 		D94B66691B2F332600288B01 /* MPGTextField-Swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = D94B66681B2F332600288B01 /* MPGTextField-Swift.swift */; };
 		D94B666F1B2F412E00288B01 /* NewProjectViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D94B666D1B2F412E00288B01 /* NewProjectViewController.xib */; };
+		D95E74391B94B188005998D3 /* NotificationsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D95E74381B94B188005998D3 /* NotificationsManager.swift */; };
 		D96980741B38480300889EAB /* FloatTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D96980721B38480300889EAB /* FloatTableViewCell.m */; };
 		D96980751B38480300889EAB /* FloatTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D96980731B38480300889EAB /* FloatTableViewCell.xib */; };
 		D96980771B38587300889EAB /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D96980761B38587300889EAB /* AVFoundation.framework */; };
@@ -135,6 +136,7 @@
 		D939CE4A1B59753A008F69D9 /* CustomDateFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CustomDateFormatter.swift; path = ../Views/CustomDateFormatter.swift; sourceTree = "<group>"; };
 		D94B66681B2F332600288B01 /* MPGTextField-Swift.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MPGTextField-Swift.swift"; sourceTree = "<group>"; };
 		D94B666D1B2F412E00288B01 /* NewProjectViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NewProjectViewController.xib; sourceTree = "<group>"; };
+		D95E74381B94B188005998D3 /* NotificationsManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationsManager.swift; sourceTree = "<group>"; };
 		D96980711B38480300889EAB /* FloatTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FloatTableViewCell.h; sourceTree = "<group>"; };
 		D96980721B38480300889EAB /* FloatTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FloatTableViewCell.m; sourceTree = "<group>"; };
 		D96980731B38480300889EAB /* FloatTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FloatTableViewCell.xib; sourceTree = "<group>"; };
@@ -196,6 +198,7 @@
 				013C5A121B012E06002C4020 /* GoogleLoginManager.swift */,
 				0170E43D1B026D8000D593C3 /* FirebaseManager.swift */,
 				D9ECCD0D1B4DB5FC00045867 /* LastSavedManager.swift */,
+				D95E74381B94B188005998D3 /* NotificationsManager.swift */,
 				D939CE4A1B59753A008F69D9 /* CustomDateFormatter.swift */,
 			);
 			path = Managers;
@@ -213,6 +216,7 @@
 			isa = PBXGroup;
 			children = (
 				01498B161B01027E00C7C395 /* Trackerati */,
+				01498B3D1B0114C800C7C395 /* Frameworks */,
 				01498B2C1B01027E00C7C395 /* TrackeratiTests */,
 				01498B151B01027E00C7C395 /* Products */,
 				3F88CD5D6D5D4B14DF4E0DA7 /* Pods */,
@@ -233,14 +237,13 @@
 			isa = PBXGroup;
 			children = (
 				01498B3A1B0104CF00C7C395 /* Application */,
-				0170E4421B02984200D593C3 /* Models */,
-				01498B3D1B0114C800C7C395 /* Frameworks */,
 				013C5A111B012E06002C4020 /* Managers */,
-				D969807A1B3858EA00889EAB /* Resources */,
-				01498B391B0104C400C7C395 /* View Controllers */,
-				D9572CF31B30D77500F2620E /* Extensions */,
+				0170E4421B02984200D593C3 /* Models */,
 				0170E4511B0542A900D593C3 /* Views */,
-				D94B66671B2F32EC00288B01 /* Third Party */,
+				01498B391B0104C400C7C395 /* View Controllers */,
+				D969807A1B3858EA00889EAB /* Resources */,
+				D9572CF31B30D77500F2620E /* Extensions */,
+				D94B66671B2F32EC00288B01 /* 3rd Party */,
 				01498B171B01027E00C7C395 /* Supporting Files */,
 			);
 			path = Trackerati;
@@ -316,7 +319,8 @@
 				01498B6D1B0117FF00C7C395 /* CoreGraphics.framework */,
 				01498B6E1B0117FF00C7C395 /* CoreText.framework */,
 			);
-			path = Frameworks;
+			name = Frameworks;
+			path = Trackerati/Frameworks;
 			sourceTree = "<group>";
 		};
 		0170E4421B02984200D593C3 /* Models */ = {
@@ -426,13 +430,13 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		D94B66671B2F32EC00288B01 /* Third Party */ = {
+		D94B66671B2F32EC00288B01 /* 3rd Party */ = {
 			isa = PBXGroup;
 			children = (
 				D94B66681B2F332600288B01 /* MPGTextField-Swift.swift */,
 				D9E5360E1B2A1FE100A1400B /* VCFloatingActionButton */,
 			);
-			name = "Third Party";
+			name = "3rd Party";
 			sourceTree = "<group>";
 		};
 		D9572CF31B30D77500F2620E /* Extensions */ = {
@@ -629,6 +633,7 @@
 				013C5A131B012E06002C4020 /* GoogleLoginManager.swift in Sources */,
 				D94B66691B2F332600288B01 /* MPGTextField-Swift.swift in Sources */,
 				019FCA0F1B1E372A007E7E8B /* MBProgressHUDExtension.swift in Sources */,
+				D95E74391B94B188005998D3 /* NotificationsManager.swift in Sources */,
 				0170E43C1B0259C400D593C3 /* TrackeratiUserDefaults.swift in Sources */,
 				0190BF321B0B899800E508CF /* Client.swift in Sources */,
 				D939CE4B1B59753A008F69D9 /* CustomDateFormatter.swift in Sources */,

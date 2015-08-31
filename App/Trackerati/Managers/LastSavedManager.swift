@@ -8,22 +8,15 @@
 
 class LastSavedManager {
     
-    class var sharedManager : LastSavedManager {
-        struct Static {
-            static var instance : LastSavedManager?
-            static var token : dispatch_once_t = 0
-        }
-        dispatch_once(&Static.token) {
-            Static.instance = LastSavedManager()
-        }
-        return Static.instance!
-    }
+    static let sharedManager = LastSavedManager()
     
     func getLastSavedRecordsArrayFromDefaults() -> NSMutableArray? {
         var data = NSUserDefaults.standardUserDefaults().dataForKey(kLastSavedRecord)
         if let recordsArrayData = data {
             var unarchivedRecordsArray: AnyObject? = NSKeyedUnarchiver.unarchiveObjectWithData(recordsArrayData)
             return unarchivedRecordsArray as? NSMutableArray
+        } else {
+            println("no data was found for key lastsavedrecord in user defaults")
         }
         return nil
     }
@@ -81,47 +74,16 @@ class LastSavedManager {
     
     func getLastRecordForActionableNotification() -> Record? {
         var lastSavedRecords = getLastSavedRecordsArrayFromDefaults()
-        if let lastSaveds = lastSavedRecords {
-            var lastRecord = lastSaveds.lastObject as! Record
+        if let lastSavedRecords = lastSavedRecords {
+            for object in lastSavedRecords {
+                println(object.project)
+            }
+            let lastRecord = lastSavedRecords.lastObject as! Record
             return lastRecord
+        } else {
+            println("last saved records array from user defaults was never found")
         }
         return nil
-    }
-    
-    func submitLastRecordForActionableNotification() {
-        if let latestRecordFromDefaults = getLastRecordForActionableNotification() {
-            
-            //check if today already had that same record submitted by project name. If so, don't put it in again through actionable notification
-            //actionable notification cannot be prevented from firing at this time because we are repeating at weekly interval
-            //we can improve this by firing notification daily and checking for weekends and also if todays record has already been submitted ... but daily firing complicates app because then we need a solution to work around weekends when we fire on Friday.
-            //For the time being, we are having it do nothing if this case happens
-            
-            if let userRecords = FirebaseManager.sharedManager.userRecordsSortedByDateInTuples {
-                
-               let firstTupleFromlatestRecordsInHistory = userRecords[0] //this gets first tuple, gets [Record]
-                
-                //get today's date
-                //see if latest record's date is the same as today's date
-                //ok that means you logged something today
-                let today = CustomDateFormatter.sharedInstance.returnTodaysDateStringInFormat()
-                if today == firstTupleFromlatestRecordsInHistory.0 {
-                    //then check if the array of records has same name and project as the last thing from saved defaults
-                    for loggedRecord in firstTupleFromlatestRecordsInHistory.1 {
-                        if loggedRecord.client == latestRecordFromDefaults.client && loggedRecord.project == latestRecordFromDefaults.project {
-                            //if it is, don't send anything
-                            return
-                        }
-                    }
-                    
-                }
-            }
-            
-            FirebaseManager.sharedManager.saveNewRecordBasedOnPastRecord(latestRecordFromDefaults, completion: { (error) -> Void in
-                if (error != nil) {
-                    println(error)
-                }
-            })
-        }
     }
     
 }

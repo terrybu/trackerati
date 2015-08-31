@@ -29,8 +29,7 @@ class HomeViewController : MainViewController, UITableViewDelegate, UITableViewD
         }
     }
 
-    init()
-    {
+    init() {
         super.init(nibName: nil, bundle: nil)
         title = "Trackerati"
     }
@@ -224,20 +223,15 @@ class HomeViewController : MainViewController, UITableViewDelegate, UITableViewD
         var imageView = UIImageView(image: UIImage(named: "ic_action_add_time"))
         imageView.contentMode = UIViewContentMode.ScaleAspectFill
         cell.accessoryView = imageView
-        
-        // black arrows
-//        cell.accessoryType = UITableViewCellAccessoryType.DisclosureIndicator
         return cell
     }
     
     // MARK: Floating Action Button Delegate
     
     func didSelectMenuOptionAtIndex(row: Int) {
-        
         if (floatingActionButton!.labelArray[row] as! String == kPinOrRemoveString) {
             displayProjectsViewController()
-        }
-        else {
+        } else {
             self.audioPlayer = AVAudioPlayer(contentsOfURL: self.dingSound, error: nil)
             let hud = MBProgressHUD.showHUDAddedTo(view, animated: true)
             let displayName = FirebaseManager.sharedManager.tuplesForFloatingDefaultsLabelsArray![row].0

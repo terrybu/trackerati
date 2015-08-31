@@ -6,8 +6,6 @@
 //  Copyright (c) 2015 The Hackerati. All rights reserved.
 //
 
-import UIKit
-
 class CustomDateFormatter {
     
     static let sharedInstance = CustomDateFormatter()

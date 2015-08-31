@@ -21,24 +21,11 @@ let kNotificationDownloadedInfoKey = "downloadedData"
 let kUserJustPinnedOrUnpinnedNotificationName = "userPinnedOrUnpinnedProject"
 let kUserJustDeletedNotificationName = "userJustDeletedSomething"
 
-class FirebaseManager : NSObject
-{
+class FirebaseManager : NSObject {
+    
+    static let sharedManager = FirebaseManager()
+   
     private var firebaseDB = Firebase()
-    
-    class var sharedManager : FirebaseManager {
-    
-        struct Static {
-            static var instance : FirebaseManager?
-            static var token : dispatch_once_t = 0
-        }
-        
-        dispatch_once(&Static.token) {
-            Static.instance = FirebaseManager()
-        }
-        
-        return Static.instance!
-    }
-    
     var allClientProjects: [Client]?
     var allUserRecords: [Record]?
     var userRecordsSortedByDateInTuples: [(String, [Record])]?
@@ -50,8 +37,7 @@ class FirebaseManager : NSObject
     */
     var clientsByPinnedProj: [Client]?
     
-    func configureWithDatabaseURL(url: String)
-    {
+    func configureWithDatabaseURL(url: String) {
         assert(url != "", "Must be a valid URL")
         firebaseDB = Firebase(url: url)
     }
@@ -61,8 +47,7 @@ class FirebaseManager : NSObject
     
     :param: token An OAuth token provided by the Google Plus API
     */
-    func authenticateWithToken(token: String!)
-    {
+    func authenticateWithToken(token: String!) {
         firebaseDB.authWithOAuthProvider("google", token: token, withCompletionBlock: { error, authData in
             dispatch_async(dispatch_get_main_queue(), {
                 if error != nil {
@@ -87,8 +72,7 @@ class FirebaseManager : NSObject
     
     :param: type The type of information you want to request
     */
-    func getAllDataOfType(type: DataInfoType, completion: (() -> Void)?)
-    {
+    func getAllDataOfType(type: DataInfoType, completion: (() -> Void)?) {
         self.firebaseDB.observeSingleEventOfType(.Value, withBlock: { snapshot in
             var notificationName = ""
             
@@ -124,8 +108,7 @@ class FirebaseManager : NSObject
     
     :returns: An array of tuples with String dates mapped to an array of Record objects that correspond to that date
     */
-    func userRecordsSortedByDate() -> [(String, [Record])]
-    {
+    func userRecordsSortedByDate() -> [(String, [Record])] {
         var dateToRecordDictionary: [String: [Record]] = [:]
         for record in allUserRecords! {
             if let datedRecords = dateToRecordDictionary[record.date] {
@@ -469,8 +452,7 @@ class FirebaseManager : NSObject
     The projects in those array are the one's that the user has pinned.
     */
     
-    func getClientsFilteredByPinnedProjects() -> [Client]
-    {
+    func getClientsFilteredByPinnedProjects() -> [Client] {
         var pinnedProjects: [Client] = []
         for client in allClientProjects! {
             let newProjectArray = client.projects.filter({ contains($0.users, GoogleLoginManager.sharedManager.currentUser.firebaseID) })

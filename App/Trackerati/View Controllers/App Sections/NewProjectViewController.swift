@@ -145,16 +145,14 @@ class NewProjectViewController: UIViewController, MPGTextFieldDelegate {
                     println(error)
                     alertController = UIAlertController(title: "Error", message:
                         "There was an error while trying to save new project to database, please try again later", preferredStyle: UIAlertControllerStyle.Alert)
-                }
-                else if (duplicateFound) {
+                } else if (duplicateFound) {
                     alertController = UIAlertController(title: "Same project name exists", message:
                         "You cannot add this project name under this client because it already exists in current database", preferredStyle: UIAlertControllerStyle.Alert)
                 }
                 alertController!.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default,handler: nil))
                 self.presentViewController(alertController!, animated: true, completion: nil)
                 hud.hide(true)
-            }
-            else {
+            } else {
                 MBProgressHUD.showCompletionHUD(onView: self.view, duration: 1.5, customDoneText: "New Project Save Complete!" ,completion: {
                     self.closeViewController()
                 })

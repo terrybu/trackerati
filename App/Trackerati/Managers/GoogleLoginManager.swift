@@ -10,29 +10,15 @@ let kUserDidAuthorizeNotification = "userDidAuthorizeNotification"
 let kUserDidFailAuthorizationNotification = "userDidFailAuthorizationNotification"
 let kUserProfilePictureDidFinishDownloadingNotification = "userProfilePictureDidFinishDownloading"
 
-class GoogleLoginManager : NSObject, GPPSignInDelegate, UIAlertViewDelegate
-{
+class GoogleLoginManager : NSObject, GPPSignInDelegate, UIAlertViewDelegate {
+    static let sharedManager = GoogleLoginManager()
+
     private let googleSignInManager = GPPSignIn.sharedInstance()
     private var googlePlusIdentifier = "";
     private let kGooglePlusScopeKeyProfile = "profile"
     private let kHackeratiEmailDomain = "thehackerati.com"
     private let kMaxNumberOfLoginAttempts = 50
-    
     private var numberOfAttempts = 0
-    
-    class var sharedManager : GoogleLoginManager {
-    
-        struct Static {
-            static var instance : GoogleLoginManager?
-            static var token : dispatch_once_t = 0
-        }
-        
-        dispatch_once(&Static.token) {
-            Static.instance = GoogleLoginManager()
-        }
-        
-        return Static.instance!
-    }
     
     private(set) var currentUser: User!
     private(set) var authToken: String!

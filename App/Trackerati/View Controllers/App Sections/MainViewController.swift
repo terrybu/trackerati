@@ -15,8 +15,7 @@ class MainViewController: UIViewController {
     
     weak var delegate: MainViewControllerDelegate?
     
-    override func loadView()
-    {
+    override func loadView() {
         super.loadView()
         view = UIView(frame: UIScreen.mainScreen().bounds)
         view.backgroundColor = UIColor.whiteColor()
@@ -36,8 +35,7 @@ class MainViewController: UIViewController {
     // MARK: Button Selectors
     
     @objc
-    private func displayMenu(button: UIBarButtonItem)
-    {
+    private func displayMenu(button: UIBarButtonItem) {
         delegate?.didPressMenuButton(button)
     }
 }
