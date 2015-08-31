@@ -87,5 +87,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         completionHandler()
     }
     
+    private func isiOS8() -> Bool {
+        let Device = UIDevice.currentDevice()
+        let iosVersion = NSString(string: Device.systemVersion).doubleValue
+        if iosVersion >= 8 {
+            println("ios 8 or higher")
+            return true
+        }
+        return false
+    }
+
+    
 }
 

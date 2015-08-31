@@ -72,18 +72,20 @@ class LastSavedManager {
         defaults.synchronize()
     }
     
-    func getLastRecordForActionableNotification() -> Record? {
-        var lastSavedRecords = getLastSavedRecordsArrayFromDefaults()
-        if let lastSavedRecords = lastSavedRecords {
-            for object in lastSavedRecords {
-                println(object.project)
-            }
-            let lastRecord = lastSavedRecords.lastObject as! Record
-            return lastRecord
-        } else {
-            println("last saved records array from user defaults was never found")
-        }
-        return nil
-    }
+    //this was when I was thinking that notifications should be based on last saved record.
+    //changed my mind, just using latest record from firebase
+//    func getLastRecordForActionableNotification() -> Record? {
+//        var lastSavedRecords = getLastSavedRecordsArrayFromDefaults()
+//        if let lastSavedRecords = lastSavedRecords {
+//            for object in lastSavedRecords {
+//                println(object.project)
+//            }
+//            let lastRecord = lastSavedRecords.lastObject as! Record
+//            return lastRecord
+//        } else {
+//            println("last saved records array from user defaults was never found")
+//        }
+//        return nil
+//    }
     
 }

@@ -30,6 +30,11 @@ class FirebaseManager : NSObject {
     var allUserRecords: [Record]?
     var userRecordsSortedByDateInTuples: [(String, [Record])]?
     var tuplesForFloatingDefaultsLabelsArray: [(String, Record)]?
+    var latestRecord: Record? {
+        get {
+            return userRecordsSortedByDateInTuples![0].1.last
+        }
+    }
     
     /*
     This array of client objects contains only clients that contain a project the user has pinned
@@ -197,8 +202,7 @@ class FirebaseManager : NSObject {
                     closure(error: error)
                 }
             })
-        }
-        else { // we're editing a previous record
+        } else { // we're editing a previous record
             let recordRef = firebaseDB.childByAppendingPath(userURL).childByAppendingPath(record.id)
             recordRef.updateChildValues(recordToSave as [NSObject : AnyObject], withCompletionBlock: { error, firebaseRef in
                 println("updating child values completed \(firebaseRef.key)")
@@ -209,8 +213,7 @@ class FirebaseManager : NSObject {
         }
     }
     
-    func deleteRecord(record: Record, completion: ((error: NSError!) -> Void)?)
-    {
+    func deleteRecord(record: Record, completion: ((error: NSError!) -> Void)?) {
         let userURL = "Users/\(GoogleLoginManager.sharedManager.currentUser.firebaseID)/records"
         let recordRef = firebaseDB.childByAppendingPath(userURL + "/" + record.id)
         recordRef.removeValueWithCompletionBlock { error, firebaseRef in
@@ -314,7 +317,6 @@ class FirebaseManager : NSObject {
     }
     
     func returnLatestUniqueClientProjectsFromUserRecords() -> [(String, Record)]? {
-        
         var uniqueProjectNamesSet = NSMutableOrderedSet()
         var resultsTuplesArray = [(String, Record)]()
         

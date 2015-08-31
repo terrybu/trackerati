@@ -31,11 +31,10 @@ class NotificationsManager {
         submitAction.activationMode = UIUserNotificationActivationMode.Background
         submitAction.title = "Yes, submit"
         submitAction.identifier = kSubmitActionIdentifier
+        //the submit acton's identifier will be passed to the delegate method in appdelegate once user clicks on the action
         submitAction.destructive = false
         submitAction.authenticationRequired = false
-        
-        //next time you make a UILocalNotification object's category, you set it to this category so that it will have this action associated with it
-        //and the submit acton's identifier will be passed to the delegate method in appdelegate once user clicks on the action
+
         let actionCategory = UIMutableUserNotificationCategory()
         actionCategory.identifier = kMutableNotificationCategory
         actionCategory.setActions([submitAction], forContext: UIUserNotificationActionContext.Default)
@@ -102,7 +101,7 @@ class NotificationsManager {
         localNotification.repeatInterval = NSCalendarUnit.WeekCalendarUnit
         localNotification.timeZone = NSTimeZone.defaultTimeZone()
         localNotification.fireDate = NSCalendar.currentCalendar().dateFromComponents(dateComponents)
-        if isiOS8() && LastSavedManager.sharedManager.getLastRecordForActionableNotification() != nil {
+        if isiOS8() {
             localNotification.category = kMutableNotificationCategory
             localNotification.alertBody = composeActionableNotificationMessage()
         } else {
@@ -115,7 +114,7 @@ class NotificationsManager {
     }
     
     private func composeActionableNotificationMessage() -> String? {
-        var lastSavedRecord = LastSavedManager.sharedManager.getLastRecordForActionableNotification()
+        var lastSavedRecord = FirebaseManager.sharedManager.userRecordsSortedByDateInTuples![0].1.last
         if let record = lastSavedRecord {
             var message = "Want to submit \(record.client): \(record.project) for \(record.hours) hours today?"
             return message
@@ -124,33 +123,23 @@ class NotificationsManager {
     }
     
     func submitLastRecordForActionableNotification() {
-        if let latestRecordFromDefaults = LastSavedManager.sharedManager.getLastRecordForActionableNotification() {
+        if let latestRecord = FirebaseManager.sharedManager.latestRecord {
             //check if today already had that same record submitted by project name. If so, don't put it in again through actionable notification
             //actionable notification cannot be prevented from firing at this time because we are repeating at weekly interval
             //we can improve this by firing notification daily and checking for weekends and also if todays record has already been submitted ... but daily firing complicates app because then we need a solution to work around weekends when we fire on Friday.
             //For the time being, we are having it do nothing if this case happens
             
-            if let userRecords = FirebaseManager.sharedManager.userRecordsSortedByDateInTuples {
-                let firstTupleFromlatestRecordsInHistory = userRecords[0] //this gets first tuple, gets [Record]
-                
-                //get today's date
-                //see if latest record's date is the same as today's date
-                //ok that means you logged something today
-                let today = CustomDateFormatter.sharedInstance.returnTodaysDateStringInFormat()
-                if today == firstTupleFromlatestRecordsInHistory.0 {
-                    //then check if the array of records has same name and project as the last thing from saved defaults
-                    for loggedRecord in firstTupleFromlatestRecordsInHistory.1 {
-                        if loggedRecord.client == latestRecordFromDefaults.client && loggedRecord.project == latestRecordFromDefaults.project {
-                            //if it is, don't send anything
-                            println("don't submit anything with action notif because we found that you already logged \(latestRecordFromDefaults.project) for today")
-                            return
-                        }
+            let todaysRecords = FirebaseManager.sharedManager.getTodaysRecords()
+            if let todaysRecords = todaysRecords {
+                for todaysRecord in todaysRecords {
+                    if todaysRecord.client == latestRecord.client && todaysRecord.project == latestRecord.project {
+                        println("don't submit anything with action notif because we found that you already logged \(latestRecord.project) for today")
+                        return
                     }
-                    
                 }
             }
             println("post through actionable notif because validation checking went smooth!")
-        FirebaseManager.sharedManager.saveNewRecordBasedOnPastRecord(latestRecordFromDefaults, completion: { (error) -> Void in
+            FirebaseManager.sharedManager.saveNewRecordBasedOnPastRecord(latestRecord, completion: { (error) -> Void in
                 if (error != nil) {
                     println(error)
                 }
@@ -190,6 +179,7 @@ class NotificationsManager {
         let Device = UIDevice.currentDevice()
         let iosVersion = NSString(string: Device.systemVersion).doubleValue
         if iosVersion >= 8 {
+            println("ios 8 or higher")
             return true
         }
         return false
