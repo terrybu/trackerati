@@ -23,7 +23,7 @@ class MainViewController: UIViewController {
         if let menuImage = UIImage(named: "MenuButton") {
             let menuButton = UIButton(frame: CGRect(origin: CGPointZero, size: menuImage.size))
             menuButton.showsTouchWhenHighlighted = false
-            var hamburger = UIImage(named: "MenuButton")?.imageWithRenderingMode(.AlwaysTemplate)
+            let hamburger = UIImage(named: "MenuButton")?.imageWithRenderingMode(.AlwaysTemplate)
             menuButton.setImage(hamburger, forState: .Normal)
             menuButton.tintColor = UIColor.whiteColor()
             menuButton.addTarget(self, action: "displayMenu:", forControlEvents: .TouchUpInside)

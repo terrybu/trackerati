@@ -24,7 +24,7 @@ class SideMenuUserHeaderView : UIView
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "applyProfileInfo:", name: kUserProfilePictureDidFinishDownloadingNotification, object: nil)
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -35,7 +35,7 @@ class SideMenuUserHeaderView : UIView
         profileNameLabel.textColor = UIColor.blackColor()
         profileNameLabel.numberOfLines = 0
         profileNameLabel.lineBreakMode = .ByTruncatingTail
-        profileNameLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
+        profileNameLabel.translatesAutoresizingMaskIntoConstraints = false
         addSubview(profileNameLabel)
         self.profileNameLabel = profileNameLabel
         
@@ -55,7 +55,7 @@ class SideMenuUserHeaderView : UIView
         profilePictureImageView.contentMode = .ScaleAspectFit
         profilePictureImageView.layer.masksToBounds = true
         profilePictureImageView.layer.cornerRadius = 10.0
-        profilePictureImageView.setTranslatesAutoresizingMaskIntoConstraints(false)
+        profilePictureImageView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(profilePictureImageView)
         self.profilePictureImageView = profilePictureImageView
         

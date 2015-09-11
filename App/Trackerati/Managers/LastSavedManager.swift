@@ -11,26 +11,26 @@ class LastSavedManager {
     static let sharedManager = LastSavedManager()
     
     func getLastSavedRecordsArrayFromDefaults() -> NSMutableArray? {
-        var data = NSUserDefaults.standardUserDefaults().dataForKey(kLastSavedRecord)
+        let data = NSUserDefaults.standardUserDefaults().dataForKey(kLastSavedRecord)
         if let recordsArrayData = data {
-            var unarchivedRecordsArray: AnyObject? = NSKeyedUnarchiver.unarchiveObjectWithData(recordsArrayData)
+            let unarchivedRecordsArray: AnyObject? = NSKeyedUnarchiver.unarchiveObjectWithData(recordsArrayData)
             return unarchivedRecordsArray as? NSMutableArray
         } else {
-            println("no data was found for key lastsavedrecord in user defaults")
+            print("no data was found for key lastsavedrecord in user defaults")
         }
         return nil
     }
     
     func getRecordForClient(clientString: String, projectString: String) -> Record? {
         var resultRecord = Record?()
-        var array = getLastSavedRecordsArrayFromDefaults()
+        let array = getLastSavedRecordsArrayFromDefaults()
         if let lastRecordsArray = array {
-            lastRecordsArray.enumerateObjectsUsingBlock({ (object: AnyObject!, idx: Int, stop: UnsafeMutablePointer<ObjCBool>) -> Void in
-                var thisRecord = object as! Record
+            lastRecordsArray.enumerateObjectsUsingBlock({ (object: AnyObject, idx: Int, stop: UnsafeMutablePointer<ObjCBool>) -> Void in
+                let thisRecord = object as! Record
 //                println("\(thisRecord.client) \(thisRecord.project)")
                 if thisRecord.client == clientString && thisRecord.project == projectString {
                     resultRecord = thisRecord
-                    var shouldStop: ObjCBool = true
+                    let shouldStop: ObjCBool = true
                     stop.initialize(shouldStop)
                 }
             })
@@ -47,9 +47,9 @@ class LastSavedManager {
         if let lastSavedArray = lastSavedRecordsArray {
             //if the saved info array already had Records, check each record's client names and project names Ex) Hackerati, Internal. If matched, we remove that record and replace it with a new record last saved information
             
-            var recordsToDelete = NSMutableArray()
+            let recordsToDelete = NSMutableArray()
             for aRecord in lastSavedArray {
-                var oldRecord = aRecord as! Record
+                let oldRecord = aRecord as! Record
                 if oldRecord.client == record.client && oldRecord.project == record.project {
                     recordsToDelete.addObject(oldRecord)
                 }
@@ -67,7 +67,7 @@ class LastSavedManager {
             lastSavedRecordsArray = [record]
         }
         let defaults = NSUserDefaults.standardUserDefaults()
-        var archivedData = NSKeyedArchiver.archivedDataWithRootObject(lastSavedRecordsArray!)
+        let archivedData = NSKeyedArchiver.archivedDataWithRootObject(lastSavedRecordsArray!)
         defaults.setObject(archivedData, forKey: kLastSavedRecord)
         defaults.synchronize()
     }

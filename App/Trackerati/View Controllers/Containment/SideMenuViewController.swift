@@ -36,7 +36,7 @@ class SideMenuViewController : UIViewController, UITableViewDelegate, UITableVie
         super.init(nibName: nil, bundle: nil)
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -67,7 +67,7 @@ class SideMenuViewController : UIViewController, UITableViewDelegate, UITableVie
     {
         let backgroundImageView = UIImageView(image: UIImage(named: "Hackerati")!)
         backgroundImageView.contentMode = .ScaleAspectFill
-        backgroundImageView.setTranslatesAutoresizingMaskIntoConstraints(false)
+        backgroundImageView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(backgroundImageView)
         
         let constraints = [
@@ -97,12 +97,12 @@ class SideMenuViewController : UIViewController, UITableViewDelegate, UITableVie
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier(kCellReuseIdentifier, forIndexPath: indexPath) as! UITableViewCell
+        let cell = tableView.dequeueReusableCellWithIdentifier(kCellReuseIdentifier, forIndexPath: indexPath) 
         cell.backgroundColor = UIColor.clearColor()
 //        setupLabelOnCell(cell, indexPath: indexPath) Why do this instead of just using cell's default text label?
         cell.textLabel!.text = menuItems[indexPath.row].rawValue
         cell.textLabel!.textColor = UIColor.whiteColor()
-        var icon = UIImage(named: menuItems[indexPath.row].rawValue)
+        let icon = UIImage(named: menuItems[indexPath.row].rawValue)
         icon?.imageWithRenderingMode(.AlwaysTemplate)
         cell.imageView!.image = icon
         cell.imageView!.tintColor = UIColor.whiteColor()

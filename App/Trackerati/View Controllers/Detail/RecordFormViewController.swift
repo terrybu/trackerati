@@ -44,7 +44,7 @@ class RecordFormViewController : UIViewController, UITextFieldDelegate, UIPicker
         self.saveOnlyFormForAddingNewRecord = saveOnlyFormForAddingNewRecord
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -85,7 +85,7 @@ class RecordFormViewController : UIViewController, UITextFieldDelegate, UIPicker
         
         if saveOnlyFormForAddingNewRecord {
             //Last Saved Manager into play
-            var lastSavedData = LastSavedManager.sharedManager.getRecordForClient(self.record.client, projectString: self.record.project)
+            let lastSavedData = LastSavedManager.sharedManager.getRecordForClient(self.record.client, projectString: self.record.project)
             if let lastSavedRecordForProject = lastSavedData {
                 record.type = lastSavedRecordForProject.type
                 typeButton.setTitle(record.valueForType(worktypeRecordType, rawValue: false), forState: .Normal)
@@ -118,16 +118,16 @@ class RecordFormViewController : UIViewController, UITextFieldDelegate, UIPicker
             //picker for hours needs to default to a certain value instead of all the way down in 0.5
             if saveOnlyFormForAddingNewRecord {
                 //this is for all other cases (making a new form). This should now use last saved record
-                var lastSavedRecord = LastSavedManager.sharedManager.getRecordForClient(self.record.client, projectString: self.record.project)
+                let lastSavedRecord = LastSavedManager.sharedManager.getRecordForClient(self.record.client, projectString: self.record.project)
                 if let lastSaved = lastSavedRecord {
-                    pickerView.selectRow(find(kRecordHoursNames, lastSaved.hours)!, inComponent:0, animated: false)
+                    pickerView.selectRow(kRecordHoursNames.indexOf(lastSaved.hours)!, inComponent:0, animated: false)
                 } else {
                     //If there was no last saved record, default to 8.0
-                    pickerView.selectRow(find(kRecordHoursNames, "8.0")!, inComponent:0, animated: false)
+                    pickerView.selectRow(kRecordHoursNames.indexOf("8.0")!, inComponent:0, animated: false)
                 }
             } else {
                 //we are editing
-                var indexOfCurrentRecord = find(kRecordHoursNames, record.hours)
+                let indexOfCurrentRecord = kRecordHoursNames.indexOf(record.hours)
                 if let index = indexOfCurrentRecord as Int! {
                     //this is when we are editing form. Picker should start with the already inputted hour
                     pickerView.selectRow(index, inComponent: 0, animated: false)
@@ -175,23 +175,28 @@ class RecordFormViewController : UIViewController, UITextFieldDelegate, UIPicker
         calendarPicker.currentDateColorSelected = UIColor.yellowColor()
         
         let dateStringsArray = (FirebaseManager.sharedManager.allUserRecords! as NSArray).valueForKeyPath("date") as! [String]
-        println(dateStringsArray.description)
+        print(dateStringsArray.description)
         
         //this is the little dots logic for calendar picker view
         //set a little dot below every date that has a Record in history associated with it
         //to display "Hey, you already did a record on that date!"
         calendarPicker.setDateHasItemsCallback({ (date: NSDate!) -> Bool in
-            if (find(dateStringsArray, (CustomDateFormatter.sharedInstance.dateFormatter.stringFromDate(date))) != nil) {
+            if (dateStringsArray.indexOf((CustomDateFormatter.sharedInstance.dateFormatter.stringFromDate(date))) != nil) {
                     return true
             }
             return false
         })
         
-        presentSemiViewController(calendarPicker, withOptions:
-            [KNSemiModalOptionKeys.pushParentBack    : NSNumber(bool: false),
-                KNSemiModalOptionKeys.animationDuration : NSNumber(float: 0.1),
-                KNSemiModalOptionKeys.shadowOpacity     : NSNumber(float: 0.3)]
-        )
+        let pushParentBack = KNSemiModalOptionKeys.pushParentBack.takeRetainedValue() as String
+        let animationDuration = KNSemiModalOptionKeys.animationDuration.takeRetainedValue() as String
+        let shadowOpac = KNSemiModalOptionKeys.shadowOpacity.takeRetainedValue() as String
+        let dict: Dictionary<String, NSNumber> = [
+            pushParentBack:NSNumber(bool: false),
+            animationDuration:NSNumber(float: 0.1),
+            shadowOpac:NSNumber(float: 0.3)
+        ]
+        
+        presentSemiViewController(calendarPicker, withOptions: dict)
     }
     
     
@@ -272,14 +277,13 @@ class RecordFormViewController : UIViewController, UITextFieldDelegate, UIPicker
     
     func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         let options: [String]
-        let newValue: String
         options = kRecordHoursNames
-        newValue = String(format: "%.1f", (Double(row) + 1.0) / 2.0)
+//        let newValue = String(format: "%.1f", (Double(row) + 1.0) / 2.0)
         
         hoursTextField.text = options[row]
     }
     
-    func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String! {
+    func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         let options: [String]
         options = kRecordHoursNames
         return options[row]
@@ -294,11 +298,11 @@ class RecordFormViewController : UIViewController, UITextFieldDelegate, UIPicker
         tempRecord.date = dateButton.titleLabel!.text!
         tempRecord.status = record.status
         tempRecord.type = record.type
-        tempRecord.hours = hoursTextField.text
+        tempRecord.hours = hoursTextField.text!
         tempRecord.comment = commentsTextField.text
         
         if sameProjectAlreadyPostedToday(tempRecord) {
-            println("same project was already posted today")
+            print("same project was already posted today")
             let alertController = UIAlertController(title: "Same project was already posted today", message:
                 "Would you like to submit this project more than once in one day?", preferredStyle: UIAlertControllerStyle.Alert)
             alertController.addAction(UIAlertAction(title: "Yes, submit again", style: UIAlertActionStyle.Default,handler: { (actionSheetController) -> Void in
@@ -357,14 +361,14 @@ class RecordFormViewController : UIViewController, UITextFieldDelegate, UIPicker
     private func keyboardDidShow(notification: NSNotification)
     {
         if let keyboardDict = notification.userInfo {
-            if let keyboardRect = keyboardDict[UIKeyboardFrameBeginUserInfoKey]?.CGRectValue() {
+            if let keyboardRect = keyboardDict[UIKeyboardFrameBeginUserInfoKey]?.CGRectValue {
                 
                 if let navBarHeight = navigationController?.navigationBar.frame.size.height {
                     var aRect = self.view.frame
                     aRect.size.height = self.view.frame.size.height - keyboardRect.height - navBarHeight - 50
                     
                     if !CGRectContainsPoint(aRect, saveRecordButton.frame.origin) {
-                        var scrollPoint = CGPointMake(0.0, saveRecordButton.frame.origin.y-keyboardRect.height-navBarHeight - 50)
+                        let scrollPoint = CGPointMake(0.0, saveRecordButton.frame.origin.y-keyboardRect.height-navBarHeight - 50)
                         self.scrollView.setContentOffset(scrollPoint, animated: true)
                     }
                 }

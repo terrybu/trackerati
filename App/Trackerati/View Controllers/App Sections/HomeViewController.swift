@@ -34,16 +34,19 @@ class HomeViewController : MainViewController, UITableViewDelegate, UITableViewD
         title = "Trackerati"
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
     override func loadView() {
         super.loadView()
 //        println("loadview hit from homevc")
-        audioPlayer = AVAudioPlayer(contentsOfURL: dingSound, error: nil)
+        do {
+            try audioPlayer = AVAudioPlayer(contentsOfURL: dingSound)
+        } catch {
+            //Handle the error
+        }
         audioPlayer.prepareToPlay()
-        
         self.navigationItem.prompt = "Tap pinned project or orange button to record hours"
         setNavUIToHackeratiColors()
         
@@ -127,9 +130,9 @@ class HomeViewController : MainViewController, UITableViewDelegate, UITableViewD
     
     @objc
     private func userJustPinnedOrUnpinnedSomething() {
-        FirebaseManager.sharedManager.clientsByPinnedProj!.sort({ $0.companyName.uppercaseString < $1.companyName.uppercaseString })
+        FirebaseManager.sharedManager.clientsByPinnedProj!.sortInPlace({ $0.companyName.uppercaseString < $1.companyName.uppercaseString })
         for client:Client in self.pinnedProjects {
-            client.projects.sort({ $0.name.uppercaseString < $1.name.uppercaseString })
+            client.projects.sortInPlace({ $0.name.uppercaseString < $1.name.uppercaseString })
         }
         self.pinnedProjectsTableView.reloadData()
     }
@@ -187,11 +190,11 @@ class HomeViewController : MainViewController, UITableViewDelegate, UITableViewD
     }
     
     func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
-        var header:UITableViewHeaderFooterView = view as! UITableViewHeaderFooterView
+        let header:UITableViewHeaderFooterView = view as! UITableViewHeaderFooterView
         
         view.tintColor = UIColor(rgba: "#2D2D2D")
-        header.textLabel.textColor = UIColor.whiteColor()
-        header.textLabel.font = UIFont.boldSystemFontOfSize(25)
+        header.textLabel!.textColor = UIColor.whiteColor()
+        header.textLabel!.font = UIFont.boldSystemFontOfSize(25)
 //        header.textLabel.frame = header.frame
 //        header.textLabel.textAlignment = NSTextAlignment.Center
     }
@@ -211,7 +214,7 @@ class HomeViewController : MainViewController, UITableViewDelegate, UITableViewD
     
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier(kCellReuseIdentifier, forIndexPath: indexPath) as! UITableViewCell
+        let cell = tableView.dequeueReusableCellWithIdentifier(kCellReuseIdentifier, forIndexPath: indexPath) 
         cell.textLabel?.text = pinnedProjects[indexPath.section].projects[indexPath.row].name
 
         // current blue default button version
@@ -220,7 +223,7 @@ class HomeViewController : MainViewController, UITableViewDelegate, UITableViewD
 //        cell.accessoryView = plusButton
         
         // android style time clock patrick
-        var imageView = UIImageView(image: UIImage(named: "ic_action_add_time"))
+        let imageView = UIImageView(image: UIImage(named: "ic_action_add_time"))
         imageView.contentMode = UIViewContentMode.ScaleAspectFill
         cell.accessoryView = imageView
         return cell
@@ -232,7 +235,11 @@ class HomeViewController : MainViewController, UITableViewDelegate, UITableViewD
         if (floatingActionButton!.labelArray[row] as! String == kPinOrRemoveString) {
             displayProjectsViewController()
         } else {
-            self.audioPlayer = AVAudioPlayer(contentsOfURL: self.dingSound, error: nil)
+            do {
+                try self.audioPlayer = AVAudioPlayer(contentsOfURL: self.dingSound)
+            } catch {
+                //Handle the error
+            }
             let hud = MBProgressHUD.showHUDAddedTo(view, animated: true)
             let displayName = FirebaseManager.sharedManager.tuplesForFloatingDefaultsLabelsArray![row].0
             hud.labelText = "Logging \(displayName)"

@@ -23,7 +23,7 @@ enum PanDirection
     case Right
 }
 
-class HistoryTableViewCell : UITableViewCell, UIGestureRecognizerDelegate
+class HistoryTableViewCell : UITableViewCell
 {
     private let kDeleteButtonTitle = "Delete"
     private let kEditButtonTitle = "Edit"
@@ -64,7 +64,7 @@ class HistoryTableViewCell : UITableViewCell, UIGestureRecognizerDelegate
         setupPanGesture()
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -81,14 +81,14 @@ class HistoryTableViewCell : UITableViewCell, UIGestureRecognizerDelegate
         deleteButton.setTitleColor(UIColor.whiteColor(), forState: .Normal)
         deleteButton.backgroundColor = UIColor(red:0.9, green:0.3, blue:0.26, alpha:1)
         deleteButton.addTarget(self, action: "deleteButtonPressed:", forControlEvents: .TouchUpInside)
-        deleteButton.setTranslatesAutoresizingMaskIntoConstraints(false)
+        deleteButton.translatesAutoresizingMaskIntoConstraints = false
         
         let editButton = UIButton(frame: CGRectZero)
         editButton.setTitle(kEditButtonTitle, forState: .Normal)
         editButton.setTitleColor(UIColor.whiteColor(), forState: .Normal)
         editButton.backgroundColor = UIColor(red:0.23, green:0.6, blue:0.85, alpha:1)
         editButton.addTarget(self, action: "editButtonPressed:", forControlEvents: .TouchUpInside)
-        editButton.setTranslatesAutoresizingMaskIntoConstraints(false)
+        editButton.translatesAutoresizingMaskIntoConstraints = false
         
         let deleteButtonContraints = [
             NSLayoutConstraint(item: deleteButton, attribute: .Trailing, relatedBy: .Equal, toItem: self.contentView, attribute: .Trailing, multiplier: 1.0, constant: 0.0),
@@ -118,7 +118,7 @@ class HistoryTableViewCell : UITableViewCell, UIGestureRecognizerDelegate
     {
         let infoContainerView = UIView(frame: CGRectZero)
         infoContainerView.backgroundColor = UIColor.whiteColor()
-        infoContainerView.setTranslatesAutoresizingMaskIntoConstraints(false)
+        infoContainerView.translatesAutoresizingMaskIntoConstraints = false
         let infoContainerViewConstraints = [
             NSLayoutConstraint(item: infoContainerView, attribute: .Leading, relatedBy: .Equal, toItem: self.contentView, attribute: .LeftMargin, multiplier: 1.0, constant: 0.0),
             NSLayoutConstraint(item: infoContainerView, attribute: .Top, relatedBy: .Equal, toItem: self.contentView, attribute: .Top, multiplier: 1.0, constant: 0.0),
@@ -133,7 +133,7 @@ class HistoryTableViewCell : UITableViewCell, UIGestureRecognizerDelegate
     private func setupClientLabel()
     {
         let clientLabel = UILabel(frame: CGRectZero)
-        clientLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
+        clientLabel.translatesAutoresizingMaskIntoConstraints = false
         let clientLabelConstraints = [
             NSLayoutConstraint(item: clientLabel, attribute: .Leading, relatedBy: .Equal, toItem: self.infoContainerView, attribute: .LeftMargin, multiplier: 1.0, constant: 0.0),
             NSLayoutConstraint(item: clientLabel, attribute: .Top, relatedBy: .Equal, toItem: self.infoContainerView, attribute: .Top, multiplier: 1.0, constant: 0.0),
@@ -148,7 +148,7 @@ class HistoryTableViewCell : UITableViewCell, UIGestureRecognizerDelegate
     private func setupProjectsLabel()
     {
         let projectLabel = UILabel(frame: CGRectZero)
-        projectLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
+        projectLabel.translatesAutoresizingMaskIntoConstraints = false
         let projectLabelConstraints = [
             NSLayoutConstraint(item: projectLabel, attribute: .Leading, relatedBy: .Equal, toItem: self.infoContainerView, attribute: .LeftMargin, multiplier: 1.0, constant: 0.0),
             NSLayoutConstraint(item: projectLabel, attribute: .Top, relatedBy: .Equal, toItem: self.clientLabel, attribute: .Bottom, multiplier: 1.0, constant: 0.0),
@@ -163,7 +163,7 @@ class HistoryTableViewCell : UITableViewCell, UIGestureRecognizerDelegate
     private func setupHoursLabel()
     {
         let hoursLabel = UILabel(frame: CGRectZero)
-        hoursLabel.setTranslatesAutoresizingMaskIntoConstraints(false)
+        hoursLabel.translatesAutoresizingMaskIntoConstraints = false
         let hoursLabelConstraints = [
             NSLayoutConstraint(item: hoursLabel, attribute: .Leading, relatedBy: .Equal, toItem: self.infoContainerView, attribute: .LeftMargin, multiplier: 1.0, constant: 0.0),
             NSLayoutConstraint(item: hoursLabel, attribute: .Top, relatedBy: .Equal, toItem: self.projectLabel, attribute: .Bottom, multiplier: 1.0, constant: 0.0),
@@ -288,7 +288,7 @@ class HistoryTableViewCell : UITableViewCell, UIGestureRecognizerDelegate
     /**
     Sets sets the information from the Record object onto the cell
     
-    :param: record A user Record
+    - parameter record: A user Record
     */
     func setValuesForRecord(record: Record)
     {

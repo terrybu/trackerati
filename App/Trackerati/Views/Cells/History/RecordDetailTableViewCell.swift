@@ -60,7 +60,7 @@ class RecordDetailTableViewCell : UITableViewCell, UITextFieldDelegate, UIPicker
         return super.resignFirstResponder()
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -77,7 +77,7 @@ class RecordDetailTableViewCell : UITableViewCell, UITextFieldDelegate, UIPicker
             infoTextField.textColor = UIColor.blackColor()
         }
         
-        infoTextField.setTranslatesAutoresizingMaskIntoConstraints(false)
+        infoTextField.translatesAutoresizingMaskIntoConstraints = false
         let constraints = [
             NSLayoutConstraint(item: infoTextField, attribute: .Top, relatedBy: .Equal, toItem: self.contentView, attribute: .Top, multiplier: 1.0, constant: 0.0),
             NSLayoutConstraint(item: infoTextField, attribute: .Bottom, relatedBy: .Equal, toItem: self.contentView, attribute: .Bottom, multiplier: 1.0, constant: 0.0),
@@ -211,7 +211,7 @@ class RecordDetailTableViewCell : UITableViewCell, UITextFieldDelegate, UIPicker
         information = options[row]
     }
     
-    func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String! {
+    func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         let options: [String]
         switch infoType! {
         case .Hours:
@@ -250,6 +250,6 @@ class RecordDetailTableViewCell : UITableViewCell, UITextFieldDelegate, UIPicker
     }
     
     func textFieldDidEndEditing(textField: UITextField) {
-        delegate?.textFieldTextDidChangeForCell(self, newText: textField.text)
+        delegate?.textFieldTextDidChangeForCell(self, newText: textField.text!)
     }
 }

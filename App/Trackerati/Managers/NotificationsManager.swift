@@ -14,23 +14,22 @@ class NotificationsManager {
         if(self.isiOS8()) {
             self.registerForActionableNotification()
         } else {
-            UIApplication.sharedApplication().registerUserNotificationSettings(UIUserNotificationSettings(forTypes: .Sound | .Alert | .Badge, categories: nil))
+            UIApplication.sharedApplication().registerUserNotificationSettings(UIUserNotificationSettings(forTypes: [.Sound, .Alert, .Badge], categories: nil))
         }
     }
 
     func configureLocalNotifications() {
         if TrackeratiUserDefaults.standardDefaults.notificationsOn()
-            && UIApplication.sharedApplication().scheduledLocalNotifications.count == 0 {
+            && UIApplication.sharedApplication().scheduledLocalNotifications!.count == 0 {
             fireNotificationsForMonToFri()
         }
-        println(UIApplication.sharedApplication().scheduledLocalNotifications)
-        println(UIApplication.sharedApplication().scheduledLocalNotifications.count)
-        println(UIApplication.sharedApplication().scheduledLocalNotifications.last?.description)
-
+        print(UIApplication.sharedApplication().scheduledLocalNotifications!)
+        print(UIApplication.sharedApplication().scheduledLocalNotifications!.count)
+        print(UIApplication.sharedApplication().scheduledLocalNotifications!.last?.description)
     }
     
     func registerForActionableNotification() {
-        println("register for actionable notifications");
+        print("register for actionable notifications");
         let submitAction = UIMutableUserNotificationAction()
         submitAction.activationMode = UIUserNotificationActivationMode.Background
         submitAction.title = "Yes, submit"
@@ -43,18 +42,17 @@ class NotificationsManager {
         actionCategory.identifier = kMutableNotificationCategory
         actionCategory.setActions([submitAction], forContext: UIUserNotificationActionContext.Default)
         
-        var categories = NSSet(object: actionCategory)
-        var types = UIUserNotificationSettings(forTypes: .Sound | .Alert | .Badge, categories: categories as Set<NSObject>)
-        
-        UIApplication.sharedApplication().registerUserNotificationSettings(types)
+        let categories = Set<UIUserNotificationCategory>(arrayLiteral:actionCategory)
+        let settings = UIUserNotificationSettings(forTypes: [.Sound, .Alert, .Badge], categories: categories)
+        UIApplication.sharedApplication().registerUserNotificationSettings(settings)
     }
     
     private func fireNotificationsForMonToFri() {
-        var fireTime = TrackeratiUserDefaults.standardDefaults.notificationTime()
+        let fireTime = TrackeratiUserDefaults.standardDefaults.notificationTime()
         let calendar = NSCalendar.currentCalendar()
-        let comp = calendar.components((.CalendarUnitHour | .CalendarUnitMinute), fromDate: fireTime!)
-        let hour = comp.hour
-        let minute = comp.minute
+        let comp = calendar.components(([.Hour, .Minute]), fromDate: fireTime!)
+//        let hour = comp.hour
+//        let minute = comp.minute
 
         //we are going to check if we already posted earlier today (any record)
         //if we did, we are going to assume we don't have to remind user again on same day
@@ -63,14 +61,14 @@ class NotificationsManager {
         if FirebaseManager.sharedManager.todayHasRecord {
             //today we already posted record. Then we shouldn't fire notif for today when we go to background
             //check what day of week today is
-            println("today already has posted record")
+            print("today already has posted record")
             let today = NSDate()
             let calendar = NSCalendar(calendarIdentifier: NSCalendarIdentifierGregorian)
-            let todayComponents = calendar?.components(.CalendarUnitWeekday, fromDate: today)
+            let todayComponents = calendar?.components(.Weekday, fromDate: today)
             let todaysWeekDay = todayComponents!.weekday //Sunday is 1
             //day + 7 ... just for Monday's firing, and override the below switch statement
-            let nextWeekDate = NSCalendar.currentCalendar().dateByAddingUnit(NSCalendarUnit.CalendarUnitDay, value: 7, toDate: today, options: NSCalendarOptions(0))!
-            println(nextWeekDate.description)
+            let nextWeekDate = NSCalendar.currentCalendar().dateByAddingUnit(NSCalendarUnit.Day, value: 7, toDate: today, options: NSCalendarOptions(rawValue: 0))!
+            print(nextWeekDate.description)
             switch(todaysWeekDay) {
             case WeekDayType.Monday.rawValue:
                 fireNotificationsForWeekExceptForThis(WeekDayType.Monday, nextWeekDate: nextWeekDate, comp: comp, calendar: calendar!)
@@ -100,15 +98,15 @@ class NotificationsManager {
     }
     
     private func fireNotificationsForWeekExceptForThis(weekDay: WeekDayType, nextWeekDate: NSDate, comp: NSDateComponents, calendar: NSCalendar) {
-        println("fire notifications for week except for day \(weekDay.rawValue)")
+        print("fire notifications for week except for day \(weekDay.rawValue)")
         var daysSet : Set<WeekDayType> = [WeekDayType.Monday, .Tuesday, .Wednesday, .Thursday, .Friday]
         //first, fire off this thing for next week
-        let flags = NSCalendarUnit.CalendarUnitDay | .CalendarUnitMonth | .CalendarUnitYear
+        let flags: NSCalendarUnit = [NSCalendarUnit.Day, .Month, .Year]
         let nextWeekDateComponents = calendar.components(flags, fromDate: nextWeekDate)
         let year = nextWeekDateComponents.year
         let month = nextWeekDateComponents.month
         let day = nextWeekDateComponents.day
-        println("\(year) \(month) and \(day)")
+        print("\(year) \(month) and \(day)")
         nextWeekDateComponents.hour = comp.hour
         nextWeekDateComponents.minute = comp.minute
         self.fireThisNotificationWeekly(nextWeekDateComponents)
@@ -143,7 +141,7 @@ class NotificationsManager {
     }
     
     private func returnDateComponents(year: Int, month: Int, day: Int, comp: NSDateComponents ) -> NSDateComponents {
-        var dateComponents = NSDateComponents()
+        let dateComponents = NSDateComponents()
         dateComponents.year = year
         dateComponents.month = month
         dateComponents.day = day
@@ -154,7 +152,7 @@ class NotificationsManager {
     
     private func fireThisNotificationWeekly(dateComponents: NSDateComponents) {
         let localNotification = UILocalNotification()
-        localNotification.repeatInterval = NSCalendarUnit.WeekCalendarUnit
+        localNotification.repeatInterval = NSCalendarUnit.NSWeekCalendarUnit
         localNotification.timeZone = NSTimeZone.defaultTimeZone()
         localNotification.fireDate = NSCalendar.currentCalendar().dateFromComponents(dateComponents)
         if isiOS8() {
@@ -170,9 +168,9 @@ class NotificationsManager {
     }
     
     private func composeActionableNotificationMessage() -> String? {
-        var lastSavedRecord = FirebaseManager.sharedManager.userRecordsSortedByDateInTuples![0].1.last
+        let lastSavedRecord = FirebaseManager.sharedManager.userRecordsSortedByDateInTuples![0].1.last
         if let record = lastSavedRecord {
-            var message = "Want to submit \(record.client): \(record.project) for \(record.hours) hours today?"
+            let message = "Want to submit \(record.client): \(record.project) for \(record.hours) hours today?"
             return message
         }
         return nil
@@ -189,15 +187,15 @@ class NotificationsManager {
             if let todaysRecords = todaysRecords {
                 for todaysRecord in todaysRecords {
                     if todaysRecord.client == latestRecord.client && todaysRecord.project == latestRecord.project {
-                        println("don't submit anything with action notif because we found that you already logged \(latestRecord.project) for today")
+                        print("don't submit anything with action notif because we found that you already logged \(latestRecord.project) for today")
                         return
                     }
                 }
             }
-            println("post through actionable notif because validation checking went smooth!")
+            print("post through actionable notif because validation checking went smooth!")
             FirebaseManager.sharedManager.saveNewRecordBasedOnPastRecord(latestRecord, completion: { (error) -> Void in
                 if (error != nil) {
-                    println(error)
+                    print(error)
                 }
             })
         }
@@ -207,20 +205,20 @@ class NotificationsManager {
     //To-DO: we need this below to find if we are trying to fire on a Holiday later
     //we don't use this method anywhere for the time being
     private func findNextNotificationDate(notification: UILocalNotification)  -> NSDate {
-        var calendar = NSCalendar.currentCalendar()
-        var difference = calendar.components(notification.repeatInterval, fromDate: notification.fireDate!, toDate: NSDate(), options: NSCalendarOptions.allZeros)
-        var nextFireDate:NSDate! = calendar.dateByAddingComponents(difference, toDate: notification.fireDate!, options: NSCalendarOptions.allZeros)
+        let calendar = NSCalendar.currentCalendar()
+        let difference = calendar.components(notification.repeatInterval, fromDate: notification.fireDate!, toDate: NSDate(), options: NSCalendarOptions())
+        var nextFireDate:NSDate! = calendar.dateByAddingComponents(difference, toDate: notification.fireDate!, options: NSCalendarOptions())
         if (nextFireDate.timeIntervalSinceDate(NSDate()) < 0) {
-            var extraDay = NSDateComponents()
+            let extraDay = NSDateComponents()
             extraDay.day = 1
-            nextFireDate = calendar.dateByAddingComponents(extraDay, toDate: nextFireDate!, options: NSCalendarOptions.allZeros)
+            nextFireDate = calendar.dateByAddingComponents(extraDay, toDate: nextFireDate!, options: NSCalendarOptions())
         }
         return nextFireDate
     }
     
     private func findWeekdayFrom(date: NSDate) -> Int {
-        var calendar = NSCalendar.currentCalendar()
-        var components:NSDateComponents = calendar.components(NSCalendarUnit.CalendarUnitWeekday, fromDate: date)
+        let calendar = NSCalendar.currentCalendar()
+        let components:NSDateComponents = calendar.components(NSCalendarUnit.Weekday, fromDate: date)
         return components.weekday
         //Sunday 1 Monday 2 Tuesday 3 Wed 4 Thurs 5 Friday 6 Saturday 7
     }
@@ -235,7 +233,7 @@ class NotificationsManager {
         let Device = UIDevice.currentDevice()
         let iosVersion = NSString(string: Device.systemVersion).doubleValue
         if iosVersion >= 8 {
-            println("ios 8 or higher")
+            print("ios 8 or higher")
             return true
         }
         return false

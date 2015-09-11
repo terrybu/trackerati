@@ -29,7 +29,7 @@ class GoogleLoginManager : NSObject, GPPSignInDelegate, UIAlertViewDelegate {
     /**
     Configures the manager for Google Plus sign in given an API key
     
-    :param: key API key from the Google Developer Portal
+    - parameter key: API key from the Google Developer Portal
     */
     func configureWithAPIKey(key: String)
     {
@@ -77,7 +77,7 @@ class GoogleLoginManager : NSObject, GPPSignInDelegate, UIAlertViewDelegate {
     /**
     Silently attempt to log user back in if they've already authorized their account with the app
     
-    :returns: Bool indicating whether or not the user already authorized
+    - returns: Bool indicating whether or not the user already authorized
     */
     func attemptPreAuthorizationLogin() -> Bool
     {

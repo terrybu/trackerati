@@ -58,7 +58,7 @@ class Record : NSObject, NSCoding
         self.init(id: "", client: client, date: CustomDateFormatter.sharedInstance.returnTodaysDateStringInFormat(), hours: "8.0", project: project, status: "1", type: "1", comment: nil)
     }
     
-    required init(coder decoder: NSCoder) {
+    required init?(coder decoder: NSCoder) {
         self.id = decoder.decodeObjectForKey("id") as! String
         self.client = decoder.decodeObjectForKey("client") as! String
         self.date = decoder.decodeObjectForKey("date") as! String
@@ -104,7 +104,7 @@ class Record : NSObject, NSCoding
                 return status
             }
             
-            if let statusAsInt = status.toInt() {
+            if let statusAsInt = Int(status) {
                 //when rawValue is false, if the Record object had status "0", then it will correctly return "Part-Time Employee"
                 return kRecordStatusNames[statusAsInt]
             }
@@ -117,7 +117,7 @@ class Record : NSObject, NSCoding
                 return type
             }
             
-            if let workTypeAsInt = type.toInt() {
+            if let workTypeAsInt = Int(type) {
                 return kRecordWorkTypeNames[workTypeAsInt]
             }
             else {

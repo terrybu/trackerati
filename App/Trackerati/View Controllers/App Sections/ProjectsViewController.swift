@@ -33,7 +33,7 @@ class ProjectsViewController : UIViewController, UITableViewDelegate, UITableVie
         }
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -42,11 +42,11 @@ class ProjectsViewController : UIViewController, UITableViewDelegate, UITableVie
 
         view = UIView(frame: UIScreen.mainScreen().bounds)
         
-        var backHomeButton = UIBarButtonItem(title: "Home", style: UIBarButtonItemStyle.Plain, target: self, action: "closeViewController")
+        let backHomeButton = UIBarButtonItem(title: "Home", style: UIBarButtonItemStyle.Plain, target: self, action: "closeViewController")
         navigationItem.leftBarButtonItem = backHomeButton;
         
-        var plusButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Add, target: self, action: "openNewProjectViewController")
-        var trashButton = UIBarButtonItem(barButtonSystemItem: .Trash, target: self, action: "editTableView")
+        let plusButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Add, target: self, action: "openNewProjectViewController")
+        let trashButton = UIBarButtonItem(barButtonSystemItem: .Trash, target: self, action: "editTableView")
 
         navigationItem.rightBarButtonItems = [plusButton, trashButton]
         
@@ -121,14 +121,14 @@ class ProjectsViewController : UIViewController, UITableViewDelegate, UITableVie
                 
                 //check where the client is in our pinned Projects Array
                 let indexOfClientThatHasProjectToRemove = clientPinned(atIndexPath: indexPath)
-                var client = FirebaseManager.sharedManager.clientsByPinnedProj![indexOfClientThatHasProjectToRemove]
+                let client = FirebaseManager.sharedManager.clientsByPinnedProj![indexOfClientThatHasProjectToRemove]
                 
-                var arrayOfProjectNames = (client.projects as AnyObject).valueForKeyPath("name") as! [String]
+                let arrayOfProjectNames = (client.projects as AnyObject).valueForKeyPath("name") as! [String]
                 if client.projects.count == 1 {
                     FirebaseManager.sharedManager.clientsByPinnedProj!.removeAtIndex(indexOfClientThatHasProjectToRemove) //remove the whole client object
                 }
                 else if client.projects.count > 1 {
-                    var indexOfProjectToRemoveInTheClientsProjects = find(arrayOfProjectNames, selectedCell.textLabel!.text!)
+                    let indexOfProjectToRemoveInTheClientsProjects = arrayOfProjectNames.indexOf((selectedCell.textLabel!.text!))
                     client.projects.removeAtIndex(indexOfProjectToRemoveInTheClientsProjects!) //remove just the project from the client object's projects array
                 }
                 
@@ -149,11 +149,11 @@ class ProjectsViewController : UIViewController, UITableViewDelegate, UITableVie
     }
     
     func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
-        var header:UITableViewHeaderFooterView = view as! UITableViewHeaderFooterView
+        let header:UITableViewHeaderFooterView = view as! UITableViewHeaderFooterView
         
         view.tintColor = UIColor(rgba: "#2D2D2D")
-        header.textLabel.textColor = UIColor.whiteColor()
-        header.textLabel.font = UIFont.boldSystemFontOfSize(25)
+        header.textLabel!.textColor = UIColor.whiteColor()
+        header.textLabel!.font = UIFont.boldSystemFontOfSize(25)
         //        header.textLabel.frame = header.frame
         //        header.textLabel.textAlignment = NSTextAlignment.Center
     }
@@ -167,7 +167,7 @@ class ProjectsViewController : UIViewController, UITableViewDelegate, UITableVie
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier(kCellReuseIdentifier, forIndexPath: indexPath) as! UITableViewCell
+        let cell = tableView.dequeueReusableCellWithIdentifier(kCellReuseIdentifier, forIndexPath: indexPath) 
         let projectName = projectNameForIndexPath(indexPath)
         cell.textLabel?.text = projectName
         cell.selectionStyle = .None
@@ -175,7 +175,7 @@ class ProjectsViewController : UIViewController, UITableViewDelegate, UITableVie
         
         for client in FirebaseManager.sharedManager.clientsByPinnedProj!
         {
-            if contains(client.projects, projectForIndexPath(indexPath)) {
+            if client.projects.contains(projectForIndexPath(indexPath)) {
                 cell.accessoryView = UIImageView(image: UIImage(named: kCheckMarkImageName))
             }
         }
@@ -204,9 +204,9 @@ class ProjectsViewController : UIViewController, UITableViewDelegate, UITableVie
     
     
     private func deleteProjectFromFirebaseAndViewAtIndexPath(indexPath: NSIndexPath) {
-        var projectToDelete = projectForIndexPath(indexPath)
-        var indexOfClientWithProjectToDelete = indexPath.section
-        var clientWithProjectToDelete: Client? = self.clientProjects[indexOfClientWithProjectToDelete]
+        let projectToDelete = projectForIndexPath(indexPath)
+        let indexOfClientWithProjectToDelete = indexPath.section
+        let clientWithProjectToDelete: Client? = self.clientProjects[indexOfClientWithProjectToDelete]
         
         FirebaseManager.sharedManager.deleteProject(clientWithProjectToDelete!.companyName, projectName: projectToDelete.name, completion: { (error) -> Void in
             
@@ -242,14 +242,14 @@ class ProjectsViewController : UIViewController, UITableViewDelegate, UITableVie
     private func removeDeletedProjectFromPinnedProjects(indexPath: NSIndexPath, project: Project) {
         //check where the client is in our pinned Projects Array
         let indexOfClientThatHasProjectToRemove = clientPinned(atIndexPath: indexPath)
-        var client = FirebaseManager.sharedManager.clientsByPinnedProj![indexOfClientThatHasProjectToRemove]
+        let client = FirebaseManager.sharedManager.clientsByPinnedProj![indexOfClientThatHasProjectToRemove]
         
-        var arrayOfProjectNames = (client.projects as AnyObject).valueForKeyPath("name") as! [String]
+        let arrayOfProjectNames = (client.projects as AnyObject).valueForKeyPath("name") as! [String]
         if client.projects.count == 1 {
             FirebaseManager.sharedManager.clientsByPinnedProj!.removeAtIndex(indexOfClientThatHasProjectToRemove) //remove the whole client object
         }
         else if client.projects.count > 1 {
-            var indexOfProjectToRemoveInTheClientsProjects = find(arrayOfProjectNames, project.name)
+            let indexOfProjectToRemoveInTheClientsProjects = arrayOfProjectNames.indexOf(project.name)
             client.projects.removeAtIndex(indexOfProjectToRemoveInTheClientsProjects!) //remove just the project from the client object's projects array
         }
 

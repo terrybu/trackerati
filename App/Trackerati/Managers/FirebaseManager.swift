@@ -37,10 +37,8 @@ class FirebaseManager : NSObject {
     }
     var todayHasRecord: Bool {
         get {
-            let today = NSDate()
             //check the user records tuples array's most recent entry, and if thats today
             let dateStringLatestRecord = userRecordsSortedByDateInTuples![0].0
-            let dateLastestRecord = CustomDateFormatter.sharedInstance.dateFormatter.dateFromString(dateStringLatestRecord)
             if dateStringLatestRecord == CustomDateFormatter.sharedInstance.returnTodaysDateStringInFormat() {
                 
                 return true
@@ -63,13 +61,13 @@ class FirebaseManager : NSObject {
     /**
     Authenticates the logged in user with Firebase. Will fire a successful authentication notification if successful and an unsuccessful notification if not
     
-    :param: token An OAuth token provided by the Google Plus API
+    - parameter token: An OAuth token provided by the Google Plus API
     */
     func authenticateWithToken(token: String!) {
         firebaseDB.authWithOAuthProvider("google", token: token, withCompletionBlock: { error, authData in
             dispatch_async(dispatch_get_main_queue(), {
                 if error != nil {
-                    println(error)
+                    print(error)
                     NSNotificationCenter.defaultCenter().postNotificationName(kUserAuthenticatedFirebaseUnsuccessfullyNotificationName, object: nil)
                 }
                 else {
@@ -88,7 +86,7 @@ class FirebaseManager : NSObject {
     - User records
     - Everything
     
-    :param: type The type of information you want to request
+    - parameter type: The type of information you want to request
     */
     func getAllDataOfType(type: DataInfoType, completion: (() -> Void)?) {
         self.firebaseDB.observeSingleEventOfType(.Value, withBlock: { snapshot in
@@ -124,7 +122,7 @@ class FirebaseManager : NSObject {
     /**
     Sorts the User records by Date and maps the dates to an array of Record objects like so `(Date, [Record])`
     
-    :returns: An array of tuples with String dates mapped to an array of Record objects that correspond to that date
+    - returns: An array of tuples with String dates mapped to an array of Record objects that correspond to that date
     */
     func userRecordsSortedByDate() -> [(String, [Record])] {
         var dateToRecordDictionary: [String: [Record]] = [:]
@@ -138,16 +136,16 @@ class FirebaseManager : NSObject {
                 dateToRecordDictionary[record.date] = [record]
             }
         }
-        let sortedRecordsByDate = sorted(dateToRecordDictionary) { $0.0 > $1.0 }
+        let sortedRecordsByDate = dateToRecordDictionary.sort { $0.0 > $1.0 }
         return sortedRecordsByDate
     }
     
     /**
     Writes the current logged in user to the list of users on a project in Firebase
     
-    :param: clientName  Name of company the project belongs to
-    :param: projectName Name of project within the company
-    :param: completion  Completion closure once the user is deleted from Firebase
+    - parameter clientName:  Name of company the project belongs to
+    - parameter projectName: Name of project within the company
+    - parameter completion:  Completion closure once the user is deleted from Firebase
     */
     func pinCurrentUserToProject(clientName: String, projectName: String, completion:(() -> Void)?)
     {
@@ -164,9 +162,9 @@ class FirebaseManager : NSObject {
     /**
     Removes a user from a project in Firebase
     
-    :param: clientName  Name of company
-    :param: projectName Name of project within the company
-    :param: completion  Completion closure once the user is deleted from Firebase
+    - parameter clientName:  Name of company
+    - parameter projectName: Name of project within the company
+    - parameter completion:  Completion closure once the user is deleted from Firebase
     */
     func removeCurrentUserFromProject(clientName: String, projectName: String, completion:(() -> Void)?)
     {
@@ -201,7 +199,7 @@ class FirebaseManager : NSObject {
     {
         let userURL = "Users/\(GoogleLoginManager.sharedManager.currentUser.firebaseID)/records"
         
-        var recordToSave: NSMutableDictionary = [:]
+        let recordToSave: NSMutableDictionary = [:]
         for field in RecordKey.editableValues {
             if let value = record.valueForType(field, rawValue: true) {
                 recordToSave.setValue(NSString(string: value), forKey: field.rawValue)
@@ -218,7 +216,7 @@ class FirebaseManager : NSObject {
         } else { // we're editing a previous record
             let recordRef = firebaseDB.childByAppendingPath(userURL).childByAppendingPath(record.id)
             recordRef.updateChildValues(recordToSave as [NSObject : AnyObject], withCompletionBlock: { error, firebaseRef in
-                println("updating child values completed \(firebaseRef.key)")
+                print("updating child values completed \(firebaseRef.key)")
                 if let closure = completion {
                     closure(error: error)
                 }
@@ -238,12 +236,10 @@ class FirebaseManager : NSObject {
     
     func getTodaysRecords() -> [Record]? {
         //check what today is
-        let today = NSDate()
         //check the user records tuples array's most recent entry, and if thats today
         let dateStringLatestRecord = userRecordsSortedByDateInTuples![0].0
-        let dateLastestRecord = CustomDateFormatter.sharedInstance.dateFormatter.dateFromString(dateStringLatestRecord)
-        println(dateStringLatestRecord)
-        println(CustomDateFormatter.sharedInstance.returnTodaysDateStringInFormat())
+        print(dateStringLatestRecord)
+        print(CustomDateFormatter.sharedInstance.returnTodaysDateStringInFormat())
         if dateStringLatestRecord == CustomDateFormatter.sharedInstance.returnTodaysDateStringInFormat() {
                 return userRecordsSortedByDateInTuples![0].1
         }
@@ -254,7 +250,7 @@ class FirebaseManager : NSObject {
     //this is for floating action button specific
     func saveNewRecordBasedOnPastRecord(pastRecord: Record, completion:((error: NSError!) -> Void)?) {
         
-        var newRecord = Record(client: pastRecord.client, project: pastRecord.project)
+        let newRecord = Record(client: pastRecord.client, project: pastRecord.project)
         //date is already filled in by above convenience init method to Today
         newRecord.hours = pastRecord.hours
         newRecord.type = pastRecord.type
@@ -263,7 +259,7 @@ class FirebaseManager : NSObject {
         
         saveRecord(newRecord, completion: { (error) -> Void in
             if (error != nil) {
-                println(error)
+                print(error)
             }
             else {
                 self.getAllDataOfType(DataInfoType.User, completion: { () -> Void in
@@ -330,7 +326,7 @@ class FirebaseManager : NSObject {
     }
     
     func returnLatestUniqueClientProjectsFromUserRecords() -> [(String, Record)]? {
-        var uniqueProjectNamesSet = NSMutableOrderedSet()
+        let uniqueProjectNamesSet = NSMutableOrderedSet()
         var resultsTuplesArray = [(String, Record)]()
         
 //        println("count of user records: \(self.userRecordsSortedByDateInTuples!.count)")
@@ -344,12 +340,12 @@ class FirebaseManager : NSObject {
         if let userRecords = self.userRecordsSortedByDateInTuples {
             if userRecords.count > 0 {
                 for i in 0...userRecords.count - 1 {
-                    var currentTuple = userRecords[i]
+                    let currentTuple = userRecords[i]
                     for record:Record in currentTuple.1 {
                         if uniqueProjectNamesSet.count >= 3 {
                             break
                         }
-                        var newString = "\(record.client)" + ": \(record.project)"
+                        let newString = "\(record.client)" + ": \(record.project)"
                         if !uniqueProjectNamesSet.containsObject(newString) {
                             uniqueProjectNamesSet.addObject(newString)
                             resultsTuplesArray.append((newString, record))
@@ -358,7 +354,7 @@ class FirebaseManager : NSObject {
                 }
             }
             else {
-                println("user records was nil")
+                print("user records was nil")
                 return nil
             }
         }
@@ -456,7 +452,7 @@ class FirebaseManager : NSObject {
         }
         
         if sorted {
-            clients.sort({ $0.companyName.uppercaseString < $1.companyName.uppercaseString })
+            clients.sortInPlace({ $0.companyName.uppercaseString < $1.companyName.uppercaseString })
         }
         
         return clients
@@ -470,14 +466,14 @@ class FirebaseManager : NSObject {
     func getClientsFilteredByPinnedProjects() -> [Client] {
         var pinnedProjects: [Client] = []
         for client in allClientProjects! {
-            let newProjectArray = client.projects.filter({ contains($0.users, GoogleLoginManager.sharedManager.currentUser.firebaseID) })
+            let newProjectArray = client.projects.filter({ $0.users.contains(GoogleLoginManager.sharedManager.currentUser.firebaseID) })
             if newProjectArray.count > 0 {
                 let pinnedClient = Client(companyName: client.companyName, projects: newProjectArray)
                 pinnedProjects.append(pinnedClient)
             }
         }
         for client:Client in pinnedProjects {
-            client.projects.sort({ $0.name.uppercaseString < $1.name.uppercaseString })
+            client.projects.sortInPlace({ $0.name.uppercaseString < $1.name.uppercaseString })
         }
         
         return pinnedProjects

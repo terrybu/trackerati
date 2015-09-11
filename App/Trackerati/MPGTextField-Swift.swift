@@ -36,7 +36,7 @@ class MPGTextField_Swift: UITextField, UITextFieldDelegate, UITableViewDelegate,
         // Initialization code
     }
     
-    required init(coder aDecoder: NSCoder){
+    required init?(coder aDecoder: NSCoder){
         super.init(coder: aDecoder)
     }
 
@@ -51,16 +51,16 @@ class MPGTextField_Swift: UITextField, UITextFieldDelegate, UITableViewDelegate,
     
     override func layoutSubviews(){
         super.layoutSubviews()
-        let str : String = self.text
+        let str : String = self.text!
         
-        if (count(str) > 0) && (self.isFirstResponder())
+        if (str.characters.count > 0) && (self.isFirstResponder())
         {
             if (mDelegate != nil){
                 data = mDelegate!.dataForPopoverInTextField(self)
                 self.provideSuggestions()
             }
             else{
-                println("<MPGTextField> WARNING: You have not implemented the requred methods of the MPGTextField protocol.")
+                print("<MPGTextField> WARNING: You have not implemented the requred methods of the MPGTextField protocol.")
             }
         }
         else{
@@ -74,7 +74,7 @@ class MPGTextField_Swift: UITextField, UITextFieldDelegate, UITableViewDelegate,
     }
     
     override func resignFirstResponder() -> Bool{
-        if let tvc = self.tableViewController {
+        if let _ = self.tableViewController {
             UIView.animateWithDuration(0.3,
                 animations: ({
                         self.tableViewController!.tableView.alpha = 0.0
@@ -92,10 +92,10 @@ class MPGTextField_Swift: UITextField, UITextFieldDelegate, UITableViewDelegate,
     }
     
     func provideSuggestions(){
-        if let tvc = self.tableViewController {
+        if let _ = self.tableViewController {
             tableViewController!.tableView.reloadData()
         }
-        else if self.applyFilterWithSearchQuery(self.text).count > 0{
+        else if self.applyFilterWithSearchQuery(self.text!).count > 0{
             //Add a tap gesture recogniser to dismiss the suggestions view when the user taps outside the suggestions view
             let tapRecognizer = UITapGestureRecognizer(target: self, action: "tapped:")
             tapRecognizer.numberOfTapsRequired = 1
@@ -103,7 +103,7 @@ class MPGTextField_Swift: UITextField, UITextFieldDelegate, UITableViewDelegate,
             tapRecognizer.delegate = self
             self.superview!.addGestureRecognizer(tapRecognizer)
 
-            self.tableViewController = UITableViewController.alloc()
+            self.tableViewController = UITableViewController()
             self.tableViewController!.tableView.delegate = self
             self.tableViewController!.tableView.dataSource = self
             self.tableViewController!.tableView.backgroundColor = self.popoverBackgroundColor
@@ -147,8 +147,8 @@ class MPGTextField_Swift: UITextField, UITextFieldDelegate, UITableViewDelegate,
     }
     
     func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        if !(self.applyFilterWithSearchQuery(self.text)).isEmpty {
-            let firstDictionaryAfterFilter = self.applyFilterWithSearchQuery(self.text)[0]
+        if !(self.applyFilterWithSearchQuery(self.text!)).isEmpty {
+            let firstDictionaryAfterFilter = self.applyFilterWithSearchQuery(self.text!)[0]
             let type : Int = firstDictionaryAfterFilter["Type"] as! Int
             if (type == 1) {
                 return "All Existing Project Names"
@@ -158,7 +158,7 @@ class MPGTextField_Swift: UITextField, UITextFieldDelegate, UITableViewDelegate,
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int{
-        var count = self.applyFilterWithSearchQuery(self.text).count
+        let count = self.applyFilterWithSearchQuery(self.text!).count
         if count == 0{
             UIView.animateWithDuration(0.3,
                 animations: ({
@@ -176,14 +176,14 @@ class MPGTextField_Swift: UITextField, UITextFieldDelegate, UITableViewDelegate,
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell = tableView.dequeueReusableCellWithIdentifier("MPGResultsCell") as? UITableViewCell
+        var cell = tableView.dequeueReusableCellWithIdentifier("MPGResultsCell") as UITableViewCell?
         
         if (cell == nil) {
             cell = UITableViewCell(style: UITableViewCellStyle.Subtitle, reuseIdentifier: "MPGResultsCell")
         }
 
         cell!.backgroundColor = UIColor.clearColor()
-        let dataForRowAtIndexPath = self.applyFilterWithSearchQuery(self.text)[indexPath.row]
+        let dataForRowAtIndexPath = self.applyFilterWithSearchQuery(self.text!)[indexPath.row]
         let displayText : AnyObject? = dataForRowAtIndexPath["DisplayText"]
         let displaySubText : AnyObject? = dataForRowAtIndexPath["DisplaySubText"]
         cell!.textLabel!.text = displayText as? String
@@ -193,7 +193,7 @@ class MPGTextField_Swift: UITextField, UITextFieldDelegate, UITableViewDelegate,
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath){
-        self.text = self.applyFilterWithSearchQuery(self.text)[indexPath.row]["DisplayText"] as! String
+        self.text = self.applyFilterWithSearchQuery(self.text!)[indexPath.row]["DisplayText"] as? String
         self.resignFirstResponder()
     }
     
@@ -203,8 +203,8 @@ class MPGTextField_Swift: UITextField, UITextFieldDelegate, UITableViewDelegate,
     func applyFilterWithSearchQuery(filter : String) -> [Dictionary<String, AnyObject>]
     {
         //let predicate = NSPredicate(format: "DisplayText BEGINSWITH[cd] \(filter)")
-        var lower = (filter as NSString).lowercaseString
-        var filteredData = data.filter({
+        _ = (filter as NSString).lowercaseString
+        let filteredData = data.filter({
                 if let match : AnyObject  = $0["DisplayText"]{
                     //println("LCS = \(filter.lowercaseString)")
                     return (match as! NSString).lowercaseString.hasPrefix((filter as NSString).lowercaseString)
@@ -222,7 +222,7 @@ class MPGTextField_Swift: UITextField, UITextFieldDelegate, UITableViewDelegate,
         }
         if (mDelegate?.textFieldShouldSelect?(self) != nil){
             if (self.text != nil) {
-                mDelegate?.textFieldDidEndEditing?(self, withSelection: ["DisplayText":self.text])
+                mDelegate?.textFieldDidEndEditing?(self, withSelection: ["DisplayText":self.text!])
             }
         }
 

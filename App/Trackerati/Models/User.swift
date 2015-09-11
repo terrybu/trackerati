@@ -20,7 +20,7 @@ class User : NSObject
         self.displayName = displayName
         
         let unwantedCharacters = NSCharacterSet(charactersInString: "@.")
-        firebaseID = join("", email.componentsSeparatedByCharactersInSet(unwantedCharacters))
+        firebaseID = email.componentsSeparatedByCharactersInSet(unwantedCharacters).joinWithSeparator("")
     }
     
 }

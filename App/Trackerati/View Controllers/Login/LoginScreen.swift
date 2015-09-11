@@ -24,7 +24,7 @@ class LoginScreen : UIViewController
         self.delegate = delegate
     }
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -37,14 +37,14 @@ class LoginScreen : UIViewController
     
     private func setupLoginButton()
     {
-        var loginButton = UIButton(frame: CGRectZero)
+        let loginButton = UIButton(frame: CGRectZero)
         loginButton.addTarget(self, action: "loginButtonPressed:", forControlEvents: .TouchUpInside)
         loginButton.setTitle(kButtonTitle, forState: .Normal)
         loginButton.setTitleColor(UIColor.whiteColor(), forState: .Normal)
         loginButton.backgroundColor = UIColor(red:0.2, green:0.6, blue:0.86, alpha:1)
         loginButton.titleLabel?.font = UIFont(name: "HelveticaNeue-Light", size: 20.0)
         loginButton.layer.cornerRadius = 5.0
-        loginButton.setTranslatesAutoresizingMaskIntoConstraints(false)
+        loginButton.translatesAutoresizingMaskIntoConstraints = false
         
         view.addSubview(loginButton)
         let constraints = [
@@ -62,7 +62,7 @@ class LoginScreen : UIViewController
     /**
     Either enables or disables the Log In button and fades the button when disabled
     
-    :param: enabled Bool indicating whether the button is enabled or not
+    - parameter enabled: Bool indicating whether the button is enabled or not
     */
     func setLoginButtonEnabled(enabled: Bool)
     {

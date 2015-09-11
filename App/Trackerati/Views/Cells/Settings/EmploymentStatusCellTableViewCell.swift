@@ -20,7 +20,7 @@ class EmploymentStatusCellTableViewCell: UITableViewCell {
     @IBOutlet weak var segmentedControl:UISegmentedControl!
     
     //with this init with NSCoder, custom tableviewcell doesn't work, doesn't load NIB correctly
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
 

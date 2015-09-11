@@ -58,14 +58,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         #if DEBUG
             FirebaseManager.sharedManager.configureWithDatabaseURL(firebaseAbsoluteURLDebug)
-            println("debug mode")
+            print("debug mode")
         #else
             FirebaseManager.sharedManager.configureWithDatabaseURL(firebaseAbsoluteURLRelease)
-            println("using production db")
+            print("using production db")
         #endif
     }
     
-    func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject?) -> Bool {
+    func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject) -> Bool {
         return GPPURLHandler.handleURL(url, sourceApplication: sourceApplication, annotation: annotation)
     }
 

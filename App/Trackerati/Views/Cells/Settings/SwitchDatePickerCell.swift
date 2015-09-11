@@ -26,14 +26,14 @@ class SwitchDatePickerCell : UITableViewCell
         setupDatePickerView()
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
     private func setupLabelAndSwitch()
     {
-        let cellWidth = contentView.frame.size.width
-        let cellHeight = contentView.frame.size.height
+        _ = contentView.frame.size.width
+        _ = contentView.frame.size.height
         let leftMargin = layoutMargins.left + 8.0
         let titleLabelRect = CGRect(x: leftMargin, y: 0.0, width: contentView.frame.size.width, height: contentView.frame.size.height)
         
@@ -44,7 +44,7 @@ class SwitchDatePickerCell : UITableViewCell
         
         let onOffSwitch = UISwitch(frame: CGRectZero)
         onOffSwitch.addTarget(self, action: "switchValueChanged:", forControlEvents: .ValueChanged)
-        onOffSwitch.setTranslatesAutoresizingMaskIntoConstraints(false)
+        onOffSwitch.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(onOffSwitch)
         let constraints = [
             NSLayoutConstraint(item: onOffSwitch, attribute: .CenterY, relatedBy: .Equal, toItem: self.titleLabel, attribute: .CenterY, multiplier: 1.0, constant: 0.0),

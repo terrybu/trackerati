@@ -22,7 +22,7 @@ class NewProjectViewController: UIViewController, MPGTextFieldDelegate {
         self.title = "Create New Project"
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -52,7 +52,7 @@ class NewProjectViewController: UIViewController, MPGTextFieldDelegate {
     }
     
     func clientTextFieldDidChange() {
-        if (!self.clientMPGTextField.text.isEmpty && !self.projectMPGTextField.text.isEmpty) {
+        if (!self.clientMPGTextField.text!.isEmpty && !self.projectMPGTextField.text!.isEmpty) {
             navigationItem.rightBarButtonItem?.enabled = true
         }
         else {
@@ -61,7 +61,7 @@ class NewProjectViewController: UIViewController, MPGTextFieldDelegate {
     }
     
     func projectTextFieldDidChange() {
-        if (!self.clientMPGTextField.text.isEmpty && !self.projectMPGTextField.text.isEmpty) {
+        if (!self.clientMPGTextField.text!.isEmpty && !self.projectMPGTextField.text!.isEmpty) {
             navigationItem.rightBarButtonItem?.enabled = true
         }
         else {
@@ -69,7 +69,7 @@ class NewProjectViewController: UIViewController, MPGTextFieldDelegate {
         }
     }
     
-    private func parseDataForMPGTextFields([Client]) {
+    private func parseDataForMPGTextFields(_: [Client]) {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
             for client:Client in self.clientsArray! {
                 self.clientDataForMPG.append(["DisplayText" : client.companyName, "Type": 0])
@@ -88,10 +88,10 @@ class NewProjectViewController: UIViewController, MPGTextFieldDelegate {
     }
     
     private func setUpNavButtons() {
-        var backButton = UIBarButtonItem(title: "Back", style: UIBarButtonItemStyle.Plain, target: self, action: "closeViewController");
+        let backButton = UIBarButtonItem(title: "Back", style: UIBarButtonItemStyle.Plain, target: self, action: "closeViewController");
         navigationItem.leftBarButtonItem = backButton;
         
-        var saveButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Save, target: self, action: "saveNewProject")
+        let saveButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Save, target: self, action: "saveNewProject")
         navigationItem.rightBarButtonItem = saveButton;
         saveButton.enabled = false
     }
@@ -127,7 +127,7 @@ class NewProjectViewController: UIViewController, MPGTextFieldDelegate {
     @objc
     private func saveNewProject()
     {
-        if (self.clientMPGTextField.text.isEmpty || self.projectMPGTextField.text.isEmpty) {
+        if (self.clientMPGTextField.text!.isEmpty || self.projectMPGTextField.text!.isEmpty) {
             let alertController = UIAlertController(title: "Empty Input", message:
                 "Either Client Name or Project Name cannot be empty", preferredStyle: UIAlertControllerStyle.Alert)
             alertController.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.Default,handler: nil))
@@ -138,11 +138,11 @@ class NewProjectViewController: UIViewController, MPGTextFieldDelegate {
         let hud = MBProgressHUD.showHUDAddedTo(view, animated: true)
         hud.labelText = "Saving New Project"
         
-        FirebaseManager.sharedManager.saveNewProject(self.clientMPGTextField.text, projectString: self.projectMPGTextField.text, completion: { (error, duplicateFound) -> Void in
+        FirebaseManager.sharedManager.saveNewProject(self.clientMPGTextField.text!, projectString: self.projectMPGTextField.text!, completion: { (error, duplicateFound) -> Void in
             if (error != nil || duplicateFound) {
                 var alertController : UIAlertController?
                 if (error != nil) {
-                    println(error)
+                    print(error)
                     alertController = UIAlertController(title: "Error", message:
                         "There was an error while trying to save new project to database, please try again later", preferredStyle: UIAlertControllerStyle.Alert)
                 } else if (duplicateFound) {

@@ -41,7 +41,7 @@ class HistoryTableViewDataSource : NSObject, UITableViewDataSource
     }
     
     func deleteRecordFromFirebaseDataAndViewAtIndexPath(indexPath: NSIndexPath) {
-        var deleteThisRecord = recordForIndexPath(indexPath) //point to it before you lose it in userHistory
+        let deleteThisRecord = recordForIndexPath(indexPath) //point to it before you lose it in userHistory
         
         //we delete from firebase first
         //then we delete local record object from firebase singleton instance

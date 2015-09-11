@@ -42,7 +42,7 @@ class ContainerViewController : UIViewController, LoginScreenDelegate, MainViewC
         setupNotifications()
     }
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -256,12 +256,12 @@ class ContainerViewController : UIViewController, LoginScreenDelegate, MainViewC
                 edgePanGesture.enabled = false
                 edgePanGesture.enabled = true
             }
-            println("began block")
+            print("began block")
         case .Changed:
             let newXPosition = edgePanGesture.locationInView(view).x
             let translation = CGAffineTransformMakeTranslation(newXPosition, 0.0)
             centerNavigationController.view.transform = translation
-            println("changed block")
+            print("changed block")
 
         case .Ended:
             let distanceNeededToAnimateFromLeft = UIScreen.mainScreen().bounds.size.width / 4.0
@@ -270,13 +270,13 @@ class ContainerViewController : UIViewController, LoginScreenDelegate, MainViewC
                 grayMask?.removeFromSuperview()
                 animateToSideMenu(false)
                 removeSnapshotView()
-                println("ended 1 - side menu disappeared")
+                print("ended 1 - side menu disappeared")
             }
             else {
                 animateToSideMenu(true)
-                println("ended 2 - side menu now showing fully")
+                print("ended 2 - side menu now showing fully")
             }
-            println("ended block")
+            print("ended block")
 
         default:
             removeSnapshotView()

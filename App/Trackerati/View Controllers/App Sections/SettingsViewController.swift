@@ -58,7 +58,7 @@ class SettingsViewController : MainViewController, UITableViewDelegate, UITableV
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if settings[indexPath.section].1 == SettingType.Notifications {
-            var switchDatePickercell = SwitchDatePickerCell(style: .Default, reuseIdentifier: "switchDatePickerCell")
+            let switchDatePickercell = SwitchDatePickerCell(style: .Default, reuseIdentifier: "switchDatePickerCell")
             
             //set up cell UI considering what was saved in Defaults
             switchDatePickercell.onOffSwitch.setOn(TrackeratiUserDefaults.standardDefaults.notificationsOn(), animated: false)
@@ -106,7 +106,7 @@ class SettingsViewController : MainViewController, UITableViewDelegate, UITableV
     
     func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         if section == 1 {
-            var label = UILabel(frame: CGRectMake(50, 0, 50, 200))
+            let label = UILabel(frame: CGRectMake(50, 0, 50, 200))
             label.text = "*This allows all your future record forms to default to above"
             label.textColor = UIColor.grayColor()
             label.numberOfLines = 0
@@ -125,7 +125,7 @@ class SettingsViewController : MainViewController, UITableViewDelegate, UITableV
         self.settingsTableView.reloadSections(NSIndexSet(index: 0), withRowAnimation: UITableViewRowAnimation.Automatic)
         
         if on && UIApplication.sharedApplication().currentUserNotificationSettings() != .None {
-            UIApplication.sharedApplication().registerUserNotificationSettings(UIUserNotificationSettings(forTypes: .Alert | .Badge , categories: nil))
+            UIApplication.sharedApplication().registerUserNotificationSettings(UIUserNotificationSettings(forTypes: [.Alert, .Badge] , categories: nil))
         }
     }
     

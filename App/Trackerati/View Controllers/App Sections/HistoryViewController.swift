@@ -68,10 +68,10 @@ class HistoryViewController : MainViewController, UITableViewDelegate, HistoryTa
     
     // MARK: UITableView Delegate
     func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
-        var header:UITableViewHeaderFooterView = view as! UITableViewHeaderFooterView
+        let header:UITableViewHeaderFooterView = view as! UITableViewHeaderFooterView
         
         view.tintColor = UIColor(rgba: "#2D2D2D")
-        header.textLabel.textColor = UIColor.whiteColor()
+        header.textLabel!.textColor = UIColor.whiteColor()
 //        header.textLabel.font = UIFont.boldSystemFontOfSize(25)
     }
     
