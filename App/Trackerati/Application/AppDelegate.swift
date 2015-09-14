@@ -31,7 +31,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         #if RELEASE
         configureHockeySDK()
-    NewRelicAgent.startWithApplicationToken("AAd558e763f773d7bb68194513db0dcdac6aeff656")
         #endif
 
         configureSingletons()
@@ -58,7 +57,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         #if DEBUG
             FirebaseManager.sharedManager.configureWithDatabaseURL(firebaseAbsoluteURLDebug)
-            print("debug mode")
+            print("debug mode - dev db")
         #else
             FirebaseManager.sharedManager.configureWithDatabaseURL(firebaseAbsoluteURLRelease)
             print("using production db")

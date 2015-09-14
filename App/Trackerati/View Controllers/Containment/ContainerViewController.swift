@@ -167,7 +167,9 @@ class ContainerViewController : UIViewController, LoginScreenDelegate, MainViewC
     private func displaySnapshotView()
     {
         snapshotView = UIScreen.mainScreen().snapshotViewAfterScreenUpdates(false)
-        centerNavigationController.view.addSubview(snapshotView!)
+        if snapshotView != nil {
+            centerNavigationController.view.addSubview(snapshotView!)
+        }
         hideStatusBar = true
         setNeedsStatusBarAppearanceUpdate()
     }
