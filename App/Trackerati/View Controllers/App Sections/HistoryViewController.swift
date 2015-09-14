@@ -25,8 +25,7 @@ class HistoryViewController : MainViewController, UITableViewDelegate, HistoryTa
     private func setupTableView() {
         let historyTableView = UITableView(frame: view.frame, style: .Plain)
         historyTableView.delegate = self
-        historyTableViewDataSource = HistoryTableViewDataSource(tableView: historyTableView)
-        historyTableView.dataSource = historyTableViewDataSource
+        historyTableView.dataSource = HistoryTableViewDataSource(tableView: historyTableView)
         self.historyTableView = historyTableView
         view.addSubview(self.historyTableView)
     }
