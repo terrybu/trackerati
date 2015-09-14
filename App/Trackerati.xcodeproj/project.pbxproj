@@ -680,6 +680,7 @@
 					"$(PROJECT_DIR)/Trackerati/Frameworks",
 					"\"$(PODS_ROOT)/google-plus-ios-sdk/google-plus-ios-sdk-1.7.1\"",
 					"\"$(PODS_ROOT)/Firebase\"",
+					"@executable_path/Frameworks",
 				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -736,6 +737,7 @@
 					"$(PROJECT_DIR)/Trackerati/Frameworks",
 					"\"$(PODS_ROOT)/google-plus-ios-sdk/google-plus-ios-sdk-1.7.1\"",
 					"\"$(PODS_ROOT)/Firebase\"",
+					"@executable_path/Frameworks",
 				);
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -769,12 +771,15 @@
 					"$(PROJECT_DIR)/Trackerati/Frameworks",
 					"\"$(PODS_ROOT)/google-plus-ios-sdk/google-plus-ios-sdk-1.7.1\"",
 					"\"$(PODS_ROOT)/Firebase\"",
+					"$(inherited)",
+					"$(PROJECT_DIR)/Trackerati/Frameworks/HockeySDK.embeddedframework",
+					"@executable_path/Frameworks",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "";
 				INFOPLIST_FILE = "Trackerati/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited)";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_SWIFT_FLAGS = "-DDEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.thehackerati.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -795,12 +800,15 @@
 					"$(PROJECT_DIR)/Trackerati/Frameworks",
 					"\"$(PODS_ROOT)/google-plus-ios-sdk/google-plus-ios-sdk-1.7.1\"",
 					"\"$(PODS_ROOT)/Firebase\"",
+					"$(inherited)",
+					"$(PROJECT_DIR)/Trackerati/Frameworks/HockeySDK.embeddedframework",
+					"@executable_path/Frameworks",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "";
 				INFOPLIST_FILE = "Trackerati/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited)";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_SWIFT_FLAGS = "-DRELEASE";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.thehackerati.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
