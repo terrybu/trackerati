@@ -11,11 +11,11 @@ class NotificationsManager {
     static let sharedInstance = NotificationsManager()
     
     func registerForNotifications() {
-        if(self.isiOS8()) {
+//        if(self.isiOS8()) {
             self.registerForActionableNotification()
-        } else {
-            UIApplication.sharedApplication().registerUserNotificationSettings(UIUserNotificationSettings(forTypes: [.Sound, .Alert, .Badge], categories: nil))
-        }
+//        } else {
+//            UIApplication.sharedApplication().registerUserNotificationSettings(UIUserNotificationSettings(forTypes: [.Sound, .Alert, .Badge], categories: nil))
+//        }
     }
 
     func configureLocalNotifications() {

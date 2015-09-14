@@ -23,6 +23,8 @@ enum PanDirection
     case Right
 }
 
+private let kLeadingMarginCell:CGFloat = 14.0
+
 class HistoryTableViewCell : UITableViewCell
 {
     private let kDeleteButtonTitle = "Delete"
@@ -120,7 +122,7 @@ class HistoryTableViewCell : UITableViewCell
         infoContainerView.backgroundColor = UIColor.whiteColor()
         infoContainerView.translatesAutoresizingMaskIntoConstraints = false
         let infoContainerViewConstraints = [
-            NSLayoutConstraint(item: infoContainerView, attribute: .Leading, relatedBy: .Equal, toItem: self.contentView, attribute: .LeftMargin, multiplier: 1.0, constant: 0.0),
+            NSLayoutConstraint(item: infoContainerView, attribute: .Leading, relatedBy: .Equal, toItem: self.contentView, attribute: .Leading, multiplier: 1.0, constant: 0.0),
             NSLayoutConstraint(item: infoContainerView, attribute: .Top, relatedBy: .Equal, toItem: self.contentView, attribute: .Top, multiplier: 1.0, constant: 0.0),
             NSLayoutConstraint(item: infoContainerView, attribute: .Trailing, relatedBy: .Equal, toItem: self.contentView, attribute: .Trailing, multiplier: 1.0, constant: 0.0),
             NSLayoutConstraint(item: infoContainerView, attribute: .Bottom, relatedBy: .Equal, toItem: self.contentView, attribute: .Bottom, multiplier: 1.0, constant: 0.0)
@@ -135,7 +137,7 @@ class HistoryTableViewCell : UITableViewCell
         let clientLabel = UILabel(frame: CGRectZero)
         clientLabel.translatesAutoresizingMaskIntoConstraints = false
         let clientLabelConstraints = [
-            NSLayoutConstraint(item: clientLabel, attribute: .Leading, relatedBy: .Equal, toItem: self.infoContainerView, attribute: .LeftMargin, multiplier: 1.0, constant: 0.0),
+            NSLayoutConstraint(item: clientLabel, attribute: .Leading, relatedBy: .Equal, toItem: self.infoContainerView, attribute: .Leading, multiplier: 1.0, constant: kLeadingMarginCell),
             NSLayoutConstraint(item: clientLabel, attribute: .Top, relatedBy: .Equal, toItem: self.infoContainerView, attribute: .Top, multiplier: 1.0, constant: 0.0),
             NSLayoutConstraint(item: clientLabel, attribute: .Trailing, relatedBy: .Equal, toItem: self.infoContainerView, attribute: .Trailing, multiplier: 1.0, constant: 0.0),
             NSLayoutConstraint(item: clientLabel, attribute: .Bottom, relatedBy: .Equal, toItem: self.infoContainerView, attribute: .Bottom, multiplier: 0.33, constant: 0.0)
@@ -150,7 +152,7 @@ class HistoryTableViewCell : UITableViewCell
         let projectLabel = UILabel(frame: CGRectZero)
         projectLabel.translatesAutoresizingMaskIntoConstraints = false
         let projectLabelConstraints = [
-            NSLayoutConstraint(item: projectLabel, attribute: .Leading, relatedBy: .Equal, toItem: self.infoContainerView, attribute: .LeftMargin, multiplier: 1.0, constant: 0.0),
+            NSLayoutConstraint(item: projectLabel, attribute: .Leading, relatedBy: .Equal, toItem: self.infoContainerView, attribute: .Leading, multiplier: 1.0, constant: kLeadingMarginCell),
             NSLayoutConstraint(item: projectLabel, attribute: .Top, relatedBy: .Equal, toItem: self.clientLabel, attribute: .Bottom, multiplier: 1.0, constant: 0.0),
             NSLayoutConstraint(item: projectLabel, attribute: .Trailing, relatedBy: .Equal, toItem: self.infoContainerView, attribute: .Trailing, multiplier: 1.0, constant: 0.0),
             NSLayoutConstraint(item: projectLabel, attribute: .Bottom, relatedBy: .Equal, toItem: self.infoContainerView, attribute: .Bottom, multiplier: 0.66, constant: 0.0)
@@ -165,7 +167,7 @@ class HistoryTableViewCell : UITableViewCell
         let hoursLabel = UILabel(frame: CGRectZero)
         hoursLabel.translatesAutoresizingMaskIntoConstraints = false
         let hoursLabelConstraints = [
-            NSLayoutConstraint(item: hoursLabel, attribute: .Leading, relatedBy: .Equal, toItem: self.infoContainerView, attribute: .LeftMargin, multiplier: 1.0, constant: 0.0),
+            NSLayoutConstraint(item: hoursLabel, attribute: .Leading, relatedBy: .Equal, toItem: self.infoContainerView, attribute: .Leading, multiplier: 1.0, constant: kLeadingMarginCell),
             NSLayoutConstraint(item: hoursLabel, attribute: .Top, relatedBy: .Equal, toItem: self.projectLabel, attribute: .Bottom, multiplier: 1.0, constant: 0.0),
             NSLayoutConstraint(item: hoursLabel, attribute: .Trailing, relatedBy: .Equal, toItem: self.infoContainerView, attribute: .Trailing, multiplier: 1.0, constant: 0.0),
             NSLayoutConstraint(item: hoursLabel, attribute: .Bottom, relatedBy: .Equal, toItem: self.infoContainerView, attribute: .Bottom, multiplier: 1.0, constant: 0.0)
