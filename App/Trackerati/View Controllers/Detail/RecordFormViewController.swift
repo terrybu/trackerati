@@ -176,10 +176,6 @@ class RecordFormViewController : UIViewController, UITextFieldDelegate, UIPicker
         
         if let userRecordsSortedByDateInTuples = FirebaseManager.sharedManager.userRecordsSortedByDateInTuples {
             let justDates = userRecordsSortedByDateInTuples.map { $0.0}
-            print(justDates)
-            //        let dateStringsArray = (FirebaseManager.sharedManager.allUserRecords! as NSArray).valueForKeyPath("date") as! [String]
-            //        print(dateStringsArray.description)
-            
             //this is the little dots logic for calendar picker view
             //set a little dot below every date that has a Record in history associated with it
             //to display "Hey, you already did a record on that date!"
@@ -305,9 +301,9 @@ class RecordFormViewController : UIViewController, UITextFieldDelegate, UIPicker
         tempRecord.hours = hoursTextField.text!
         tempRecord.comment = commentsTextField.text
         
-        if sameProjectAlreadyPostedToday(tempRecord) {
-            print("same project was already posted today")
-            let alertController = UIAlertController(title: "Same project was already posted today", message:
+        if projectWithSameNameAlreadyPostedForDate(tempRecord) {
+            print("Same project was already posted on this day")
+            let alertController = UIAlertController(title: "Project with same name was already posted for the day you specified", message:
                 "Would you like to submit this project more than once in one day?", preferredStyle: UIAlertControllerStyle.Alert)
             alertController.addAction(UIAlertAction(title: "Yes, submit again", style: UIAlertActionStyle.Default,handler: { (actionSheetController) -> Void in
                     self.submit()
@@ -317,6 +313,19 @@ class RecordFormViewController : UIViewController, UITextFieldDelegate, UIPicker
         } else {
             submit()
         }
+    }
+    
+    private func projectWithSameNameAlreadyPostedForDate(tempRecord: Record) -> Bool {
+        let dateToCheck = tempRecord.date
+        let allRecordsFromDate = FirebaseManager.sharedManager.getRecordsForDate(dateToCheck)
+        if let recordsFromDate = allRecordsFromDate {
+            for record in recordsFromDate {
+                if record.client == tempRecord.client && record.project == tempRecord.project {
+                    return true
+                }
+            }
+        }
+        return false
     }
     
     private func submit() {
@@ -343,24 +352,8 @@ class RecordFormViewController : UIViewController, UITextFieldDelegate, UIPicker
             }
         })
     }
-
-        
-    
-    private func sameProjectAlreadyPostedToday(tempRecord: Record) -> Bool {
-        let possibleRecords = FirebaseManager.sharedManager.getTodaysRecords()
-        if let todaysRecords = possibleRecords {
-            //iterate through Record objects in today's Records array, check if contain the same client and project name of tempRecord
-            for record in todaysRecords {
-                if record.client == tempRecord.client && record.project == tempRecord.project {
-                    return true
-                }
-            }
-        }
-        return false
-    }
     
     // MARK: UIKeyboard Notification Selectors
-    
     @objc
     private func keyboardDidShow(notification: NSNotification)
     {

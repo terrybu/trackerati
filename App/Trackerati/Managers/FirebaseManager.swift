@@ -193,7 +193,35 @@ class FirebaseManager : NSObject {
         })
     }
     
-    //MARK: Records Saving & Deleting & Filtering
+    //MARK: Records Retrieval & Filtering 
+    func getRecordsForDate(dateString: String) -> [Record]? {
+        //filter userRecords tuples array, by the tuple having that date at .0 position
+        if let userRecordsTuples = userRecordsSortedByDateInTuples {
+            let filteredTuplesForDate = userRecordsTuples.filter {
+                $0.0 == "\(dateString)"
+            }
+            if !filteredTuplesForDate.isEmpty {
+                let resultRecordsArray = filteredTuplesForDate.map { $0.1[0] }
+                print(resultRecordsArray)
+                return resultRecordsArray
+            }
+        }
+        return nil
+    }
+    
+    func getTodaysRecords() -> [Record]? {
+        //check what today is
+        //check the user records tuples array's most recent entry, and if thats today
+        let dateStringLatestRecord = userRecordsSortedByDateInTuples![0].0
+        print(dateStringLatestRecord)
+        print(CustomDateFormatter.sharedInstance.returnTodaysDateStringInFormat())
+        if dateStringLatestRecord == CustomDateFormatter.sharedInstance.returnTodaysDateStringInFormat() {
+            return userRecordsSortedByDateInTuples![0].1
+        }
+        return nil
+    }
+    
+    //MARK: Records Saving & Deleting
     func saveRecord(record: Record, completion: ((error: NSError!) -> Void)?)
     {
         let userURL = "Users/\(GoogleLoginManager.sharedManager.currentUser.firebaseID)/records"
@@ -231,18 +259,6 @@ class FirebaseManager : NSObject {
                 closure(error: error)
             }
         }
-    }
-    
-    func getTodaysRecords() -> [Record]? {
-        //check what today is
-        //check the user records tuples array's most recent entry, and if thats today
-        let dateStringLatestRecord = userRecordsSortedByDateInTuples![0].0
-        print(dateStringLatestRecord)
-        print(CustomDateFormatter.sharedInstance.returnTodaysDateStringInFormat())
-        if dateStringLatestRecord == CustomDateFormatter.sharedInstance.returnTodaysDateStringInFormat() {
-                return userRecordsSortedByDateInTuples![0].1
-        }
-        return nil
     }
     
     
