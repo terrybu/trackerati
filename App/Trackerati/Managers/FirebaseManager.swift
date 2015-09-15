@@ -40,7 +40,6 @@ class FirebaseManager : NSObject {
             //check the user records tuples array's most recent entry, and if thats today
             let dateStringLatestRecord = userRecordsSortedByDateInTuples![0].0
             if dateStringLatestRecord == CustomDateFormatter.sharedInstance.returnTodaysDateStringInFormat() {
-                
                 return true
             }
             return false

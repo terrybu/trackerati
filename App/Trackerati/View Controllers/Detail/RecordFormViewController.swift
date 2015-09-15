@@ -174,18 +174,22 @@ class RecordFormViewController : UIViewController, UITextFieldDelegate, UIPicker
         calendarPicker.currentDateColor = UIColor(red: 242/255.0, green: 121/255.0, blue: 53/255.0, alpha: 1.0)
         calendarPicker.currentDateColorSelected = UIColor.yellowColor()
         
-        let dateStringsArray = (FirebaseManager.sharedManager.allUserRecords! as NSArray).valueForKeyPath("date") as! [String]
-        print(dateStringsArray.description)
-        
-        //this is the little dots logic for calendar picker view
-        //set a little dot below every date that has a Record in history associated with it
-        //to display "Hey, you already did a record on that date!"
-        calendarPicker.setDateHasItemsCallback({ (date: NSDate!) -> Bool in
-            if (dateStringsArray.indexOf((CustomDateFormatter.sharedInstance.dateFormatter.stringFromDate(date))) != nil) {
+        if let userRecordsSortedByDateInTuples = FirebaseManager.sharedManager.userRecordsSortedByDateInTuples {
+            let justDates = userRecordsSortedByDateInTuples.map { $0.0}
+            print(justDates)
+            //        let dateStringsArray = (FirebaseManager.sharedManager.allUserRecords! as NSArray).valueForKeyPath("date") as! [String]
+            //        print(dateStringsArray.description)
+            
+            //this is the little dots logic for calendar picker view
+            //set a little dot below every date that has a Record in history associated with it
+            //to display "Hey, you already did a record on that date!"
+            calendarPicker.setDateHasItemsCallback({ (date: NSDate!) -> Bool in
+                if (justDates.indexOf((CustomDateFormatter.sharedInstance.dateFormatter.stringFromDate(date))) != nil) {
                     return true
-            }
-            return false
-        })
+                }
+                return false
+            })
+        }
         
         let pushParentBack = KNSemiModalOptionKeys.pushParentBack.takeRetainedValue() as String
         let animationDuration = KNSemiModalOptionKeys.animationDuration.takeRetainedValue() as String
